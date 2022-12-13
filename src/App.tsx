@@ -1,24 +1,24 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import 'antd/dist/antd.css';
+import { Layout } from 'antd';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Register from './components/pages/Register';
+import Login from './components/pages/Login';
+import Splash from './components/pages/Splash';
+import BaseLayout from './components/BaseLayout';
+import './index.css';
+import Dashboard from './components/pages/Dashboard';
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Router>
+        <Routes>
+          <Route path="/" element={<Splash />} />
+          <Route path="/login" element={<BaseLayout childComp={Login} />} />
+          <Route path="/register" element={<BaseLayout childComp={Register} />} />
+          <Route path="/dash" element={<BaseLayout childComp={Dashboard} />} />
+        </Routes>
+      </Router>
     </div>
   );
 }
