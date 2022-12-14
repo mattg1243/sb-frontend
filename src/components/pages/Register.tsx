@@ -1,10 +1,11 @@
-import { Button, Form, Input, Alert, Switch } from 'antd';
+import { Button, Form, Input, Switch } from 'antd';
 import React, { useState } from 'react';
 import axios from 'axios';
 import { Content } from 'antd/lib/layout/layout';
+import { AlertObj } from '../../types';
 import logo from '../../assets/logo_four_squares.png';
-import type { AlertStateObj } from './Login';
 import { useNavigate } from 'react-router-dom';
+import CustomAlert from '../CustomAlert';
 
 export default function Register(): JSX.Element {
   const [email, setEmail] = useState<string>('');
@@ -12,7 +13,7 @@ export default function Register(): JSX.Element {
   const [password, setPassword] = useState<string>('');
   const [passwordConfirm, setConfirmPassword] = useState<string>('');
   const [acctType, setAcctType] = useState<'artist' | 'producer'>('artist');
-  const [alert, setAlert] = useState<AlertStateObj | null>(null);
+  const [alert, setAlert] = useState<AlertObj>({status: 'none', message: ''});
 
   const navigate = useNavigate();
 
@@ -135,9 +136,7 @@ export default function Register(): JSX.Element {
           <a href="/login">Login</a>
         </Form.Item>
       </Form>
-      {alert ? (
-        <Alert message={alert.message} type={alert.status} showIcon style={{ width: '50%', margin: 'auto' }} />
-      ) : null}
+      <CustomAlert status={alert.status} message={alert.message} />
     </Content>
   );
 }

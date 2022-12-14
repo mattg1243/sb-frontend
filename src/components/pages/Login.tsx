@@ -1,49 +1,34 @@
-import { Alert, Button, Form, Input } from 'antd';
-import React, { useState } from 'react';
-import axios from 'axios';
+import { Spin, Button, Form, Input } from 'antd';
+import React, { useEffect, useState } from 'react';
 import { Content } from 'antd/lib/layout/layout';
 import logo from '../../assets/logo_four_squares.png';
 import { useNavigate } from 'react-router-dom';
-import { devHostNames, prodHostNames } from '../../config/microRoutes';
+import useLogin from '../../hooks/useLogin';
+import { AlertObj } from '../../types';
+import CustomAlert from '../CustomAlert';
 // this alert type should be shared
-export type AlertStateObj = { status: 'success' | 'error' | 'warning'; message: string };
 
 export default function Login(): JSX.Element {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-  const [alert, setAlert] = useState<AlertStateObj | null>(null);
+  const [alert, setAlert] = useState<AlertObj>({status: 'none', message: ''});
 
   const navigate = useNavigate();
 
-  const hostNames = process.env.NODE_ENV !== 'production' ? devHostNames: prodHostNames;
+  const { login, isLoading } = useLogin();
 
-  const sendLoginRequest = async () => {
-    const data = { email, password };
-    try {
-      const response = await axios.post(`${hostNames.gateway}/auth/login`, data, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-      if (response.status === 200) {
-        setAlert({ status: 'success', message: 'You are now logged in!' });
-        navigate(`/dash`);
-      }
-    } catch (err: any) {
-      console.error(err.message);
-      let message: string;
-      if (err.response.status === 401) {
-        message = 'Invalid login credentials';
-      } else {
-        message = 'An error occured while logging in: ' + err.message;
-      }
-      setAlert({ status: 'error', message: message });
+  const loginUserAndGoToDash = async (email: string, password: string) => {
+    const loginResponse = await login(email, password);
+    if (loginResponse.status === 'success') {
+      navigate('/dash')
+    } else {
+      setAlert(loginResponse);
     }
-  };
+  }
 
-  const handleKeypress = (e: React.KeyboardEvent) => {
+  const handleKeypress = async (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
-      sendLoginRequest();
+     await loginUserAndGoToDash(email, password);
     }
   };
 
@@ -95,7 +80,7 @@ export default function Login(): JSX.Element {
         </Form.Item> */}
 
         <Form.Item wrapperCol={{ offset: 4, span: 16 }}>
-          <Button
+          {isLoading ? <Spin size='large' /> : <Button
             type="primary"
             shape="round"
             size="large"
@@ -108,18 +93,16 @@ export default function Login(): JSX.Element {
               height: '80px',
             }}
             onClick={async () => {
-              await sendLoginRequest();
+              await loginUserAndGoToDash(email, password);
             }}
           >
             Login
-          </Button>
+          </Button>}
           <h3>Dont have an account?</h3>
           <a href="/register">Sign Up</a>
         </Form.Item>
       </Form>
-      {alert ? (
-        <Alert message={alert.message} type={alert.status} showIcon style={{ width: '50%', margin: 'auto' }} />
-      ) : null}
+      <CustomAlert status={alert.status} message={alert.message} />
     </Content>
   );
 }
