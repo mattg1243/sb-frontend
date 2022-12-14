@@ -1,5 +1,3 @@
-import 'antd/dist/antd.css';
-import { Layout } from 'antd';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Register from './components/pages/Register';
 import Login from './components/pages/Login';
