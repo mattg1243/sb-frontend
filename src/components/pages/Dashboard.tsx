@@ -1,50 +1,33 @@
-import { useState } from 'react';
-import { Breadcrumb, Upload, Layout, Button, Modal, Form, Input } from 'antd';
-import { Content, Header } from 'antd/lib/layout/layout';
+import { Content } from 'antd/lib/layout/layout';
 import DashRow from '../DashRow';
+import { useState } from 'react';
+import Navbar from '../Navbar';
+import PlayBackBar from '../PlaybackBar';
 
 export default function Dashboard() {
+  // TODO: this should hold the actual beat obj to play or null when none are playing
+  const [trackPlaying, setTrackPlaying] = useState<boolean>(false);
+  const [beats, getBeats] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const testClick = () => { console.log('click registered') }
+
   const topTen = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
-  const [uploadModalOpen, setUploadModalOpen] = useState<boolean>(false);
-
   return (
-    <Layout>
-      <Header>
-        Dashboard
-        <Breadcrumb>wow</Breadcrumb>
-        <Button
-          onClick={() => {
-            setUploadModalOpen(true);
-          }}
-        >
-          Upload Beat
-        </Button>
-        <Content style={{ display: 'flex', flexDirection: 'column' }}>
+    <>
+      <Navbar />
+        <Content style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
           {topTen.map((beat) => {
-            return <DashRow beat={beat} />;
+            return <DashRow beat={beat}  onClick={()=>{setTrackPlaying(true)}} />;
           })}
-          <Modal title="upload beat modal" open={uploadModalOpen} closable={true}>
-            <Form>
-              <Form.Item>
-                <Input placeholder="Title"></Input>
-              </Form.Item>
-              <Form.Item>
-                <Input placeholder="Genre Tags (comman seperated)"></Input>
-              </Form.Item>
-              <Form.Item>
-                <Input placeholder="Tempo"></Input>
-              </Form.Item>
-              <Form.Item>
-                <Input placeholder="Key"></Input>
-              </Form.Item>
-              <Upload name="beat" action="http://localhost:3001/api/upload/beat">
-                Upload Beat
-              </Upload>
-            </Form>
-          </Modal>
         </Content>
-      </Header>
-    </Layout>
+        <PlayBackBar 
+          trackTitle="Devil in a New Dress" 
+          trackArtist='Kanye West' 
+          trackSrcUrl='https://d3fulr0i8qqtgb.cloudfront.net/beats/c5127337c7cf68db6697f6345663f4e7'
+          isShown={trackPlaying}
+        />
+    </>
   );
 }
