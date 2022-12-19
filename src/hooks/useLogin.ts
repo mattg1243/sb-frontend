@@ -22,6 +22,7 @@ export default function useLogin(): IUseLoginReturn {
         headers: {
           'Content-Type': 'application/json',
         },
+        withCredentials: true,
       });
       if (response.status === 200) {
         setIsLoading(false);
@@ -38,7 +39,7 @@ export default function useLogin(): IUseLoginReturn {
       setIsLoading(false);
       setLoginResponse({ status: 'error', message: message });
     }
-
+    
     return Promise.resolve(loginResponse);
   }
 
