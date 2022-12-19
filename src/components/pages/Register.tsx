@@ -1,4 +1,4 @@
-import { Button, Form, Input, Switch } from 'antd';
+import { Button, Form, Input } from 'antd';
 import React, { useState } from 'react';
 import axios from 'axios';
 import { Content } from 'antd/lib/layout/layout';
@@ -9,41 +9,29 @@ import CustomAlert from '../CustomAlert';
 
 export default function Register(): JSX.Element {
   const [email, setEmail] = useState<string>('');
-  const [username, setUsername] = useState<string>('');
+  const [artistName, setArtistName] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [passwordConfirm, setConfirmPassword] = useState<string>('');
-  const [acctType, setAcctType] = useState<'artist' | 'producer'>('artist');
   const [alert, setAlert] = useState<AlertObj>({status: 'none', message: ''});
 
   const navigate = useNavigate();
 
   const sendRegisterRequest = async () => {
     if (password === passwordConfirm) {
+      const data = { email, artistName, password };
+      console.log(data);
       try {
-        const response = await axios.post('http://localhost:3001/api/auth/register', {
-          email,
-          username,
-          password,
-          acctType,
-        });
+        const response = await axios.post('http://localhost:8000/user/register', data);
         console.log(response);
         setAlert({ status: 'success', message: 'Account created succesfully, you may now login' });
         localStorage.setItem('user', JSON.stringify(response.data.user));
-        navigate(`/dash/${response.data.user._id}`);
+        navigate('/dash');
       } catch (err) {
         console.error(err);
       }
     } else {
       // passwords dont match, display error
       setAlert({ status: 'error', message: `Passwords don't match, please try again.` });
-    }
-  };
-
-  const changeAcctType = () => {
-    if (acctType === 'artist') {
-      setAcctType('producer');
-    } else {
-      setAcctType('artist');
     }
   };
 
@@ -75,14 +63,14 @@ export default function Register(): JSX.Element {
 
         <Form.Item
           style={{ justifySelf: 'center' }}
-          name="username"
-          rules={[{ required: true, message: 'Please input your username!' }]}
+          name="artistName"
+          rules={[{ required: true, message: 'Please input your artist name!' }]}
         >
           <Input
             className="round-white-input"
-            placeholder="Username"
+            placeholder="Artist Name"
             style={{ width: '600px', height: '50px', borderRadius: '40px' }}
-            onChange={(e) => setUsername(e.target.value)}
+            onChange={(e) => setArtistName(e.target.value)}
           />
         </Form.Item>
 
@@ -103,15 +91,6 @@ export default function Register(): JSX.Element {
             onChange={(e) => setConfirmPassword(e.target.value)}
           />
         </Form.Item>
-
-        <span style={{ display: 'inline-flex', padding: '1rem', marginLeft: '2rem' }}>
-          <h3>Artist</h3>
-          <Switch
-            style={{ backgroundColor: 'black', margin: '0 1rem 0 1rem', justifySelf: 'center' }}
-            onChange={() => changeAcctType()}
-          />
-          <h3>Producer</h3>
-        </span>
 
         <Form.Item wrapperCol={{ offset: 4, span: 16 }}>
           <Button
