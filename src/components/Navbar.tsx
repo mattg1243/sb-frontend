@@ -3,14 +3,12 @@ import { Button, Menu } from "antd";
 import { useNavigate } from "react-router-dom";
 import UploadBeatModal from "./UploadBeatModal";
 
-
-
 export default function Navbar() {
 
   const navigate = useNavigate();
 
   return (
-      <Header style={{ width: '100%', margin: 0}}>
+      <Header style={{ width: '100%', margin: 0, top: 100}}>
         <Menu
           theme="dark"
           mode="horizontal"

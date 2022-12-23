@@ -1,9 +1,6 @@
 import { Layout } from 'antd';
-import React from 'react';
 
 type BaseLayoutProps = { childComp: () => JSX.Element };
-
-const { Header, Footer, Sider, Content } = Layout;
 
 export default function BaseLayout(props: BaseLayoutProps) {
   const { childComp: Component } = props;
