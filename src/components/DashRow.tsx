@@ -1,10 +1,11 @@
 import { Card, Space, Image, Button } from 'antd';
-import ReactAudioPlayer from 'react-audio-player';
 import logo from '../assets/logo_four_squares.png';
 import { PlusOutlined } from '@ant-design/icons';
+import { Beat } from '../types/beat';
+import { cdnHostname } from '../config/routing';
 
 interface IBeatRowProps {
-  beat: any,
+  beat: Beat,
   onClick: Function,
 }
 
@@ -18,15 +19,15 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
           <Button type='ghost' size='large'>
             <PlusOutlined />
           </Button>
-          <Image src={logo} alt="album artwork" width="8rem" />
+          <Image src={`${cdnHostname}/${beat.artworkKey}`} alt="album artwork" width="8rem" />
           <Space direction="vertical" size="small" style={{ display: 'flex' }}>
             <Card style={{ background: 'var(--primary', border: 'none' }}>
               <Space direction="horizontal" align="start">
                 <Space direction="vertical">
-                  <h3 onClick={() => {onClick()}} style={{ cursor: 'pointer' }}>Devil in a New Dress - Kanye West</h3>
+                  <h3 onClick={() => {onClick()}} style={{ cursor: 'pointer' }}>{beat.title}</h3>
                 </Space>
                 <Space align="end" />
-                <p>Hip-Hop & Rap | 145bpm</p>
+                <p>{beat.genreTags[0]} | {beat.tempo} BPM</p>
               </Space>
             </Card>
           </Space>
