@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from "axios";
-import gatewayUrl from "../config/microRoutes";
+import gatewayUrl from "../config/routing";
 
 export const sendUploadBeatReq = async (data: FormData): Promise<AxiosResponse> => {
   const response = await axios.post(`${gatewayUrl}/beats/upload`, data, { headers: { 'Content-Type': 'multipart/form-data' }, withCredentials: true })
