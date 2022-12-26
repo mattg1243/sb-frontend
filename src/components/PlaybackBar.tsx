@@ -34,6 +34,7 @@ export default function PlayBackBar(props: IPlayBackBarProps) {
         style={{ color: 'white', background: 'white'}} 
         controls={true}
         autoPlay={true}
+        controlsList='nodownload'
       />
     </Footer> :
     null

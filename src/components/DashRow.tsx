@@ -1,5 +1,4 @@
-import { Card, Space, Image, Button } from 'antd';
-import logo from '../assets/logo_four_squares.png';
+import { Card, Space, Image, Button, Col, Row } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { Beat } from '../types/beat';
 import { cdnHostname } from '../config/routing';
@@ -11,28 +10,24 @@ interface IBeatRowProps {
 
 export default function DashRow(props: IBeatRowProps): JSX.Element {
   const { beat, onClick } = props;
-
+  
   return (
-    <div>
-      <Space direction="vertical" size="middle" style={{ width: '100%' }}>
-        <Space direction="horizontal">
+        <Row style={{ width: '80%', maxWidth: '1400px', textAlign: 'center', margin: '15px' }}>
           <Button type='ghost' size='large'>
             <PlusOutlined />
           </Button>
-          <Image src={`${cdnHostname}/${beat.artworkKey}`} alt="album artwork" width="8rem" />
-          <Space direction="vertical" size="small" style={{ display: 'flex' }}>
-            <Card style={{ background: 'var(--primary', border: 'none' }}>
-              <Space direction="horizontal" align="start">
-                <Space direction="vertical">
-                  <h3 onClick={() => {onClick()}} style={{ cursor: 'pointer' }}>{beat.title}</h3>
-                </Space>
-                <Space align="end" />
-                <p>{beat.genreTags[0]} | {beat.tempo} BPM</p>
-              </Space>
-            </Card>
-          </Space>
-        </Space>
-      </Space>
-    </div>
+          <Col span={12} >
+            <Row style={{ alignItems: 'center' }}>
+              <Image src={`${cdnHostname}/${beat.artworkKey}`} alt="album artwork" width={125} height={125}/>
+              <h3 onClick={() => {onClick()}} style={{ cursor: 'pointer', margin: '15px' }}>{beat.title} - {beat.artistName}</h3>
+            </Row>
+          </Col>
+          <Col span={2}></Col>
+          <Col span={6} style={{ justifyItems: 'center', alignItems: 'end' }}>
+            <Row style={{ height: '100%', alignItems: 'center', justifyContent: 'end' }}>
+              <p>{beat.genreTags[0]} | {beat.tempo} BPM | {beat.key}</p>
+            </Row>
+          </Col>
+        </Row>
   );
 }
