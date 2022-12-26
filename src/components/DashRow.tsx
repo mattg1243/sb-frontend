@@ -1,4 +1,4 @@
-import { Card, Space, Image, Button, Col, Row } from 'antd';
+import { Image, Button, Col, Row } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { Beat } from '../types/beat';
 import { cdnHostname } from '../config/routing';
