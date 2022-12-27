@@ -1,5 +1,5 @@
 import { Alert } from "antd";
-import { AlertObj } from "../types";
+import { AlertObj } from "../../types";
 
 export default function CustomAlert(props: AlertObj) {
   // destructure props

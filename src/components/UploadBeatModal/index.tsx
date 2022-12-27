@@ -1,7 +1,7 @@
 import { Modal, Form, Button, Input, Select } from 'antd';
 import { useState } from 'react';
-import { sendUploadBeatReq, getAllBeatsReq } from '../lib/axios';
-import { genreTags as genreTagOptions } from '../utils/genreTags';
+import { sendUploadBeatReq, getAllBeatsReq } from '../../lib/axios';
+import { genreTags as genreTagOptions } from '../../utils/genreTags';
 
 export default function UploadBeatModal() {
 

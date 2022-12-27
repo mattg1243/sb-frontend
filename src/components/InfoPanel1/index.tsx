@@ -1,5 +1,5 @@
 import { Row, Col } from 'antd';
-import logo from '../assets/logo_four_squares.png';
+import logo from '../../assets/logo_four_squares.png';
 
 export default function InfoPanel1() {
   return (

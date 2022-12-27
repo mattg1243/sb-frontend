@@ -2,10 +2,10 @@ import { Button, Form, Input } from 'antd';
 import React, { useState } from 'react';
 import axios from 'axios';
 import { Content } from 'antd/lib/layout/layout';
-import { AlertObj } from '../../types';
-import logo from '../../assets/logo_four_squares.png';
+import { AlertObj } from '../../../types';
+import logo from '../../../assets/logo_four_squares.png';
 import { useNavigate } from 'react-router-dom';
-import CustomAlert from '../CustomAlert';
+import CustomAlert from '../../CustomAlert';
 
 export default function Register(): JSX.Element {
   const [email, setEmail] = useState<string>('');

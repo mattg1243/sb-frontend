@@ -1,8 +1,8 @@
 import { Content, Header } from 'antd/lib/layout/layout';
 import { Layout, Row, Col, Button } from 'antd';
-import logo from '../../assets/logo_four_squares.png';
+import logo from '../../../assets/logo_four_squares.png';
 import { useNavigate } from 'react-router-dom';
-import InfoPanel1 from '../InfoPanel1';
+import InfoPanel1 from '../../InfoPanel1';
 
 export default function Splash() {
   const navigate = useNavigate();
