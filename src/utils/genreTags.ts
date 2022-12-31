@@ -25,3 +25,10 @@ export const genreTags = [
   'Trap',
   'Psychedelic Rock',
 ]
+// in option form for selector components
+interface Option {
+  label: string,
+  value: string,
+}
+
+export const genreOptions: Option[] = genreTags.map((val) => ({ label: val, value: val }));
