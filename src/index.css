@@ -25,6 +25,10 @@ body {
   background-color: var(--primary) !important;
 }
 
+.ant-spin-dot-item {
+  background-color: black !important;
+}
+
 .button-lg-round {
   width: '200px';
   height: '65px';
