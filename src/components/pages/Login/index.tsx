@@ -19,8 +19,9 @@ export default function Login(): JSX.Element {
 
   const loginUserAndGoToDash = async (email: string, password: string) => {
     const loginResponse = await login(email, password);
-    if (loginResponse.status === 'success') {
-      navigate('/dash')
+    if (loginResponse.status === 'success' && loginResponse.user) {
+      localStorage.setItem('sb-user', JSON.stringify(loginResponse.user));
+      navigate('/dash');
     } else {
       setAlert(loginResponse);
     }
