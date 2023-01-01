@@ -1,14 +1,17 @@
 import { Header } from "antd/es/layout/layout";
 import { Button, Menu, Image, Avatar } from "antd";
 import { useNavigate } from "react-router-dom";
-import UploadBeatModal from "../UploadBeatModal";
+import UploadBeatModal from "../BeatUploadModal";
 import logo from '../../assets/logo_four_squares.png';
 import { UserOutlined } from "@ant-design/icons";
+import { getUserIdFromLocalStorage } from '../../utils/localStorageParser';
 
 export default function Navbar() {
 
+  const currentUserId = getUserIdFromLocalStorage();
+  
   const navigate = useNavigate();
-
+  
   return (
       <Header style={{ width: '100%', margin: 0, top: 100, background: 'black' }}>
         <Menu
@@ -18,7 +21,7 @@ export default function Navbar() {
           style={{ background: 'black', marginBottom: '3rem', width: '100%' }}
         >
           <Menu.Item>
-            <Image height='50px' src={logo} preview={false} onClick={() => { navigate('/') }}/>
+            <Image height='50px' src={logo} preview={false} onClick={() => { navigate('/dash') }}/>
           </Menu.Item>
           <Menu.Item key="upload">
             <UploadBeatModal />
@@ -33,7 +36,7 @@ export default function Navbar() {
             <Button type='ghost' onClick={() => { navigate('/about') }} style={{ color: 'white' }}>About</Button>
           </Menu.Item>
           <Menu.Item key="profile" style={{ marginLeft: 'auto' }}>
-            <Avatar size={48} icon={<UserOutlined style={{ fontSize: '1.5rem' }} />} style={{ border: 'solid 3px', borderColor: 'var(--primary)' }} onClick={() => { navigate('/user')}}/>
+            <Avatar size={48} icon={<UserOutlined style={{ fontSize: '1.5rem' }} />} style={{ border: 'solid 3px', borderColor: 'var(--primary)' }} onClick={() => { navigate(`/user?id=${currentUserId}`)}}/>
           </Menu.Item>
         </Menu>
       </Header>
