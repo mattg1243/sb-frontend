@@ -22,8 +22,8 @@ export default function Dashboard() {
         <Content style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', height: '100%', padding: '10px' }}>
           <h2 style={{ alignSelf: 'flex-start', marginLeft: '14rem', fontSize: '3rem' }}>For you:</h2>
           { beats ? beats.map((beat) => {
-            return <DashRow beat={beat}  onClick={()=>{setTrackPlaying(beat)}} />;
-          }): <Spin  size='large' style={{ color: 'black' }} tip='Loading beats...'/>}
+            return <DashRow beat={beat}  onClick={()=>{setTrackPlaying(beat)}} editable={false} />;
+          }): <Spin size='large' tip='Loading beats...'/>}
         </Content>
         <PlayBackBar 
           trackTitle={trackPlaying ? trackPlaying.title: ''} 

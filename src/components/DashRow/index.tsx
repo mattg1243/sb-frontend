@@ -1,5 +1,6 @@
 import { Image, Button, Col, Row } from 'antd';
-import { PlusOutlined } from '@ant-design/icons';
+import { PlusOutlined, EditOutlined } from '@ant-design/icons';
+import BeatEditModal from '../BeatEditModal';
 import { Beat } from '../../types/beat';
 import { cdnHostname } from '../../config/routing';
 import artworkLoading from '../../assets/artwork_loading.jpg';
@@ -7,15 +8,27 @@ import artworkLoading from '../../assets/artwork_loading.jpg';
 interface IBeatRowProps {
   beat: Beat,
   onClick: Function,
+  editable: boolean,
 }
 
 export default function DashRow(props: IBeatRowProps): JSX.Element {
-  const { beat, onClick } = props;
+  const { beat, onClick, editable } = props;
   
+  const handleDownload = async () => {
+    console.log('beat downloaded');
+  }
+
+  const handleEdit = () => {
+    console.log('edit handled');
+  }
+
   return (
         <Row style={{ width: '80%', maxWidth: '1400px', textAlign: 'center', alignItems: 'center', margin: '15px' }}>
-          <Button type='ghost' size='large' style={{ height: '100px', width: '100px', alignContent: 'center' }}>
-            <PlusOutlined style={{ fontSize: '2rem' }} />
+          <Button type='ghost' size='large' style={{ height: '100px', width: '100px', alignContent: 'center' }} onClick={() => { editable ? handleEdit() : handleDownload() }} >
+            { editable ? 
+              <BeatEditModal beat={beat} />:
+              <PlusOutlined style={{ fontSize: '2rem' }} /> 
+            }
           </Button>
           <Col span={12} >
             <Row style={{ alignItems: 'center' }}>
