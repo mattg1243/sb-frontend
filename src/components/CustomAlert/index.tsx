@@ -8,6 +8,6 @@ export default function CustomAlert(props: AlertObj) {
   if (status === 'none') {
     return <></>
   } else {
-    return <Alert message={message} type={status} showIcon style={{ width: '50%', margin: 'auto' }} />
+    return <Alert message={message} type={status} showIcon style={{ maxWidth: '50%', padding: '1rem', margin: 'auto' }} />
   }
 }
