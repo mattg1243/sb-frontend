@@ -17,11 +17,10 @@ export default function Login(): JSX.Element {
 
   const { login, isLoading } = useLogin();
 
-  const loginUserAndGoToDash = async (email: string, password: string) => {
+  const loginUser = async (email: string, password: string) => {
     const loginResponse = await login(email, password);
     if (loginResponse.status === 'success' && loginResponse.user) {
       localStorage.setItem('sb-user', JSON.stringify(loginResponse.user));
-      navigate('/dash');
     } else {
       setAlert(loginResponse);
     }
@@ -29,7 +28,8 @@ export default function Login(): JSX.Element {
 
   const handleKeypress = async (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
-     await loginUserAndGoToDash(email, password);
+     await loginUser(email, password);
+     navigate('/dash');
     }
   };
 
@@ -95,7 +95,8 @@ export default function Login(): JSX.Element {
                 height: '80px',
               }}
               onClick={async () => {
-                await loginUserAndGoToDash(email, password);
+                await loginUser(email, password);
+                navigate('/dash');
               }}
             >
               Login
