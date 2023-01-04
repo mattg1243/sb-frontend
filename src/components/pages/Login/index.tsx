@@ -3,26 +3,36 @@ import React, { useState } from 'react';
 import { Content } from 'antd/lib/layout/layout';
 import logo from '../../../assets/logo_four_squares.png';
 import { useNavigate } from 'react-router-dom';
-import useLogin from '../../../hooks/useLogin';
 import { AlertObj } from '../../../types';
 import CustomAlert from '../../CustomAlert';
+import { loginUserReq } from '../../../lib/axios';
 // this alert type should be shared
 
 export default function Login(): JSX.Element {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [alert, setAlert] = useState<AlertObj>({status: 'none', message: ''});
 
   const navigate = useNavigate();
 
-  const { login, isLoading } = useLogin();
-
   const loginUser = async (email: string, password: string) => {
-    const loginResponse = await login(email, password);
-    if (loginResponse.status === 'success' && loginResponse.user) {
-      localStorage.setItem('sb-user', JSON.stringify(loginResponse.user));
-    } else {
-      setAlert(loginResponse);
+    setIsLoading(true);
+    try {
+      const loginResponse = await loginUserReq({email, password});
+      console.log(loginResponse);
+      if (loginResponse.status === 200 && loginResponse.data.user) {
+        localStorage.setItem('sb-user', JSON.stringify(loginResponse.data.user));
+      } else {
+        setAlert({ status: 'success', message: 'User successfully logged in' });
+      }
+    } 
+    catch (err) {
+      console.error(err);
+      setAlert({ status: 'error', message: 'An error occured while logging again. Please try again.'});
+    }
+    finally {
+      setIsLoading(false);
     }
   }
 

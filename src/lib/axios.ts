@@ -1,18 +1,13 @@
 import axios, { AxiosResponse } from "axios";
 import gatewayUrl from "../config/routing";
 
-export const sendUploadBeatReq = async (data: FormData): Promise<AxiosResponse> => {
-  const response = await axios.post(`${gatewayUrl}/beats/upload`, data, { headers: { 'Content-Type': 'multipart/form-data' }, withCredentials: true })
-  console.log(response);
-  return response;
-}
-
+// user
 interface ILoginRequest {
   email: string,
   password: string
 }
 
-export const sendLoginUserReq = async (credentials: ILoginRequest): Promise<AxiosResponse> => {
+export const loginUserReq = async (credentials: ILoginRequest): Promise<AxiosResponse> => {
   return await axios.post(`${gatewayUrl}/auth/login`, credentials, 
       { 
         headers: { 'Content-Type': 'application/json', },
@@ -21,8 +16,23 @@ export const sendLoginUserReq = async (credentials: ILoginRequest): Promise<Axio
     )
 }
 
-export const getUser = async (userId: string) => {
+export const logoutUserReq = async () => {
+  return await axios.get(`${gatewayUrl}/auth/logout`);
+}
+
+export const getUserReq = async (userId: string) => {
   return await axios.get(`${gatewayUrl}/user/?id=${userId}`, { withCredentials: true });
+}
+
+// beats
+export const uploadBeatReq = async (data: FormData): Promise<AxiosResponse> => {
+  return await axios.post(`${gatewayUrl}/beats/upload`, 
+    data, { 
+      headers: { 
+        'Content-Type': 'multipart/form-data' 
+      },
+      withCredentials: true 
+    });
 }
 
 export const getAllBeatsReq = async () => {
@@ -31,4 +41,8 @@ export const getAllBeatsReq = async () => {
 
 export const getAllBeatsByUserReq = async (userId: string) => {
   return await axios.get(`${gatewayUrl}/beats/beats?user=${userId}`)
+}
+
+export const deleteBeatReq = async (beatId: string) => {
+  return await axios.delete(`${gatewayUrl}/beats/${beatId}`, { withCredentials: true });
 }
