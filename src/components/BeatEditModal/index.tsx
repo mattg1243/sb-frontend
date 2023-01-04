@@ -1,9 +1,8 @@
-import { Modal, Button, Input, Form, Select } from 'antd';
+import { Modal, Button, Input, Form, Select, Spin } from 'antd';
 import { useState } from 'react';
 import { Beat } from '../../types/beat';
 import { genreOptions } from '../../utils/genreTags';
-import { SelectProps } from '@chakra-ui/react';
-import { deleteBeatReq } from '../../lib/axios';
+import { deleteBeatReq, updateBeatReq } from '../../lib/axios';
 
 interface IEditBeatModalProps {
   beat: Beat
@@ -16,10 +15,14 @@ export default function BeatEditModal(props: IEditBeatModalProps) {
   console.log(currentGenreTags)
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [deleteIsOpen, setDeleteIsOpen] = useState<boolean>(false);
   const [title, setTitle] = useState<string>(beat.title);
+  const [description, setDescription] = useState<string>(beat.description as string);
+  const [tempo, setTempo] = useState<number>(beat.tempo);
+  const [key, setKey] = useState<string>(beat.key);
   const [artwork, setArtwork] = useState<File | Blob>();    // NOTE: if this is empty, the artowrk will be uneffected
-  const [genreTags, setGenreTags] = useState(currentGenreTags);
+  const [genreTags, setGenreTags] = useState(beat.genreTags);
 
   const handleCancel = () => {
     setIsOpen(false);
@@ -31,6 +34,31 @@ export default function BeatEditModal(props: IEditBeatModalProps) {
       console.log(response.data);
     } catch (err) {
       console.error(err);
+    }
+  }
+
+  const updateBeat = async () => {
+    setIsLoading(true);
+    const updatedBeat = {
+      ...beat,
+      title,
+      description,
+      genreTags,
+      tempo,
+      key,
+      // artwork,
+    }
+    try {
+      const response = await updateBeatReq(updatedBeat);
+      console.log(response.data);
+    } 
+    catch (err) {
+      console.error(err);
+    }
+    finally {
+      setIsLoading(false);
+      window.location.reload();
+      setIsOpen(false);
     }
   }
 
@@ -46,8 +74,8 @@ export default function BeatEditModal(props: IEditBeatModalProps) {
       centered={true}
       onCancel={handleCancel} 
       footer={[ 
-        <Button key='Delete Beat' onClick={() => setDeleteIsOpen(true)} color='red' >Delete Beat</Button>,
-        <Button key='save' type='primary' >Save Changes</Button>
+        <Button key='delete' onClick={() => { setDeleteIsOpen(true); }} color='red' >Delete Beat</Button>,
+        <Button key='update' type='primary' onClick={() => { updateBeat(); }} >Save Changes</Button>
       ]}
     >
       <Form
@@ -55,28 +83,35 @@ export default function BeatEditModal(props: IEditBeatModalProps) {
         wrapperCol={{ span: 14 }}
         layout="horizontal"
       >
-        <Form.Item label='Title' name='title'>
-          <Input defaultValue={title} />
-        </Form.Item>
-        <Form.Item label='Description' name='description'>
-          <Input defaultValue={beat.description as string} />
-        </Form.Item>
-        <Form.Item label='Genres' name='genres'>
-        <Select 
-          placeholder="Genre Tags"
-          options={genreOptions}
-          defaultValue={genreTags}
-          mode='multiple'
-          maxTagCount='responsive'
-          onChange={handleGenreTagsChange}
-        />
-        </Form.Item>
-        <Form.Item label='Tempo' name='tempo'>
-          <Input defaultValue={beat.tempo} addonAfter='BPM'/>
-        </Form.Item>
-        <Form.Item label='Key' name='key'>
-          <Input defaultValue={beat.key} />
-        </Form.Item>
+        {isLoading ? 
+          <div style={{ height: '275px', display: 'flex' }}>
+            <Spin style={{ margin: 'auto' }} />
+          </div>
+           : 
+          <>
+            <Form.Item label='Title' name='title'>
+              <Input defaultValue={title} onChange={(e) => { setTitle(e.target.value); }} />
+            </Form.Item>
+            <Form.Item label='Description' name='description'>
+              <Input defaultValue={beat.description as string} autoComplete={undefined} onChange={(e) => { setDescription(e.target.value); }} maxLength={140} showCount={true} />
+            </Form.Item>
+            <Form.Item label='Genres' name='genres'>
+            <Select 
+              placeholder="Genre Tags"
+              options={genreOptions}
+              defaultValue={genreTags}
+              mode='multiple'
+              maxTagCount='responsive'
+              onChange={handleGenreTagsChange}
+            />
+            </Form.Item>
+            <Form.Item label='Tempo' name='tempo'>
+              <Input defaultValue={beat.tempo} onChange={(e) => { setTempo(e.target.valueAsNumber); }} max={200} min={60} type='number' addonAfter='BPM'/>
+            </Form.Item>
+            <Form.Item label='Key' name='key'>
+              <Input defaultValue={beat.key} onChange={(e) => { setKey(e.target.value); }}/>
+            </Form.Item>
+          </>}
       </Form>
     </Modal>
     <Modal centered={true} open={deleteIsOpen} onOk={() => { deleteBeat(beat._id) }} onCancel={() => { setDeleteIsOpen(false) }}>

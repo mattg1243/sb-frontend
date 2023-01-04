@@ -5,6 +5,7 @@ import axios from "axios";
 import { AppleOutlined, InstagramOutlined, SoundOutlined, TwitterOutlined, YoutubeOutlined } from "@ant-design/icons";
 import { ILinkedSocials } from '../../types/user';
 import gatewayUrl from "../../config/routing";
+import { updateUserReq } from '../../lib/axios';
 
 interface IUserEditModal {
   user: User,
@@ -27,22 +28,22 @@ export default function UserEditModal(props: IUserEditModal) {
   const [linkedSocials, setLinkedSocials] = useState<ILinkedSocials>();
   // TODO: put this into the axios lib file
   const updateUserInfo = async () => {
-    const data = {
+    const data: User = {
       ...user,
       artistName,
       bio,
       linkedSocials: {
         twitter,
         youtube,
-        appleMusic
+        appleMusic,
+        instagram,
+        spotify, 
+        soundcloud
       },
       
     }
     try {
-      const response = await axios.post(`${gatewayUrl}/user/update`, data, { 
-        headers: { 'Content-Type': 'application/json', },
-        withCredentials: true,
-      });
+      const response = await updateUserReq(data);
       console.log('updated user info:\n', response.data);
       setUserInfo(data);
     } catch (err) {
