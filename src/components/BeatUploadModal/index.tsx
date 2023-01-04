@@ -1,11 +1,14 @@
-import { Modal, Form, Button, Input, Select, Radio, RadioChangeEvent } from 'antd';
+import { Modal, Form, Button, Input, Select, Radio, RadioChangeEvent, Divider } from 'antd';
+import { CheckCircleOutlined, PictureOutlined, SoundOutlined } from '@ant-design/icons';
+import { IoIosMusicalNotes } from 'react-icons/io';
 import { useState } from 'react';
 import { uploadBeatReq, getAllBeatsReq } from '../../lib/axios';
 import { genreOptions} from '../../utils/genreTags';
+import UploadButton from '../UploadButton';
 
 export default function UploadBeatModal() {
 
-  const [showModal, setShowModal] = useState<boolean>(false);
+  const [showModal, setShowModal] = useState<boolean>(true);
   const [title, setTitle] = useState<string>('');
   const [genreTags, setGenreTags] = useState<Array<string>>(['']);
   const [tempo, setTempo] = useState<string>('');
@@ -58,20 +61,11 @@ export default function UploadBeatModal() {
     }
   }
 
-  const getAllBeats = async () => {
-    try {
-      const response = await getAllBeatsReq();
-      console.log("beats:\n", response);
-    } catch (err) {
-      console.log(err);
-    }
-  }
-
   return (
     <>
       <Button type='ghost' onClick={() => { setShowModal(true) }} style={{ color: 'white' }} >Upload</Button>
-      <Modal title="upload beat modal" open={showModal} closable={true} onCancel={handleCancel} footer={null}>
-          <Form>
+      <Modal title="Upload Your Beat" open={showModal} onCancel={handleCancel} footer={null}>
+          <Form style={{ margin: '2rem 0' }}>
             <Form.Item>
               <Input placeholder='Title' onChange={(e) => { setTitle(e.target.value)}}></Input>
             </Form.Item>
@@ -89,33 +83,28 @@ export default function UploadBeatModal() {
             </Form.Item>
             <Form.Item>
               <Select
+                placeholder='Key'
                 options={possibleKeyOptions}
                 onChange={(e) => setKey(e.target.value)}
               />
-              <Radio.Group onChange={(e) => { handleSharpFlatChange(e) }}>
+              <Radio.Group onChange={(e) => { handleSharpFlatChange(e) }} style={{ marginTop: '.5rem' }}>
                 <Radio value='' checked={flatOrSharp === ''}>None</Radio>
                 <Radio value='b' checked={flatOrSharp === '♭'}>♭</Radio>
                 <Radio value='#' checked={flatOrSharp === '#'}>#</Radio>
               </Radio.Group>
             </Form.Item>
             <Form.Item>
-              <label>Artwork</label>
-              <div>
-                <input type='file' accept='image/*' hidden={true} onChange={(e) => { if(e.target.files) {setArtwork(e.target.files[0])} }}/>
-              </div>
+              <UploadButton label='Artwork Upload' allowedFileType='image/*' uploadStateSetter={setArtwork} sideIcon={<PictureOutlined />} />
+              {artwork ? <CheckCircleOutlined style={{ marginLeft: '1rem', fontSize: '1rem',  }} /> : null}
             </Form.Item>
             <Form.Item>
-              <label>Beat</label>
-              <div>
-                <input type='file' accept='mpeg/wav' hidden={true} onChange={(e) => { if(e.target.files) {setAudio(e.target.files[0])} }}/>
-              </div>
+              <UploadButton label='Beat Upload' allowedFileType='mpeg/wav' uploadStateSetter={setAudio} sideIcon={<SoundOutlined />} />
+              {audio ? <CheckCircleOutlined style={{ marginLeft: '1rem', fontSize: '1rem',  }} /> : null}
             </Form.Item>
           </Form>
-          
-          {/* TODO: make a similar checkAudioFile function */}
-          
-          <Button type='primary' onClick={() => { handleSubmit(); }} >Upload Beat</Button>
-          <Button onClick={() => { getAllBeats(); }} >Get All Beats</Button>
+          <Divider />
+          <Button onClick={() => { setShowModal(false); }} >Cancel</Button>
+          <Button type='primary' style={{ marginLeft: '1rem', backgroundColor: 'var(--primary)', color: 'black' }} onClick={() => { handleSubmit(); }} >Upload Beat</Button>
       </Modal>
     </>
 )
