@@ -1,6 +1,6 @@
 import { Modal, Form, Button, Input, Select, Radio, RadioChangeEvent } from 'antd';
 import { useState } from 'react';
-import { sendUploadBeatReq, getAllBeatsReq } from '../../lib/axios';
+import { uploadBeatReq, getAllBeatsReq } from '../../lib/axios';
 import { genreOptions} from '../../utils/genreTags';
 
 export default function UploadBeatModal() {
@@ -31,7 +31,7 @@ export default function UploadBeatModal() {
     formData.append('key', key);
 
     try {
-      const response = await sendUploadBeatReq(formData);
+      const response = await uploadBeatReq(formData);
       console.log(response);
     } catch (err) {
       console.error(err);
