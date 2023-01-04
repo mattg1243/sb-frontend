@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { AlertObj } from '../types';
-import { sendLoginUserReq } from '../lib/axios';
+import { loginUserReq } from '../lib/axios';
 import { User } from '../types/user';
 
 interface ILoginReturn extends AlertObj {
@@ -19,13 +19,17 @@ export default function useLogin(): IUseLoginReturn {
     try {
       setIsLoading(true);
       // send the post request to the gateway  
-      const response = await sendLoginUserReq({ email, password });
-
+      const response = await loginUserReq({ email, password });
       if (response.status === 200) {
         setIsLoading(false);
         setLoginResponse({ status: 'success', message: 'You are now logged in!', user: response.data.user });
+        Promise.resolve();
+      } else {
+        setLoginResponse({ status: 'error', message: 'login response has a non-200 status code', user: null});
+        Promise.reject()
       }
-    } catch (err: any) {
+    } 
+    catch (err: any) {
       console.error(err.message);
       let message: string;
       if (err.response.status === 401) {
@@ -35,9 +39,11 @@ export default function useLogin(): IUseLoginReturn {
       }
       setIsLoading(false);
       setLoginResponse({ status: 'error', message: message, user: null });
+      Promise.reject();
     }
-    return Promise.resolve(loginResponse);
+    finally {
+      return loginResponse;
+    }
   }
-
   return { login, isLoading };
 }

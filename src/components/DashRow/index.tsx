@@ -1,5 +1,5 @@
 import { Image, Button, Col, Row } from 'antd';
-import { PlusOutlined, EditOutlined } from '@ant-design/icons';
+import { PlusOutlined } from '@ant-design/icons';
 import BeatEditModal from '../BeatEditModal';
 import { Beat } from '../../types/beat';
 import { cdnHostname } from '../../config/routing';
@@ -13,7 +13,7 @@ interface IBeatRowProps {
 
 export default function DashRow(props: IBeatRowProps): JSX.Element {
   const { beat, onClick, editable } = props;
-  
+
   const handleDownload = async () => {
     console.log('beat downloaded');
   }
