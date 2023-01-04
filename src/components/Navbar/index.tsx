@@ -1,17 +1,62 @@
+import { useState } from 'react';
 import { Header } from "antd/es/layout/layout";
-import { Button, Menu, Image, Avatar } from "antd";
+import { Button, Menu, Image, Avatar, Dropdown, MenuProps } from "antd";
 import { useNavigate } from "react-router-dom";
 import UploadBeatModal from "../BeatUploadModal";
 import logo from '../../assets/logo_four_squares.png';
 import { UserOutlined } from "@ant-design/icons";
 import { getUserIdFromLocalStorage } from '../../utils/localStorageParser';
+import { logoutUserReq } from '../../lib/axios';
 
 export default function Navbar() {
 
   const currentUserId = getUserIdFromLocalStorage();
   
+  const [userMenuOpen, setUserMenuOpen] = useState<boolean>(false);
+
+  const logoutUser = async () => {
+    try {
+      const logoutUserRes = await logoutUserReq();
+      localStorage.removeItem('sb-user');
+      console.log(logoutUserRes);
+      navigate('/login');
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  const userMenuItems: MenuProps['items'] = [
+    {
+      key: 'profile',
+      label: ( <a href={`user?id=${currentUserId}`}>Profile</a> ),
+    },
+    {
+      key: 'logout',
+      label: (<>yo</>)
+    }
+  ]
+
+  const items: MenuProps['items'] = [
+    {
+      key: 'profile',
+      label: (
+        <Button type='ghost' href={`/user/?id=${currentUserId}`}>
+          Profile
+        </Button>
+      ),
+    },
+    {
+      key: 'logout',
+      label: (
+        <Button type='ghost' style={{ color: 'white' }} onClick={() => { logoutUser(); }}>
+          Logout
+        </Button>
+      ),
+    },
+  ];
+
   const navigate = useNavigate();
-  
+
   return (
       <Header style={{ width: '100%', margin: 0, top: 100, background: 'black' }}>
         <Menu
@@ -36,7 +81,9 @@ export default function Navbar() {
             <Button type='ghost' onClick={() => { navigate('/about') }} style={{ color: 'white' }}>About</Button>
           </Menu.Item>
           <Menu.Item key="profile" style={{ marginLeft: 'auto' }}>
-            <Avatar size={48} icon={<UserOutlined style={{ fontSize: '1.5rem' }} />} style={{ border: 'solid 3px', borderColor: 'var(--primary)' }} onClick={() => { navigate(`/user?id=${currentUserId}`)}}/>
+            <Dropdown menu={{ items }} placement='bottom' overlayStyle={{ color: 'blue', fontSize: '2rem' }} arrow={true} >
+              <Avatar size={48} icon={<UserOutlined style={{ fontSize: '1.5rem' }} />} style={{ border: 'solid 3px', borderColor: 'var(--primary)' }} onClick={() => { navigate(`/user/?id=${currentUserId}`); }}/>
+            </Dropdown>
           </Menu.Item>
         </Menu>
       </Header>
