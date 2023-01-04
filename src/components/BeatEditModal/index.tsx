@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { Beat } from '../../types/beat';
 import { genreOptions } from '../../utils/genreTags';
 import { SelectProps } from '@chakra-ui/react';
+import { deleteBeatReq } from '../../lib/axios';
 
 interface IEditBeatModalProps {
   beat: Beat
@@ -15,12 +16,22 @@ export default function BeatEditModal(props: IEditBeatModalProps) {
   console.log(currentGenreTags)
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [deleteIsOpen, setDeleteIsOpen] = useState<boolean>(false);
   const [title, setTitle] = useState<string>(beat.title);
   const [artwork, setArtwork] = useState<File | Blob>();    // NOTE: if this is empty, the artowrk will be uneffected
   const [genreTags, setGenreTags] = useState(currentGenreTags);
 
   const handleCancel = () => {
     setIsOpen(false);
+  }
+
+  const deleteBeat = async (beatId: string) => {
+    try {
+      const response = await deleteBeatReq(beatId);
+      console.log(response.data);
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   const handleGenreTagsChange = (val: any) => {
@@ -32,9 +43,10 @@ export default function BeatEditModal(props: IEditBeatModalProps) {
     <Button type='ghost' onClick={() => {setIsOpen(true)}}>Edit</Button>
     <Modal 
       open={isOpen}
+      centered={true}
       onCancel={handleCancel} 
       footer={[ 
-        <Button key='cancel' onClick={handleCancel} >Cancel</Button>,
+        <Button key='Delete Beat' onClick={() => setDeleteIsOpen(true)} color='red' >Delete Beat</Button>,
         <Button key='save' type='primary' >Save Changes</Button>
       ]}
     >
@@ -66,6 +78,9 @@ export default function BeatEditModal(props: IEditBeatModalProps) {
           <Input defaultValue={beat.key} />
         </Form.Item>
       </Form>
+    </Modal>
+    <Modal centered={true} open={deleteIsOpen} onOk={() => { deleteBeat(beat._id) }} onCancel={() => { setDeleteIsOpen(false) }}>
+      Are you sure you want to delete this beat?
     </Modal>
     </>
   )
