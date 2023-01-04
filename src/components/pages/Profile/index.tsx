@@ -7,20 +7,13 @@ import DashRow from "../../DashRow";
 import useGetBeats from '../../../hooks/useGetBeats';
 import { Beat } from "../../../types";
 import { cdnHostname } from "../../../config/routing";
-import { getUser } from '../../../lib/axios';
+import { getUserReq } from '../../../lib/axios';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { getUserIdFromLocalStorage } from '../../../utils/localStorageParser';
 import LoadingPage from '../Loading';
 import Navbar from '../../Navbar';
 import { User } from '../../../types/user';
 import UserEditModal from '../../UserEditModal';
-
-interface IUserInfoState {
-  artistName: string,
-  email: string,
-  id: string,
-  bio?: string
-}
 
 export default function Profile() {
 
@@ -34,10 +27,9 @@ export default function Profile() {
 
 
   const { beats } = useGetBeats(userId);
-  const navigate = useNavigate();
 
   useEffect(() => {
-    getUser(userId)
+    getUserReq(userId)
       .then((res) => { setUserInfo(res.data); })
       .then(() => { setIsLoading(false); })
       .catch((err) => { console.error(err) });
@@ -55,7 +47,7 @@ export default function Profile() {
               {isCurrentUser ? 
               <>
                 <Avatar icon={ <UserOutlined /> } size={256}  />
-                <UserEditModal user={userInfo} />
+                <UserEditModal user={userInfo} setUserInfo={setUserInfo}/>
               </>
               :
               <>

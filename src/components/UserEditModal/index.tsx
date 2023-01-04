@@ -4,13 +4,15 @@ import { Button, Modal, Form, Input, Space, Select } from "antd";
 import axios from "axios";
 import { AppleOutlined, InstagramOutlined, SoundOutlined, TwitterOutlined, YoutubeOutlined } from "@ant-design/icons";
 import { ILinkedSocials } from '../../types/user';
+import gatewayUrl from "../../config/routing";
 
 interface IUserEditModal {
   user: User,
+  setUserInfo: Function
 }
 
 export default function UserEditModal(props: IUserEditModal) {
-  const { user } = props;
+  const { user, setUserInfo } = props;
   
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [artistName, setArtistName] = useState<string>(user.artistName);
@@ -26,20 +28,26 @@ export default function UserEditModal(props: IUserEditModal) {
   // TODO: put this into the axios lib file
   const updateUserInfo = async () => {
     const data = {
+      ...user,
       artistName,
       bio,
       linkedSocials: {
         twitter,
         youtube,
         appleMusic
-      }
+      },
+      
     }
-
-    const response = await axios.post('http://localhost:8000/user/update', data, { 
-      headers: { 'Content-Type': 'application/json', },
-      withCredentials: true,
-    })
-    console.log(response)
+    try {
+      const response = await axios.post(`${gatewayUrl}/user/update`, data, { 
+        headers: { 'Content-Type': 'application/json', },
+        withCredentials: true,
+      });
+      console.log('updated user info:\n', response.data);
+      setUserInfo(data);
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   const handleCancel = () => {
