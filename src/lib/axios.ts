@@ -1,5 +1,6 @@
 import axios, { AxiosResponse } from "axios";
 import gatewayUrl from "../config/routing";
+import { Beat, User } from '../types';
 
 // user
 interface ILoginRequest {
@@ -24,6 +25,15 @@ export const getUserReq = async (userId: string) => {
   return await axios.get(`${gatewayUrl}/user/?id=${userId}`, { withCredentials: true });
 }
 
+export const updateUserReq = async (user: User) => {
+  return await axios.post(`${gatewayUrl}/user/update`, 
+    user, { 
+      headers: { 'Content-Type': 'application/json', },
+      withCredentials: true,
+    }
+  );
+}
+
 // beats
 export const uploadBeatReq = async (data: FormData): Promise<AxiosResponse> => {
   return await axios.post(`${gatewayUrl}/beats/upload`, 
@@ -32,7 +42,8 @@ export const uploadBeatReq = async (data: FormData): Promise<AxiosResponse> => {
         'Content-Type': 'multipart/form-data' 
       },
       withCredentials: true 
-    });
+    }
+  );
 }
 
 export const getAllBeatsReq = async () => {
@@ -45,4 +56,14 @@ export const getAllBeatsByUserReq = async (userId: string) => {
 
 export const deleteBeatReq = async (beatId: string) => {
   return await axios.delete(`${gatewayUrl}/beats/${beatId}`, { withCredentials: true });
+}
+
+export const updateBeatReq = async (beat: Beat) => {
+  return await axios.post(`${gatewayUrl}/beats/update`, 
+    beat, 
+    { 
+      headers: { 'Content-Type': 'application/json', }, 
+      withCredentials: true 
+    }
+  );
 }
