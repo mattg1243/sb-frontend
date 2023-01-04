@@ -11,8 +11,6 @@ import { logoutUserReq } from '../../lib/axios';
 export default function Navbar() {
 
   const currentUserId = getUserIdFromLocalStorage();
-  
-  const [userMenuOpen, setUserMenuOpen] = useState<boolean>(false);
 
   const logoutUser = async () => {
     try {
@@ -26,17 +24,6 @@ export default function Navbar() {
   }
 
   const userMenuItems: MenuProps['items'] = [
-    {
-      key: 'profile',
-      label: ( <a href={`user?id=${currentUserId}`}>Profile</a> ),
-    },
-    {
-      key: 'logout',
-      label: (<>yo</>)
-    }
-  ]
-
-  const items: MenuProps['items'] = [
     {
       key: 'profile',
       label: (
@@ -81,7 +68,7 @@ export default function Navbar() {
             <Button type='ghost' onClick={() => { navigate('/about') }} style={{ color: 'white' }}>About</Button>
           </Menu.Item>
           <Menu.Item key="profile" style={{ marginLeft: 'auto' }}>
-            <Dropdown menu={{ items }} placement='bottom' overlayStyle={{ color: 'blue', fontSize: '2rem' }} arrow={true} >
+            <Dropdown menu={{ items: userMenuItems }} placement='bottom' overlayStyle={{ color: 'blue', fontSize: '2rem' }} arrow={true} >
               <Avatar size={48} icon={<UserOutlined style={{ fontSize: '1.5rem' }} />} style={{ border: 'solid 3px', borderColor: 'var(--primary)' }} onClick={() => { navigate(`/user/?id=${currentUserId}`); }}/>
             </Dropdown>
           </Menu.Item>
