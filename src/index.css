@@ -29,6 +29,14 @@ body {
   background-color: black !important;
 }
 
+.ant-dropdown-menu {
+  background-color: black !important;
+}
+
+.ant-dropdown-menu-item {
+  color: white !important;
+}
+
 .button-lg-round {
   width: '200px';
   height: '65px';
