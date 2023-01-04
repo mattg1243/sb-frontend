@@ -8,7 +8,7 @@ import UploadButton from '../UploadButton';
 
 export default function UploadBeatModal() {
 
-  const [showModal, setShowModal] = useState<boolean>(true);
+  const [showModal, setShowModal] = useState<boolean>(false);
   const [title, setTitle] = useState<string>('');
   const [genreTags, setGenreTags] = useState<Array<string>>(['']);
   const [tempo, setTempo] = useState<string>('');
