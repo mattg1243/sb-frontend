@@ -15,7 +15,7 @@ interface IUserEditModal {
 export default function UserEditModal(props: IUserEditModal) {
   const { user, setUserInfo } = props;
   
-  const [isOpen, setIsOpen] = useState<boolean>(true);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [alert, setAlert] = useState<AlertObj>();
   const [artistName, setArtistName] = useState<string>(user.artistName);
