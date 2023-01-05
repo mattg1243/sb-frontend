@@ -25,7 +25,11 @@ export const getUserReq = async (userId: string) => {
   return await axios.get(`${gatewayUrl}/user/?id=${userId}`, { withCredentials: true });
 }
 
-export const updateUserReq = async (user: User) => {
+interface UpdateUserArg extends Omit<User, 'avatar'> {
+  avatar: File | string
+}
+
+export const updateUserReq = async (user: UpdateUserArg) => {
   return await axios.post(`${gatewayUrl}/user/update`, 
     user, { 
       headers: { 'Content-Type': 'application/json', },
@@ -34,6 +38,14 @@ export const updateUserReq = async (user: User) => {
   );
 }
 
+export const updateAvatarReq = async (newAvatar: FormData) => {
+  return await axios.post(`${gatewayUrl}/user/avatar`, 
+    newAvatar, { 
+      headers: { 'Content-Type': 'multipart/form-data', },
+      withCredentials: true,
+    }
+  );
+}
 // beats
 export const uploadBeatReq = async (data: FormData): Promise<AxiosResponse> => {
   return await axios.post(`${gatewayUrl}/beats/upload`, 
