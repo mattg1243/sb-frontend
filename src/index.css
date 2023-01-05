@@ -4,6 +4,13 @@
   --dark-text: #191919;
 }
 
+*{
+  -ms-overflow-style: none;
+}
+::-webkit-scrollbar {
+  display: none;
+}
+
 html {
   margin: 0 !important;
 }
@@ -11,6 +18,7 @@ html {
 body {
   margin: 0;
 }
+
 
 .App {
   background-color: var(--primary);
