@@ -6,6 +6,7 @@ import { AlertObj } from '../../../types';
 import logo from '../../../assets/logo_four_squares.png';
 import { useNavigate } from 'react-router-dom';
 import CustomAlert from '../../CustomAlert';
+import gatewayUrl from '../../../config/routing';
 
 export default function Register(): JSX.Element {
   const [email, setEmail] = useState<string>('');
@@ -21,7 +22,7 @@ export default function Register(): JSX.Element {
       const data = { email, artistName, password };
       console.log(data);
       try {
-        const response = await axios.post('http://localhost:8000/user/register', data);
+        const response = await axios.post(`${gatewayUrl}/user/register`, data);
         console.log(response);
         setAlert({ status: 'success', message: 'Account created succesfully, you may now login' });
         localStorage.setItem('sb-user', JSON.stringify(response.data.user));
