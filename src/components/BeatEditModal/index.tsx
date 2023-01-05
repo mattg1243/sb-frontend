@@ -78,11 +78,12 @@ export default function BeatEditModal(props: IEditBeatModalProps) {
         <Button key='update' type='primary' onClick={() => { updateBeat(); }} >Save Changes</Button>
       ]}
     >
-      <Form
+      <Spin spinning={isLoading} >
+        <Form
         labelCol={{ span: 4 }}
         wrapperCol={{ span: 14 }}
         layout="horizontal"
-      >
+        >
         {isLoading ? 
           <div style={{ height: '275px', display: 'flex' }}>
             <Spin style={{ margin: 'auto' }} />
@@ -112,7 +113,8 @@ export default function BeatEditModal(props: IEditBeatModalProps) {
               <Input defaultValue={beat.key} onChange={(e) => { setKey(e.target.value); }}/>
             </Form.Item>
           </>}
-      </Form>
+        </Form>
+      </Spin>
     </Modal>
     <Modal centered={true} open={deleteIsOpen} onOk={() => { deleteBeat(beat._id) }} onCancel={() => { setDeleteIsOpen(false) }}>
       Are you sure you want to delete this beat?

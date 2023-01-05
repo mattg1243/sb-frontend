@@ -1,11 +1,11 @@
 import { useState } from "react";
 import type { User } from "../../types";
-import { Button, Modal, Form, Input, Space, Select } from "antd";
-import axios from "axios";
+import { Button, Modal, Form, Input, Space, Spin } from "antd";
 import { AppleOutlined, InstagramOutlined, SoundOutlined, TwitterOutlined, YoutubeOutlined } from "@ant-design/icons";
 import { ILinkedSocials } from '../../types/user';
-import gatewayUrl from "../../config/routing";
 import { updateUserReq } from '../../lib/axios';
+import { AlertObj } from '../../types/alerts';
+import CustomAlert from "../CustomAlert";
 
 interface IUserEditModal {
   user: User,
@@ -15,9 +15,12 @@ interface IUserEditModal {
 export default function UserEditModal(props: IUserEditModal) {
   const { user, setUserInfo } = props;
   
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [isOpen, setIsOpen] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [alert, setAlert] = useState<AlertObj>();
   const [artistName, setArtistName] = useState<string>(user.artistName);
   const [bio, setBio] = useState<string>(user.bio);
+  const [avatar, setAvatar] = useState<File | string>(user.avatar);
   // TODO: consolidate these into a single state variable
   const [twitter, setTwitter] = useState<string>(user.linkedSocials.twitter);
   const [youtube, setYouTube] = useState<string>(user.linkedSocials.youtube);
@@ -28,10 +31,12 @@ export default function UserEditModal(props: IUserEditModal) {
   const [linkedSocials, setLinkedSocials] = useState<ILinkedSocials>();
   // TODO: put this into the axios lib file
   const updateUserInfo = async () => {
-    const data: User = {
+    setIsLoading(true);
+    const data = {
       ...user,
       artistName,
       bio,
+      avatar,
       linkedSocials: {
         twitter,
         youtube,
@@ -40,14 +45,18 @@ export default function UserEditModal(props: IUserEditModal) {
         spotify, 
         soundcloud
       },
-      
     }
     try {
       const response = await updateUserReq(data);
       console.log('updated user info:\n', response.data);
       setUserInfo(data);
+      if (response.status === 200) { setIsOpen(false); };
     } catch (err) {
       console.error(err);
+      setAlert({ status: 'error', message: 'There was an error updating your user profile.' });
+    }
+    finally {
+      setIsLoading(false);
     }
   }
 
@@ -80,41 +89,45 @@ export default function UserEditModal(props: IUserEditModal) {
       onCancel={handleCancel} 
       footer={[ 
         <Button key='cancel' onClick={handleCancel} >Cancel</Button>,
-        <Button key='save' type='primary' onClick={updateUserInfo} >Save Changes</Button>
+        <Button key='save' type='primary' onClick={updateUserInfo} style={{ background: 'var(--primary)', color: 'black' }} >Save Changes</Button>
         ]}
       >
-      <Form
-        labelCol={{ span: 4 }}
-        wrapperCol={{ span: 14 }}
-        layout="horizontal"
-      >
-        <Form.Item label='Artist Name' name='artist-name'>
-          <Input defaultValue={user.artistName } onChange={(e) => { setArtistName(e.target.value)}} />
-        </Form.Item>
-        <Form.Item label='Bio' name='bio'>
-          <TextArea rows={4} spellCheck={false} defaultValue={user.bio} maxLength={140} showCount={true} onChange={(e) => {setBio(e.target.value)}} />
-        </Form.Item>
-        <Form.Item label='Socials' name='tempo' tooltip='You can display up to 3 social media links on your profile page.'>
-          <Space direction="vertical" size='large'>
-            {/* <Select 
-              placeholder="Genre Tags"
-              options={linkedSocialOptions}
-              defaultValue={linkedSocials}
-              mode='multiple'
-              maxTagCount={3}
-              onChange={handleLinkedSocialsChange}
-            />
-            {possibleLinkedSocials ? possibleLinkedSocials.map((social) => {
-                return (<Input defaultValue={'Default value'} addonAfter={socialInputIcons['Twitter']}/>)
-              }) :
-              null
-            } */}
-            <Input defaultValue={twitter} onChange={(e) => { setTwitter(e.target.value) }} addonAfter={socialInputIcons['Twitter']}/>
-            <Input defaultValue={youtube} onChange={(e) => { setYouTube(e.target.value) }} addonAfter={socialInputIcons['YouTube']}/>
-            <Input defaultValue={appleMusic} onChange={(e) => { setAppleMusic(e.target.value) }} addonAfter={socialInputIcons['Apple Music']}/>
-          </Space>
-        </Form.Item>
-      </Form>
+      <Spin spinning={isLoading} >
+        <Form
+          labelCol={{ span: 4 }}
+          wrapperCol={{ span: 14 }}
+          layout="horizontal"
+          style={{ alignContent: 'center' }}
+        >
+          <Form.Item label='Artist Name' name='artist-name'>
+            <Input defaultValue={user.artistName } onChange={(e) => { setArtistName(e.target.value)}} />
+          </Form.Item>
+          <Form.Item label='Bio' name='bio'>
+            <TextArea rows={4} spellCheck={false} defaultValue={user.bio} maxLength={140} showCount={true} onChange={(e) => {setBio(e.target.value)}} />
+          </Form.Item>
+          <Form.Item label='Socials' name='socials' tooltip='Paste a link to your social media profiles here.'>
+            <Space direction="vertical" size='large' style={{ width: '100%' }}>
+              {/* <Select 
+                placeholder="Linked Socials"
+                options={linkedSocialOptions}
+                defaultValue={linkedSocials}
+                mode='multiple'
+                maxTagCount={3}
+                onChange={handleLinkedSocialsChange}
+              />
+              {possibleLinkedSocials ? possibleLinkedSocials.map((social) => {
+                  return (<Input defaultValue={'Default value'} addonAfter={socialInputIcons['Twitter']}/>)
+                }) :
+                null
+              } */}
+              <Input defaultValue={twitter} onChange={(e) => { setTwitter(e.target.value) }} addonAfter={socialInputIcons['Twitter']}/>
+              <Input defaultValue={youtube} onChange={(e) => { setYouTube(e.target.value) }} addonAfter={socialInputIcons['YouTube']}/>
+              <Input defaultValue={appleMusic} onChange={(e) => { setAppleMusic(e.target.value) }} addonAfter={socialInputIcons['Apple Music']}/>
+            </Space>
+          </Form.Item>
+          {alert ? <CustomAlert status={alert.status} message={alert.message} /> : null}
+        </Form>
+      </Spin>
     </Modal>
     </>
   )
