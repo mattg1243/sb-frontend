@@ -1,19 +1,21 @@
 import { useState, useEffect } from 'react';
-import { Layout, Avatar, Row, Space, Col, Button } from "antd";
+import { Layout, Avatar, Row, Space, Col, Button, Modal } from "antd";
 import { Content } from "antd/es/layout/layout";
-import { UserOutlined, YoutubeFilled, AppleFilled, TwitterCircleFilled } from "@ant-design/icons";
+import { UserOutlined, YoutubeFilled, AppleFilled, TwitterCircleFilled, CheckCircleOutlined } from "@ant-design/icons";
 import PlayBackBar from "../../PlaybackBar";
 import DashRow from "../../DashRow";
 import useGetBeats from '../../../hooks/useGetBeats';
 import { Beat } from "../../../types";
 import { cdnHostname } from "../../../config/routing";
-import { getUserReq } from '../../../lib/axios';
+import { getUserReq, updateAvatarReq } from '../../../lib/axios';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { getUserIdFromLocalStorage } from '../../../utils/localStorageParser';
 import LoadingPage from '../Loading';
 import Navbar from '../../Navbar';
 import { User } from '../../../types/user';
 import UserEditModal from '../../UserEditModal';
+import { AlertObj } from '../../../types/alerts';
+import UploadButton from '../../UploadButton';
 
 export default function Profile() {
 
@@ -23,7 +25,10 @@ export default function Profile() {
   const [trackPlaying, setTrackPlaying] = useState<Beat>();
   const [userId, setUserId] = useState<string>(searchParams.get('id') || '');
   const [userInfo, setUserInfo] = useState<User | null>();
+  const [newAvatar, setNewAvatar] = useState<File>();
+  const [newAvatarModalOpen, setNewAvatarModalOpen] = useState<boolean>(false);
   const [isCurrentUser, setCurrentUser] = useState<boolean>(userId === getUserIdFromLocalStorage());
+  const [alert, sertAlert] = useState<AlertObj>();
 
 
   const { beats } = useGetBeats(userId);
@@ -34,6 +39,23 @@ export default function Profile() {
       .then(() => { setIsLoading(false); })
       .catch((err) => { console.error(err) });
   }, [userId])
+
+  const updateAvatar = async () => {
+    if (newAvatar) {
+      const newAvatarForm = new FormData();
+      newAvatarForm.append('newAvatar', newAvatar);
+      const updateAvatarRes = await updateAvatarReq(newAvatarForm);
+      console.log(updateAvatarRes);
+    } else {
+      console.log('No new avatar attached.')
+      sertAlert({ status: 'warning', message: 'No new profile picture attached'})
+    }
+  }
+
+  const handleCancelModal = () => {
+    setNewAvatarModalOpen(false);
+    setNewAvatar(undefined);
+  }
 
   return (
     isLoading || !userInfo ? 
@@ -46,7 +68,23 @@ export default function Profile() {
             <Space direction='vertical' style={{ textAlign: 'center' }}>
               {isCurrentUser ? 
               <>
-                <Avatar icon={ <UserOutlined /> } size={256}  />
+                <Avatar src={`${cdnHostname}/${userInfo.avatar}`} onClick={() => { setNewAvatarModalOpen(true) }} size={256} />
+                <Modal 
+                  key='Update Profile Picture' 
+                  open={newAvatarModalOpen}
+                  onCancel={handleCancelModal}
+                  style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '3rem' }} 
+                  footer={[
+                    <Button onClick={handleCancelModal}>Cancel</Button>,
+                    <Button onClick={async () => { await updateAvatar() }} style={{ background: 'var(--primary)' }}>Update</Button>
+                  ]}  
+                >
+                  <div style={{ padding: '3rem' }}>
+                    <UploadButton allowedFileType='image/*' label='New Profile Pic' sideIcon={<UserOutlined />} uploadStateSetter={setNewAvatar} />
+                    {newAvatar ? <CheckCircleOutlined style={{ margin: '0 1rem', fontSize: '1rem' }} /> : null}
+                  </div>
+                  
+                </Modal>
                 <UserEditModal user={userInfo} setUserInfo={setUserInfo}/>
               </>
               :
