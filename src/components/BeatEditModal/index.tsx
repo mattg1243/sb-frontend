@@ -3,6 +3,8 @@ import { useState } from 'react';
 import { Beat } from '../../types/beat';
 import { genreOptions } from '../../utils/genreTags';
 import { deleteBeatReq, updateBeatReq } from '../../lib/axios';
+import { AlertObj } from '../../types/alerts';
+import CustomAlert from '../CustomAlert';
 
 interface IEditBeatModalProps {
   beat: Beat
@@ -10,12 +12,11 @@ interface IEditBeatModalProps {
 
 export default function BeatEditModal(props: IEditBeatModalProps) {
   const { beat } = props;
-  console.log(beat);
   const currentGenreTags = beat.genreTags.map((val) => ({label: val, value: val}));
-  console.log(currentGenreTags)
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [alert, setAlert] = useState<AlertObj>();
   const [deleteIsOpen, setDeleteIsOpen] = useState<boolean>(false);
   const [title, setTitle] = useState<string>(beat.title);
   const [description, setDescription] = useState<string>(beat.description as string);
@@ -50,15 +51,18 @@ export default function BeatEditModal(props: IEditBeatModalProps) {
     }
     try {
       const response = await updateBeatReq(updatedBeat);
+      if (response.status === 200) {
+        setIsOpen(false);
+        window.location.reload();
+      }
       console.log(response.data);
     } 
     catch (err) {
       console.error(err);
+      setAlert({status: 'error', message: 'There was an error updating your beat'});
     }
     finally {
       setIsLoading(false);
-      window.location.reload();
-      setIsOpen(false);
     }
   }
 
@@ -114,6 +118,10 @@ export default function BeatEditModal(props: IEditBeatModalProps) {
             </Form.Item>
           </>}
         </Form>
+        {alert ? 
+          <CustomAlert message={alert.message} status={alert.status} /> :
+          null
+        }
       </Spin>
     </Modal>
     <Modal centered={true} open={deleteIsOpen} onOk={() => { deleteBeat(beat._id) }} onCancel={() => { setDeleteIsOpen(false) }}>
