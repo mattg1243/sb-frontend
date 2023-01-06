@@ -8,7 +8,7 @@ import useGetBeats from '../../../hooks/useGetBeats';
 import { Beat } from "../../../types";
 import { cdnHostname } from "../../../config/routing";
 import { getUserReq, updateAvatarReq } from '../../../lib/axios';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import { getUserIdFromLocalStorage } from '../../../utils/localStorageParser';
 import LoadingPage from '../Loading';
 import Navbar from '../../Navbar';
@@ -83,7 +83,6 @@ export default function Profile() {
                     <UploadButton allowedFileType='image/*' label='New Profile Pic' sideIcon={<UserOutlined />} uploadStateSetter={setNewAvatar} />
                     {newAvatar ? <CheckCircleOutlined style={{ margin: '0 1rem', fontSize: '1rem' }} /> : null}
                   </div>
-                  
                 </Modal>
                 <UserEditModal user={userInfo} setUserInfo={setUserInfo}/>
               </>
