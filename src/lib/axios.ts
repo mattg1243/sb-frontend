@@ -63,7 +63,7 @@ export const getAllBeatsReq = async () => {
 }
 
 export const getAllBeatsByUserReq = async (userId: string) => {
-  return await axios.get(`${gatewayUrl}/beats/beats?user=${userId}`)
+  return await axios.get(`${gatewayUrl}/beats/beats?userId=${userId}`)
 }
 
 export const deleteBeatReq = async (beatId: string) => {
@@ -71,7 +71,7 @@ export const deleteBeatReq = async (beatId: string) => {
 }
 
 export const updateBeatReq = async (beat: Beat) => {
-  return await axios.post(`${gatewayUrl}/beats/update`, 
+  return await axios.post(`${gatewayUrl}/beats/update/${beat._id}`, 
     beat, 
     { 
       headers: { 'Content-Type': 'application/json', }, 
