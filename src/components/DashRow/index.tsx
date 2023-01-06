@@ -24,12 +24,10 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
 
   return (
         <Row style={{ width: '80%', maxWidth: '1400px', textAlign: 'center', alignItems: 'center', margin: '15px' }}>
-          <Button type='ghost' size='large' style={{ height: '100px', width: '100px', alignContent: 'center' }} onClick={() => { editable ? handleEdit() : handleDownload() }} >
             { editable ? 
               <BeatEditModal beat={beat} />:
               <PlusOutlined style={{ fontSize: '2rem' }} /> 
             }
-          </Button>
           <Col span={12} >
             <Row style={{ alignItems: 'center' }}>
               <Image 
