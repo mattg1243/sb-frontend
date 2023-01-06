@@ -4,7 +4,8 @@ import { PictureOutlined } from "@ant-design/icons";
 
 interface IUploadButtonProps {
   label: string,
-  allowedFileType: 'mpeg/wav' | 'image/*'
+  // this audio field needs to be narrowed down to mp3 and wav
+  allowedFileType: 'audio/*' | 'image/*'
   uploadStateSetter: Function
   sideIcon? : React.ReactNode
 }
