@@ -48,9 +48,8 @@ export default function UserEditModal(props: IUserEditModal) {
     }
     try {
       const response = await updateUserReq(data);
-      console.log('updated user info:\n', response.data);
       setUserInfo(data);
-      if (response.status === 200) { setIsOpen(false); };
+      if (response.status === 200) { setIsOpen(false); window.location.reload(); };
     } catch (err) {
       console.error(err);
       setAlert({ status: 'error', message: 'There was an error updating your user profile.' });
