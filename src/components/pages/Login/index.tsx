@@ -23,6 +23,7 @@ export default function Login(): JSX.Element {
       console.log(loginResponse);
       if (loginResponse.status === 200 && loginResponse.data.user) {
         localStorage.setItem('sb-user', JSON.stringify(loginResponse.data.user));
+        navigate('/dash');
       } else {
         setAlert({ status: 'success', message: 'User successfully logged in' });
       }
@@ -39,7 +40,6 @@ export default function Login(): JSX.Element {
   const handleKeypress = async (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
      await loginUser(email, password);
-     navigate('/dash');
     }
   };
 
@@ -106,7 +106,6 @@ export default function Login(): JSX.Element {
               }}
               onClick={async () => {
                 await loginUser(email, password);
-                navigate('/dash');
               }}
             >
               Login
