@@ -1,5 +1,5 @@
-import { Modal, Form, Button, Input, Select, Radio, RadioChangeEvent, Divider, Spin, Alert } from 'antd';
-import { CheckCircleOutlined, PictureOutlined, SoundOutlined } from '@ant-design/icons';
+import { Modal, Form, Button, Input, Select, Radio, RadioChangeEvent, Divider, Spin, Alert, Progress } from 'antd';
+import { CheckCircleOutlined, PictureOutlined, SoundOutlined, LoadingOutlined } from '@ant-design/icons';
 import { useState } from 'react';
 import { uploadBeatReq } from '../../lib/axios';
 import { genreOptions} from '../../utils/genreTags';
@@ -10,11 +10,14 @@ export default function UploadBeatModal() {
   const [showModal, setShowModal] = useState<boolean>(false);
   const [alert, setAlert] = useState<{ message: string, type: 'error' | 'success' }>();
   const [isUploading, setIsUploading] = useState<boolean>(false);
+  const [uploadProgress, setUploadProgress] = useState<number>(0);
+  const [isPreparingBeat, setIsPreparingBeat] = useState<boolean>(false);
   const [title, setTitle] = useState<string>('');
   const [genreTags, setGenreTags] = useState<Array<string>>(['']);
   const [tempo, setTempo] = useState<string>('');
   const [key, setKey] = useState<string>('');
   const [flatOrSharp, setFlatOrSharp] = useState<string>();
+  const [majorOrMinor, setMajorOrMinor] = useState<string>()
   const [artwork, setArtwork] = useState<File>();
   const [audio, setAudio] = useState<File>();
 
@@ -36,7 +39,7 @@ export default function UploadBeatModal() {
 
     try {
       setIsUploading(true);
-      const response = await uploadBeatReq(formData);
+      const response = await uploadBeatReq(formData, setUploadProgress);
       if (response.status === 200) { 
         setAlert({ message: 'Your beat was uploaded successfully!', type: 'success'});
       }
@@ -47,7 +50,9 @@ export default function UploadBeatModal() {
       console.error(err);
     }
     finally {
+      setIsPreparingBeat(false);
       setIsUploading(false);
+      setUploadProgress(0);
     }
   }
 
@@ -71,6 +76,10 @@ export default function UploadBeatModal() {
     }
   }
 
+  const handleMajorMinorChange = (e: RadioChangeEvent) => {
+    setMajorOrMinor(e.target.value);
+  };
+
   return (
     <>
       <Button type='ghost' onClick={() => { setShowModal(true) }} style={{ color: 'white' }} >Upload</Button>
@@ -78,9 +87,9 @@ export default function UploadBeatModal() {
        <Alert message={alert.message} type={alert.type} closable showIcon /> :
        null
       }
-      <Modal title="Upload Your Beat" open={showModal} onCancel={handleCancel} footer={null}>
-          <Spin spinning={isUploading} tip={'Your beat is being uploaded, you can close this window. You will be notified when it is done.'}>
-            <Form style={{ margin: '2rem 0' }}>
+      <Modal title="Upload Your Beat" open={showModal} onCancel={handleCancel} footer={null} style={{ display: 'flex', alignItems: 'center', width: '10rem' }}>
+          <Spin spinning={isUploading} tip={'Your beat is being uploaded, you can close this window. You will be notified when it is done.'} indicator={<LoadingOutlined />} >
+            <Form style={{ margin: '2rem 2rem', width: '20rem' }}>
               <Form.Item>
                 <Input placeholder='Title' onChange={(e) => { setTitle(e.target.value)}}></Input>
               </Form.Item>
@@ -107,6 +116,12 @@ export default function UploadBeatModal() {
                   <Radio value='b' checked={flatOrSharp === '♭'}>♭</Radio>
                   <Radio value='#' checked={flatOrSharp === '#'}>#</Radio>
                 </Radio.Group>
+                <Form.Item>
+                  <Radio.Group onChange={(e) => { handleMajorMinorChange(e) }} style={{ marginTop: '.5rem' }}>
+                    <Radio value='Major' checked={majorOrMinor === 'major'} defaultChecked={true}>Major</Radio>
+                    <Radio value='Minor' checked={majorOrMinor === 'minor'}>Minor</Radio>
+                  </Radio.Group>
+                </Form.Item>
               </Form.Item>
               <Form.Item>
                 <UploadButton label='Artwork Upload' allowedFileType='image/*' uploadStateSetter={setArtwork} sideIcon={<PictureOutlined />} />
@@ -119,8 +134,14 @@ export default function UploadBeatModal() {
             </Form>
           </Spin>
           <Divider />
+          {isUploading ? 
+          <Progress percent={uploadProgress} /> : 
+          <>
           <Button onClick={() => { setShowModal(false); }} disabled={isUploading} >Cancel</Button>
           <Button type='primary' style={{ marginLeft: '1rem', backgroundColor: 'var(--primary)', color: 'black' }} onClick={() => { handleSubmit(); }} disabled={isUploading} >Upload Beat</Button>
+          </>}
+          {uploadProgress > 98 ? 
+          <Spin tip='Preparing your beat for streaming...' indicator={<LoadingOutlined />} style={{ marginLeft: '17%' }} /> : null}
       </Modal>
     </>
 )

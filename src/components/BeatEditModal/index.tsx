@@ -1,4 +1,4 @@
-import { Modal, Button, Input, Form, Select, Spin } from 'antd';
+import { Modal, Button, Input, Form, Select, Spin, Divider } from 'antd';
 import { useState } from 'react';
 import { Beat } from '../../types/beat';
 import { genreOptions } from '../../utils/genreTags';
@@ -30,12 +30,18 @@ export default function BeatEditModal(props: IEditBeatModalProps) {
   }
 
   const deleteBeat = async (beatId: string) => {
+    setDeleteIsOpen(false);
+    setIsLoading(true);
     try {
       const response = await deleteBeatReq(beatId);
+      if (response.status === 200) {
+        setIsOpen(false);
+      }
       console.log(response.data);
     } catch (err) {
       console.error(err);
     }
+    setIsLoading(false);
   }
 
   const updateBeat = async () => {
@@ -77,10 +83,7 @@ export default function BeatEditModal(props: IEditBeatModalProps) {
       open={isOpen}
       centered={true}
       onCancel={handleCancel} 
-      footer={[ 
-        <Button key='delete' onClick={() => { setDeleteIsOpen(true); }} color='red' >Delete Beat</Button>,
-        <Button key='update' type='primary' onClick={() => { updateBeat(); }} >Save Changes</Button>
-      ]}
+      footer={null}
     >
       <Spin spinning={isLoading} >
         <Form
@@ -123,8 +126,25 @@ export default function BeatEditModal(props: IEditBeatModalProps) {
           null
         }
       </Spin>
+      <Divider />
+      <Button key='delete' onClick={() => { setDeleteIsOpen(true); }} color='red' >Delete Beat</Button>
+      <Button key='update' type='primary' style={{ marginLeft: '1rem', backgroundColor: 'var(--primary)', color: 'black' }} onClick={() => { updateBeat(); }} >Save Changes</Button>
     </Modal>
-    <Modal centered={true} open={deleteIsOpen} onOk={() => { deleteBeat(beat._id) }} onCancel={() => { setDeleteIsOpen(false) }}>
+    <Modal 
+      centered={true} 
+      open={deleteIsOpen} 
+      onOk={() => { deleteBeat(beat._id); }} 
+      onCancel={() => { setDeleteIsOpen(false) }}
+      footer={[
+        <Button>Cancel</Button>,
+        <Button 
+          type='primary' 
+          style={{ marginLeft: '1rem', backgroundColor: 'var(--primary)', color: 'black' }} 
+          onClick={() => deleteBeat(beat._id)}        
+        >
+            Delete Beat</Button>
+      ]}
+    >
       Are you sure you want to delete this beat?
     </Modal>
     </>
