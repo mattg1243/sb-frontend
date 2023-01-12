@@ -47,13 +47,14 @@ export const updateAvatarReq = async (newAvatar: FormData) => {
   );
 }
 // beats
-export const uploadBeatReq = async (data: FormData): Promise<AxiosResponse> => {
+export const uploadBeatReq = async (data: FormData, progressSetter: Function): Promise<AxiosResponse> => {
   return await axios.post(`${gatewayUrl}/beats/upload`, 
     data, { 
       headers: { 
         'Content-Type': 'multipart/form-data' 
       },
-      withCredentials: true 
+      withCredentials: true,
+      onUploadProgress: progressEvent => { progressSetter(Math.round(progressEvent.loaded / progressEvent.bytes * 100)) }
     }
   );
 }
