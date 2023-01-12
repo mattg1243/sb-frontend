@@ -1,5 +1,5 @@
 import { Content, Header } from 'antd/lib/layout/layout';
-import { Layout, Row, Col, Button } from 'antd';
+import { Layout, Row, Col, Button, Space } from 'antd';
 import logo from '../../../assets/logo_four_squares.png';
 import { useNavigate } from 'react-router-dom';
 import InfoPanel1 from '../../InfoPanel1';
@@ -22,31 +22,27 @@ export default function Splash() {
             <h1 style={{ marginTop: '5rem', fontSize: '5rem', paddingLeft: '4rem', maxWidth: '700px' }}>
               The First Beat Subscription Site
             </h1>
-            <Row gutter={10} style={{ paddingLeft: '4rem', paddingTop: '2rem' }}>
-              <Col span={8}>
+            <Space size='large' style={{ paddingTop: '2rem', paddingLeft: '4rem' }}>
                 <Button
                   shape="round"
                   size="large"
-                  style={{ width: '200px', height: '65px', fontWeight: 'bold' }}
+                  style={{ width: '10rem', height: '4rem', fontWeight: 'bold' }}
                   onClick={() => {
                     navigate('/register');
                   }}
                 >
                   Sign Up
                 </Button>
-              </Col>
-              <Col span={8}>
                 <Button
                   shape="round"
-                  style={{ width: '200px', height: '65px', fontWeight: 'bold' }}
+                  style={{ width: '10rem', height: '4rem', fontWeight: 'bold' }}
                   onClick={() => {
                     navigate('/login');
                   }}
                 >
                   Login
                 </Button>
-              </Col>
-            </Row>
+            </Space>
           </Col>
           <Col span={12}>
             <img src={logo} alt="logo" width={600} style={{ marginBottom: '100%' }} />
