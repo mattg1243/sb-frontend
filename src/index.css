@@ -33,6 +33,10 @@ body {
   background-color: var(--primary) !important;
 }
 
+.ant-spin {
+  color: black;
+}
+
 .ant-spin-dot-item {
   background-color: black !important;
 }
