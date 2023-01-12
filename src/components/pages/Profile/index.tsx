@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Layout, Avatar, Row, Space, Col, Button, Modal } from "antd";
+import { Layout, Avatar, Row, Space, Col, Button, Modal, Spin } from "antd";
 import { Content } from "antd/es/layout/layout";
 import { UserOutlined, YoutubeFilled, AppleFilled, TwitterCircleFilled, CheckCircleOutlined } from "@ant-design/icons";
 import PlayBackBar from "../../PlaybackBar";
@@ -16,19 +16,21 @@ import { User } from '../../../types/user';
 import UserEditModal from '../../UserEditModal';
 import { AlertObj } from '../../../types/alerts';
 import UploadButton from '../../UploadButton';
+import CustomAlert from '../../CustomAlert';
 
 export default function Profile() {
 
   const [searchParams, setSearchParams] = useSearchParams();
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [updateIsLoading, setUpdateIsLoading] = useState<boolean>(false);
   const [trackPlaying, setTrackPlaying] = useState<Beat>();
   const [userId, setUserId] = useState<string>(searchParams.get('id') || '');
   const [userInfo, setUserInfo] = useState<User | null>();
   const [newAvatar, setNewAvatar] = useState<File>();
   const [newAvatarModalOpen, setNewAvatarModalOpen] = useState<boolean>(false);
   const [isCurrentUser, setCurrentUser] = useState<boolean>(userId === getUserIdFromLocalStorage());
-  const [alert, sertAlert] = useState<AlertObj>();
+  const [alert, setAlert] = useState<AlertObj>();
 
 
   const { beats } = useGetBeats(userId);
@@ -42,13 +44,20 @@ export default function Profile() {
 
   const updateAvatar = async () => {
     if (newAvatar) {
+      setUpdateIsLoading(true);
       const newAvatarForm = new FormData();
       newAvatarForm.append('newAvatar', newAvatar);
       const updateAvatarRes = await updateAvatarReq(newAvatarForm);
       console.log(updateAvatarRes);
+      if (updateAvatarRes.status === 200) {
+        setNewAvatarModalOpen(false);
+      } else {
+        setAlert({ status: 'error', message: updateAvatarRes.data.message || 'Error occured while updating your profile picture.' });
+      }
+      setUpdateIsLoading(false);
     } else {
       console.log('No new avatar attached.')
-      sertAlert({ status: 'warning', message: 'No new profile picture attached'})
+      setAlert({ status: 'warning', message: 'No new profile picture attached'})
     }
   }
 
@@ -80,8 +89,11 @@ export default function Profile() {
                   ]}  
                 >
                   <div style={{ padding: '3rem' }}>
-                    <UploadButton allowedFileType='image/*' label='New Profile Pic' sideIcon={<UserOutlined />} uploadStateSetter={setNewAvatar} />
-                    {newAvatar ? <CheckCircleOutlined style={{ margin: '0 1rem', fontSize: '1rem' }} /> : null}
+                    <Spin spinning={updateIsLoading}>
+                      <UploadButton allowedFileType='image/*' label='New Profile Pic' sideIcon={<UserOutlined />} uploadStateSetter={setNewAvatar} />
+                      {newAvatar ? <CheckCircleOutlined style={{ margin: '0 1rem', fontSize: '1rem' }} /> : null}
+                    </Spin>
+                    {alert ? <CustomAlert message={alert.message} status={alert.status} /> : null}
                   </div>
                 </Modal>
                 <UserEditModal user={userInfo} setUserInfo={setUserInfo}/>
