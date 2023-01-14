@@ -1,4 +1,4 @@
-import { Button, Form, Input, Layout } from 'antd';
+import { Button, Form, Input, Layout, Checkbox } from 'antd';
 import React, { useState } from 'react';
 import axios from 'axios';
 import { Content } from 'antd/lib/layout/layout';
@@ -7,18 +7,20 @@ import logo from '../../../assets/logo_four_squares.png';
 import { useNavigate } from 'react-router-dom';
 import CustomAlert from '../../CustomAlert';
 import gatewayUrl from '../../../config/routing';
+import TermsAndConditions from '../../TermsAndAgreements';
 
 export default function Register(): JSX.Element {
   const [email, setEmail] = useState<string>('');
   const [artistName, setArtistName] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [passwordConfirm, setConfirmPassword] = useState<string>('');
+  const [agreedToTerms, setAgreedToTerms] = useState<boolean>(false);
   const [alert, setAlert] = useState<AlertObj>({status: 'none', message: ''});
 
   const navigate = useNavigate();
 
   const sendRegisterRequest = async () => {
-    if (password === passwordConfirm) {
+    if (password === passwordConfirm && agreedToTerms && email !== undefined && artistName !== undefined) {
       const data = { email, artistName, password };
       console.log(data);
       try {
@@ -32,7 +34,7 @@ export default function Register(): JSX.Element {
       }
     } else {
       // passwords dont match, display error
-      setAlert({ status: 'error', message: `Passwords don't match, please try again.` });
+      setAlert({ status: 'error', message: 'Please fill out required fields and make sure you have reentered your passwords correctly.' });
     }
   };
 
@@ -92,6 +94,10 @@ export default function Register(): JSX.Element {
               style={{ width: '600px', height: '50px', borderRadius: '40px' }}
               onChange={(e) => setConfirmPassword(e.target.value)}
             />
+          </Form.Item>
+
+          <Form.Item name="terms and conditions">
+            <Checkbox onChange={(e) => { setAgreedToTerms(e.target.checked) }}>I agree to the <TermsAndConditions /></Checkbox>
           </Form.Item>
 
           <Form.Item wrapperCol={{ offset: 4, span: 16 }}>
