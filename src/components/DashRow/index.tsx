@@ -4,6 +4,7 @@ import BeatEditModal from '../BeatEditModal';
 import { Beat } from '../../types/beat';
 import { cdnHostname } from '../../config/routing';
 import artworkLoading from '../../assets/artwork_loading.jpg';
+import { useState } from 'react';
 
 interface IBeatRowProps {
   beat: Beat,
@@ -12,6 +13,8 @@ interface IBeatRowProps {
 }
 
 export default function DashRow(props: IBeatRowProps): JSX.Element {
+  const [artistNameColor, setArtistNameColor] = useState<'black' | 'blue'>('black');
+  
   const { beat, onClick, editable } = props;
 
   const handleDownload = async () => {
@@ -39,7 +42,14 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
                 width={125} 
                 height={125}
               />
-              <h3 onClick={() => {onClick()}} style={{ cursor: 'pointer', margin: '25px' }}>{beat.title} - <a style={{ color: 'black' }} href={`/user/?id=${beat.artistId}`}>{beat.artistName}</a></h3>
+              <h3 onClick={() => {onClick()}} style={{ cursor: 'pointer', margin: '25px' }}>
+                {beat.title} - <a 
+                  style={{ color: artistNameColor}} 
+                  onMouseOver={() => { setArtistNameColor('blue') }} 
+                  onMouseLeave={() => { setArtistNameColor('black') }} 
+                  href={`/user/?id=${beat.artistId}`}
+                >{beat.artistName}</a>
+              </h3>
             </Row>
           </Col>
           <Col span={2}></Col>
