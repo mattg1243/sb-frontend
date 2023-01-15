@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Layout, Avatar, Row, Space, Col, Button, Modal, Spin } from "antd";
 import { Content } from "antd/es/layout/layout";
-import { UserOutlined, YoutubeFilled, AppleFilled, TwitterCircleFilled, CheckCircleOutlined } from "@ant-design/icons";
+import { UserOutlined, YoutubeFilled, AppleFilled, TwitterCircleFilled, CheckCircleOutlined, UserAddOutlined } from "@ant-design/icons";
 import PlayBackBar from "../../PlaybackBar";
 import DashRow from "../../DashRow";
 import useGetBeats from '../../../hooks/useGetBeats';

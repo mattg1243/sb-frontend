@@ -21,5 +21,8 @@ export default function useGetBeats(userId?: string): IUseGetBeatsReturn {
     }
   }, [userId])
 
+  if (beats?.length === 0) {
+    return { beats: undefined };
+  }
   return { beats };
 }

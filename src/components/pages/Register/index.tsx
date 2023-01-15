@@ -26,9 +26,11 @@ export default function Register(): JSX.Element {
       try {
         const response = await axios.post(`${gatewayUrl}/user/register`, data);
         console.log(response);
-        setAlert({ status: 'success', message: 'Account created succesfully, you may now login' });
-        localStorage.setItem('sb-user', JSON.stringify(response.data.user));
-        navigate('/dash');
+        if (response.status === 200) {
+          setAlert({ status: 'success', message: 'Account created succesfully, you may now login' });
+          localStorage.setItem('sb-user', JSON.stringify(response.data.user));
+          navigate('/dash');
+        }
       } catch (err) {
         console.error(err);
       }
