@@ -39,7 +39,7 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
                 width={125} 
                 height={125}
               />
-              <h3 onClick={() => {onClick()}} style={{ cursor: 'pointer', margin: '25px' }}>{beat.title} - {beat.artistName}</h3>
+              <h3 onClick={() => {onClick()}} style={{ cursor: 'pointer', margin: '25px' }}>{beat.title} - <a style={{ color: 'black' }} href={`/user/?id=${beat.artistId}`}>{beat.artistName}</a></h3>
             </Row>
           </Col>
           <Col span={2}></Col>
