@@ -1,9 +1,12 @@
 import { Modal, Form, Button, Input, Select, Radio, RadioChangeEvent, Divider, Spin, Alert, Progress } from 'antd';
 import { CheckCircleOutlined, PictureOutlined, SoundOutlined, LoadingOutlined } from '@ant-design/icons';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { uploadBeatReq } from '../../lib/axios';
 import { genreOptions} from '../../utils/genreTags';
 import UploadButton from '../UploadButton';
+
+const possibleKeys = ['A', 'B', 'C', 'D', 'E', 'F', 'G'];
+export const possibleKeyOptions = possibleKeys.map((key) => ({value: key, label: key}));
 
 export default function UploadBeatModal() {
 
@@ -25,9 +28,6 @@ export default function UploadBeatModal() {
     setShowModal(false);
   };
 
-  const possibleKeys = ['A', 'B', 'C', 'D', 'E', 'F', 'G'];
-  const possibleKeyOptions = possibleKeys.map((key) => ({value: key, option: key}));
-
   const handleSubmit = async () => {
     const formData = new FormData();
     formData.append('title', title);
@@ -36,12 +36,15 @@ export default function UploadBeatModal() {
     formData.append('artwork', artwork as Blob);
     formData.append('audio', audio as Blob, audio?.name);
     formData.append('key', key);
+    formData.append('flatOrSharp', flatOrSharp as string);
+    formData.append('majorOrMinor', majorOrMinor as string);
 
     try {
       setIsUploading(true);
       const response = await uploadBeatReq(formData, setUploadProgress);
       if (response.status === 200) { 
         setAlert({ message: 'Your beat was uploaded successfully!', type: 'success'});
+        window.location.reload();
       }
       console.log(response);
     } 
@@ -60,6 +63,10 @@ export default function UploadBeatModal() {
     setGenreTags(val);
   }
 
+  const handleKeyChange = (val: string) => {
+    setKey(val);
+  }
+
   const handleSharpFlatClick = (e: RadioChangeEvent) => {
     if (e.target.checked) {
       e.target.checked = false;
@@ -69,16 +76,16 @@ export default function UploadBeatModal() {
   }
 
   const handleSharpFlatChange = (e: RadioChangeEvent) => {
-    if (key[-1] === e.target.value) { 
-      e.target.checked = false;
-    } else {
-      key.concat(e.target.value);
-    }
+    setFlatOrSharp(e.target.value);
   }
 
   const handleMajorMinorChange = (e: RadioChangeEvent) => {
     setMajorOrMinor(e.target.value);
   };
+
+  useEffect(() => {
+    console.log(possibleKeyOptions);
+  })
 
   return (
     <>
@@ -103,23 +110,28 @@ export default function UploadBeatModal() {
                 />
               </Form.Item>
               <Form.Item>
-                <Input placeholder="Tempo" onChange={(e) => { setTempo(e.target.value)}}></Input>
+                <Input 
+                  placeholder="BPM" 
+                  onChange={(e) => { setTempo(e.target.value)}} 
+                  addonAfter='BPM' 
+                  type='number' >
+                </Input>
               </Form.Item>
               <Form.Item>
                 <Select
                   placeholder='Key'
                   options={possibleKeyOptions}
-                  onChange={(e) => setKey(e.target.value)}
+                  onChange={handleKeyChange}
                 />
                 <Radio.Group onChange={(e) => { handleSharpFlatChange(e) }} style={{ marginTop: '.5rem' }}>
                   <Radio value='' checked={flatOrSharp === ''}>None</Radio>
-                  <Radio value='b' checked={flatOrSharp === '♭'}>♭</Radio>
-                  <Radio value='#' checked={flatOrSharp === '#'}>#</Radio>
+                  <Radio value='flat' checked={flatOrSharp === '♭'}>♭</Radio>
+                  <Radio value='sharp' checked={flatOrSharp === '#'}>#</Radio>
                 </Radio.Group>
                 <Form.Item>
                   <Radio.Group onChange={(e) => { handleMajorMinorChange(e) }} style={{ marginTop: '.5rem' }}>
-                    <Radio value='Major' checked={majorOrMinor === 'major'} defaultChecked={true}>Major</Radio>
-                    <Radio value='Minor' checked={majorOrMinor === 'minor'}>Minor</Radio>
+                    <Radio value='major' checked={majorOrMinor === 'major'}>Major</Radio>
+                    <Radio value='minor' checked={majorOrMinor === 'minor'}>Minor</Radio>
                   </Radio.Group>
                 </Form.Item>
               </Form.Item>
