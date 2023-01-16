@@ -36,9 +36,14 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
               <Image 
                 src={`${cdnHostname}/${beat.artworkKey}`} 
                 alt="album artwork" 
+                preview={false}
                 placeholder={
                   <Image src={artworkLoading} width={125} height={125} />
                 }
+                onError={({ currentTarget }) => {
+                  currentTarget.onerror = null; // prevents looping
+                  currentTarget.src=artworkLoading;
+                }}
                 width={125} 
                 height={125}
               />
