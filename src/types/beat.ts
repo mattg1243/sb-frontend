@@ -8,6 +8,8 @@ export type Beat = {
   genreTags: Array<string>,
   otherTags: Array<string> | null,
   key: string,
+  majorOrMinor: 'major' | 'minor',
+  flatOrSharp: 'flat' | 'sharp' | '',
   licensed: boolean,
   tempo: number,
   title: string,
