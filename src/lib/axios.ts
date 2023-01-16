@@ -71,11 +71,11 @@ export const deleteBeatReq = async (beatId: string) => {
   return await axios.delete(`${gatewayUrl}/beats/${beatId}`, { withCredentials: true });
 }
 
-export const updateBeatReq = async (beat: Beat) => {
-  return await axios.post(`${gatewayUrl}/beats/update/${beat._id}`, 
-    beat, 
+export const updateBeatReq = async (data: FormData, beatId: string) => {
+  return await axios.post(`${gatewayUrl}/beats/update/${beatId}`, 
+    data, 
     { 
-      headers: { 'Content-Type': 'application/json', }, 
+      headers: { 'Content-Type': 'multipart/form-data' }, 
       withCredentials: true 
     }
   );
