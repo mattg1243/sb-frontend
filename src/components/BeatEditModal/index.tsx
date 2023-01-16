@@ -1,15 +1,18 @@
-import { Modal, Button, Input, Form, Select, Spin, Divider } from 'antd';
+import { Modal, Button, Input, Form, Select, Spin, Divider, Radio, RadioChangeEvent } from 'antd';
+import { CheckCircleOutlined, PictureOutlined } from '@ant-design/icons';
 import { useState } from 'react';
 import { Beat } from '../../types/beat';
 import { genreOptions } from '../../utils/genreTags';
 import { deleteBeatReq, updateBeatReq } from '../../lib/axios';
+import { possibleKeyOptions } from '../BeatUploadModal';
 import { AlertObj } from '../../types/alerts';
 import CustomAlert from '../CustomAlert';
+import UploadButton from '../UploadButton';
 
 interface IEditBeatModalProps {
   beat: Beat
 }
-
+// TODO: consolidate this and the BeatUploadModal as they share lots of code
 export default function BeatEditModal(props: IEditBeatModalProps) {
   const { beat } = props;
   const currentGenreTags = beat.genreTags.map((val) => ({label: val, value: val}));
@@ -22,6 +25,8 @@ export default function BeatEditModal(props: IEditBeatModalProps) {
   const [description, setDescription] = useState<string>(beat.description as string);
   const [tempo, setTempo] = useState<number>(beat.tempo);
   const [key, setKey] = useState<string>(beat.key);
+  const [flatOrSharp, setFlatOrSharp] = useState<'flat' | 'sharp' | ''>(beat.flatOrSharp);
+  const [majorOrMinor, setMajorOrMinor] = useState(beat.majorOrMinor)
   const [artwork, setArtwork] = useState<File | Blob>();    // NOTE: if this is empty, the artowrk will be uneffected
   const [genreTags, setGenreTags] = useState(beat.genreTags);
 
@@ -36,6 +41,7 @@ export default function BeatEditModal(props: IEditBeatModalProps) {
       const response = await deleteBeatReq(beatId);
       if (response.status === 200) {
         setIsOpen(false);
+        window.location.reload();
       }
       console.log(response.data);
     } catch (err) {
@@ -46,17 +52,19 @@ export default function BeatEditModal(props: IEditBeatModalProps) {
 
   const updateBeat = async () => {
     setIsLoading(true);
-    const updatedBeat = {
-      ...beat,
-      title,
-      description,
-      genreTags,
-      tempo,
-      key,
-      // artwork,
-    }
+    
+    const formData = new FormData();
+    formData.append('title', title);
+    formData.append('genreTags', JSON.stringify(genreTags));
+    formData.append('description', description);
+    formData.append('tempo', tempo.toString());
+    formData.append('artwork', artwork as Blob);
+    formData.append('key', key);
+    formData.append('flatOrSharp', flatOrSharp as string);
+    formData.append('majorOrMinor', majorOrMinor as string);
+
     try {
-      const response = await updateBeatReq(updatedBeat);
+      const response = await updateBeatReq(formData, beat._id);
       if (response.status === 200) {
         setIsOpen(false);
         window.location.reload();
@@ -76,6 +84,18 @@ export default function BeatEditModal(props: IEditBeatModalProps) {
     setGenreTags(val);
   }
 
+  const handleKeyChange = (val: string) => {
+    setKey(val);
+  }
+
+  const handleSharpFlatChange = (e: RadioChangeEvent) => {
+    setFlatOrSharp(e.target.value);
+  }
+
+  const handleMajorMinorChange = (e: RadioChangeEvent) => {
+    setMajorOrMinor(e.target.value);
+  };
+
   return (
     <>
     <Button type='ghost' onClick={() => {setIsOpen(true)}}>Edit</Button>
@@ -84,6 +104,7 @@ export default function BeatEditModal(props: IEditBeatModalProps) {
       centered={true}
       onCancel={handleCancel} 
       footer={null}
+      style={{ padding: '1rem', alignItems: 'center', width: '10rem' }}
     >
       <Spin spinning={isLoading} >
         <Form
@@ -101,7 +122,7 @@ export default function BeatEditModal(props: IEditBeatModalProps) {
               <Input defaultValue={title} onChange={(e) => { setTitle(e.target.value); }} />
             </Form.Item>
             <Form.Item label='Description' name='description'>
-              <Input defaultValue={beat.description as string} autoComplete={undefined} onChange={(e) => { setDescription(e.target.value); }} maxLength={140} showCount={true} />
+              <Input placeholder={description} autoComplete={undefined} onChange={(e) => { setDescription(e.target.value); }} maxLength={140} showCount={true} />
             </Form.Item>
             <Form.Item label='Genres' name='genres'>
             <Select 
@@ -113,11 +134,31 @@ export default function BeatEditModal(props: IEditBeatModalProps) {
               onChange={handleGenreTagsChange}
             />
             </Form.Item>
-            <Form.Item label='Tempo' name='tempo'>
+            <Form.Item label='BPM' name='bpm'>
               <Input defaultValue={beat.tempo} onChange={(e) => { setTempo(e.target.valueAsNumber); }} max={200} min={60} type='number' addonAfter='BPM'/>
             </Form.Item>
             <Form.Item label='Key' name='key'>
-              <Input defaultValue={beat.key} onChange={(e) => { setKey(e.target.value); }}/>
+            <Select
+              placeholder='Key'
+              options={possibleKeyOptions}
+              onChange={handleKeyChange}
+              defaultValue={key}
+            />
+            </Form.Item>
+            <Radio.Group onChange={(e) => { handleSharpFlatChange(e) }} style={{ marginTop: '.5rem' }} defaultValue={flatOrSharp}>
+              <Radio value='' checked>None</Radio>
+              <Radio value='flat'>♭</Radio>
+              <Radio value='sharp'>#</Radio>
+            </Radio.Group>
+            <Form.Item>
+              <Radio.Group onChange={(e) => { handleMajorMinorChange(e) }} style={{ marginTop: '.5rem' }} defaultValue={majorOrMinor}>
+                <Radio value='major'>Major</Radio>
+                <Radio value='minor'>Minor</Radio>
+              </Radio.Group>
+            </Form.Item>
+            <Form.Item>
+              <UploadButton label='Artwork Upload' allowedFileType='image/*' uploadStateSetter={setArtwork} sideIcon={<PictureOutlined />} />
+              {artwork ? <CheckCircleOutlined style={{ marginLeft: '1rem', fontSize: '1rem',  }} /> : null}
             </Form.Item>
           </>}
         </Form>
