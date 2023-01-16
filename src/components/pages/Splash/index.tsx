@@ -9,7 +9,6 @@ export default function Splash() {
 
   return (
     <Layout style={{ padding: '2rem' }}>
-      <Header style={{ background: 'var(--primary)', fontSize: '2rem', marginTop: '1rem' }}>Sweatshop Beats</Header>
       <Content
         style={{
           marginTop: '10%',

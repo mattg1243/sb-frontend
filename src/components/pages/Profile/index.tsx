@@ -51,6 +51,7 @@ export default function Profile() {
       console.log(updateAvatarRes);
       if (updateAvatarRes.status === 200) {
         setNewAvatarModalOpen(false);
+        window.location.reload();
       } else {
         setAlert({ status: 'error', message: updateAvatarRes.data.message || 'Error occured while updating your profile picture.' });
       }
