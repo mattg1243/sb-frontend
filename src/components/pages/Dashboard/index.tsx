@@ -8,6 +8,7 @@ import useGetBeats from '../../../hooks/useGetBeats';
 import { Spin } from 'antd';
 import { cdnHostname } from '../../../config/routing';
 import { Beat } from '../../../types/beat';
+import PlaybackButtons from '../../PlaybackButtons/PlaybackButtons';
 
 export default function Dashboard() {
   // TODO: this should hold the actual beat obj to play or null when none are playing
@@ -25,12 +26,12 @@ export default function Dashboard() {
             return <DashRow beat={beat}  onClick={()=>{setTrackPlaying(beat)}} editable={false} />;
           }): <Spin size='large' tip='Loading beats...'/>}
         </Content>
-        <PlayBackBar 
+        {trackPlaying ?
+        <PlaybackButtons 
           trackTitle={trackPlaying ? trackPlaying.title: ''} 
           trackArtist={trackPlaying ? trackPlaying.artistName: ''} 
           trackSrcUrl={trackPlaying ? `${cdnHostname}/${trackPlaying.audioKey}`: ''}
-          isShown={trackPlaying !== undefined}
-        />
+        /> : null}
         </Layout>
     </div>
   );
