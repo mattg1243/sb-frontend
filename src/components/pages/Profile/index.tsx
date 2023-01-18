@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { Layout, Avatar, Row, Space, Col, Button, Modal, Spin } from "antd";
 import { Content } from "antd/es/layout/layout";
 import { UserOutlined, YoutubeFilled, AppleFilled, TwitterCircleFilled, CheckCircleOutlined, UserAddOutlined } from "@ant-design/icons";
-import PlayBackBar from "../../PlaybackBar";
 import DashRow from "../../DashRow";
 import useGetBeats from '../../../hooks/useGetBeats';
 import { Beat } from "../../../types";
@@ -17,6 +16,7 @@ import UserEditModal from '../../UserEditModal';
 import { AlertObj } from '../../../types/alerts';
 import UploadButton from '../../UploadButton';
 import CustomAlert from '../../CustomAlert';
+import PlaybackButtons from '../../PlaybackButtons/PlaybackButtons';
 
 export default function Profile() {
 
@@ -134,12 +134,11 @@ export default function Profile() {
           }): <h3>This user hasn't uploaded any beats yet.</h3>}
         </div>
       </Content>
-      <PlayBackBar 
+      {trackPlaying ? <PlaybackButtons 
           trackTitle={trackPlaying ? trackPlaying.title: ''} 
           trackArtist={trackPlaying ? trackPlaying.artistName: ''} 
           trackSrcUrl={trackPlaying ? `${cdnHostname}/${trackPlaying.audioKey}`: ''}
-          isShown={trackPlaying !== undefined}
-        />
+        /> : null}
     </Layout> 
     
   )
