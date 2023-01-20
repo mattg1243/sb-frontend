@@ -19,8 +19,8 @@ export default function UploadBeatModal() {
   const [genreTags, setGenreTags] = useState<Array<string>>(['']);
   const [tempo, setTempo] = useState<string>('');
   const [key, setKey] = useState<string>('');
-  const [flatOrSharp, setFlatOrSharp] = useState<string>();
-  const [majorOrMinor, setMajorOrMinor] = useState<string>()
+  const [flatOrSharp, setFlatOrSharp] = useState<'flat' | 'sharp' | ''>('');
+  const [majorOrMinor, setMajorOrMinor] = useState<'major' | 'minor'>('major');
   const [artwork, setArtwork] = useState<File>();
   const [audio, setAudio] = useState<File>();
 
@@ -95,65 +95,65 @@ export default function UploadBeatModal() {
        null
       }
       <Modal title="Upload Your Beat" open={showModal} onCancel={handleCancel} footer={null} style={{ display: 'flex', alignItems: 'center', width: '10rem' }}>
-          <Spin spinning={isUploading} tip={'Your beat is being uploaded, you can close this window. You will be notified when it is done.'} indicator={<LoadingOutlined />} >
-            <Form style={{ margin: '2rem 2rem', width: '20rem' }}>
+        <Spin spinning={isUploading} tip={'Your beat is being uploaded, you can close this window. You will be notified when it is done.'} indicator={<LoadingOutlined />} >
+          <Form style={{ margin: '2rem 2rem', width: '20rem' }}>
+            <Form.Item>
+              <Input placeholder='Title' onChange={(e) => { setTitle(e.target.value)}}></Input>
+            </Form.Item>
+            <Form.Item>
+              <Select 
+                placeholder="Genre Tags"
+                options={genreOptions}
+                mode='multiple'
+                maxTagCount='responsive'
+                onChange={handleGenreTagsChange}
+              />
+            </Form.Item>
+            <Form.Item>
+              <Input 
+                placeholder="BPM" 
+                onChange={(e) => { setTempo(e.target.value)}} 
+                addonAfter='BPM' 
+                type='number' >
+              </Input>
+            </Form.Item>
+            <Form.Item>
+              <Select
+                placeholder='Key'
+                options={possibleKeyOptions}
+                onChange={handleKeyChange}
+              />
+              <Radio.Group onChange={(e) => { handleSharpFlatChange(e) }} style={{ marginTop: '.5rem' }} defaultValue={flatOrSharp}>
+                <Radio value='' checked={flatOrSharp === ''}>None</Radio>
+                <Radio value='flat' checked={flatOrSharp === 'flat'}>♭</Radio>
+                <Radio value='sharp' checked={flatOrSharp === 'flat'}>#</Radio>
+              </Radio.Group>
               <Form.Item>
-                <Input placeholder='Title' onChange={(e) => { setTitle(e.target.value)}}></Input>
-              </Form.Item>
-              <Form.Item>
-                <Select 
-                  placeholder="Genre Tags"
-                  options={genreOptions}
-                  mode='multiple'
-                  maxTagCount='responsive'
-                  onChange={handleGenreTagsChange}
-                />
-              </Form.Item>
-              <Form.Item>
-                <Input 
-                  placeholder="BPM" 
-                  onChange={(e) => { setTempo(e.target.value)}} 
-                  addonAfter='BPM' 
-                  type='number' >
-                </Input>
-              </Form.Item>
-              <Form.Item>
-                <Select
-                  placeholder='Key'
-                  options={possibleKeyOptions}
-                  onChange={handleKeyChange}
-                />
-                <Radio.Group onChange={(e) => { handleSharpFlatChange(e) }} style={{ marginTop: '.5rem' }}>
-                  <Radio value='' checked={flatOrSharp === ''}>None</Radio>
-                  <Radio value='flat' checked={flatOrSharp === '♭'}>♭</Radio>
-                  <Radio value='sharp' checked={flatOrSharp === '#'}>#</Radio>
+                <Radio.Group onChange={(e) => { handleMajorMinorChange(e) }} style={{ marginTop: '.5rem' }} defaultValue={majorOrMinor}>
+                  <Radio value='major' checked={majorOrMinor === 'major'}>Major</Radio>
+                  <Radio value='minor' checked={majorOrMinor === 'minor'}>Minor</Radio>
                 </Radio.Group>
-                <Form.Item>
-                  <Radio.Group onChange={(e) => { handleMajorMinorChange(e) }} style={{ marginTop: '.5rem' }}>
-                    <Radio value='major' checked={majorOrMinor === 'major'}>Major</Radio>
-                    <Radio value='minor' checked={majorOrMinor === 'minor'}>Minor</Radio>
-                  </Radio.Group>
-                </Form.Item>
               </Form.Item>
-              <Form.Item>
-                <UploadButton label='Artwork Upload' allowedFileType='image/*' uploadStateSetter={setArtwork} sideIcon={<PictureOutlined />} />
-                {artwork ? <CheckCircleOutlined style={{ marginLeft: '1rem', fontSize: '1rem',  }} /> : null}
-              </Form.Item>
-              <Form.Item>
-                <UploadButton label='Beat Upload' allowedFileType='audio/*' uploadStateSetter={setAudio} sideIcon={<SoundOutlined />} />
-                {audio ? <CheckCircleOutlined style={{ marginLeft: '1rem', fontSize: '1rem',  }} /> : null}
-              </Form.Item>
-            </Form>
-          </Spin>
-          <Divider />
-          {isUploading ? 
-          <Progress percent={uploadProgress} /> : 
-          <>
-          <Button onClick={() => { setShowModal(false); }} disabled={isUploading} >Cancel</Button>
-          <Button type='primary' style={{ marginLeft: '1rem', backgroundColor: 'var(--primary)', color: 'black' }} onClick={() => { handleSubmit(); }} disabled={isUploading} >Upload Beat</Button>
-          </>}
-          {uploadProgress > 98 ? 
-          <Spin tip='Preparing your beat for streaming...' indicator={<LoadingOutlined />} style={{ marginLeft: '17%' }} /> : null}
+            </Form.Item>
+            <Form.Item>
+              <UploadButton label='Artwork Upload' allowedFileType='image/*' uploadStateSetter={setArtwork} sideIcon={<PictureOutlined />} />
+              {artwork ? <CheckCircleOutlined style={{ marginLeft: '1rem', fontSize: '1rem',  }} /> : null}
+            </Form.Item>
+            <Form.Item>
+              <UploadButton label='Beat Upload' allowedFileType='audio/*' uploadStateSetter={setAudio} sideIcon={<SoundOutlined />} />
+              {audio ? <CheckCircleOutlined style={{ marginLeft: '1rem', fontSize: '1rem',  }} /> : null}
+            </Form.Item>
+          </Form>
+        </Spin>
+        <Divider />
+        {isUploading ? 
+        <Progress percent={uploadProgress} /> : 
+        <>
+        <Button onClick={() => { setShowModal(false); }} disabled={isUploading} >Cancel</Button>
+        <Button type='primary' style={{ marginLeft: '1rem', backgroundColor: 'var(--primary)', color: 'black' }} onClick={() => { handleSubmit(); }} disabled={isUploading} >Upload Beat</Button>
+        </>}
+        {uploadProgress > 98 ? 
+        <Spin tip='Preparing your beat for streaming...' indicator={<LoadingOutlined />} style={{ marginLeft: '17%' }} /> : null}
       </Modal>
     </>
 )
