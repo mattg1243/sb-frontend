@@ -25,6 +25,10 @@ export const getUserReq = async (userId: string) => {
   return await axios.get(`${gatewayUrl}/user/?id=${userId}`, { withCredentials: true });
 }
 
+export const getUserAvatarReq = async (userId: string) => {
+  return await axios.get(`${gatewayUrl}/user/avatar?id=${userId}`);
+}
+
 interface UpdateUserArg extends Omit<User, 'avatar'> {
   avatar: File | string
 }
