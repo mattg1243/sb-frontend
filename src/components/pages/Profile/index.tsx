@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Layout, Avatar, Row, Space, Col, Button, Modal, Spin } from "antd";
+import { Layout, Avatar, Row, Space, Col, Button, Modal, Spin, Image } from "antd";
 import { Content } from "antd/es/layout/layout";
 import { UserOutlined, YoutubeFilled, AppleFilled, TwitterCircleFilled, CheckCircleOutlined, UserAddOutlined } from "@ant-design/icons";
 import DashRow from "../../DashRow";
@@ -17,6 +17,8 @@ import { AlertObj } from '../../../types/alerts';
 import UploadButton from '../../UploadButton';
 import CustomAlert from '../../CustomAlert';
 import PlaybackButtons from '../../PlaybackButtons/PlaybackButtons';
+import defaultAvatar from '../../../assets/default_avatar_white.png';
+import styles from './Profile.module.css';
 
 export default function Profile() {
 
@@ -101,7 +103,16 @@ export default function Profile() {
               </>
               :
               <>
-                <Avatar icon={ <UserOutlined /> } size={256}  />
+                <Avatar 
+                src={
+                  <Image 
+                    src={`${cdnHostname}/${userInfo.avatar}`} 
+                    onError={({ currentTarget }) => {
+                      currentTarget.onerror = null; // prevents looping
+                      currentTarget.src=defaultAvatar;
+                    }}  />}
+                    className={styles.useravatar} 
+                size={256}  />
                 <Button type='ghost' style={{ border: 'solid', margin: '5px' }}>Follow</Button>
               </>
               }

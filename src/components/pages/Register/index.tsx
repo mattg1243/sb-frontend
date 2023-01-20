@@ -74,7 +74,7 @@ export default function Register(): JSX.Element {
           >
             <Input
               className="round-white-input"
-              placeholder="Artist Name"
+              placeholder="Username"
               style={{ width: '600px', height: '50px', borderRadius: '40px' }}
               onChange={(e) => setArtistName(e.target.value)}
             />
