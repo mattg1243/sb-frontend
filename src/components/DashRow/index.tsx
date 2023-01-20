@@ -5,6 +5,8 @@ import { Beat } from '../../types/beat';
 import { cdnHostname } from '../../config/routing';
 import artworkLoading from '../../assets/artwork_loading.jpg';
 import { useState } from 'react';
+import Icon from '@ant-design/icons/lib/components/Icon';
+import playIcon from '../../assets/play_black.png';
 
 interface IBeatRowProps {
   beat: Beat,
@@ -47,8 +49,7 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
             src={`${cdnHostname}/${beat.artworkKey}`} 
             alt="album artwork" 
             preview={{
-              visible: false,
-              src: 'https://icons8.com/icon/9978/play'
+              mask: <Image src={playIcon} preview={false} />,
             }}
             placeholder={
               <Image src={artworkLoading} width={125} height={125} />
