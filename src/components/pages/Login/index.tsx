@@ -45,9 +45,9 @@ export default function Login(): JSX.Element {
 
   return (
     <Layout>
-      <Content style={{ justifyContent: 'center', textAlign: 'center', marginTop: '5rem' }}>
-        <img src={logo} alt="logo" width={200} style={{ marginBottom: '1rem' }} />
-        <h1 style={{ fontSize: '3.5rem' }}>Log in to your account</h1>
+      <Content style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', textAlign: 'center', height: '100vh' }}>
+        <img src={logo} alt="logo" width='15%' style={{ marginBottom: '1rem' }} />
+        <h1 style={{ fontSize: '3.5vw' }}>Log in to your account</h1>
         <Form
           name="basic"
           layout="vertical"
@@ -55,7 +55,7 @@ export default function Login(): JSX.Element {
           wrapperCol={{ span: 16, offset: 4 }}
           labelCol={{ span: 16, offset: 4 }}
           autoComplete="off"
-          style={{ justifyContent: 'center', width: '100%', marginTop: '2rem' }}
+          style={{ justifyContent: 'center', width: '100%', marginTop: '1vh', height: '50vh' }}
         >
           <Form.Item
             style={{ justifySelf: 'center' }}
@@ -66,7 +66,7 @@ export default function Login(): JSX.Element {
             <Input
               className="input-round"
               placeholder="Email"
-              style={{ width: '600px', height: '50px', borderRadius: '40px' }}
+              style={{ width: '33vw', maxWidth: '600px', height: '7vh', maxHeight: '50px', borderRadius: '40px' }}
               onChange={(e) => setEmail(e.target.value)}
               onKeyPress={(e) => handleKeypress(e)}
             />
@@ -76,7 +76,7 @@ export default function Login(): JSX.Element {
             <Input.Password
               className="round-white-input"
               placeholder="Password"
-              style={{ width: '600px', height: '50px', borderRadius: '40px' }}
+              style={{ width: '33vw', maxWidth: '600px', height: '7vh', maxHeight: '50px', borderRadius: '40px' }}
               onChange={(e) => setPassword(e.target.value)}
               onKeyPress={(e) => handleKeypress(e)}
             />
@@ -97,12 +97,14 @@ export default function Login(): JSX.Element {
               shape="round"
               size="large"
               style={{
-                fontSize: '2rem',
+                fontSize: '1.5vw',
                 margin: '1rem',
                 background: 'black',
                 borderColor: 'black',
-                width: '300px',
-                height: '80px',
+                width: '17vw',
+                maxWidth: '200px',
+                height: '8vh',
+                maxHeight: '75px'
               }}
               onClick={async () => {
                 await loginUser(email, password);
