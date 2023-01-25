@@ -5,8 +5,8 @@ import { Beat } from '../../types/beat';
 import { cdnHostname } from '../../config/routing';
 import artworkLoading from '../../assets/artwork_loading.jpg';
 import { useState } from 'react';
-import Icon from '@ant-design/icons/lib/components/Icon';
 import playIcon from '../../assets/play_black.png';
+import styles from './DashRow.module.css';
 
 interface IBeatRowProps {
   beat: Beat,
@@ -38,10 +38,10 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
   }
 
   return (
-    <Row style={{ width: '80%', maxWidth: '1400px', textAlign: 'center', alignItems: 'center', margin: '15px' }}>
+    <Row className={styles['row-container']}>
         { editable ? 
           <BeatEditModal beat={beat} />:
-          <PlusOutlined style={{ fontSize: '2rem' }} /> 
+          <PlusOutlined className={styles['download-button']} /> 
         }
       <Col span={12} >
         <Row style={{ alignItems: 'center' }}>
@@ -62,9 +62,9 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
             height={125}
             onClick={() => { onClick(); }}
           />
-          <h3 onClick={() => { onClick(); }} style={{ cursor: 'pointer', margin: '25px' }}>
+          <h3 onClick={() => { onClick(); }} className={styles.title}>
             {beat.title} - <a 
-              style={{ color: artistNameColor}} 
+              style={{ color: artistNameColor }} 
               onMouseOver={() => { setArtistNameColor('blue') }} 
               onMouseLeave={() => { setArtistNameColor('black') }} 
               href={`/user/?id=${beat.artistId}`}
@@ -74,8 +74,8 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
       </Col>
       <Col span={2}></Col>
       <Col span={6} style={{ justifyItems: 'center', alignItems: 'end' }}>
-        <Row style={{ height: '100%', alignItems: 'center', justifyContent: 'end' }}>
-          <h4>{beat.genreTags[0]} | {beat.tempo} BPM | {beat.key}{displayFlatOrSharp(beat.flatOrSharp)} {beat.majorOrMinor}</h4>
+        <Row className={styles['info-row']}>
+          <h4 style={{ fontSize: '.9vw' }}>{beat.genreTags[0]} | {beat.tempo} BPM | {beat.key}{displayFlatOrSharp(beat.flatOrSharp)} {beat.majorOrMinor}</h4>
         </Row>
       </Col>
     </Row>

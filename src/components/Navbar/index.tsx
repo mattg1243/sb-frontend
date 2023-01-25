@@ -1,16 +1,17 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Header } from "antd/es/layout/layout";
 import { Button, Menu, Image, Avatar, Dropdown, MenuProps } from "antd";
 import { useNavigate } from "react-router-dom";
 import UploadBeatModal from "../BeatUploadModal";
 import logo from '../../assets/logo_four_squares.png';
-import { UserOutlined } from "@ant-design/icons";
 import { getUserIdFromLocalStorage } from '../../utils/localStorageParser';
-import { logoutUserReq } from '../../lib/axios';
+import { logoutUserReq, getUserAvatarReq } from '../../lib/axios';
+import { cdnHostname } from '../../config/routing';
 
 export default function Navbar() {
 
   const currentUserId = getUserIdFromLocalStorage();
+  let currentUserAvatar = '';
 
   const logoutUser = async () => {
     try {
@@ -44,6 +45,14 @@ export default function Navbar() {
 
   const navigate = useNavigate();
 
+  useEffect(() => {
+    if (currentUserId) {
+      getUserAvatarReq(currentUserId)
+        .then(res => console.log(res.data))
+        .catch(err => console.error(err))
+    }
+  })
+
   return (
       <Header style={{ width: '100%', margin: 0, top: 100, background: 'black' }}>
         <Menu
@@ -69,7 +78,12 @@ export default function Navbar() {
           </Menu.Item>
           <Menu.Item key="profile" style={{ marginLeft: 'auto' }}>
             <Dropdown menu={{ items: userMenuItems }} placement='bottom' overlayStyle={{ color: 'blue', fontSize: '2rem' }} arrow={true} >
-              <Avatar size={48} icon={<UserOutlined style={{ fontSize: '1.5rem' }} />} style={{ border: 'solid 3px', borderColor: 'var(--primary)' }} onClick={() => { navigate(`/user/?id=${currentUserId}`); }}/>
+              <Avatar 
+                size={48} 
+                src={`${cdnHostname}/${currentUserAvatar}`}
+                style={{ border: 'solid 3px', borderColor: 'var(--primary)' }} 
+                onClick={() => { navigate(`/user/?id=${currentUserId}`); }}
+              />
             </Dropdown>
           </Menu.Item>
         </Menu>
