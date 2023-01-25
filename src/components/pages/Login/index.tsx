@@ -46,8 +46,8 @@ export default function Login(): JSX.Element {
   return (
     <Layout>
       <Content style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', textAlign: 'center', height: '100vh' }}>
-        <img src={logo} alt="logo" width='15%' style={{ marginBottom: '1rem' }} />
-        <h1 style={{ fontSize: '3.5vw' }}>Log in to your account</h1>
+        <img src={logo} alt="logo" width='150vw' style={{ marginBottom: '1rem' }} />
+        <h1 style={{ fontSize: '2.5vw' }}>Log in to your account</h1>
         <Form
           name="basic"
           layout="vertical"
