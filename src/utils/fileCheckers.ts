@@ -1,6 +1,10 @@
 import { message } from "antd";
 import type { RcFile } from "antd/es/upload";
 
+/**
+ * @param file A file to verify as an allowed image format.
+ * @returns A boolean value that ensure the file is an allowed format AND size per the ANTD spec.
+ */
 export const checkImgFile = (file: RcFile) => {
   const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
   if (!isJpgOrPng) {
@@ -13,6 +17,10 @@ export const checkImgFile = (file: RcFile) => {
   return isJpgOrPng && isLt2M;
 };
 
+/**
+ * @param file A file to verify as an allowed audio format.
+ * @returns A boolean value that ensure the file is an allowed format AND size per the ANTD spec.
+ */
 export const checkAudioFile = (file: RcFile) => {
   // check file type
   const isAudioFile = file.type === 'audio/mpeg' || file.type === 'audio/wav';

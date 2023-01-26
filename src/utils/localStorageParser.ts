@@ -1,3 +1,7 @@
+/**
+ * Retreives the users data from localStorage and returns their user ID.
+ * @returns Users database ID.
+ */
 export const getUserIdFromLocalStorage = () => {
   const userStr = localStorage.getItem('sb-user');
   if (!userStr) {

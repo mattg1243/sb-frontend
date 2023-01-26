@@ -2,12 +2,13 @@ import { useState, useEffect } from 'react';
 import type { Beat } from "../types";
 import { getAllBeatsReq, getAllBeatsByUserReq } from '../lib/axios';
 
-interface IUseGetBeatsReturn {
-  beats: Array<Beat> | undefined,
-}
-// TODO: make this accept a query with user id for getting
-// all beats created by a single artist
-export default function useGetBeats(userId?: string): IUseGetBeatsReturn {
+/**
+ * A hook that gets all Beats from the server, if supplied with a user ID, returns all beats created
+ * by that user.
+ * @param userId - Optional param used for querying Beats by user.
+ * @returns An array of Beat objects or undefined if no beats match the query.
+ */
+export default function useGetBeats(userId?: string): { beats: Array<Beat> | undefined } {
 
   const [beats, setBeats] = useState<Array<Beat>>();
 
