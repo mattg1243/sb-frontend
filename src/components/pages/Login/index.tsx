@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { AlertObj } from '../../../types';
 import CustomAlert from '../../CustomAlert';
 import { loginUserReq } from '../../../lib/axios';
-// this alert type should be shared
+import styles from './Login.module.css';
 
 export default function Login(): JSX.Element {
   const [email, setEmail] = useState<string>('');
@@ -45,7 +45,7 @@ export default function Login(): JSX.Element {
 
   return (
     <Layout>
-      <Content style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', textAlign: 'center', height: '100vh' }}>
+      <Content className={styles.content}>
         <img src={logo} alt="logo" width='150vw' style={{ marginBottom: '1rem' }} />
         <h1 style={{ fontSize: '2.5vw' }}>Log in to your account</h1>
         <Form
@@ -55,7 +55,7 @@ export default function Login(): JSX.Element {
           wrapperCol={{ span: 16, offset: 4 }}
           labelCol={{ span: 16, offset: 4 }}
           autoComplete="off"
-          style={{ justifyContent: 'center', width: '100%', marginTop: '1vh', height: '50vh' }}
+          className={styles.form}
         >
           <Form.Item
             style={{ justifySelf: 'center' }}
@@ -64,9 +64,8 @@ export default function Login(): JSX.Element {
           >
             {/* this needs to be able to accept an email OR username */}
             <Input
-              className="input-round"
+              className={styles.input}
               placeholder="Email"
-              style={{ width: '33vw', maxWidth: '600px', height: '7vh', maxHeight: '50px', borderRadius: '40px' }}
               onChange={(e) => setEmail(e.target.value)}
               onKeyPress={(e) => handleKeypress(e)}
             />
@@ -74,9 +73,8 @@ export default function Login(): JSX.Element {
 
           <Form.Item name="password" rules={[{ required: true, message: 'Please input your password!' }]}>
             <Input.Password
-              className="round-white-input"
+              className={styles.input}
               placeholder="Password"
-              style={{ width: '33vw', maxWidth: '600px', height: '7vh', maxHeight: '50px', borderRadius: '40px' }}
               onChange={(e) => setPassword(e.target.value)}
               onKeyPress={(e) => handleKeypress(e)}
             />

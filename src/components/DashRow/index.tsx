@@ -75,7 +75,7 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
       <Col span={2}></Col>
       <Col span={6} style={{ justifyItems: 'center', alignItems: 'end' }}>
         <Row className={styles['info-row']}>
-          <h4 style={{ fontSize: '.9vw' }}>{beat.genreTags[0]} | {beat.tempo} BPM | {beat.key}{displayFlatOrSharp(beat.flatOrSharp)} {beat.majorOrMinor}</h4>
+          <h4 className={styles['info-text']}>{beat.genreTags[0]} | {beat.tempo} BPM | {beat.key}{displayFlatOrSharp(beat.flatOrSharp)} {beat.majorOrMinor}</h4>
         </Row>
       </Col>
     </Row>

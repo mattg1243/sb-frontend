@@ -1,0 +1,40 @@
+/* this should probably be global */
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  height: 100vh;
+}
+
+.form {
+  justify-items: center;
+  width: 100%;
+  margin-top: 1vh;
+  height: 50vh;
+}
+
+.input {
+  width: 33vw;
+  max-width: 600px;
+  height: 7vh;
+  max-height: 50px;
+  border-radius: 40px;
+}
+/* not sure why the component wont take this styling from here */
+.login-button {
+  font-size: 15vw;
+  margin: 1rem;
+  background: black;
+  border-color: black;
+  width: 25vw;
+  max-width: 500px;
+  height: 15vh;
+  max-height: 125px;
+}
+
+@media screen and (min-width: 1200px) {
+  .login-button {
+    font-size: 2px;
+  }
+}

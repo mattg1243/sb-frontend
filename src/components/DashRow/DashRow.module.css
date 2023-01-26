@@ -14,10 +14,15 @@
 .title {
   cursor: pointer;
   margin: 2vw;
-  font-size: 1vw;
+  font-size: clamp(15px, 1vw, 20px);
 }
 
 .info-row {
   align-items: center;
   justify-content: end;
+  
+}
+
+.info-text {
+  font-size: clamp(13px, .8vw, 18px);
 }
