@@ -74,13 +74,13 @@ export default function Profile() {
     <LoadingPage /> :
     <Layout>
       <Navbar />
-      <Content style={{ margin: '15px' }}>
+      <Content className={styles.content}>
         <Row style={{ margin: '5rem 5rem' }}>
           <Space direction="horizontal" >
             <Space direction='vertical' style={{ textAlign: 'center' }}>
               {isCurrentUser ? 
               <>
-                <Avatar src={`${cdnHostname}/${userInfo.avatar}`} onClick={() => { setNewAvatarModalOpen(true) }} size={256} />
+                <Avatar src={`${cdnHostname}/${userInfo.avatar}`} onClick={() => { setNewAvatarModalOpen(true) }} className={styles.useravatar} />
                 <Modal 
                   key='Update Profile Picture' 
                   open={newAvatarModalOpen}
@@ -110,7 +110,9 @@ export default function Profile() {
                     onError={({ currentTarget }) => {
                       currentTarget.onerror = null; // prevents looping
                       currentTarget.src=defaultAvatar;
-                    }}  />}
+                    }}  
+                    preview={false}
+                    />}
                     className={styles.useravatar} 
                 size={256}  />
                 <Button type='ghost' style={{ border: 'solid', margin: '5px' }}>Follow</Button>
@@ -118,11 +120,11 @@ export default function Profile() {
               }
             </Space>
             <Col style={{  margin: '0rem 5rem', textAlign: 'start' }} >
-              <h1 style={{ fontSize: '5rem', margin: '0 1rem' }}>{userInfo.artistName}</h1>
-              <p style={{ margin: '1rem', maxWidth: '60%' }}>
+              <h1 className={styles.username}>{userInfo.artistName}</h1>
+              <p className={styles.bio}>
                 {userInfo.bio}
               </p>
-              <p style={{ margin: '1rem', maxWidth: '60%' }}>
+              <p className={styles.bio} style={{ fontSize: '.8vw' }} >
                 Member since {new Date(userInfo.created_at).toLocaleDateString('en-us', { year:"numeric", month:"short", day:"numeric"})}
               </p>
               <Space direction='horizontal' style={{  margin: '0rem 1rem', textAlign: 'start', justifyContent: 'center' }}>
