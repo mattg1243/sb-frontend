@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import CustomAlert from '../../CustomAlert';
 import gatewayUrl from '../../../config/routing';
 import TermsAndConditions from '../../TermsAndAgreements';
+import styles from './Register.module.css';
 
 export default function Register(): JSX.Element {
   const [email, setEmail] = useState<string>('');
@@ -42,9 +43,9 @@ export default function Register(): JSX.Element {
 
   return (
     <Layout>
-      <Content style={{ justifyContent: 'center', textAlign: 'center', marginTop: '5rem' }}>
-      <img src={logo} alt="logo" width={200} style={{ marginBottom: '1rem' }} />
-      <h1 style={{ fontSize: '3.5rem' }}>Create your free account</h1>
+      <Content className={styles.content}>
+      <img src={logo} alt="logo" width='150vw' style={{ marginBottom: '1rem' }} />
+      <h1 style={{ fontSize: '2.5vw' }}>Create your free account</h1>
         <Form
           name="basic"
           layout="vertical"
@@ -52,7 +53,7 @@ export default function Register(): JSX.Element {
           wrapperCol={{ span: 16, offset: 4 }}
           labelCol={{ span: 16, offset: 4 }}
           autoComplete="off"
-          style={{ justifyContent: 'center', textAlign: 'center', width: '100%' }}
+          className={styles.form}
         >
           <Form.Item
             style={{ justifySelf: 'center' }}
@@ -60,9 +61,8 @@ export default function Register(): JSX.Element {
             rules={[{ required: true, message: 'Please input your username!' }]}
           >
             <Input
-              className="round-white-input"
+              className={styles.input}
               placeholder="Email"
-              style={{ width: '600px', height: '50px', borderRadius: '40px' }}
               onChange={(e) => setEmail(e.target.value)}
             />
           </Form.Item>
@@ -73,33 +73,30 @@ export default function Register(): JSX.Element {
             rules={[{ required: true, message: 'Please input your artist name!' }]}
           >
             <Input
-              className="round-white-input"
+              className={styles.input}
               placeholder="Username"
-              style={{ width: '600px', height: '50px', borderRadius: '40px' }}
               onChange={(e) => setArtistName(e.target.value)}
             />
           </Form.Item>
 
           <Form.Item name="password" rules={[{ required: true, message: 'Please input your password!' }]}>
             <Input.Password
-              className="round-white-input"
+              className={styles.input}
               placeholder="Password"
-              style={{ width: '600px', height: '50px', borderRadius: '40px' }}
               onChange={(e) => setPassword(e.target.value)}
             />
           </Form.Item>
 
           <Form.Item name="confirm password" rules={[{ required: true, message: 'Please input your password!' }]}>
             <Input.Password
-              className="round-white-input"
+              className={styles.input}
               placeholder="Confirm Password"
-              style={{ width: '600px', height: '50px', borderRadius: '40px' }}
               onChange={(e) => setConfirmPassword(e.target.value)}
             />
           </Form.Item>
 
-          <Form.Item name="terms and conditions">
-            <Checkbox onChange={(e) => { setAgreedToTerms(e.target.checked) }}>I agree to the <TermsAndConditions /></Checkbox>
+          <Form.Item name="terms and conditions" className={styles['small-text']}>
+            <Checkbox  onChange={(e) => { setAgreedToTerms(e.target.checked) }}>I agree to the <TermsAndConditions /></Checkbox>
           </Form.Item>
 
           <Form.Item wrapperCol={{ offset: 4, span: 16 }}>
@@ -108,12 +105,12 @@ export default function Register(): JSX.Element {
               shape="round"
               size="large"
               style={{
-                fontSize: '2rem',
+                fontSize: '1.5vw',
                 margin: '1rem',
                 background: 'black',
                 borderColor: 'black',
-                width: '400px',
-                height: '80px',
+                width: '12vw',
+                height: '7vh',
               }}
               onClick={async () => {
                 await sendRegisterRequest();
@@ -122,7 +119,7 @@ export default function Register(): JSX.Element {
               Sign Up
             </Button>
             <h3>Already have an account?</h3>
-            <a href="/login">Login</a>
+            <a className={styles['small-text']} href="/login">Login</a>
           </Form.Item>
         </Form>
         <CustomAlert status={alert.status} message={alert.message} />

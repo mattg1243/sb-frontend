@@ -1,0 +1,38 @@
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: clamp(10px, 2vh, 100px);
+  text-align: center;
+  height: 100vh;
+}
+
+.form {
+  justify-items: center;
+  width: 100%;
+  margin-top: 1vh;
+}
+
+.input {
+  width: 33vw;
+  max-width: 600px;
+  height: clamp(30px, 5vh, 50px);
+  max-height: 50px;
+  border-radius: 40px;
+}
+
+.register-button {
+  font-size: 30vw;
+  margin: 1rem;
+  background: black;
+  border-color: black;
+  width: 25vw;
+  max-width: 500px;
+  height: 15vh;
+  max-height: 125px;
+}
+
+.small-text {
+  font-size: clamp(15px, .9vw, 20px);
+}
