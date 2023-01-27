@@ -14,3 +14,5 @@ The port routing should be in place already for your `localhost` develepment ser
 - API Gateway: this is the only service you will be directly interacting with from the frontend application and is served on port `8000`
 - User Service: served on port `8080`
 - Beat Service: served on port `8081`
+
+First, pull down all changes from these repositories using `git pull origin main` in all service / frontend repository roots (I will streamline this by including all these repositories as Git sub modules in a master repository eventually), then create a new development branch with the name formatted as `{yourname}/working/{nameofchanges}`. Make all your changes on this branch and when you're done, commit your work and include messages describing what you did, push that branch to GitHub under the same name, and then open a pull request so that I can review your code before merging it into the `main` branch. Once your changes are merged, I will delete your working branch and you can do the same on your local repository as these changes are now in the `main` branch. 
