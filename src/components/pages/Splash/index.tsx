@@ -16,9 +16,9 @@ export default function Splash() {
           height: '100vh',
         }}
       >
-        <Row gutter={150} style={{ height: '100vh', width: '100%', maxWidth: '2000px', justifyContent: 'center' }}>
+        <Row gutter={0} style={{ height: '100vh', width: '100%', maxWidth: '2000px', justifyContent: 'center' }}>
           <Col span={12}>
-            <h1 style={{ marginTop: '5rem', fontSize: '5rem', paddingLeft: '4rem', maxWidth: '700px' }}>
+            <h1 style={{ marginTop: '5rem', fontSize: '4.15vw', paddingLeft: '4rem', maxWidth: '1000px' }}>
               The First Beat Subscription Site
             </h1>
             <Space size='large' style={{ paddingTop: '2rem', paddingLeft: '4rem' }}>
@@ -44,7 +44,7 @@ export default function Splash() {
             </Space>
           </Col>
           <Col span={12}>
-            <img src={logo} alt="logo" width={600} style={{ marginBottom: '100%' }} />
+            <img src={logo} alt="logo" width={600} style={{ marginBottom: '0%', width: '30vw', height: 'auto' }} />
           </Col>
         </Row>
         <InfoPanel1 />
