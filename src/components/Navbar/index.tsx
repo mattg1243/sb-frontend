@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Header } from "antd/es/layout/layout";
 import { Button, Menu, Image, Avatar, Dropdown, MenuProps } from "antd";
 import { useNavigate } from "react-router-dom";
@@ -11,7 +11,6 @@ import { cdnHostname } from '../../config/routing';
 export default function Navbar() {
 
   const currentUserId = getUserIdFromLocalStorage();
-  let currentUserAvatar = '';
 
   const logoutUser = async () => {
     try {
@@ -45,10 +44,12 @@ export default function Navbar() {
 
   const navigate = useNavigate();
 
+  const avatarUrlRef = useRef();
+
   useEffect(() => {
     if (currentUserId) {
       getUserAvatarReq(currentUserId)
-        .then(res => console.log(res.data))
+        .then((res) => {avatarUrlRef.current = res.data})
         .catch(err => console.error(err))
     }
   })
@@ -80,8 +81,8 @@ export default function Navbar() {
             <Dropdown menu={{ items: userMenuItems }} placement='bottom' overlayStyle={{ color: 'blue', fontSize: '2rem' }} arrow={true} >
               <Avatar 
                 size={48} 
-                src={`${cdnHostname}/${currentUserAvatar}`}
-                style={{ border: 'solid 3px', borderColor: 'var(--primary)' }} 
+                src={`${cdnHostname}/${avatarUrlRef}`}
+                style={{ border: 'solid 3px', borderColor: 'var(--primary)', backgroundColor: 'black' }} 
                 onClick={() => { navigate(`/user/?id=${currentUserId}`); }}
               />
             </Dropdown>
