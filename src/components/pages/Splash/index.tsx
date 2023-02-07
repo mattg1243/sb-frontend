@@ -1,53 +1,51 @@
 import { Content, Header } from 'antd/lib/layout/layout';
 import { Layout, Row, Col, Button, Space } from 'antd';
-import logo from '../../../assets/logo_four_squares.png';
+import orangelogo from '../../../assets/orangelogo.png';
 import { useNavigate } from 'react-router-dom';
-import InfoPanel1 from '../../InfoPanel1';
+import Infopanel1 from '../../InfoPanel1';
+import Infopanel2 from '../../InfoPanel2';
+import Infopanel3 from '../../InfoPanel3';
+                
+import styles from './Splash.module.css';
 
 export default function Splash() {
   const navigate = useNavigate();
 
   return (
-    <Layout style={{ padding: '2rem' }}>
-      <Content
-        style={{
-          marginTop: '10%',
-          justifyContent: 'center',
-          height: '100vh',
-        }}
-      >
-        <Row gutter={150} style={{ height: '100vh', width: '100%', maxWidth: '2000px', justifyContent: 'center' }}>
-          <Col span={12}>
-            <h1 style={{ marginTop: '5rem', fontSize: '5rem', paddingLeft: '4rem', maxWidth: '700px' }}>
-              The First Beat Subscription Site
-            </h1>
-            <Space size='large' style={{ paddingTop: '2rem', paddingLeft: '4rem' }}>
+    <Layout className={styles.layout}>
+      <Content className={styles.content}>
+        <Row gutter={0} className={styles.row}>
+		  <div className={styles.container}>
+            <img src={orangelogo} alt="Orange Music Entertainment Logo" style={{ width:'40vw', height: 'auto'}}/>
+            <div className={styles.orangetext}>
+              <p style={{fontSize: '8vw', margin: '0vw', letterSpacing: '0.5vw'}}>SWEATSHOP BEATS</p>
+			  <p style={{fontSize: '2.1vw', paddingLeft: '18vw', margin: '0vw', letterSpacing: '0.25vw'}}>THE WORLD'S FIRST BEAT SUBSCRIPTION SITE</p>
+			  <Space size='large' className={styles.buttonspace}>
                 <Button
                   shape="round"
                   size="large"
-                  style={{ width: '10rem', height: '4rem', fontWeight: 'bold' }}
+				  style={{ width: '16vw', height: '3.75vw', fontWeight: 'bold', fontSize: '1.2vw' }}
                   onClick={() => {
                     navigate('/register');
-                  }}
-                >
+                  }}>
                   Sign Up
                 </Button>
                 <Button
                   shape="round"
-                  style={{ width: '10rem', height: '4rem', fontWeight: 'bold' }}
+				  size="large"
+				  style={{ width: '16vw', height: '3.75vw', fontWeight: 'bold', fontSize: '1.2vw' }}
                   onClick={() => {
                     navigate('/login');
-                  }}
-                >
+                  }}>
                   Login
                 </Button>
-            </Space>
-          </Col>
-          <Col span={12}>
-            <img src={logo} alt="logo" width={600} style={{ marginBottom: '100%' }} />
-          </Col>
+              </Space>
+            </div>
+		  </div>
         </Row>
-        <InfoPanel1 />
+	  <Infopanel1 />
+	  <Infopanel2 />
+	  <Infopanel3 />
       </Content>
     </Layout>
   );

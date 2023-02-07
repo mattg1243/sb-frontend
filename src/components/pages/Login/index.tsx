@@ -1,7 +1,7 @@
 import { Spin, Button, Form, Input, Layout } from 'antd';
 import React, { useState } from 'react';
 import { Content } from 'antd/lib/layout/layout';
-import logo from '../../../assets/logo_four_squares.png';
+import orangelogo from '../../../assets/orangelogo.png';
 import { useNavigate } from 'react-router-dom';
 import { AlertObj } from '../../../types';
 import CustomAlert from '../../CustomAlert';
@@ -46,8 +46,8 @@ export default function Login(): JSX.Element {
   return (
     <Layout>
       <Content className={styles.content}>
-        <img src={logo} alt="logo" width='150vw' style={{ marginBottom: '1rem' }} />
-        <h1 style={{ fontSize: '2.5vw' }}>Log in to your account</h1>
+        <img src={orangelogo} alt="logo" width='150vw' />
+        <h1 style={{ fontSize: '2vw', marginTop: '1vh' }}>Log in to your account</h1>
         <Form
           name="basic"
           layout="vertical"
@@ -96,7 +96,6 @@ export default function Login(): JSX.Element {
               size="large"
               style={{
                 fontSize: '1.5vw',
-                margin: '1rem',
                 background: 'black',
                 borderColor: 'black',
                 width: '17vw',
@@ -110,8 +109,7 @@ export default function Login(): JSX.Element {
             >
               Login
             </Button>}
-            <h3>Dont have an account?</h3>
-            <a href="/register">Sign Up</a>
+            <h3>Dont have an account? <a href="/register">Sign Up</a></h3>
           </Form.Item>
         </Form>
         <CustomAlert status={alert.status} message={alert.message} />

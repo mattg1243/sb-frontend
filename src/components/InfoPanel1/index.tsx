@@ -1,15 +1,16 @@
 import { Row, Col } from 'antd';
-import logo from '../../assets/logo_four_squares.png';
+import styles from './Infopanel1.module.css';
+import piggybank from '../../assets/piggybank.png';
 
 export default function InfoPanel1() {
   return (
-    <Row gutter={100} style={{ width: '100%', maxWidth: '2000px', justifyContent: 'center' }}>
+    <Row gutter={0} className={styles.row}>
       <Col span={12}>
-        <h1 style={{ fontSize: '4rem', paddingLeft: '4rem', maxWidth: '700px' }}>Creators recieve 50% of all revenue generated from subscriptions.</h1>
-        <p style={{ marginTop: '1rem', fontSize: '2rem', paddingLeft: '4rem', maxWidth: '700px' }}>The more credits artists spend on your beats, the more you get paid.</p>
+        <h1 className={styles.header1}>Stop spending $300 to license a single beat.</h1>
+        <p className={styles.paragraph1}>For as low as $19.99/month, you can license and download multiple beats from professional artists.</p>
       </Col>
       <Col span={12}>
-        <img src={logo} alt="logo" width={500} style={{ marginBottom: '1rem' }} />
+        <img className={styles.piggybank} src={piggybank} alt="visual.png"/>
       </Col>
     </Row>
   );
