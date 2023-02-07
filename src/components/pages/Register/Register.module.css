@@ -6,6 +6,7 @@
   margin-top: clamp(10px, 2vh, 100px);
   text-align: center;
   height: 100vh;
+  padding-right: 4vw;
 }
 
 .form {
@@ -15,9 +16,9 @@
 }
 
 .input {
-  width: 33vw;
+  width: 27vw;
   max-width: 600px;
-  height: clamp(30px, 5vh, 50px);
+  height: 4vh;
   max-height: 50px;
   border-radius: 40px;
 }

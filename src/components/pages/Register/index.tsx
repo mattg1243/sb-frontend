@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { Content } from 'antd/lib/layout/layout';
 import { AlertObj } from '../../../types';
-import logo from '../../../assets/logo_four_squares.png';
+import orangelogo from '../../../assets/orangelogo.png';
 import { useNavigate } from 'react-router-dom';
 import CustomAlert from '../../CustomAlert';
 import gatewayUrl from '../../../config/routing';
@@ -44,8 +44,8 @@ export default function Register(): JSX.Element {
   return (
     <Layout>
       <Content className={styles.content}>
-      <img src={logo} alt="logo" width='150vw' style={{ marginBottom: '1rem' }} />
-      <h1 style={{ fontSize: '2.5vw' }}>Create your free account</h1>
+      <img src={orangelogo} alt="logo" width='120vw' />
+      <h1 style={{ fontSize: '2vw', marginTop: '0vh' }}>Create your free account</h1>
         <Form
           name="basic"
           layout="vertical"
@@ -106,7 +106,6 @@ export default function Register(): JSX.Element {
               size="large"
               style={{
                 fontSize: '1.5vw',
-                margin: '1rem',
                 background: 'black',
                 borderColor: 'black',
                 width: '12vw',
@@ -118,8 +117,7 @@ export default function Register(): JSX.Element {
             >
               Sign Up
             </Button>
-            <h3>Already have an account?</h3>
-            <a className={styles['small-text']} href="/login">Login</a>
+            <h3>Already have an account? <a href="/login">Login</a></h3>
           </Form.Item>
         </Form>
         <CustomAlert status={alert.status} message={alert.message} />
