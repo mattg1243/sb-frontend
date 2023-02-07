@@ -1,0 +1,40 @@
+@import url('https://fonts.cdnfonts.com/css/norwester');
+
+.layout {
+	padding: 3vh 2vw 0vw 0vw;
+}
+
+.content{ /*holds everything on the page including the infopanels*/
+	justify-content: center;
+	height: 100vh;
+}
+
+.row { /*holds only the logo, title, and login buttons*/
+	font-family: 'Norwester', sans-serif;
+	height: 100vh;
+	width: 100vw;
+	max-width: 3000px;
+	justify-content: left;
+	padding-left: 6vw; /*to make the logo+title centered relative to the infopanels*/
+}
+
+.container{ 
+    position: relative; /*necessary to make text overlap with image*/
+	width: 100vw;
+}
+	
+.container .orangetext{
+    position: absolute; /*necessary to make text overlap with image*/
+	margin: 0 auto;
+    z-index: 0;
+    left: -2.7vw; /*center text over image horizontally*/
+    right: 0vw;
+    top: 30vh; /*center text over image vertically*/
+    text-align: center;
+    width: 100%;
+}
+
+.buttonspace { /*position buttons simultaneously*/
+	padding-top: 10vh;
+	padding-left: 32vw;
+}
