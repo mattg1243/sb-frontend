@@ -1,5 +1,5 @@
-import { Button, Form, Input, Layout, Checkbox } from 'antd';
-import React, { useState } from 'react';
+import { Button, Form, Input, Layout, Checkbox, Spin } from 'antd';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Content } from 'antd/lib/layout/layout';
 import { AlertObj } from '../../../types';
@@ -12,16 +12,20 @@ import styles from './Register.module.css';
 
 export default function Register(): JSX.Element {
   const [email, setEmail] = useState<string>('');
+  // TODO: change artistname globally across the frontend to username
   const [artistName, setArtistName] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [passwordConfirm, setConfirmPassword] = useState<string>('');
+  const [buttonColor, setButtonColor] = useState<'#D3D3D3' | 'black'>('#D3D3D3');
   const [agreedToTerms, setAgreedToTerms] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [alert, setAlert] = useState<AlertObj>({status: 'none', message: ''});
 
   const navigate = useNavigate();
 
   const sendRegisterRequest = async () => {
     if (password === passwordConfirm && agreedToTerms && email !== undefined && artistName !== undefined) {
+      setIsLoading(true);
       const data = { email, artistName, password };
       console.log(data);
       try {
@@ -30,9 +34,13 @@ export default function Register(): JSX.Element {
         if (response.status === 200) {
           setAlert({ status: 'success', message: 'Account created succesfully, you may now login' });
           localStorage.setItem('sb-user', JSON.stringify(response.data.user));
+          setIsLoading(false);
           navigate('/dash');
         }
-      } catch (err) {
+      } catch (err: any) {
+        console.log('message from server: ', err.response.data.message)
+        setAlert({ status: 'error', message: err.response.data.message });
+        setIsLoading(false);
         console.error(err);
       }
     } else {
@@ -40,6 +48,15 @@ export default function Register(): JSX.Element {
       setAlert({ status: 'error', message: 'Please fill out required fields and make sure you have reentered your passwords correctly.' });
     }
   };
+
+  useEffect(() => {
+    // this can be refined to make sure that each input is actually valid, not just holding some arbitrary user input
+    if (password === passwordConfirm && agreedToTerms && email !== (undefined || '') && artistName !== (undefined || '')) {
+      setButtonColor('black');
+    } else {
+      setButtonColor('#D3D3D3');
+    }
+  }, [password, passwordConfirm, agreedToTerms, email, artistName]);
 
   return (
     <Layout>
@@ -58,7 +75,7 @@ export default function Register(): JSX.Element {
           <Form.Item
             style={{ justifySelf: 'center' }}
             name="email"
-            rules={[{ required: true, message: 'Please input your username!' }]}
+            rules={[{ required: true, message: 'Please enter your email' }]}
           >
             <Input
               className={styles.input}
@@ -69,8 +86,8 @@ export default function Register(): JSX.Element {
 
           <Form.Item
             style={{ justifySelf: 'center' }}
-            name="artistName"
-            rules={[{ required: true, message: 'Please input your artist name!' }]}
+            name="username"
+            rules={[{ required: true, message: 'Please input your username' }]}
           >
             <Input
               className={styles.input}
@@ -98,29 +115,33 @@ export default function Register(): JSX.Element {
           <Form.Item name="terms and conditions" className={styles['small-text']}>
             <Checkbox  onChange={(e) => { setAgreedToTerms(e.target.checked) }}>I agree to the <TermsAndConditions /></Checkbox>
           </Form.Item>
-
           <Form.Item wrapperCol={{ offset: 4, span: 16 }}>
-            <Button
-              type="primary"
-              shape="round"
-              size="large"
-              style={{
-                fontSize: '1.5vw',
-                background: 'black',
-                borderColor: 'black',
-                width: '12vw',
-                height: '7vh',
-              }}
-              onClick={async () => {
-                await sendRegisterRequest();
-              }}
-            >
-              Sign Up
-            </Button>
+            {isLoading ? <Spin /> 
+              :
+                <Button
+                type="primary"
+                shape="round"
+                size="large"
+                style={{
+                  fontSize: '1.5vw',
+                  margin: '1rem',
+                  backgroundColor: buttonColor,
+                  borderColor: buttonColor,
+                  width: '12vw',
+                  height: '7vh',
+                }}
+                disabled={buttonColor === '#D3D3D3'}
+                onClick={async () => {
+                  await sendRegisterRequest();
+                }}
+              >
+                Sign Up
+              </Button> 
+            }
+            <CustomAlert status={alert.status} message={alert.message} />
             <h3>Already have an account? <a href="/login">Login</a></h3>
           </Form.Item>
         </Form>
-        <CustomAlert status={alert.status} message={alert.message} />
       </Content>  
     </Layout>
   );
