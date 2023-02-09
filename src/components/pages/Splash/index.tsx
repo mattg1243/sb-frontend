@@ -7,12 +7,14 @@ import Infopanel2 from '../../InfoPanel2';
 import Infopanel3 from '../../InfoPanel3';
                 
 import styles from './Splash.module.css';
+import Navbar from '../../Navbar/v2';
 
 export default function Splash() {
   const navigate = useNavigate();
 
   return (
     <Layout className={styles.layout}>
+      <Navbar />
       <Content className={styles.content}>
         <Row gutter={0} className={styles.row}>
 		  <div className={styles.container}>
