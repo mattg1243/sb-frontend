@@ -6,6 +6,7 @@ import './index.css';
 import Dashboard from './components/pages/Dashboard';
 import Profile from './components/pages/Profile';
 import LoadingPage from './components/pages/Loading';
+import AboutPage from './components/pages/About';
 
 function App() {
 
@@ -16,6 +17,7 @@ function App() {
           <Route path="/" element={<Splash />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/about" element={<AboutPage />} />
           <Route path="/dash" element={<Dashboard />} />
           <Route path="/user" element={<Profile />} />
           <Route path="/loading" element={<LoadingPage />} />
