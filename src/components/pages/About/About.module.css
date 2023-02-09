@@ -1,0 +1,27 @@
+@import url('https://fonts.cdnfonts.com/css/norwester');
+
+.about {
+  font-family: 'Norwester', sans-serif;
+}
+
+.typography {
+  width: 50vw;
+  text-align: start;
+  margin-top: 3vh;
+  z-index: 1;
+}
+
+
+.logo {
+  position: absolute;
+  width: 30vw;
+  opacity: .5;
+  z-index: 0;
+}
+
+.footer {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  padding: 2rem;
+}
