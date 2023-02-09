@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Layout, Avatar, Row, Space, Col, Button, Modal, Spin, Image } from "antd";
+import { Layout, Avatar, Row, Space, Col, Button, Modal, Spin, Image, Progress } from "antd";
 import { Content } from "antd/es/layout/layout";
 import { UserOutlined, YoutubeFilled, AppleFilled, TwitterCircleFilled, CheckCircleOutlined, UserAddOutlined } from "@ant-design/icons";
 import DashRow from "../../DashRow";
@@ -26,6 +26,7 @@ export default function Profile() {
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [updateIsLoading, setUpdateIsLoading] = useState<boolean>(false);
+  const [uploadProgress, setUploadProgress] = useState<number>();
   const [trackPlaying, setTrackPlaying] = useState<Beat>();
   const [userId, setUserId] = useState<string>(searchParams.get('id') || '');
   const [userInfo, setUserInfo] = useState<User | null>();
@@ -49,7 +50,7 @@ export default function Profile() {
       setUpdateIsLoading(true);
       const newAvatarForm = new FormData();
       newAvatarForm.append('newAvatar', newAvatar);
-      const updateAvatarRes = await updateAvatarReq(newAvatarForm);
+      const updateAvatarRes = await updateAvatarReq(newAvatarForm, setUploadProgress);
       console.log(updateAvatarRes);
       if (updateAvatarRes.status === 200) {
         setNewAvatarModalOpen(false);
@@ -92,10 +93,9 @@ export default function Profile() {
                   ]}  
                 >
                   <div style={{ padding: '3rem' }}>
-                    <Spin spinning={updateIsLoading}>
-                      <UploadButton allowedFileType='image/*' label='New Profile Pic' sideIcon={<UserOutlined />} uploadStateSetter={setNewAvatar} />
+                      <UploadButton allowedFileType='image/*' label='New Profile Pic' disabled={updateIsLoading} sideIcon={<UserOutlined />} uploadStateSetter={setNewAvatar} />
                       {newAvatar ? <CheckCircleOutlined style={{ margin: '0 1rem', fontSize: '1rem' }} /> : null}
-                    </Spin>
+                    {updateIsLoading ? <Progress percent={uploadProgress as number} /> : null}
                     {alert ? <CustomAlert message={alert.message} status={alert.status} /> : null}
                   </div>
                 </Modal>

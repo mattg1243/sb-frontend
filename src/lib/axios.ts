@@ -42,11 +42,12 @@ export const updateUserReq = async (user: UpdateUserArg) => {
   );
 }
 
-export const updateAvatarReq = async (newAvatar: FormData) => {
+export const updateAvatarReq = async (newAvatar: FormData, progressSetter: Function) => {
   return await axios.post(`${gatewayUrl}/user/avatar`, 
     newAvatar, { 
       headers: { 'Content-Type': 'multipart/form-data', },
       withCredentials: true,
+      onUploadProgress: progressEvent => { progressSetter(Math.round(progressEvent.loaded / progressEvent.bytes * 100)) }
     }
   );
 }
