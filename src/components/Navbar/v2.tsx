@@ -73,7 +73,7 @@ export default function Navbar() {
             <Button type='ghost' onClick={() => { navigate('/about') }} style={{ color: 'white' }}>About</Button>
           </Menu.Item>
           <Menu.Item style={{ marginLeft: 'auto' }}>
-            <Input type='text' className={styles.searchbar} placeholder='Search' suffix={<SearchOutlined />} />
+            <Input type='text' style={{ borderRadius: '40px' }} placeholder='Search' suffix={<SearchOutlined />} />
           </Menu.Item>
         </Menu>
       </Header>

@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Header } from "antd/es/layout/layout";
-import { Button, Menu, Image, Avatar, Dropdown, MenuProps } from "antd";
+import { Button, Menu, Image, Avatar, Dropdown, MenuProps, Input, Space } from "antd";
+import { SearchOutlined } from '@ant-design/icons';
 import { useNavigate } from "react-router-dom";
 import UploadBeatModal from "../BeatUploadModal";
 import logo from '../../assets/logo_four_squares.png';
@@ -77,7 +78,9 @@ export default function Navbar() {
           <Menu.Item key="about">
             <Button type='ghost' onClick={() => { navigate('/about') }} style={{ color: 'white' }}>About</Button>
           </Menu.Item>
-          <Menu.Item key="profile" style={{ marginLeft: 'auto' }}>
+          <Menu.Item key="profile" style={{ marginLeft: 'auto', padding: '0 2vw' }}>
+          <Space size={62}>
+            <Input type='text' style={{ borderRadius: '40px', width: '15vw' }} placeholder='Search' suffix={<SearchOutlined />} />
             <Dropdown menu={{ items: userMenuItems }} placement='bottom' overlayStyle={{ color: 'blue', fontSize: '2rem' }} arrow={true} >
               <Avatar 
                 size={48} 
@@ -86,6 +89,7 @@ export default function Navbar() {
                 onClick={() => { navigate(`/user/?id=${currentUserId}`); }}
               />
             </Dropdown>
+          </Space>
           </Menu.Item>
         </Menu>
       </Header>
