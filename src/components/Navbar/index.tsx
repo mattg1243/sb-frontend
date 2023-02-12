@@ -4,7 +4,7 @@ import { Button, Menu, Image, Avatar, Dropdown, MenuProps, Input, Space } from "
 import { SearchOutlined } from '@ant-design/icons';
 import { useNavigate } from "react-router-dom";
 import UploadBeatModal from "../BeatUploadModal";
-import logo from '../../assets/logo_four_squares.png';
+import logo from '../../assets/orangelogo.png';
 import { getUserIdFromLocalStorage } from '../../utils/localStorageParser';
 import { logoutUserReq, getUserAvatarReq } from '../../lib/axios';
 import { cdnHostname } from '../../config/routing';
