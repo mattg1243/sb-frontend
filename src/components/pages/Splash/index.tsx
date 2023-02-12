@@ -14,6 +14,7 @@ export default function Splash() {
 
   return (
     <Layout className={styles.layout}>
+	  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
       <Navbar />
       <Content className={styles.content}>
         <Row gutter={0} className={styles.row}>
@@ -30,7 +31,8 @@ export default function Splash() {
                   onClick={() => {
                     navigate('/register');
                   }}>
-                  Sign Up
+				  <b className="fa fa-user-plus"></b>
+				  Sign Up
                 </Button>
                 <Button
                   shape="round"
@@ -39,6 +41,7 @@ export default function Splash() {
                   onClick={() => {
                     navigate('/login');
                   }}>
+				  <b className="fa fa-sign-in"></b>
                   Login
                 </Button>
               </Space>
