@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from "axios";
 import gatewayUrl from "../config/routing";
-import { Beat, User } from '../types';
+import { User } from '../types';
 
 // user
 interface ILoginRequest {

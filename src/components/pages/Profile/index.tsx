@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import { Layout, Avatar, Row, Space, Col, Button, Modal, Spin, Image, Progress } from "antd";
+import { Layout, Avatar, Row, Space, Col, Button, Modal, Image, Progress } from "antd";
 import { Content } from "antd/es/layout/layout";
-import { UserOutlined, YoutubeFilled, AppleFilled, TwitterCircleFilled, CheckCircleOutlined, UserAddOutlined } from "@ant-design/icons";
+import { UserOutlined, YoutubeFilled, AppleFilled, TwitterCircleFilled, CheckCircleOutlined } from "@ant-design/icons";
 import DashRow from "../../DashRow";
 import useGetBeats from '../../../hooks/useGetBeats';
 import { Beat } from "../../../types";
@@ -22,20 +22,20 @@ import styles from './Profile.module.css';
 
 export default function Profile() {
 
-  const [searchParams, setSearchParams] = useSearchParams();
+  const searchParams = useSearchParams()[0];
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [updateIsLoading, setUpdateIsLoading] = useState<boolean>(false);
   const [uploadProgress, setUploadProgress] = useState<number>();
   const [trackPlaying, setTrackPlaying] = useState<Beat>();
-  const [userId, setUserId] = useState<string>(searchParams.get('id') || '');
   const [userInfo, setUserInfo] = useState<User | null>();
   const [newAvatar, setNewAvatar] = useState<File>();
   const [newAvatarModalOpen, setNewAvatarModalOpen] = useState<boolean>(false);
-  const [isCurrentUser, setCurrentUser] = useState<boolean>(userId === getUserIdFromLocalStorage());
   const [alert, setAlert] = useState<AlertObj>();
 
 
+  const userId = searchParams.get('id') || '';
+  const isCurrentUser = userId === getUserIdFromLocalStorage();
   const { beats } = useGetBeats(userId);
 
   useEffect(() => {

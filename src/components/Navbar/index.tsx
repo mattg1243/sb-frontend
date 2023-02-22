@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Header } from "antd/es/layout/layout";
 import { Button, Menu, Image, Avatar, Dropdown, MenuProps, Input, Space } from "antd";
 import { SearchOutlined } from '@ant-design/icons';
@@ -46,15 +46,13 @@ export default function Navbar() {
 
   const navigate = useNavigate();
 
-  const avatarUrlRef = useRef();
-
   useEffect(() => {
     if (currentUserId) {
       getUserAvatarReq(currentUserId)
         .then((res) => {setAvatarUrl(res.data);})
         .catch(err => console.error(err))
     }
-  }, [])
+  }, [currentUserId])
 
   return (
       <Header style={{ width: '100%', margin: 0, top: 100, background: 'black' }}>

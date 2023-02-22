@@ -1,5 +1,5 @@
-import { Content, Header } from 'antd/lib/layout/layout';
-import { Layout, Row, Col, Button, Space } from 'antd';
+import { Content } from 'antd/lib/layout/layout';
+import { Layout, Row, Button, Space } from 'antd';
 import orangelogo from '../../../assets/orangelogo.png';
 import { useNavigate } from 'react-router-dom';
 import Infopanel1 from '../../InfoPanel1';

@@ -15,7 +15,6 @@ interface IEditBeatModalProps {
 // TODO: consolidate this and the BeatUploadModal as they share lots of code
 export default function BeatEditModal(props: IEditBeatModalProps) {
   const { beat } = props;
-  const currentGenreTags = beat.genreTags.map((val) => ({label: val, value: val}));
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);

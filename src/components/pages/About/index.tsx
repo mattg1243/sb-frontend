@@ -1,13 +1,13 @@
 
-import Layout, { Content, Footer } from 'antd/es/layout/layout';
-import { Typography, Divider } from 'antd';
+import Layout, { Content } from 'antd/es/layout/layout';
+import { Typography } from 'antd';
 import Navbar from '../../Navbar';
 import styles from './About.module.css';
 import balloonLogo from '../../../assets/orangelogo.png';
 
 export default function AboutPage() {
   
-  const { Title, Paragraph, Text, Link } = Typography;
+  const { Title, Paragraph } = Typography;
   
   return (  
     <>
