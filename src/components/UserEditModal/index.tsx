@@ -1,7 +1,7 @@
 import { useState } from "react";
 import type { User } from "../../types";
 import { Button, Modal, Form, Input, Space, Spin } from "antd";
-import { AppleOutlined, InstagramOutlined, SoundOutlined, TwitterOutlined, YoutubeOutlined } from "@ant-design/icons";
+import { AppleOutlined, InstagramOutlined, LinkOutlined, SoundOutlined, TwitterOutlined, YoutubeOutlined } from "@ant-design/icons";
 import { ILinkedSocials } from '../../types/user';
 import { updateUserReq } from '../../lib/axios';
 import { AlertObj } from '../../types/alerts';
@@ -119,9 +119,9 @@ export default function UserEditModal(props: IUserEditModal) {
                 }) :
                 null
               } */}
-              <Input defaultValue={twitter} onChange={(e) => { setTwitter(e.target.value) }} addonAfter={socialInputIcons['Twitter']}/>
-              <Input defaultValue={youtube} onChange={(e) => { setYouTube(e.target.value) }} addonAfter={socialInputIcons['YouTube']}/>
-              <Input defaultValue={appleMusic} onChange={(e) => { setAppleMusic(e.target.value) }} addonAfter={socialInputIcons['Apple Music']}/>
+              <Input defaultValue={twitter} onChange={(e) => { setTwitter(e.target.value) }} prefix={'@'} addonAfter={socialInputIcons['Twitter']}/>
+              <Input defaultValue={youtube} onChange={(e) => { setYouTube(e.target.value) }} prefix={'@'} addonAfter={socialInputIcons['YouTube']}/>
+              <Input defaultValue={appleMusic} onChange={(e) => { setAppleMusic(e.target.value) }} prefix={<LinkOutlined />} addonAfter={socialInputIcons['Apple Music']}/>
             </Space>
           </Form.Item>
           {alert ? <CustomAlert status={alert.status} message={alert.message} /> : null}
