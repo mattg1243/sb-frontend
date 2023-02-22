@@ -16,7 +16,7 @@ export default function AboutPage() {
         <Content style={{ display: 'flex', justifyContent: 'center' }}>
           <img src={balloonLogo} alt='Balloon Logo' className={styles.logo} />
           <Typography className={styles.typography}>
-            <Title className={styles.about}>About Us</Title>
+            <Title className={styles.about} data-cy="title">About Us</Title>
             
             <Paragraph>
               <strong>Who we are: </strong>
