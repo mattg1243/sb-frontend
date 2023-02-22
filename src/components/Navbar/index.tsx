@@ -11,6 +11,7 @@ import { cdnHostname } from '../../config/routing';
 
 export default function Navbar() {
 
+  const [avatarUrl, setAvatarUrl] = useState();
   const currentUserId = getUserIdFromLocalStorage();
 
   const logoutUser = async () => {
@@ -50,10 +51,10 @@ export default function Navbar() {
   useEffect(() => {
     if (currentUserId) {
       getUserAvatarReq(currentUserId)
-        .then((res) => {avatarUrlRef.current = res.data})
+        .then((res) => {setAvatarUrl(res.data);})
         .catch(err => console.error(err))
     }
-  })
+  }, [])
 
   return (
       <Header style={{ width: '100%', margin: 0, top: 100, background: 'black' }}>
@@ -84,7 +85,7 @@ export default function Navbar() {
             <Dropdown menu={{ items: userMenuItems }} placement='bottom' overlayStyle={{ color: 'blue', fontSize: '2rem' }} arrow={true} >
               <Avatar 
                 size={48} 
-                src={`${cdnHostname}/${avatarUrlRef}`}
+                src={`${cdnHostname}/${avatarUrl}`}
                 style={{ border: 'solid 3px', borderColor: 'var(--primary)', backgroundColor: 'black' }} 
                 onClick={() => { navigate(`/user/?id=${currentUserId}`); }}
               />
