@@ -130,13 +130,16 @@ export default function Profile() {
               <Space direction='horizontal' style={{  margin: '0rem 1rem', textAlign: 'start', justifyContent: 'center' }}>
                 <YoutubeFilled 
                   style={{ fontSize: '1.5rem' }} 
-                  onClick={() => { window.open(userInfo.linkedSocials.youtube ? userInfo.linkedSocials.youtube : `https://www.youtube.com/`) }} 
+                  onClick={() => { window.open(userInfo.linkedSocials.youtube ? `https://www.youtube.com/@${userInfo.linkedSocials.youtube}` : 'https://www.youtube.com') }} 
                 />
                 <TwitterCircleFilled 
                   style={{ fontSize: '1.5rem' }} 
-                  onClick={() => { window.open(userInfo.linkedSocials.youtube ? userInfo.linkedSocials.twitter : `https://www.twitter.com/`) }} 
+                  onClick={() => { window.open(userInfo.linkedSocials.youtube ? `https://www.twitter.com/${userInfo.linkedSocials.twitter}` : 'https://www.twitter.com') }} 
                 />
-                <AppleFilled style={{ fontSize: '1.5rem' }} />
+                <AppleFilled 
+                  style={{ fontSize: '1.5rem' }} 
+                  onClick={() => { window.open(userInfo.linkedSocials.appleMusic ? userInfo.linkedSocials.appleMusic : 'https://music.apple.com/') }}
+                />
               </Space>
             </Col>
           </Space>
