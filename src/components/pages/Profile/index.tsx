@@ -16,7 +16,7 @@ import UserEditModal from '../../UserEditModal';
 import { AlertObj } from '../../../types/alerts';
 import UploadButton from '../../UploadButton';
 import CustomAlert from '../../CustomAlert';
-import PlaybackButtons from '../../PlaybackButtons/PlaybackButtons';
+import PlaybackButtons from '../../PlaybackButtons';
 import defaultAvatar from '../../../assets/default_avatar_white.png';
 import styles from './Profile.module.css';
 
