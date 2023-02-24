@@ -58,7 +58,7 @@ export default function AboutPage() {
               Join the Sweatshop Beats community today and start exploring, creating, and making your mark
               on the world.
             </Paragraph>
-            <Paragraph className={styles.footer}>
+            <Paragraph className={styles.footer} data-cy="footer">
               <p><strong>Questions? </strong> info@orangemusicent.com</p>
               <strong>Follow us on Twitter</strong>
               @mattg  @montanab
