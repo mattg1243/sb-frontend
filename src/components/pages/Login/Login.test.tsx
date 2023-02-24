@@ -3,7 +3,7 @@
 import { mount } from 'cypress/react18';
 import { MemoryRouter } from 'react-router-dom';
 import Login from "."
-import gatewayUrl from '../../../config/routing';
+// import gatewayUrl from '../../../config/routing';
 
 describe('Login.cy.tsx', () => {
   

@@ -14,10 +14,9 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
-      - name: npm install, build and test components
+      - name: Install dependencies and test components
         run: |
           npm install
-          npm run build --if-present
           npm run test:comp
       - name: Deploy to Render with wehook
         uses: distributhor/workflow-webhook@v2
