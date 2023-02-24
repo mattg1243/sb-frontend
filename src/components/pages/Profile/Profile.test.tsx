@@ -3,3 +3,6 @@ describe('Profile.cy.tsx', () => {
     // cy.mount()
   })
 })
+
+// appease the compiler
+export {}

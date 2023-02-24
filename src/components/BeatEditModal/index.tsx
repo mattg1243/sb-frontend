@@ -45,6 +45,7 @@ export default function BeatEditModal(props: IEditBeatModalProps) {
       console.log(response.data);
     } catch (err) {
       console.error(err);
+      console.log('yee')
     }
     setIsLoading(false);
   }

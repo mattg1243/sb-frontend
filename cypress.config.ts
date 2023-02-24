@@ -7,6 +7,8 @@ export default defineConfig({
       framework: "create-react-app",
       bundler: "webpack",
     },
+    video: false,
+    watchForFileChanges: true,
   },
 
   e2e: {
