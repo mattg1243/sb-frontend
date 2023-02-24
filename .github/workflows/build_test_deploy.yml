@@ -19,6 +19,7 @@ jobs:
           npm install
           npm run test:comp
       - name: Deploy to Render with wehook
-        uses: distributhor/workflow-webhook@v2
-        env:
-          webhook_url: ${{ secrets.WEBHOOK_URL }}
+        uses: fjogeleit/http-request-action@v1
+        with:
+          url: ${{ secrets.WEBHOOK_URL }}
+          method: 'GET'
