@@ -1,7 +1,7 @@
 name: Build and test React app
 on: [push]
 jobs:
-  build_test_deploy:
+  test:
     runs-on: ubuntu-latest
 
     strategy:
@@ -18,7 +18,11 @@ jobs:
         run: |
           npm install
           npm run test:comp
-      - name: Deploy to Render with wehook
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to Render with webhook
         uses: fjogeleit/http-request-action@v1
         with:
           url: ${{ secrets.WEBHOOK_URL }}
