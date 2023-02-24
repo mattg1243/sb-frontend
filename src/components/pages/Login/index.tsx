@@ -60,7 +60,7 @@ export default function Login(): JSX.Element {
           <Form.Item
             style={{ justifySelf: 'center' }}
             name="email"
-            rules={[{ required: true, message: 'Please input your username!' }]}
+            rules={[{ required: true, message: 'Please input your email!' }]}
           >
             {/* this needs to be able to accept an email OR username */}
             <Input
@@ -68,6 +68,7 @@ export default function Login(): JSX.Element {
               placeholder="Email"
               onChange={(e) => setEmail(e.target.value)}
               onKeyPress={(e) => handleKeypress(e)}
+              data-cy="email input"
             />
           </Form.Item>
 
@@ -77,6 +78,7 @@ export default function Login(): JSX.Element {
               placeholder="Password"
               onChange={(e) => setPassword(e.target.value)}
               onKeyPress={(e) => handleKeypress(e)}
+              data-cy="password input"
             />
           </Form.Item>
 
@@ -90,7 +92,7 @@ export default function Login(): JSX.Element {
           </Form.Item> */}
 
           <Form.Item wrapperCol={{ offset: 4, span: 16 }}>
-            {isLoading ? <Spin size='large' /> : <Button
+            {isLoading ? <Spin size='large' data-cy="spin" /> : <Button
               type="primary"
               shape="round"
               size="large"
@@ -106,6 +108,7 @@ export default function Login(): JSX.Element {
               onClick={async () => {
                 await loginUser(email, password);
               }}
+              data-cy="login button"
             >
               Login
             </Button>}
