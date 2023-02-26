@@ -12,7 +12,8 @@ export default function CustomAlert(props: AlertObj) {
       message={message} 
       type={status} 
       showIcon style={{ maxWidth: '50%', padding: '1rem', margin: 'auto' }} 
-      closable={true} 
+      closable={true}
+      data-cy="alert"
     />
   }
 }

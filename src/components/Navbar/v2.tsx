@@ -1,47 +1,20 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { Header } from "antd/es/layout/layout";
-import { Button, Menu, Image, Avatar, Dropdown, MenuProps, Input } from "antd";
+import { Button, Menu, Image, Input } from "antd";
 import { SearchOutlined } from '@ant-design/icons';
 import { useNavigate } from "react-router-dom";
+<<<<<<< HEAD
 import UploadBeatModal from "../BeatUploadModal";
 import logo from '../../assets/orangelogo.png';
+=======
+import logo from '../../assets/logo_four_squares.png';
+>>>>>>> origin
 import { getUserIdFromLocalStorage } from '../../utils/localStorageParser';
-import { logoutUserReq, getUserAvatarReq } from '../../lib/axios';
-import styles from './Navbar.module.css';
+import { getUserAvatarReq } from '../../lib/axios';
 
 export default function Navbar() {
 
   const currentUserId = getUserIdFromLocalStorage();
-
-  const logoutUser = async () => {
-    try {
-      const logoutUserRes = await logoutUserReq();
-      localStorage.removeItem('sb-user');
-      console.log(logoutUserRes);
-      navigate('/login');
-    } catch (err) {
-      console.error(err);
-    }
-  }
-
-  const userMenuItems: MenuProps['items'] = [
-    {
-      key: 'profile',
-      label: (
-        <Button type='ghost' href={`/user/?id=${currentUserId}`}>
-          Profile
-        </Button>
-      ),
-    },
-    {
-      key: 'logout',
-      label: (
-        <Button type='ghost' style={{ color: 'white' }} onClick={() => { logoutUser(); }}>
-          Logout
-        </Button>
-      ),
-    },
-  ];
 
   const navigate = useNavigate();
 

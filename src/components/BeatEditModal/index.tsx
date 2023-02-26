@@ -15,7 +15,6 @@ interface IEditBeatModalProps {
 // TODO: consolidate this and the BeatUploadModal as they share lots of code
 export default function BeatEditModal(props: IEditBeatModalProps) {
   const { beat } = props;
-  const currentGenreTags = beat.genreTags.map((val) => ({label: val, value: val}));
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -46,6 +45,7 @@ export default function BeatEditModal(props: IEditBeatModalProps) {
       console.log(response.data);
     } catch (err) {
       console.error(err);
+      console.log('yee')
     }
     setIsLoading(false);
   }
@@ -98,7 +98,7 @@ export default function BeatEditModal(props: IEditBeatModalProps) {
 
   return (
     <>
-    <Button type='ghost' onClick={() => {setIsOpen(true)}}>Edit</Button>
+    <Button type='ghost' onClick={() => {setIsOpen(true)}} data-cy="edit button">Edit</Button>
     <Modal 
       open={isOpen}
       centered={true}
@@ -106,7 +106,7 @@ export default function BeatEditModal(props: IEditBeatModalProps) {
       footer={null}
       style={{ padding: '1rem', alignItems: 'center', width: '10rem' }}
     >
-      <Spin spinning={isLoading} >
+      <Spin spinning={isLoading} data-cy="loading spinner" >
         <Form
         labelCol={{ span: 4 }}
         wrapperCol={{ span: 14 }}
@@ -119,10 +119,10 @@ export default function BeatEditModal(props: IEditBeatModalProps) {
            : 
           <>
             <Form.Item label='Title' name='title'>
-              <Input defaultValue={title} onChange={(e) => { setTitle(e.target.value); }} />
+              <Input defaultValue={title} onChange={(e) => { setTitle(e.target.value); }} data-cy="title input"/>
             </Form.Item>
-            <Form.Item label='Description' name='description'>
-              <Input placeholder={description} autoComplete={undefined} onChange={(e) => { setDescription(e.target.value); }} maxLength={140} showCount={true} />
+            <Form.Item label='Description' name='description' >
+              <Input defaultValue={description} autoComplete={undefined} onChange={(e) => { setDescription(e.target.value); }} maxLength={140} showCount={true} data-cy="description input"/>
             </Form.Item>
             <Form.Item label='Genres' name='genres'>
             <Select 
@@ -135,7 +135,7 @@ export default function BeatEditModal(props: IEditBeatModalProps) {
             />
             </Form.Item>
             <Form.Item label='BPM' name='bpm'>
-              <Input defaultValue={beat.tempo} onChange={(e) => { setTempo(e.target.valueAsNumber); }} max={200} min={60} type='number' addonAfter='BPM'/>
+              <Input defaultValue={beat.tempo} onChange={(e) => { setTempo(e.target.valueAsNumber); }} max={200} min={60} type='number' addonAfter='BPM' data-cy="tempo" />
             </Form.Item>
             <Form.Item label='Key' name='key'>
             <Select

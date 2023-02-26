@@ -1,4 +1,4 @@
-import { Image, Button, Col, Row } from 'antd';
+import { Image, Col, Row } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import BeatEditModal from '../BeatEditModal';
 import { Beat } from '../../types/beat';
@@ -18,14 +18,6 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
   const [artistNameColor, setArtistNameColor] = useState<'black' | 'blue'>('black');
   
   const { beat, onClick, editable } = props;
-
-  const handleDownload = async () => {
-    console.log('beat downloaded');
-  }
-
-  const handleEdit = () => {
-    console.log('edit handled');
-  }
 
   const displayFlatOrSharp = (flatOrSharpStr: 'flat' | 'sharp' | '') => {
     if (flatOrSharpStr === '') {

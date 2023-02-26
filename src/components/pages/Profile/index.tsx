@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import { Layout, Avatar, Row, Space, Col, Button, Modal, Spin, Image, Progress } from "antd";
+import { Layout, Avatar, Row, Space, Col, Button, Modal, Image, Progress } from "antd";
 import { Content } from "antd/es/layout/layout";
-import { UserOutlined, YoutubeFilled, AppleFilled, TwitterCircleFilled, CheckCircleOutlined, UserAddOutlined } from "@ant-design/icons";
+import { UserOutlined, YoutubeFilled, AppleFilled, TwitterCircleFilled, CheckCircleOutlined } from "@ant-design/icons";
 import DashRow from "../../DashRow";
 import useGetBeats from '../../../hooks/useGetBeats';
 import { Beat } from "../../../types";
@@ -16,26 +16,26 @@ import UserEditModal from '../../UserEditModal';
 import { AlertObj } from '../../../types/alerts';
 import UploadButton from '../../UploadButton';
 import CustomAlert from '../../CustomAlert';
-import PlaybackButtons from '../../PlaybackButtons/PlaybackButtons';
+import PlaybackButtons from '../../PlaybackButtons';
 import defaultAvatar from '../../../assets/default_avatar_white.png';
 import styles from './Profile.module.css';
 
 export default function Profile() {
 
-  const [searchParams, setSearchParams] = useSearchParams();
+  const searchParams = useSearchParams()[0];
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [updateIsLoading, setUpdateIsLoading] = useState<boolean>(false);
   const [uploadProgress, setUploadProgress] = useState<number>();
   const [trackPlaying, setTrackPlaying] = useState<Beat>();
-  const [userId, setUserId] = useState<string>(searchParams.get('id') || '');
   const [userInfo, setUserInfo] = useState<User | null>();
   const [newAvatar, setNewAvatar] = useState<File>();
   const [newAvatarModalOpen, setNewAvatarModalOpen] = useState<boolean>(false);
-  const [isCurrentUser, setCurrentUser] = useState<boolean>(userId === getUserIdFromLocalStorage());
   const [alert, setAlert] = useState<AlertObj>();
 
 
+  const userId = searchParams.get('id') || '';
+  const isCurrentUser = userId === getUserIdFromLocalStorage();
   const { beats } = useGetBeats(userId);
 
   useEffect(() => {
@@ -135,13 +135,16 @@ export default function Profile() {
               <Space direction='horizontal' style={{  margin: '0rem 1rem', textAlign: 'start', justifyContent: 'center' }}>
                 <YoutubeFilled 
                   style={{ fontSize: '1.5rem' }} 
-                  onClick={() => { window.open(userInfo.linkedSocials.youtube ? userInfo.linkedSocials.youtube : `https://www.youtube.com/`) }} 
+                  onClick={() => { window.open(userInfo.linkedSocials.youtube ? `https://www.youtube.com/@${userInfo.linkedSocials.youtube}` : 'https://www.youtube.com') }} 
                 />
                 <TwitterCircleFilled 
                   style={{ fontSize: '1.5rem' }} 
-                  onClick={() => { window.open(userInfo.linkedSocials.youtube ? userInfo.linkedSocials.twitter : `https://www.twitter.com/`) }} 
+                  onClick={() => { window.open(userInfo.linkedSocials.youtube ? `https://www.twitter.com/${userInfo.linkedSocials.twitter}` : 'https://www.twitter.com') }} 
                 />
-                <AppleFilled style={{ fontSize: '1.5rem' }} />
+                <AppleFilled 
+                  style={{ fontSize: '1.5rem' }} 
+                  onClick={() => { window.open(userInfo.linkedSocials.appleMusic ? userInfo.linkedSocials.appleMusic : 'https://music.apple.com/') }}
+                />
               </Space>
             </Col>
           </Space>

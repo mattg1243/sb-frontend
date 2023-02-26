@@ -7,7 +7,7 @@ import useGetBeats from '../../../hooks/useGetBeats';
 import { Spin } from 'antd';
 import { cdnHostname } from '../../../config/routing';
 import { Beat } from '../../../types/beat';
-import PlaybackButtons from '../../PlaybackButtons/PlaybackButtons';
+import PlaybackButtons from '../../PlaybackButtons';
 import styles from './Dashboard.module.css';
 
 export default function Dashboard() {

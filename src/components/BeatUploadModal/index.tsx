@@ -14,7 +14,6 @@ export default function UploadBeatModal() {
   const [alert, setAlert] = useState<{ message: string, type: 'error' | 'success' }>();
   const [isUploading, setIsUploading] = useState<boolean>(false);
   const [uploadProgress, setUploadProgress] = useState<number>(0);
-  const [isPreparingBeat, setIsPreparingBeat] = useState<boolean>(false);
   const [title, setTitle] = useState<string>('');
   const [genreTags, setGenreTags] = useState<Array<string>>(['']);
   const [tempo, setTempo] = useState<string>('');
@@ -53,7 +52,6 @@ export default function UploadBeatModal() {
       console.error(err);
     }
     finally {
-      setIsPreparingBeat(false);
       setIsUploading(false);
       setUploadProgress(0);
     }
@@ -65,14 +63,6 @@ export default function UploadBeatModal() {
 
   const handleKeyChange = (val: string) => {
     setKey(val);
-  }
-
-  const handleSharpFlatClick = (e: RadioChangeEvent) => {
-    if (e.target.checked) {
-      e.target.checked = false;
-    } else {
-      key.concat(e.target.value);
-    }
   }
 
   const handleSharpFlatChange = (e: RadioChangeEvent) => {

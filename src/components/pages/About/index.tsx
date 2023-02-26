@@ -1,13 +1,13 @@
 
-import Layout, { Content, Footer } from 'antd/es/layout/layout';
-import { Typography, Divider } from 'antd';
+import Layout, { Content } from 'antd/es/layout/layout';
+import { Typography } from 'antd';
 import Navbar from '../../Navbar';
 import styles from './About.module.css';
 import balloonLogo from '../../../assets/orangelogo.png';
 
 export default function AboutPage() {
   
-  const { Title, Paragraph, Text, Link } = Typography;
+  const { Title, Paragraph } = Typography;
   
   return (  
     <>
@@ -16,7 +16,7 @@ export default function AboutPage() {
         <Content style={{ display: 'flex', justifyContent: 'center' }}>
           <img src={balloonLogo} alt='Balloon Logo' className={styles.logo} />
           <Typography className={styles.typography}>
-            <Title className={styles.about}>About Us</Title>
+            <Title className={styles.about} data-cy="title">About Us</Title>
             
             <Paragraph>
               <strong>Who we are: </strong>
@@ -58,7 +58,7 @@ export default function AboutPage() {
               Join the Sweatshop Beats community today and start exploring, creating, and making your mark
               on the world.
             </Paragraph>
-            <Paragraph className={styles.footer}>
+            <Paragraph className={styles.footer} data-cy="footer">
               <p><strong>Questions? </strong> info@orangemusicent.com</p>
               <strong>Follow us on Twitter</strong>
               @mattg  @montanab

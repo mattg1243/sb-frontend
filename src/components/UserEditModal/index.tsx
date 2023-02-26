@@ -1,8 +1,7 @@
 import { useState } from "react";
 import type { User } from "../../types";
 import { Button, Modal, Form, Input, Space, Spin } from "antd";
-import { AppleOutlined, InstagramOutlined, SoundOutlined, TwitterOutlined, YoutubeOutlined } from "@ant-design/icons";
-import { ILinkedSocials } from '../../types/user';
+import { AppleOutlined, InstagramOutlined, LinkOutlined, SoundOutlined, TwitterOutlined, YoutubeOutlined } from "@ant-design/icons";
 import { updateUserReq } from '../../lib/axios';
 import { AlertObj } from '../../types/alerts';
 import CustomAlert from "../CustomAlert";
@@ -14,21 +13,21 @@ interface IUserEditModal {
 
 export default function UserEditModal(props: IUserEditModal) {
   const { user, setUserInfo } = props;
-  
+  const avatar = user.avatar
+
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [alert, setAlert] = useState<AlertObj>();
   const [artistName, setArtistName] = useState<string>(user.artistName);
   const [bio, setBio] = useState<string>(user.bio);
-  const [avatar, setAvatar] = useState<File | string>(user.avatar);
   // TODO: consolidate these into a single state variable
   const [twitter, setTwitter] = useState<string>(user.linkedSocials.twitter);
   const [youtube, setYouTube] = useState<string>(user.linkedSocials.youtube);
-  const [instagram, setInstagram] = useState<string>(user.linkedSocials.instagram);
-  const [spotify, setSpotify] = useState<string>(user.linkedSocials.spotify);
+  // const [instagram, setInstagram] = useState<string>(user.linkedSocials.instagram);
+  // const [spotify, setSpotify] = useState<string>(user.linkedSocials.spotify);
   const [appleMusic, setAppleMusic] = useState<string>(user.linkedSocials.appleMusic);
-  const [soundcloud, setSoundcloud] = useState<string>(user.linkedSocials.soundcloud);
-  const [linkedSocials, setLinkedSocials] = useState<ILinkedSocials>();
+  // const [soundcloud, setSoundcloud] = useState<string>(user.linkedSocials.soundcloud);
+  // const [linkedSocials, setLinkedSocials] = useState<ILinkedSocials>();
   // TODO: put this into the axios lib file
   const updateUserInfo = async () => {
     setIsLoading(true);
@@ -41,9 +40,10 @@ export default function UserEditModal(props: IUserEditModal) {
         twitter,
         youtube,
         appleMusic,
-        instagram,
-        spotify, 
-        soundcloud
+        // not yet implemented
+        instagram: "",
+        spotify: "", 
+        soundcloud: ""
       },
     }
     try {
@@ -61,10 +61,6 @@ export default function UserEditModal(props: IUserEditModal) {
 
   const handleCancel = () => {
     setIsOpen(false);
-  }
-
-  const handleLinkedSocialsChange = (vals: any) => {
-    setLinkedSocials(vals);
   }
 
   // const possibleLinkedSocials = ['Twitter', 'Instagram', 'Apple Music', 'Spotify', 'Soundcloud', 'YouTube'];
@@ -119,9 +115,9 @@ export default function UserEditModal(props: IUserEditModal) {
                 }) :
                 null
               } */}
-              <Input defaultValue={twitter} onChange={(e) => { setTwitter(e.target.value) }} addonAfter={socialInputIcons['Twitter']}/>
-              <Input defaultValue={youtube} onChange={(e) => { setYouTube(e.target.value) }} addonAfter={socialInputIcons['YouTube']}/>
-              <Input defaultValue={appleMusic} onChange={(e) => { setAppleMusic(e.target.value) }} addonAfter={socialInputIcons['Apple Music']}/>
+              <Input defaultValue={twitter} onChange={(e) => { setTwitter(e.target.value) }} prefix={'@'} addonAfter={socialInputIcons['Twitter']}/>
+              <Input defaultValue={youtube} onChange={(e) => { setYouTube(e.target.value) }} prefix={'@'} addonAfter={socialInputIcons['YouTube']}/>
+              <Input defaultValue={appleMusic} onChange={(e) => { setAppleMusic(e.target.value) }} prefix={<LinkOutlined />} addonAfter={socialInputIcons['Apple Music']}/>
             </Space>
           </Form.Item>
           {alert ? <CustomAlert status={alert.status} message={alert.message} /> : null}
