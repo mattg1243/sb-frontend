@@ -63,7 +63,7 @@ export default function Navbar() {
           style={{ background: 'black', marginBottom: '3rem', width: '100%' }}
         >
           <Menu.Item>
-            <Image height='50px' src={logo} preview={false} onClick={() => { navigate('/dash') }}/>
+            <Image height='45px' src={logo} preview={false} onClick={() => { navigate('/dash') }}/>
           </Menu.Item>
           <Menu.Item key="upload">
             <UploadBeatModal />

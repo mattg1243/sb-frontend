@@ -3,12 +3,7 @@ import { Header } from "antd/es/layout/layout";
 import { Button, Menu, Image, Input } from "antd";
 import { SearchOutlined } from '@ant-design/icons';
 import { useNavigate } from "react-router-dom";
-<<<<<<< HEAD
-import UploadBeatModal from "../BeatUploadModal";
 import logo from '../../assets/orangelogo.png';
-=======
-import logo from '../../assets/logo_four_squares.png';
->>>>>>> origin
 import { getUserIdFromLocalStorage } from '../../utils/localStorageParser';
 import { getUserAvatarReq } from '../../lib/axios';
 
@@ -37,7 +32,7 @@ export default function Navbar() {
           style={{ background: 'black', marginBottom: '3rem', width: '100%' }}
         >
           <Menu.Item>
-            <Image height='50px' src={logo} preview={false} onClick={() => { navigate('/dash') }}/>
+            <Image height='45px' src={logo} preview={false} onClick={() => { navigate('/dash') }}/>
           </Menu.Item>
           <Menu.Item key="beats">
             <Button type='ghost' onClick={() => { navigate('/beats') }} style={{ color: 'white' }}>Beats</Button>
