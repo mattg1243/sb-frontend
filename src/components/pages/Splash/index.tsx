@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import Infopanel1 from '../../InfoPanel1';
 import Infopanel2 from '../../InfoPanel2';
 import Infopanel3 from '../../InfoPanel3';
+import SiteFooter from '../../SiteFooter';
                 
 import styles from './Splash.module.css';
 import Navbar from '../../Navbar/v2';
@@ -14,7 +15,6 @@ export default function Splash() {
 
   return (
     <Layout className={styles.layout}>
-	  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
       <Navbar />
       <Content className={styles.content}>
         <Row gutter={0} className={styles.row}>
@@ -31,7 +31,6 @@ export default function Splash() {
                   onClick={() => {
                     navigate('/register');
                   }}>
-				  <b className="fa fa-user-plus"></b>
 				  Sign Up
                 </Button>
                 <Button
@@ -41,7 +40,6 @@ export default function Splash() {
                   onClick={() => {
                     navigate('/login');
                   }}>
-				  <b className="fa fa-sign-in"></b>
                   Login
                 </Button>
               </Space>
@@ -51,6 +49,7 @@ export default function Splash() {
 	  <Infopanel1 />
 	  <Infopanel2 />
 	  <Infopanel3 />
+	  <SiteFooter />
       </Content>
     </Layout>
   );
