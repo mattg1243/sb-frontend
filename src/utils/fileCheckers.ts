@@ -1,5 +1,5 @@
-import { message } from "antd";
-import type { RcFile } from "antd/es/upload";
+import { message } from 'antd';
+import type { RcFile } from 'antd/es/upload';
 
 /**
  * @param file A file to verify as an allowed image format.
@@ -33,4 +33,4 @@ export const checkAudioFile = (file: RcFile) => {
     message.error('Audio file must be less than 50MB');
   }
   return isAudioFile && isLt50M;
-}
+};

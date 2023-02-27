@@ -1,19 +1,26 @@
-import { useState } from "react";
-import type { User } from "../../types";
-import { Button, Modal, Form, Input, Space, Spin } from "antd";
-import { AppleOutlined, InstagramOutlined, LinkOutlined, SoundOutlined, TwitterOutlined, YoutubeOutlined } from "@ant-design/icons";
+import { useState } from 'react';
+import type { User } from '../../types';
+import { Button, Modal, Form, Input, Space, Spin } from 'antd';
+import {
+  AppleOutlined,
+  InstagramOutlined,
+  LinkOutlined,
+  SoundOutlined,
+  TwitterOutlined,
+  YoutubeOutlined,
+} from '@ant-design/icons';
 import { updateUserReq } from '../../lib/axios';
 import { AlertObj } from '../../types/alerts';
-import CustomAlert from "../CustomAlert";
+import CustomAlert from '../CustomAlert';
 
 interface IUserEditModal {
-  user: User,
-  setUserInfo: Function
+  user: User;
+  setUserInfo: Function;
 }
 
 export default function UserEditModal(props: IUserEditModal) {
   const { user, setUserInfo } = props;
-  const avatar = user.avatar
+  const avatar = user.avatar;
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -41,68 +48,96 @@ export default function UserEditModal(props: IUserEditModal) {
         youtube,
         appleMusic,
         // not yet implemented
-        instagram: "",
-        spotify: "", 
-        soundcloud: ""
+        instagram: '',
+        spotify: '',
+        soundcloud: '',
       },
-    }
+    };
     try {
       const response = await updateUserReq(data);
       setUserInfo(data);
-      if (response.status === 200) { setIsOpen(false); window.location.reload(); };
+      if (response.status === 200) {
+        setIsOpen(false);
+        window.location.reload();
+      }
     } catch (err) {
       console.error(err);
       setAlert({ status: 'error', message: 'There was an error updating your user profile.' });
-    }
-    finally {
+    } finally {
       setIsLoading(false);
     }
-  }
+  };
 
   const handleCancel = () => {
     setIsOpen(false);
-  }
+  };
 
   // const possibleLinkedSocials = ['Twitter', 'Instagram', 'Apple Music', 'Spotify', 'Soundcloud', 'YouTube'];
   // const linkedSocialOptions = possibleLinkedSocials.map((val) => ({ label: val, option: val}));
   const socialInputIcons = {
-    'Twitter': <TwitterOutlined />,
-    'Instagram': <InstagramOutlined />,
+    Twitter: <TwitterOutlined />,
+    Instagram: <InstagramOutlined />,
     'Apple Music': <AppleOutlined />,
-    'Spotify': <SoundOutlined />,
-    'Soundcloud': <SoundOutlined />,
-    'YouTube': <YoutubeOutlined />,
-  }
+    Spotify: <SoundOutlined />,
+    Soundcloud: <SoundOutlined />,
+    YouTube: <YoutubeOutlined />,
+  };
 
   const { TextArea } = Input;
 
   return (
     <>
-      <Button type='ghost' style={{ border: 'solid', margin: '5px' }} onClick={() => { setIsOpen(true); }} >Edit Profile</Button>
-      <Modal 
-      open={isOpen}
-      onCancel={handleCancel} 
-      footer={[ 
-        <Button key='cancel' onClick={handleCancel} >Cancel</Button>,
-        <Button key='save' type='primary' onClick={updateUserInfo} style={{ background: 'var(--primary)', color: 'black' }} >Save Changes</Button>
+      <Button
+        type="ghost"
+        style={{ border: 'solid', margin: '5px' }}
+        onClick={() => {
+          setIsOpen(true);
+        }}
+      >
+        Edit Profile
+      </Button>
+      <Modal
+        open={isOpen}
+        onCancel={handleCancel}
+        footer={[
+          <Button key="cancel" onClick={handleCancel}>
+            Cancel
+          </Button>,
+          <Button
+            key="save"
+            type="primary"
+            onClick={updateUserInfo}
+            style={{ background: 'var(--primary)', color: 'black' }}
+          >
+            Save Changes
+          </Button>,
         ]}
       >
-      <Spin spinning={isLoading} >
-        <Form
-          labelCol={{ span: 4 }}
-          wrapperCol={{ span: 14 }}
-          layout="horizontal"
-          style={{ alignContent: 'center' }}
-        >
-          <Form.Item label='Artist Name' name='artist-name'>
-            <Input defaultValue={user.artistName } onChange={(e) => { setArtistName(e.target.value)}} />
-          </Form.Item>
-          <Form.Item label='Bio' name='bio'>
-            <TextArea rows={4} spellCheck={false} defaultValue={user.bio} maxLength={140} showCount={true} onChange={(e) => {setBio(e.target.value)}} />
-          </Form.Item>
-          <Form.Item label='Socials' name='socials' tooltip='Paste a link to your social media profiles here.'>
-            <Space direction="vertical" size='large' style={{ width: '100%' }}>
-              {/* <Select 
+        <Spin spinning={isLoading}>
+          <Form labelCol={{ span: 4 }} wrapperCol={{ span: 14 }} layout="horizontal" style={{ alignContent: 'center' }}>
+            <Form.Item label="Artist Name" name="artist-name">
+              <Input
+                defaultValue={user.artistName}
+                onChange={(e) => {
+                  setArtistName(e.target.value);
+                }}
+              />
+            </Form.Item>
+            <Form.Item label="Bio" name="bio">
+              <TextArea
+                rows={4}
+                spellCheck={false}
+                defaultValue={user.bio}
+                maxLength={140}
+                showCount={true}
+                onChange={(e) => {
+                  setBio(e.target.value);
+                }}
+              />
+            </Form.Item>
+            <Form.Item label="Socials" name="socials" tooltip="Paste a link to your social media profiles here.">
+              <Space direction="vertical" size="large" style={{ width: '100%' }}>
+                {/* <Select 
                 placeholder="Linked Socials"
                 options={linkedSocialOptions}
                 defaultValue={linkedSocials}
@@ -115,15 +150,36 @@ export default function UserEditModal(props: IUserEditModal) {
                 }) :
                 null
               } */}
-              <Input defaultValue={twitter} onChange={(e) => { setTwitter(e.target.value) }} prefix={'@'} addonAfter={socialInputIcons['Twitter']}/>
-              <Input defaultValue={youtube} onChange={(e) => { setYouTube(e.target.value) }} prefix={'@'} addonAfter={socialInputIcons['YouTube']}/>
-              <Input defaultValue={appleMusic} onChange={(e) => { setAppleMusic(e.target.value) }} prefix={<LinkOutlined />} addonAfter={socialInputIcons['Apple Music']}/>
-            </Space>
-          </Form.Item>
-          {alert ? <CustomAlert status={alert.status} message={alert.message} /> : null}
-        </Form>
-      </Spin>
-    </Modal>
+                <Input
+                  defaultValue={twitter}
+                  onChange={(e) => {
+                    setTwitter(e.target.value);
+                  }}
+                  prefix={'@'}
+                  addonAfter={socialInputIcons['Twitter']}
+                />
+                <Input
+                  defaultValue={youtube}
+                  onChange={(e) => {
+                    setYouTube(e.target.value);
+                  }}
+                  prefix={'@'}
+                  addonAfter={socialInputIcons['YouTube']}
+                />
+                <Input
+                  defaultValue={appleMusic}
+                  onChange={(e) => {
+                    setAppleMusic(e.target.value);
+                  }}
+                  prefix={<LinkOutlined />}
+                  addonAfter={socialInputIcons['Apple Music']}
+                />
+              </Space>
+            </Form.Item>
+            {alert ? <CustomAlert status={alert.status} message={alert.message} /> : null}
+          </Form>
+        </Spin>
+      </Modal>
     </>
-  )
+  );
 }

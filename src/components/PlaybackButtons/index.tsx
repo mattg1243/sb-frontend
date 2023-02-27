@@ -1,17 +1,17 @@
-import { Button, Tooltip } from "antd"
-import { CaretRightOutlined, PauseOutlined } from "@ant-design/icons"
-import { useState, useRef, useEffect } from "react";
+import { Button, Tooltip } from 'antd';
+import { CaretRightOutlined, PauseOutlined } from '@ant-design/icons';
+import { useState, useRef, useEffect } from 'react';
 import styles from './PlaybackButtons.module.css';
 
 interface IPlaybackButtonsProps {
-  trackTitle: string, 
-  trackArtist: string,
-  trackSrcUrl: string,
+  trackTitle: string;
+  trackArtist: string;
+  trackSrcUrl: string;
 }
 
 export default function PlaybackButtons(props: IPlaybackButtonsProps) {
   const { trackTitle, trackArtist, trackSrcUrl } = props;
-  
+
   const [isPlaying, setIsPlaying] = useState<boolean>(true);
 
   const audio = useRef<HTMLAudioElement>();
@@ -24,7 +24,7 @@ export default function PlaybackButtons(props: IPlaybackButtonsProps) {
       setIsPlaying(true);
       audio.current.play();
     }
-  }
+  };
 
   const pause = () => {
     if (!audio.current) {
@@ -34,11 +34,11 @@ export default function PlaybackButtons(props: IPlaybackButtonsProps) {
       setIsPlaying(false);
       audio.current.pause();
     }
-  }
+  };
   useEffect(() => {
     audio.current = new Audio(trackSrcUrl);
     audio.current.play();
-  }, [trackSrcUrl])
+  }, [trackSrcUrl]);
 
   useEffect(() => {
     return () => {
@@ -48,17 +48,17 @@ export default function PlaybackButtons(props: IPlaybackButtonsProps) {
       } else {
         audio.current.pause();
       }
-    }
-  }, [trackSrcUrl])
+    };
+  }, [trackSrcUrl]);
 
   return (
     <Tooltip title={`${trackTitle} - ${trackArtist}`} placement="topLeft">
-      <Button 
-        onClick={isPlaying ? pause : play} 
-        type="ghost" 
-        className={styles.playbackbutton} 
-        icon={isPlaying ? <PauseOutlined /> : <CaretRightOutlined />} 
+      <Button
+        onClick={isPlaying ? pause : play}
+        type="ghost"
+        className={styles.playbackbutton}
+        icon={isPlaying ? <PauseOutlined /> : <CaretRightOutlined />}
       />
     </Tooltip>
-  )
+  );
 }

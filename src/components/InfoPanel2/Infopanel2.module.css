@@ -1,25 +1,25 @@
 .row {
-	width: 100vw;
-	height: 110vh;
-	max-width: 2000px;
-	justify-content: center;
-	padding-left: 5.5vw;
+  width: 100vw;
+  height: 110vh;
+  max-width: 2000px;
+  justify-content: center;
+  padding-left: 5.5vw;
 }
 
 .header1 {
-	font-size: 3.5vw;
-	max-width: 40vw;
-	padding-top: 10vw;
+  font-size: 3.5vw;
+  max-width: 40vw;
+  padding-top: 10vw;
 }
 
 .paragraph1 {
-	margin: 1rem 0rem 1rem 0rem;
-	font-size: 2.5vw;
-	max-width: 40vw;
+  margin: 1rem 0rem 1rem 0rem;
+  font-size: 2.5vw;
+  max-width: 40vw;
 }
 
 .moneygraph {
-	width: 28vw;
-	height: auto;
-	padding-top: 25vh;
+  width: 28vw;
+  height: auto;
+  padding-top: 25vh;
 }

@@ -14,4 +14,4 @@ export const getUserIdFromLocalStorage = () => {
     id = JSON.parse(userStr)['_id'] as string;
   }
   return id;
-}
+};

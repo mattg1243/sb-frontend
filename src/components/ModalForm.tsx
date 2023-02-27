@@ -2,13 +2,13 @@ import { Modal, Button } from 'antd';
 import { useState } from 'react';
 
 interface IButtonInfo {
-  label: string,
-  onClick: Function
+  label: string;
+  onClick: Function;
 }
 
 interface IModalFormProps {
-  form: React.ReactNode,
-  saveButton: IButtonInfo,
+  form: React.ReactNode;
+  saveButton: IButtonInfo;
 }
 
 export default function ModalForm(props: IModalFormProps) {
@@ -20,17 +20,22 @@ export default function ModalForm(props: IModalFormProps) {
 
   const handleCancel = () => {
     setIsOpen(false);
-  }
+  };
 
   return (
     <Modal
       footer={[
         <Button onClick={handleCancel}>Cancel</Button>,
-        <Button onClick={(e) => { onClick() }}>{label}</Button>
+        <Button
+          onClick={(e) => {
+            onClick();
+          }}
+        >
+          {label}
+        </Button>,
       ]}
     >
       {form}
     </Modal>
-  )
-  
+  );
 }

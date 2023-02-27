@@ -9,7 +9,6 @@ import LoadingPage from './components/pages/Loading';
 import AboutPage from './components/pages/About';
 
 function App() {
-
   return (
     <div className="App">
       <Router>

@@ -1,29 +1,29 @@
 .row {
-	background-color: black;
-	color: white;
-	width: 100vw;
-	height: 100vh;
-	max-width: 3000px;
-	justify-content: center;
-	padding-left: 5.5vw;
+  background-color: black;
+  color: white;
+  width: 100vw;
+  height: 100vh;
+  max-width: 3000px;
+  justify-content: center;
+  padding-left: 5.5vw;
 }
 
 .header1 {
-	color: #ffbd59;
-	font-size: 3.5vw;
-	max-width: 40vw;
-	padding-top: 9vw;
+  color: #ffbd59;
+  font-size: 3.5vw;
+  max-width: 40vw;
+  padding-top: 9vw;
 }
 
 .paragraph1 {
-	color: #ffbd59;
-	margin: 1rem 0rem 1rem 0rem;
-	font-size: 2.5vw;
-	max-width: 40vw;
+  color: #ffbd59;
+  margin: 1rem 0rem 1rem 0rem;
+  font-size: 2.5vw;
+  max-width: 40vw;
 }
 
 .moneyhands {
-	width: 28vw;
-	height: auto;
-	padding-top: 22vh;
+  width: 28vw;
+  height: auto;
+  padding-top: 22vh;
 }

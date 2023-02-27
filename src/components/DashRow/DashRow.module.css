@@ -20,9 +20,8 @@
 .info-row {
   align-items: center;
   justify-content: end;
-  
 }
 
 .info-text {
-  font-size: clamp(13px, .8vw, 18px);
+  font-size: clamp(13px, 0.8vw, 18px);
 }

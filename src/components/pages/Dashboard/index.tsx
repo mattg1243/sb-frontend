@@ -17,22 +17,35 @@ export default function Dashboard() {
   const { beats } = useGetBeats();
 
   return (
-    <div data-testid='dashboard' style={{ width: '100%' }}>
+    <div data-testid="dashboard" style={{ width: '100%' }}>
       <Layout>
-      <Navbar />
+        <Navbar />
         <Content className={styles.content}>
           <h2 className={styles['for-you-text']}>For you:</h2>
-          { beats ? beats.map((beat) => {
-            return <DashRow beat={beat}  onClick={()=>{setTrackPlaying(beat)}} editable={false} />;
-          }): <Spin size='large' tip='Loading beats...'/>}
+          {beats ? (
+            beats.map((beat) => {
+              return (
+                <DashRow
+                  beat={beat}
+                  onClick={() => {
+                    setTrackPlaying(beat);
+                  }}
+                  editable={false}
+                />
+              );
+            })
+          ) : (
+            <Spin size="large" tip="Loading beats..." />
+          )}
         </Content>
-        {trackPlaying ?
-        <PlaybackButtons 
-          trackTitle={trackPlaying ? trackPlaying.title: ''} 
-          trackArtist={trackPlaying ? trackPlaying.artistName: ''} 
-          trackSrcUrl={trackPlaying ? `${cdnHostname}/${trackPlaying.audioKey}`: ''}
-        /> : null}
-        </Layout>
+        {trackPlaying ? (
+          <PlaybackButtons
+            trackTitle={trackPlaying ? trackPlaying.title : ''}
+            trackArtist={trackPlaying ? trackPlaying.artistName : ''}
+            trackSrcUrl={trackPlaying ? `${cdnHostname}/${trackPlaying.audioKey}` : ''}
+          />
+        ) : null}
+      </Layout>
     </div>
   );
 }

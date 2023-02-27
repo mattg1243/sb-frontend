@@ -1,11 +1,11 @@
-import { defineConfig } from "cypress";
+import { defineConfig } from 'cypress';
 
 export default defineConfig({
   component: {
     specPattern: 'src/**/*.test.{js,jsx,ts,tsx}',
     devServer: {
-      framework: "create-react-app",
-      bundler: "webpack",
+      framework: 'create-react-app',
+      bundler: 'webpack',
     },
     video: false,
     watchForFileChanges: true,
