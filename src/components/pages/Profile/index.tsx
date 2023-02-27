@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { Layout, Avatar, Row, Space, Col, Button, Modal, Image, Progress } from 'antd';
 import { Content } from 'antd/es/layout/layout';
 import { UserOutlined, YoutubeFilled, AppleFilled, TwitterCircleFilled, CheckCircleOutlined } from '@ant-design/icons';
@@ -6,14 +7,13 @@ import DashRow from '../../DashRow';
 import useGetBeats from '../../../hooks/useGetBeats';
 import { Beat } from '../../../types';
 import { cdnHostname } from '../../../config/routing';
-import { getUserReq, updateAvatarReq } from '../../../lib/axios';
-import { useSearchParams } from 'react-router-dom';
 import { getUserIdFromLocalStorage } from '../../../utils/localStorageParser';
 import LoadingPage from '../Loading';
 import Navbar from '../../Navbar';
 import { User } from '../../../types/user';
 import UserEditModal from '../../UserEditModal';
 import { AlertObj } from '../../../types/alerts';
+import { getUserReq, updateAvatarReq } from '../../../lib/axios';
 import UploadButton from '../../UploadButton';
 import CustomAlert from '../../CustomAlert';
 import PlaybackButtons from '../../PlaybackButtons';
@@ -83,8 +83,8 @@ export default function Profile() {
     <Layout>
       <Navbar />
       <Content className={styles.content}>
-        <Row style={{ margin: '5rem 5rem' }}>
-          <Space direction="horizontal">
+        <Row style={{ margin: '5rem 5rem', width: '77%' }}>
+          <Space direction="horizontal" style={{ alignContent: 'flex-start' }}>
             <Space direction="vertical" style={{ textAlign: 'center' }}>
               {isCurrentUser ? (
                 <>
@@ -208,17 +208,15 @@ export default function Profile() {
         </Row>
         <div style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           {beats ? (
-            beats.map((beat) => {
-              return (
-                <DashRow
-                  beat={beat}
-                  onClick={() => {
-                    setTrackPlaying(beat);
-                  }}
-                  editable={isCurrentUser}
-                />
-              );
-            })
+            beats.map((beat) => (
+              <DashRow
+                beat={beat}
+                onClick={() => {
+                  setTrackPlaying(beat);
+                }}
+                editable={isCurrentUser}
+              />
+            ))
           ) : (
             <h3>This user hasn't uploaded any beats yet.</h3>
           )}
