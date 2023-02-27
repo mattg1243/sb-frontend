@@ -3,7 +3,7 @@ import { Header } from 'antd/es/layout/layout';
 import { Button, Menu, Image, Input } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
-import logo from '../../assets/logo_four_squares.png';
+import logo from '../../assets/orangelogo.png';
 import { getUserIdFromLocalStorage } from '../../utils/localStorageParser';
 import { getUserAvatarReq } from '../../lib/axios';
 
@@ -34,7 +34,7 @@ export default function Navbar() {
       >
         <Menu.Item>
           <Image
-            height="50px"
+            height="45px"
             src={logo}
             preview={false}
             onClick={() => {

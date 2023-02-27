@@ -88,13 +88,23 @@ export default function Profile() {
             <Space direction="vertical" style={{ textAlign: 'center' }}>
               {isCurrentUser ? (
                 <>
-                  <Avatar
-                    src={`${cdnHostname}/${userInfo.avatar}`}
-                    onClick={() => {
-                      setNewAvatarModalOpen(true);
-                    }}
-                    className={styles.useravatar}
-                  />
+                  <div className={styles.container}>
+                    <Avatar
+                      src={`${cdnHostname}/${userInfo.avatar}`}
+                      onClick={() => {
+                        setNewAvatarModalOpen(true);
+                      }}
+                      className={styles.useravatar}
+                    />
+                    <div
+                      onClick={() => {
+                        setNewAvatarModalOpen(true);
+                      }}
+                      className={styles.middle}
+                    >
+                      <div className={styles.texto}>+</div>
+                    </div>
+                  </div>
                   <Modal
                     key="Update Profile Picture"
                     open={newAvatarModalOpen}

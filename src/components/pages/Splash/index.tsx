@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import Infopanel1 from '../../InfoPanel1';
 import Infopanel2 from '../../InfoPanel2';
 import Infopanel3 from '../../InfoPanel3';
+import SiteFooter from '../../SiteFooter';
 
 import styles from './Splash.module.css';
 import Navbar from '../../Navbar/v2';
@@ -52,6 +53,7 @@ export default function Splash() {
         <Infopanel1 />
         <Infopanel2 />
         <Infopanel3 />
+        <SiteFooter />
       </Content>
     </Layout>
   );
