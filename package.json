@@ -33,13 +33,8 @@
     "test:comp": "./node_modules/.bin/cypress run --component",
     "test:watch": "./node_modules/.bin/cypress run --component --no-exit --config watchForFileChanges=true",
     "cypress": "cypress open",
+    "format:all": "prettier --write .",
     "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
   },
   "browserslist": {
     "production": [
@@ -64,6 +59,13 @@
     "@types/jest": "^29.2.4",
     "babel-jest": "^29.3.1",
     "cypress": "^12.6.0",
+    "eslint": "^8.35.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-prettier": "^8.6.0",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-prettier": "^4.2.1",
+    "prettier": "^2.8.4",
     "ts-jest": "^29.0.3",
     "ts-node": "^10.9.1"
   }
