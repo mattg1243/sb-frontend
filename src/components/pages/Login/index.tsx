@@ -103,7 +103,8 @@ export default function Login(): JSX.Element {
                 width: '17vw',
                 maxWidth: '200px',
                 height: '8vh',
-                maxHeight: '75px'
+                maxHeight: '75px',
+				marginBottom: '1vh'
               }}
               onClick={async () => {
                 await loginUser(email, password);
@@ -112,10 +113,10 @@ export default function Login(): JSX.Element {
             >
               Login
             </Button>}
-            <h3>Dont have an account? <a href="/register">Sign Up</a></h3>
+			<CustomAlert status={alert.status} message={alert.message} />
+            <h3 style={{marginTop: '1vh'}}>Dont have an account? <a href="/register">Sign Up</a></h3>
           </Form.Item>
         </Form>
-        <CustomAlert status={alert.status} message={alert.message} />
       </Content>
     </Layout>
   );

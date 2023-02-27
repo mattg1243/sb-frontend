@@ -18,7 +18,7 @@
 .input {
   width: 27vw;
   max-width: 600px;
-  height: 4vh;
+  height: clamp(30px, 4vh, 50px);
   max-height: 50px;
   border-radius: 40px;
 }

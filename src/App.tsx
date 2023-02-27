@@ -7,6 +7,7 @@ import Dashboard from './components/pages/Dashboard';
 import Profile from './components/pages/Profile';
 import LoadingPage from './components/pages/Loading';
 import AboutPage from './components/pages/About';
+import NotFound from './components/pages/NotFound';
 
 function App() {
 
@@ -21,6 +22,7 @@ function App() {
           <Route path="/dash" element={<Dashboard />} />
           <Route path="/user" element={<Profile />} />
           <Route path="/loading" element={<LoadingPage />} />
+	  <Route path="*" element={<NotFound />} />
         </Routes>
       </Router>
     </div>
