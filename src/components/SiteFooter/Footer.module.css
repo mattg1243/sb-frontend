@@ -1,0 +1,37 @@
+.siteFooter {
+  border-top: 0.5vh solid white;
+  background-color: #333;
+  color: #fff;
+  padding: 2.5vh 0;
+  text-align: center;
+}
+
+.container {
+  max-width: 60vw;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.siteFooter p {
+  margin: 0;
+  font-size: 0.8vw;
+}
+
+.siteFooter ul {
+  font-size: 0.8vw;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
+
+.siteFooter ul li {
+  margin: 0 0.7vw;
+}
+
+.siteFooter a {
+  color: #fff;
+  text-decoration: none;
+}
