@@ -22,7 +22,7 @@ function App() {
           <Route path="/dash" element={<Dashboard />} />
           <Route path="/user" element={<Profile />} />
           <Route path="/loading" element={<LoadingPage />} />
-		  <Route path="/notfound" element={<NotFound />} />
+	  <Route path="*" element={<NotFound />} />
         </Routes>
       </Router>
     </div>
