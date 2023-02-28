@@ -80,155 +80,149 @@ export default function Profile() {
   return isLoading || !userInfo ? (
     <LoadingPage />
   ) : (
-    <Layout>
-      <Navbar />
-      <Content className={styles.content}>
-        <Row style={{ margin: '5rem 5rem', width: '77%' }}>
-          <Space direction="horizontal" style={{ alignContent: 'flex-start' }}>
-            <Space direction="vertical" style={{ textAlign: 'center' }}>
-              {isCurrentUser ? (
-                <>
-                  <div className={styles.container}>
-                    <Avatar
-                      src={`${cdnHostname}/${userInfo.avatar}`}
-                      onClick={() => {
-                        setNewAvatarModalOpen(true);
-                      }}
-                      className={styles.useravatar}
-                    />
-                    <div
-                      onClick={() => {
-                        setNewAvatarModalOpen(true);
-                      }}
-                      className={styles.middle}
-                    >
-                      <div className={styles.texto}>+</div>
-                    </div>
-                  </div>
-                  <Modal
-                    key="Update Profile Picture"
-                    open={newAvatarModalOpen}
-                    onCancel={handleCancelModal}
-                    style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '3rem' }}
-                    footer={[
-                      <Button onClick={handleCancelModal}>Cancel</Button>,
-                      <Button
-                        onClick={async () => {
-                          await updateAvatar();
-                        }}
-                        style={{ background: 'var(--primary)' }}
-                      >
-                        Update
-                      </Button>,
-                    ]}
-                  >
-                    <div style={{ padding: '3rem' }}>
-                      <UploadButton
-                        allowedFileType="image/*"
-                        label="New Profile Pic"
-                        disabled={updateIsLoading}
-                        sideIcon={<UserOutlined />}
-                        uploadStateSetter={setNewAvatar}
-                      />
-                      {newAvatar ? <CheckCircleOutlined style={{ margin: '0 1rem', fontSize: '1rem' }} /> : null}
-                      {updateIsLoading ? <Progress percent={uploadProgress as number} /> : null}
-                      {alert ? <CustomAlert message={alert.message} status={alert.status} /> : null}
-                    </div>
-                  </Modal>
-                  <UserEditModal user={userInfo} setUserInfo={setUserInfo} />
-                </>
-              ) : (
-                <>
+    <>
+      <Row style={{ margin: '5rem 5rem', width: '77%' }}>
+        <Space direction="horizontal" style={{ alignContent: 'flex-start' }}>
+          <Space direction="vertical" style={{ textAlign: 'center' }}>
+            {isCurrentUser ? (
+              <>
+                <div className={styles.container}>
                   <Avatar
-                    src={
-                      <Image
-                        src={`${cdnHostname}/${userInfo.avatar}`}
-                        onError={({ currentTarget }) => {
-                          currentTarget.onerror = null; // prevents looping
-                          currentTarget.src = defaultAvatar;
-                        }}
-                        preview={false}
-                      />
-                    }
+                    src={`${cdnHostname}/${userInfo.avatar}`}
+                    onClick={() => {
+                      setNewAvatarModalOpen(true);
+                    }}
                     className={styles.useravatar}
-                    size={256}
                   />
-                  <Button type="ghost" style={{ border: 'solid', margin: '5px' }}>
-                    Follow
-                  </Button>
-                </>
-              )}
-            </Space>
-            <Col style={{ margin: '0rem 5rem', textAlign: 'start' }}>
-              <h1 className={styles.username}>{userInfo.artistName}</h1>
-              <p className={styles.bio}>{userInfo.bio}</p>
-              <p className={styles.bio} style={{ fontSize: '.8vw' }}>
-                Member since{' '}
-                {new Date(userInfo.created_at).toLocaleDateString('en-us', {
-                  year: 'numeric',
-                  month: 'short',
-                  day: 'numeric',
-                })}
-              </p>
-              <Space
-                direction="horizontal"
-                style={{ margin: '0rem 1rem', textAlign: 'start', justifyContent: 'center' }}
-              >
-                <YoutubeFilled
-                  style={{ fontSize: '1.5rem' }}
-                  onClick={() => {
-                    window.open(
-                      userInfo.linkedSocials.youtube
-                        ? `https://www.youtube.com/@${userInfo.linkedSocials.youtube}`
-                        : 'https://www.youtube.com'
-                    );
-                  }}
+                  <div
+                    onClick={() => {
+                      setNewAvatarModalOpen(true);
+                    }}
+                    className={styles.middle}
+                  >
+                    <div className={styles.texto}>+</div>
+                  </div>
+                </div>
+                <Modal
+                  key="Update Profile Picture"
+                  open={newAvatarModalOpen}
+                  onCancel={handleCancelModal}
+                  style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '3rem' }}
+                  footer={[
+                    <Button onClick={handleCancelModal}>Cancel</Button>,
+                    <Button
+                      onClick={async () => {
+                        await updateAvatar();
+                      }}
+                      style={{ background: 'var(--primary)' }}
+                    >
+                      Update
+                    </Button>,
+                  ]}
+                >
+                  <div style={{ padding: '3rem' }}>
+                    <UploadButton
+                      allowedFileType="image/*"
+                      label="New Profile Pic"
+                      disabled={updateIsLoading}
+                      sideIcon={<UserOutlined />}
+                      uploadStateSetter={setNewAvatar}
+                    />
+                    {newAvatar ? <CheckCircleOutlined style={{ margin: '0 1rem', fontSize: '1rem' }} /> : null}
+                    {updateIsLoading ? <Progress percent={uploadProgress as number} /> : null}
+                    {alert ? <CustomAlert message={alert.message} status={alert.status} /> : null}
+                  </div>
+                </Modal>
+                <UserEditModal user={userInfo} setUserInfo={setUserInfo} />
+              </>
+            ) : (
+              <>
+                <Avatar
+                  src={
+                    <Image
+                      src={`${cdnHostname}/${userInfo.avatar}`}
+                      onError={({ currentTarget }) => {
+                        currentTarget.onerror = null; // prevents looping
+                        currentTarget.src = defaultAvatar;
+                      }}
+                      preview={false}
+                    />
+                  }
+                  className={styles.useravatar}
+                  size={256}
                 />
-                <TwitterCircleFilled
-                  style={{ fontSize: '1.5rem' }}
-                  onClick={() => {
-                    window.open(
-                      userInfo.linkedSocials.youtube
-                        ? `https://www.twitter.com/${userInfo.linkedSocials.twitter}`
-                        : 'https://www.twitter.com'
-                    );
-                  }}
-                />
-                <AppleFilled
-                  style={{ fontSize: '1.5rem' }}
-                  onClick={() => {
-                    window.open(
-                      userInfo.linkedSocials.appleMusic ? userInfo.linkedSocials.appleMusic : 'https://music.apple.com/'
-                    );
-                  }}
-                />
-              </Space>
-            </Col>
+                <Button type="ghost" style={{ border: 'solid', margin: '5px' }}>
+                  Follow
+                </Button>
+              </>
+            )}
           </Space>
-        </Row>
-        <div style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          {beats ? (
-            beats.map((beat) => (
-              <DashRow
-                beat={beat}
+          <Col style={{ margin: '0rem 5rem', textAlign: 'start' }}>
+            <h1 className={styles.username}>{userInfo.artistName}</h1>
+            <p className={styles.bio}>{userInfo.bio}</p>
+            <p className={styles.bio} style={{ fontSize: '.8vw' }}>
+              Member since{' '}
+              {new Date(userInfo.created_at).toLocaleDateString('en-us', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric',
+              })}
+            </p>
+            <Space direction="horizontal" style={{ margin: '0rem 1rem', textAlign: 'start', justifyContent: 'center' }}>
+              <YoutubeFilled
+                style={{ fontSize: '1.5rem' }}
                 onClick={() => {
-                  setTrackPlaying(beat);
+                  window.open(
+                    userInfo.linkedSocials.youtube
+                      ? `https://www.youtube.com/@${userInfo.linkedSocials.youtube}`
+                      : 'https://www.youtube.com'
+                  );
                 }}
-                editable={isCurrentUser}
               />
-            ))
-          ) : (
-            <h3>This user hasn't uploaded any beats yet.</h3>
-          )}
-        </div>
-      </Content>
-      {trackPlaying ? (
-        <PlaybackButtons
-          trackTitle={trackPlaying ? trackPlaying.title : ''}
-          trackArtist={trackPlaying ? trackPlaying.artistName : ''}
-          trackSrcUrl={trackPlaying ? `${cdnHostname}/${trackPlaying.audioKey}` : ''}
-        />
-      ) : null}
-    </Layout>
+              <TwitterCircleFilled
+                style={{ fontSize: '1.5rem' }}
+                onClick={() => {
+                  window.open(
+                    userInfo.linkedSocials.youtube
+                      ? `https://www.twitter.com/${userInfo.linkedSocials.twitter}`
+                      : 'https://www.twitter.com'
+                  );
+                }}
+              />
+              <AppleFilled
+                style={{ fontSize: '1.5rem' }}
+                onClick={() => {
+                  window.open(
+                    userInfo.linkedSocials.appleMusic ? userInfo.linkedSocials.appleMusic : 'https://music.apple.com/'
+                  );
+                }}
+              />
+            </Space>
+          </Col>
+        </Space>
+      </Row>
+      <div style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        {beats ? (
+          beats.map((beat) => (
+            <DashRow
+              beat={beat}
+              onClick={() => {
+                setTrackPlaying(beat);
+              }}
+              editable={isCurrentUser}
+            />
+          ))
+        ) : (
+          <h3>This user hasn't uploaded any beats yet.</h3>
+        )}
+        {trackPlaying ? (
+          <PlaybackButtons
+            trackTitle={trackPlaying ? trackPlaying.title : ''}
+            trackArtist={trackPlaying ? trackPlaying.artistName : ''}
+            trackSrcUrl={trackPlaying ? `${cdnHostname}/${trackPlaying.audioKey}` : ''}
+          />
+        ) : null}
+      </div>
+    </>
   );
 }

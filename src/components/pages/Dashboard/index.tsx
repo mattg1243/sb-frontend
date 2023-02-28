@@ -18,34 +18,31 @@ export default function Dashboard() {
 
   return (
     <div data-testid="dashboard" style={{ width: '100%' }}>
-      <Layout>
-        <Navbar />
-        <Content className={styles.content}>
-          <h2 className={styles['for-you-text']}>For you:</h2>
-          {beats ? (
-            beats.map((beat) => {
-              return (
-                <DashRow
-                  beat={beat}
-                  onClick={() => {
-                    setTrackPlaying(beat);
-                  }}
-                  editable={false}
-                />
-              );
-            })
-          ) : (
-            <Spin size="large" tip="Loading beats..." />
-          )}
-        </Content>
-        {trackPlaying ? (
-          <PlaybackButtons
-            trackTitle={trackPlaying ? trackPlaying.title : ''}
-            trackArtist={trackPlaying ? trackPlaying.artistName : ''}
-            trackSrcUrl={trackPlaying ? `${cdnHostname}/${trackPlaying.audioKey}` : ''}
-          />
-        ) : null}
-      </Layout>
+      <h2 className={styles['for-you-text']}>For you:</h2>
+      <div className={styles['beats-container']}>
+        {beats ? (
+          beats.map((beat) => {
+            return (
+              <DashRow
+                beat={beat}
+                onClick={() => {
+                  setTrackPlaying(beat);
+                }}
+                editable={false}
+              />
+            );
+          })
+        ) : (
+          <Spin size="large" tip="Loading beats..." />
+        )}
+      </div>
+      {trackPlaying ? (
+        <PlaybackButtons
+          trackTitle={trackPlaying ? trackPlaying.title : ''}
+          trackArtist={trackPlaying ? trackPlaying.artistName : ''}
+          trackSrcUrl={trackPlaying ? `${cdnHostname}/${trackPlaying.audioKey}` : ''}
+        />
+      ) : null}
     </div>
   );
 }
