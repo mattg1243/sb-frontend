@@ -29,8 +29,16 @@ export default function Navbar() {
     {
       key: 'profile',
       label: (
-        <Button type="ghost" href={`/user/?id=${currentUserId}`}>
+        <Button type="ghost" href={`/app/user/?id=${currentUserId}`}>
           Profile
+        </Button>
+      ),
+    },
+    {
+      key: 'account',
+      label: (
+        <Button type="ghost" style={{ color: 'white' }} href="/app/account">
+          Account
         </Button>
       ),
     },
