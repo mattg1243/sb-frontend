@@ -1,0 +1,21 @@
+.heading {
+  padding-left: min(30vw, 20px);
+  align-self: flex-start;
+  font-size: clamp(20px, 2vw, 30px);
+}
+
+.chartcont {
+  width: 100%;
+  height: 10vh;
+}
+
+.divider {
+  color: black;
+  width: 10vw;
+}
+
+.beats-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
