@@ -3,7 +3,7 @@
 import { mount } from 'cypress/react18';
 import BaseLayout from '.';
 import { MemoryRouter, Routes, Route } from 'react-router-dom';
-import Dashboard from '../pages/Dashboard';
+// import Dashboard from '../pages/Dashboard';
 // import gatewayUrl from '../../../config/routing';
 
 // fake component to test Outlet rendering
