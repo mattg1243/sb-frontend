@@ -6,10 +6,10 @@ import styles from './BaseLayout.module.css';
 
 export default function BaseLayout() {
   return (
-    <Layout style={{ width: '100%', height: '100%' }}>
-      <Navbar />
-      <Content className={styles.content}>
-        <Outlet />
+    <Layout className={styles.layout} data-cy="layout">
+      <Navbar data-cy="navbar" />
+      <Content className={styles.content} data-cy="content">
+        <Outlet data-cy="outlet" />
       </Content>
     </Layout>
   );
