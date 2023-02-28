@@ -9,7 +9,7 @@ export default function BaseLayout() {
     <Layout className={styles.layout} data-cy="layout">
       <Navbar data-cy="navbar" />
       <Content className={styles.content} data-cy="content">
-        <Outlet data-cy="outlet" />
+        <Outlet />
       </Content>
     </Layout>
   );
