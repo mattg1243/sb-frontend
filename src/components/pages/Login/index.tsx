@@ -76,7 +76,7 @@ export default function Login(): JSX.Element {
               placeholder="Password"
               onChange={(e) => setPassword(e.target.value)}
               onKeyPress={(e) => handleKeypress(e)}
-              data-cy="password input"
+              data-cy="password-input"
             />
           </Form.Item>
 

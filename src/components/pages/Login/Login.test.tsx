@@ -23,7 +23,7 @@ describe('Login.cy.tsx', () => {
         .should('have.value', 'sbtester@gmail.com');
     });
     // enter password
-    cy.getBySel('password input').should('be.visible').type('password').should('have.value', 'password');
+    cy.getBySel('password-input').should('be.visible').type('password').should('have.value', 'password');
     // stub out API endpoint to intercept
     // cy.intercept({
     //   method: 'POST',
