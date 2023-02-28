@@ -5,7 +5,7 @@ interface IUploadButtonProps {
   label: string;
   // this audio field needs to be narrowed down to mp3 and wav
   allowedFileType: 'audio/*' | 'image/*';
-  uploadStateSetter: Function;
+  uploadStateSetter: (f: File) => void;
   sideIcon?: React.ReactNode;
   disabled?: boolean;
 }
@@ -15,7 +15,7 @@ export default function UploadButton(props: IUploadButtonProps) {
 
   const hiddenFileInput = useRef<HTMLInputElement>(null);
 
-  const handleClick = (e: any) => {
+  const handleClick = () => {
     if (hiddenFileInput.current) {
       hiddenFileInput.current.click();
     }

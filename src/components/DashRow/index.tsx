@@ -10,7 +10,7 @@ import styles from './DashRow.module.css';
 
 interface IBeatRowProps {
   beat: Beat;
-  onClick: Function;
+  onClick: React.MouseEventHandler<HTMLHeadingElement>;
   editable: boolean;
 }
 
@@ -47,13 +47,13 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
             }}
             width={125}
             height={125}
-            onClick={() => {
-              onClick();
+            onClick={(e) => {
+              onClick(e);
             }}
           />
           <h3
-            onClick={() => {
-              onClick();
+            onClick={(e) => {
+              onClick(e);
             }}
             className={styles.title}
           >

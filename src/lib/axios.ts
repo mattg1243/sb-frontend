@@ -1,4 +1,4 @@
-import axios, { AxiosResponse } from 'axios';
+import axios, { AxiosProgressEvent, AxiosResponse } from 'axios';
 import gatewayUrl from '../config/routing';
 import { User } from '../types';
 
@@ -38,7 +38,7 @@ export const updateUserReq = async (user: UpdateUserArg) => {
   });
 };
 
-export const updateAvatarReq = async (newAvatar: FormData, progressSetter: Function) => {
+export const updateAvatarReq = async (newAvatar: FormData, progressSetter: (p: number) => void) => {
   return await axios.post(`${gatewayUrl}/user/avatar`, newAvatar, {
     headers: { 'Content-Type': 'multipart/form-data' },
     withCredentials: true,
@@ -48,7 +48,7 @@ export const updateAvatarReq = async (newAvatar: FormData, progressSetter: Funct
   });
 };
 // beats
-export const uploadBeatReq = async (data: FormData, progressSetter: Function): Promise<AxiosResponse> => {
+export const uploadBeatReq = async (data: FormData, progressSetter: (p: number) => void): Promise<AxiosResponse> => {
   return await axios.post(`${gatewayUrl}/beats/upload`, data, {
     headers: {
       'Content-Type': 'multipart/form-data',

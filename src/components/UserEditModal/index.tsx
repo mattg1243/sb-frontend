@@ -15,7 +15,7 @@ import CustomAlert from '../CustomAlert';
 
 interface IUserEditModal {
   user: User;
-  setUserInfo: Function;
+  setUserInfo: React.Dispatch<React.SetStateAction<User | null | undefined>>;
 }
 
 export default function UserEditModal(props: IUserEditModal) {
