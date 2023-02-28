@@ -1,3 +1,7 @@
 .searchbar {
   border-radius: 40px;
 }
+
+.menu-item {
+  background-color: black !important;
+}
