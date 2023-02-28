@@ -1,3 +1,5 @@
+/// <reference types="Cypress" />
+
 import App from './App';
 import { mount } from 'cypress/react18';
 

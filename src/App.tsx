@@ -8,7 +8,7 @@ import LoadingPage from './components/pages/Loading';
 import AboutPage from './components/pages/About';
 import NotFound from './components/pages/NotFound';
 import BaseLayout from './components/BaseLayout';
-
+import AccountPage from './components/pages/Account';
 import './index.css';
 
 function App() {
@@ -25,6 +25,7 @@ function App() {
             <Route path="about" element={<AboutPage />} />
             <Route path="user" element={<Profile />} />
             <Route path="loading" element={<LoadingPage />} />
+            <Route path="account" element={<AccountPage />} />
           </Route>
           {/* 404 route */}
           <Route path="*" element={<NotFound />} />
