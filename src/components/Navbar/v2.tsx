@@ -38,7 +38,7 @@ export default function Navbar() {
             src={logo}
             preview={false}
             onClick={() => {
-              navigate('/dash');
+              navigate('/app/dash');
             }}
           />
         </Menu.Item>
@@ -57,7 +57,7 @@ export default function Navbar() {
           <Button
             type="ghost"
             onClick={() => {
-              navigate('/about');
+              navigate('/app/about');
             }}
             style={{ color: 'white' }}
           >

@@ -8,6 +8,7 @@ import logo from '../../assets/orangelogo.png';
 import { getUserIdFromLocalStorage } from '../../utils/localStorageParser';
 import { logoutUserReq, getUserAvatarReq } from '../../lib/axios';
 import { cdnHostname } from '../../config/routing';
+import styles from './Navbar.module.css';
 
 export default function Navbar() {
   const [avatarUrl, setAvatarUrl] = useState();
@@ -68,14 +69,15 @@ export default function Navbar() {
         mode="horizontal"
         defaultSelectedKeys={['2']}
         style={{ background: 'black', marginBottom: '3rem', width: '100%' }}
+        selectable={false}
       >
-        <Menu.Item>
+        <Menu.Item className={styles['menu-item']}>
           <Image
             height="45px"
             src={logo}
             preview={false}
             onClick={() => {
-              navigate('/dash');
+              navigate('/app/dash');
             }}
           />
         </Menu.Item>
@@ -86,36 +88,36 @@ export default function Navbar() {
           <Button
             type="ghost"
             onClick={() => {
-              navigate('/beats');
+              navigate('/app/beats');
             }}
             style={{ color: 'white' }}
           >
             Beats
           </Button>
         </Menu.Item>
-        <Menu.Item key="settings">
+        <Menu.Item key="settings" className={styles['menu-item']}>
           <Button
             type="ghost"
             onClick={() => {
-              navigate('/settings');
+              navigate('/app/settings');
             }}
             style={{ color: 'white' }}
           >
             Settings
           </Button>
         </Menu.Item>
-        <Menu.Item key="about">
+        <Menu.Item key="about" className={styles['menu-item']}>
           <Button
             type="ghost"
             onClick={() => {
-              navigate('/about');
+              navigate('/app/about');
             }}
             style={{ color: 'white' }}
           >
             About
           </Button>
         </Menu.Item>
-        <Menu.Item key="profile" style={{ marginLeft: 'auto', padding: '0 2vw' }}>
+        <Menu.Item key="profile" style={{ marginLeft: 'auto', padding: '0 2vw' }} className={styles['menu-item']}>
           <Space size={62}>
             <Input
               type="text"
@@ -134,7 +136,7 @@ export default function Navbar() {
                 src={`${cdnHostname}/${avatarUrl}`}
                 style={{ border: 'solid 3px', borderColor: 'var(--primary)', backgroundColor: 'black' }}
                 onClick={() => {
-                  navigate(`/user/?id=${currentUserId}`);
+                  navigate(`/app/user/?id=${currentUserId}`);
                 }}
               />
             </Dropdown>
