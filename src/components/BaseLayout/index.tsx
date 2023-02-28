@@ -1,26 +1,15 @@
 import { Layout } from 'antd';
-import Navbar from '../Navbar';
+import { Outlet } from 'react-router-dom';
 import { Content } from 'antd/es/layout/layout';
+import Navbar from '../Navbar';
+import styles from './BaseLayout.module.css';
 
-type BaseLayoutProps = { childComp: () => JSX.Element };
-
-export default function BaseLayout(props: BaseLayoutProps) {
-  const { childComp: Component } = props;
-
+export default function BaseLayout() {
   return (
     <Layout style={{ width: '100%', height: '100%' }}>
       <Navbar />
-      <Content
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          width: '100%',
-          height: '100%',
-          padding: '10px',
-        }}
-      >
-        <Component />
+      <Content className={styles.content}>
+        <Outlet />
       </Content>
     </Layout>
   );
