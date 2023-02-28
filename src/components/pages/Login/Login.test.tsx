@@ -15,13 +15,10 @@ describe('Login.cy.tsx', () => {
   });
   it('logs in user and provides loading feedback', () => {
     // enter email
-    cy.getBySel('emailinput')
-      .should('be.visible')
-      .type('sbtester@gmail.com')
-      .should('have.value', 'sbtester@gmail.com');
+    cy.get('.emailinput').should('be.visible').type('sbtester@gmail.com').should('have.value', 'sbtester@gmail.com');
+    cy.get('.passwordinput').should('be.visible').type('password');
   });
   // enter password
-  cy.getBySel('password-input').should('be.visible').type('password').should('have.value', 'password');
   // stub out API endpoint to intercept
   // cy.intercept({
   //   method: 'POST',

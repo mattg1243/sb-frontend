@@ -62,21 +62,19 @@ export default function Login(): JSX.Element {
           >
             {/* this needs to be able to accept an email OR username */}
             <Input
-              className={styles.input}
+              className={`${styles.input} emailinput`}
               placeholder="Email"
               onChange={(e) => setEmail(e.target.value)}
               onKeyPress={(e) => handleKeypress(e)}
-              data-cy="email input"
             />
           </Form.Item>
 
           <Form.Item name="password" rules={[{ required: true, message: 'Please input your password!' }]}>
             <Input.Password
-              className={styles.input}
+              className={`${styles.input} passwordinput`}
               placeholder="Password"
               onChange={(e) => setPassword(e.target.value)}
               onKeyPress={(e) => handleKeypress(e)}
-              data-cy="password-input"
             />
           </Form.Item>
 
