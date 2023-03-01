@@ -209,7 +209,7 @@ export default function Profile() {
               onClick={() => {
                 setTrackPlaying(beat);
               }}
-              editable={isCurrentUser}
+              buttonType={isCurrentUser ? 'edit' : 'download'}
             />
           ))
         ) : (

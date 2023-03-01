@@ -28,7 +28,7 @@ export default function Dashboard() {
                 onClick={() => {
                   setTrackPlaying(beat);
                 }}
-                editable={false}
+                buttonType="download"
               />
             );
           })
