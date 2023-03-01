@@ -11,13 +11,13 @@ import styles from './DashRow.module.css';
 interface IBeatRowProps {
   beat: Beat;
   onClick: React.MouseEventHandler<HTMLHeadingElement>;
-  editable: boolean;
+  buttonType: 'edit' | 'download';
 }
 
 export default function DashRow(props: IBeatRowProps): JSX.Element {
   const [artistNameColor, setArtistNameColor] = useState<'black' | 'blue'>('black');
 
-  const { beat, onClick, editable } = props;
+  const { beat, onClick, buttonType } = props;
 
   const displayFlatOrSharp = (flatOrSharpStr: 'flat' | 'sharp' | '') => {
     if (flatOrSharpStr === '') {
@@ -31,7 +31,7 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
 
   return (
     <Row className={styles['row-container']}>
-      {editable ? <BeatEditModal beat={beat} /> : <PlusOutlined className={styles['download-button']} />}
+      {buttonType === 'edit' ? <BeatEditModal beat={beat} /> : <PlusOutlined className={styles['download-button']} />}
       <Col span={12}>
         <Row style={{ alignItems: 'center' }}>
           <Image
@@ -66,7 +66,7 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
               onMouseLeave={() => {
                 setArtistNameColor('black');
               }}
-              href={`/user/?id=${beat.artistId}`}
+              href={`/app/user/?id=${beat.artistId}`}
             >
               {beat.artistName}
             </a>
