@@ -37,7 +37,7 @@ export default function AccountPage() {
       Revenue: 200,
     },
   ];
-  const config = {
+  const chartConfig = {
     data,
     width: 800,
     height: 200,
@@ -81,7 +81,7 @@ export default function AccountPage() {
         <h3>Revenue by Month</h3>
       </Divider>
       <div className="chartcont">
-        <Column {...config} className="revchart" data-cy="chart" />
+        <Column {...chartConfig} className="revchart" data-cy="chart" />
       </div>
       <Divider className={`${styles.divider} divider`}>
         <h3>Downloaded Beats</h3>

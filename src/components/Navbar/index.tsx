@@ -114,15 +114,15 @@ export default function Navbar() {
             Settings
           </Button>
         </Menu.Item>
-        <Menu.Item key="about" className={styles['menu-item']}>
+        <Menu.Item key="account" className={styles['menu-item']}>
           <Button
             type="ghost"
             onClick={() => {
-              navigate('/app/about');
+              navigate('/app/account');
             }}
             style={{ color: 'white' }}
           >
-            About
+            Account
           </Button>
         </Menu.Item>
         <Menu.Item key="profile" style={{ marginLeft: 'auto', padding: '0 2vw' }} className={styles['menu-item']}>
