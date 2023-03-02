@@ -84,6 +84,7 @@ export default function Navbar() {
             height="45px"
             src={logo}
             preview={false}
+            className={`dashNav`}
             onClick={() => {
               navigate('/app/dash');
             }}
@@ -95,6 +96,7 @@ export default function Navbar() {
         <Menu.Item key="beats">
           <Button
             type="ghost"
+            className={`uploadModal`}
             onClick={() => {
               navigate('/app/beats');
             }}
@@ -117,6 +119,7 @@ export default function Navbar() {
         <Menu.Item key="account" className={styles['menu-item']}>
           <Button
             type="ghost"
+            className="accountNav"
             onClick={() => {
               navigate('/app/account');
             }}
@@ -143,6 +146,7 @@ export default function Navbar() {
                 size={48}
                 src={`${cdnHostname}/${avatarUrl}`}
                 style={{ border: 'solid 3px', borderColor: 'var(--primary)', backgroundColor: 'black' }}
+                className="avatar"
                 onClick={() => {
                   navigate(`/app/user/?id=${currentUserId}`);
                 }}
