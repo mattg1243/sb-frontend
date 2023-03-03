@@ -4,7 +4,7 @@ import { mount } from 'cypress/react18';
 import AccountPage from '.';
 
 describe('Account.test.tsx', () => {
-  beforeEach('mounts', () => {
+  beforeEach(() => {
     mount(<AccountPage />);
   });
   it('contains page heading', () => {
