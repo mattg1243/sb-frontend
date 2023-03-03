@@ -9,19 +9,14 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: 19.x
-      - name: Run component tests
+      - name: Run tests
         uses: cypress-io/github-action@v5.1.0
         with:
           install-command: npm install --force
           start: npm start
-          command: npm run test:comp
-      - name: Run integration tests (Chrome)
-        uses: cypress-io/github-action@v5.1.0
-        with:
-          start: npm start
           browser: chrome
           wait-on: 'http://localhost:3000'
-          command: npm run test:int
+          command: npm run test:comp && npm run test:int
 
   deploy:
     needs: test
