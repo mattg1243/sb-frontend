@@ -32,6 +32,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test:comp": "./node_modules/.bin/cypress run --component",
+    "test:int" : "./node_modules/.bin/cypress run",
     "test:watch": "./node_modules/.bin/cypress run --component --no-exit --config watchForFileChanges=true",
     "cypress": "cypress open",
     "format:all": "prettier --write .",

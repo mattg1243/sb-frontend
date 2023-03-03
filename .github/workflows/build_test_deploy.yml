@@ -14,10 +14,12 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
-      - name: Install dependencies and test components
-        run: |
-          npm install --force
-          npm run test:comp
+      - name: Install dependencies
+        run: npm install --force
+      - name: Run component tests
+        run: npm run test:comp
+      - name: Run Integration tests
+        run: npm run test:int
   deploy:
     needs: test
     runs-on: ubuntu-latest
