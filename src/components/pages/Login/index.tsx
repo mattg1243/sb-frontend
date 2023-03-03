@@ -27,9 +27,13 @@ export default function Login(): JSX.Element {
       } else {
         setAlert({ status: 'success', message: 'User successfully logged in' });
       }
-    } catch (err) {
+    } catch (err: any) {
       console.error(err);
-      setAlert({ status: 'error', message: 'An error occured while logging again. Please try again.' });
+      if (err.response.status === 401) {
+        setAlert({ status: 'error', message: 'Invalid login credentials' });
+      } else {
+        setAlert({ status: 'error', message: 'An error occured while logging again. Please try again.' });
+      }
     } finally {
       setIsLoading(false);
     }
@@ -63,6 +67,7 @@ export default function Login(): JSX.Element {
             {/* this needs to be able to accept an email OR username */}
             <Input
               className={`${styles.input} emailinput`}
+              id="email-input"
               placeholder="Email"
               onChange={(e) => setEmail(e.target.value)}
               onKeyPress={(e) => handleKeypress(e)}
@@ -75,6 +80,7 @@ export default function Login(): JSX.Element {
               placeholder="Password"
               onChange={(e) => setPassword(e.target.value)}
               onKeyPress={(e) => handleKeypress(e)}
+              id="password-input"
             />
           </Form.Item>
 
@@ -89,7 +95,7 @@ export default function Login(): JSX.Element {
 
           <Form.Item wrapperCol={{ offset: 4, span: 16 }}>
             {isLoading ? (
-              <Spin size="large" data-cy="spin" />
+              <Spin size="large" className="spin" />
             ) : (
               <Button
                 type="primary"
@@ -108,7 +114,7 @@ export default function Login(): JSX.Element {
                 onClick={async () => {
                   await loginUser(email, password);
                 }}
-                data-cy="login button"
+                id="login-btn"
               >
                 Login
               </Button>

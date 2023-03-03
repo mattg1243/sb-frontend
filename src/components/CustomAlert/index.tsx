@@ -15,7 +15,7 @@ export default function CustomAlert(props: AlertObj) {
         showIcon
         style={{ maxWidth: '50%', padding: '1rem', margin: 'auto' }}
         closable={true}
-        data-cy="alert"
+        className="custom-alert"
       />
     );
   }

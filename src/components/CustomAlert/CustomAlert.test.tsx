@@ -6,6 +6,6 @@ describe('CustomAlert.cy.tsx', () => {
     mount(<CustomAlert status="success" message="Component does mount" />);
   });
   it('displays correct message', () => {
-    cy.get('[data-cy="alert"]').contains('Component does mount');
+    cy.get('.custom-alert').contains('Component does mount');
   });
 });
