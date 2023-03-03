@@ -19,7 +19,6 @@ jobs:
         with:
           install-command: npm install --force
           start: npm start
-          wait-on: 'http://localhost:8080'
           browser: chrome
           command: npm run test:comp && npm run test:int
 
