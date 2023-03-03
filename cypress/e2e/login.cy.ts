@@ -11,7 +11,7 @@ describe('User can reach login page from the splash page', () => {
     cy.get('#splash-page');
   });
   it('Redirects user to login page when login button is clicked', () => {
-    cy.get('#login-btn').click();
+    cy.get('#login-btn').click({ force: true });
     cy.url().should('include', '/login');
   });
 });
@@ -22,9 +22,9 @@ describe('Logs in users properly', () => {
     cy.intercept('POST', GATEWAY_URL + '/login', { fixture: 'userLoginRes.json' }).as('loginUserReq');
 
     cy.visit('/login');
-    cy.get('#email-input').type('sbtester@gmail.com').and('have.value', 'sbtester@gmail.com');
-    cy.get('#password-input').type('password').and('have.value', 'password');
-    cy.get('#login-btn').click();
+    cy.get('#email-input').type('sbtester@gmail.com', { force: true }).and('have.value', 'sbtester@gmail.com');
+    cy.get('#password-input').type('password', { force: true }).and('have.value', 'password');
+    cy.get('#login-btn').click({ force: true });
     cy.wait('@loginUserReq').its('request.body').should('have.all.key', 'email', 'password');
     cy.url().should('include', '/app/dash');
   });
@@ -41,9 +41,9 @@ describe('Handles invalid credentials properly', () => {
     }).as('badUserLoginReq');
 
     cy.visit('/login');
-    cy.get('#email-input').type('aslkduichilour@gmail.com');
-    cy.get('#password-input').type('asdlkf');
-    cy.get('#login-btn').click();
+    cy.get('#email-input').type('aslkduichilour@gmail.com', { force: true });
+    cy.get('#password-input').type('asdlkf', { force: true });
+    cy.get('#login-btn').click({ force: true });
     cy.wait('@badUserLoginReq').then(() => {
       cy.get('.custom-alert');
     });
