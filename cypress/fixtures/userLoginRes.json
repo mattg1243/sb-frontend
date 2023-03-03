@@ -1,0 +1,9 @@
+{
+  "message": "sucessfully authenticated",
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiYWFmZWEzNWMtZmE3NC00NmViLTk5ZGEtNTYxZjE2NjFkY2E1IiwiZW1haWwiOiJzYnRlc3RlckBnbWFpbC5jb20iLCJhcnRpc3ROYW1lIjoiU2FudGFCaWhoIn0sImlhdCI6MTY3Nzc4OTg3MCwiZXhwIjoxNjc3ODExNDcwfQ.X2YtRmeaKGSqjMdEnTtPOScSAq03sAtiGY042AzQal4",
+  "user": {
+    "id": "aafea35c-fa74-46eb-99da-561f1661dca5",
+    "email": "sbtester@gmail.com",
+    "artistName": "FixtureUser"
+  }
+}
