@@ -19,7 +19,9 @@ jobs:
       - name: Run component tests
         run: npm run test:comp
       - name: Run Integration tests
-        run: npm run test:int
+        uses: cypress-io/github-action@v5.x.x
+          with:
+            start: npm start
   deploy:
     needs: test
     runs-on: ubuntu-latest
