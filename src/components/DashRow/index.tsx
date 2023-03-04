@@ -50,6 +50,7 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
             onClick={(e) => {
               onClick(e);
             }}
+            className={styles.artwork}
           />
           <h3
             onClick={(e) => {
