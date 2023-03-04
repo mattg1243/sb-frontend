@@ -19,6 +19,7 @@ import CustomAlert from '../../CustomAlert';
 import PlaybackButtons from '../../PlaybackButtons';
 import defaultAvatar from '../../../assets/default_avatar_white.png';
 import styles from './Profile.module.css';
+import FollowButton from '../../FollowButton';
 
 export default function Profile() {
   const searchParams = useSearchParams()[0];
@@ -151,9 +152,7 @@ export default function Profile() {
                   className={styles.useravatar}
                   size={256}
                 />
-                <Button type="ghost" style={{ border: 'solid', margin: '5px' }}>
-                  Follow
-                </Button>
+                <FollowButton currentUser={getUserIdFromLocalStorage() as string} viewedUser={userId} />
               </>
             )}
           </Space>

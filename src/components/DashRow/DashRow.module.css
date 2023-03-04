@@ -26,3 +26,6 @@
 .info-text {
   font-size: clamp(13px, 0.8vw, 18px);
 }
+.artwork {
+  box-shadow: 6px 3px black;
+}
