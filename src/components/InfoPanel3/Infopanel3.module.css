@@ -1,3 +1,7 @@
+/* Desktop CSS */
+
+@media (min-width: 480px) {
+
 .row {
   background-color: black;
   color: white;
@@ -26,4 +30,15 @@
   width: 28vw;
   height: auto;
   padding-top: 22vh;
+}
+
+}
+
+/* Mobile CSS */
+
+@media (max-width: 480px) {
+
+  .row {
+    display: none;
+  }
 }

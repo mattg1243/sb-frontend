@@ -29,8 +29,8 @@ export default function Splash() {
                 <Space size="large" className={styles.buttonspace}>
                   <Button
                     shape="round"
-                    size="large"
-                    style={{ width: '16vw', height: '3.75vw', fontWeight: 'bold', fontSize: '1.2vw' }}
+                    /* Added class for button & removed size attr since edits in html supersede all CSS */
+                    className={styles.logButton}
                     id="signup-btn"
                     onClick={() => {
                       navigate('/register');
@@ -40,8 +40,8 @@ export default function Splash() {
                   </Button>
                   <Button
                     shape="round"
-                    size="large"
-                    style={{ width: '16vw', height: '3.75vw', fontWeight: 'bold', fontSize: '1.2vw' }}
+                    /* Added class for button & removed size attr since edits in html supersede all CSS */
+                    className={styles.logButton}
                     id="login-btn"
                     onClick={() => {
                       navigate('/login');
