@@ -8,7 +8,7 @@ export default function SiteFooter() {
         <p>Copyright &copy; 2023 Orange Music Entertainment</p>
         <ul>
           <li>
-            <a href="/about">About</a>
+            <a href="/app/about">About</a>
           </li>
           <li>
             <a href="/contact">Contact</a>
@@ -17,7 +17,7 @@ export default function SiteFooter() {
             <a href="/privacyPolicy">Privacy Policy</a>
           </li>
           <li>
-            <a href="/TERMSANDCONDITIONS.html">Terms of Use</a>
+            <a href="/TERMSANDCONDITIONS.html">Terms & Conditions</a>
           </li>
         </ul>
       </div>
