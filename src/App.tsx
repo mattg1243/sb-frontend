@@ -9,6 +9,7 @@ import AboutPage from './components/pages/About';
 import NotFound from './components/pages/NotFound';
 import BaseLayout from './components/BaseLayout';
 import AccountPage from './components/pages/Account';
+import MobileRedirect from './components/pages/MobileRedirect';
 import './index.css';
 
 function App() {
@@ -19,6 +20,8 @@ function App() {
           <Route path="/" element={<Splash />} index />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          {/* MobileRedirect */}
+          <Route path="/MobileRedirect" element={<MobileRedirect />} />
           {/* this route handles the main single page app, with navbar and layout */}
           <Route path="/app" element={<BaseLayout />}>
             <Route path="dash" element={<Dashboard />} index />
