@@ -20,7 +20,7 @@ export default function Splash() {
         <Content className={styles.content}>
           <Row gutter={0} className={styles.row}>
             <div className={styles.container}>
-              <img src={orangelogo} alt="Orange Music Entertainment Logo" style={{ width: '40vw', height: 'auto' }} />
+              <img src={orangelogo} alt="Orange Music Entertainment Logo" className={styles.logo} />
               <div className={styles.orangetext}>
                 <p style={{ fontSize: '8vw', margin: '0vw', letterSpacing: '0.5vw' }}>SWEATSHOP BEATS</p>
                 <p style={{ fontSize: '2.1vw', paddingLeft: '18vw', margin: '0vw', letterSpacing: '0.25vw' }}>
@@ -29,8 +29,8 @@ export default function Splash() {
                 <Space size="large" className={styles.buttonspace}>
                   <Button
                     shape="round"
-                    size="large"
-                    style={{ width: '16vw', height: '3.75vw', fontWeight: 'bold', fontSize: '1.2vw' }}
+                    /* Added class for button & removed size attr since edits in html supersede all CSS */
+                    className={styles.logButton}
                     id="signup-btn"
                     onClick={() => {
                       navigate('/register');
@@ -40,8 +40,8 @@ export default function Splash() {
                   </Button>
                   <Button
                     shape="round"
-                    size="large"
-                    style={{ width: '16vw', height: '3.75vw', fontWeight: 'bold', fontSize: '1.2vw' }}
+                    /* Added class for button & removed size attr since edits in html supersede all CSS */
+                    className={styles.logButton}
                     id="login-btn"
                     onClick={() => {
                       navigate('/login');

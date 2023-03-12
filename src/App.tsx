@@ -10,6 +10,7 @@ import NotFound from './components/pages/NotFound';
 import BaseLayout from './components/BaseLayout';
 import AccountPage from './components/pages/Account';
 import MobileRedirect from './components/pages/MobileRedirect';
+import Contact from './components/pages/Contact';
 import './index.css';
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           {/* MobileRedirect */}
           <Route path="/MobileRedirect" element={<MobileRedirect />} />
+          <Route path="/contact" element={<Contact />} />
           {/* this route handles the main single page app, with navbar and layout */}
           <Route path="/app" element={<BaseLayout />}>
             <Route path="dash" element={<Dashboard />} index />
