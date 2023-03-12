@@ -20,7 +20,7 @@ export default function Splash() {
         <Content className={styles.content}>
           <Row gutter={0} className={styles.row}>
             <div className={styles.container}>
-              <img src={orangelogo} alt="Orange Music Entertainment Logo" style={{ width: '40vw', height: 'auto' }} />
+              <img src={orangelogo} alt="Orange Music Entertainment Logo" className={styles.logo} />
               <div className={styles.orangetext}>
                 <p style={{ fontSize: '8vw', margin: '0vw', letterSpacing: '0.5vw' }}>SWEATSHOP BEATS</p>
                 <p style={{ fontSize: '2.1vw', paddingLeft: '18vw', margin: '0vw', letterSpacing: '0.25vw' }}>
