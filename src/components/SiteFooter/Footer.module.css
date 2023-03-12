@@ -1,7 +1,6 @@
 .siteFooter {
-  border-top: 0.5vh solid white;
-  background-color: #333;
   color: #fff;
+  background-color: black;
   padding: 2.5vh 0;
   text-align: center;
 }

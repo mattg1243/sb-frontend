@@ -1,0 +1,43 @@
+@media (min-width: 480px) {
+
+	.container {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.headie {
+		padding-left: 5vw;
+		margin-top: 4vh;
+		font-size: 2vw;
+	}
+
+	.text {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		margin-top: 7.5vh;
+		font-weight: bold;
+		font-size: 1vw;
+	}
+
+	.link {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		margin-top: 2vh;
+		padding-bottom: 2.5vh;
+		font-size: 1vw;
+	}
+
+	.logoContainer {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.logo {
+		margin-top: 5vh;
+		width: 10vw;
+		height: auto;
+	}
+}

@@ -48,8 +48,8 @@ export default function Login(): JSX.Element {
   return (
     <Layout>
       <Content className={styles.content}>
-        <img src={orangelogo} alt="logo" width="150vw" />
-        <h1 style={{ fontSize: '2vw', marginTop: '1vh' }}>Log in to your account</h1>
+        <img src={orangelogo} className={styles.logo} alt="logo" width="150vw" />
+        <h1 className={styles.loginText}>Log in to your account</h1>
         <Form
           name="basic"
           layout="vertical"
@@ -84,7 +84,7 @@ export default function Login(): JSX.Element {
             />
           </Form.Item>
 
-          <Form.Item name="forgotPassword" wrapperCol={{ offset: 4, span: 16 }}>
+          <Form.Item name="forgotPassword" className={styles.forgotPassword} wrapperCol={{ offset: 4, span: 16 }}>
             <a href="/notImplementedYet">Forgot password?</a>
           </Form.Item>
 
@@ -93,24 +93,15 @@ export default function Login(): JSX.Element {
             <Checkbox>Remember me</Checkbox>
           </Form.Item> */}
 
-          <Form.Item wrapperCol={{ offset: 4, span: 16 }}>
+          <Form.Item className={styles.buttonUnOffset} wrapperCol={{ offset: 4, span: 16 }}>
             {isLoading ? (
               <Spin size="large" className="spin" />
             ) : (
               <Button
                 type="primary"
                 shape="round"
-                size="large"
-                style={{
-                  fontSize: '1.5vw',
-                  background: 'black',
-                  borderColor: 'black',
-                  width: '17vw',
-                  maxWidth: '200px',
-                  height: '8vh',
-                  maxHeight: '75px',
-                  marginBottom: '1vh',
-                }}
+                /* Added logButton class for login button as inline styling supersedes CSS */
+                className={styles.logButton}
                 onClick={async () => {
                   await loginUser(email, password);
                 }}
