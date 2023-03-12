@@ -23,13 +23,3 @@ jobs:
           browser: chrome
           wait-on: 'http://localhost:3000'
           command: npm run test:int
-
-  deploy:
-    needs: test
-    runs-on: ubuntu-latest
-    steps:
-      - name: Deploy to Render with webhook
-        uses: fjogeleit/http-request-action@v1
-        with:
-          url: ${{ secrets.WEBHOOK_URL }}
-          method: 'GET'
