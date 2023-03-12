@@ -69,8 +69,8 @@ export default function Register(): JSX.Element {
   return (
     <Layout>
       <Content className={styles.content}>
-        <img src={orangelogo} alt="logo" width="120vw" />
-        <h1 style={{ fontSize: '2vw', marginTop: '0vh' }}>Create your free account</h1>
+        <img src={orangelogo} alt="logo" className={styles.logo} width="120vw" />
+        <h1 className={styles.headie}>Create your free account</h1>
         <Form
           name="basic"
           layout="vertical"
@@ -121,7 +121,7 @@ export default function Register(): JSX.Element {
               I agree to the <TermsAndConditions />
             </Checkbox>
           </Form.Item>
-          <Form.Item wrapperCol={{ offset: 4, span: 16 }}>
+          <Form.Item className={styles.buttonUnOffset} wrapperCol={{ offset: 4, span: 16 }}>
             {isLoading ? (
               <Spin />
             ) : (
@@ -129,13 +129,10 @@ export default function Register(): JSX.Element {
                 type="primary"
                 shape="round"
                 size="large"
+                className={styles.regButton}
                 style={{
-                  fontSize: '1.5vw',
-                  margin: '1rem',
                   backgroundColor: buttonColor,
                   borderColor: buttonColor,
-                  width: '12vw',
-                  height: '7vh',
                 }}
                 disabled={buttonColor === '#D3D3D3'}
                 onClick={async () => {
