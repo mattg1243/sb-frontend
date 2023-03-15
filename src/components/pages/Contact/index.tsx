@@ -14,11 +14,11 @@ export default function Contact() {
           <div>
             <p className={styles.text}>Support or general inquiries:</p>
             <p className={styles.link}>
-              <a href="info@orangemusicent.com">info@orangemusicent.com</a>
+              <a href="mailto:info@orangemusicent.com">info@orangemusicent.com</a>
             </p>
             <p className={styles.text}>Business inquiries</p>
             <p className={styles.link}>
-              <a href="montanabrown@orangemusicent.com">montanabrown@orangemusicent.com</a>
+              <a href="mailto:montanabrown@orangemusicent.com">montanabrown@orangemusicent.com</a>
             </p>
           </div>
           <div className={styles.logoContainer}>
