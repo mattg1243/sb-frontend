@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { uploadBeatReq } from '../../lib/axios';
 import { genreOptions } from '../../utils/genreTags';
 import UploadButton from '../UploadButton';
+import styles from './BeatUploadModal.module.css';
 
 const possibleKeys = ['A', 'B', 'C', 'D', 'E', 'F', 'G'];
 export const possibleKeyOptions = possibleKeys.map((key) => ({ value: key, label: key }));
@@ -82,6 +83,7 @@ export default function UploadBeatModal() {
           setShowModal(true);
         }}
         style={{ color: 'white' }}
+        id="open-modal-btn"
       >
         Upload
       </Button>
@@ -91,12 +93,14 @@ export default function UploadBeatModal() {
         open={showModal}
         onCancel={handleCancel}
         footer={null}
-        style={{ display: 'flex', alignItems: 'center', width: '10rem' }}
+        className={styles.modal}
+        data-cy="modal"
       >
         <Spin
           spinning={isUploading}
           tip={'Your beat is being uploaded, you can close this window. You will be notified when it is done.'}
           indicator={<LoadingOutlined />}
+          data-cy="spin"
         >
           <Form style={{ margin: '2rem 2rem', width: '20rem' }}>
             <Form.Item>
@@ -105,6 +109,7 @@ export default function UploadBeatModal() {
                 onChange={(e) => {
                   setTitle(e.target.value);
                 }}
+                data-cy="title-input"
               ></Input>
             </Form.Item>
             <Form.Item>
@@ -114,6 +119,7 @@ export default function UploadBeatModal() {
                 mode="multiple"
                 maxTagCount="responsive"
                 onChange={handleGenreTagsChange}
+                data-cy="genre-select"
               />
             </Form.Item>
             <Form.Item>
@@ -124,6 +130,7 @@ export default function UploadBeatModal() {
                 }}
                 addonAfter="BPM"
                 type="number"
+                data-cy="bpm-input"
               ></Input>
             </Form.Item>
             <Form.Item>
@@ -134,14 +141,15 @@ export default function UploadBeatModal() {
                 }}
                 style={{ marginTop: '.5rem' }}
                 defaultValue={flatOrSharp}
+                data-cy="flat-sharp-group"
               >
-                <Radio value="" checked={flatOrSharp === ''}>
+                <Radio value="" checked={flatOrSharp === ''} data-cy="regular">
                   None
                 </Radio>
-                <Radio value="flat" checked={flatOrSharp === 'flat'}>
+                <Radio value="flat" checked={flatOrSharp === 'flat'} data-cy="flat">
                   ♭
                 </Radio>
-                <Radio value="sharp" checked={flatOrSharp === 'flat'}>
+                <Radio value="sharp" checked={flatOrSharp === 'flat'} data-cy="sharp">
                   #
                 </Radio>
               </Radio.Group>
@@ -153,10 +161,10 @@ export default function UploadBeatModal() {
                   style={{ marginTop: '.5rem' }}
                   defaultValue={majorOrMinor}
                 >
-                  <Radio value="major" checked={majorOrMinor === 'major'}>
+                  <Radio value="major" checked={majorOrMinor === 'major'} data-cy="major">
                     Major
                   </Radio>
-                  <Radio value="minor" checked={majorOrMinor === 'minor'}>
+                  <Radio value="minor" checked={majorOrMinor === 'minor'} data-cy="minor">
                     Minor
                   </Radio>
                 </Radio.Group>
