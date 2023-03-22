@@ -2,6 +2,8 @@ name: Deploy to Production Server
 on:
   workflow_run:
     workflows: ['Build and test React app']
+    types:
+      - completed
     branches:
       - 'main'
 jobs:
