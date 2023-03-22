@@ -1,11 +1,11 @@
 name: Deploy to Production Server
 on:
-  push:
+  workflow_run:
+    workflows: ['Build and test React app']
     branches:
       - 'main'
 jobs:
   deploy:
-    needs: test
     runs-on: ubuntu-latest
     steps:
       - name: Deploy to Render with webhook
