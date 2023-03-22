@@ -12,7 +12,7 @@ export default function NotFound() {
         <div className={styles.container}>
           <h1 className={styles.fourhundredfour}>404</h1>
           <img src={grapes} alt="Not an Orange" className={styles.grapes} />
-          <div>
+          <div className={styles.textContainer}>
             <p className={styles.thetext}>this is not an orange</p>
             <p className={styles.thetext}>you've reached a page that does not exist</p>
           </div>
