@@ -12,6 +12,7 @@ import {
 import { updateUserReq } from '../../lib/axios';
 import { AlertObj } from '../../types/alerts';
 import CustomAlert from '../CustomAlert';
+import styles from './UserEditModal.module.css';
 
 interface IUserEditModal {
   user: User;
@@ -89,10 +90,10 @@ export default function UserEditModal(props: IUserEditModal) {
     <>
       <Button
         type="ghost"
-        style={{ border: 'solid', margin: '5px' }}
         onClick={() => {
           setIsOpen(true);
         }}
+        className={styles.btn}
       >
         Edit Profile
       </Button>

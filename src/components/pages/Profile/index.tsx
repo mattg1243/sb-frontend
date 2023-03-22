@@ -94,6 +94,7 @@ export default function Profile() {
                       setNewAvatarModalOpen(true);
                     }}
                     className={styles.useravatar}
+                    size={256}
                   />
                   <div
                     onClick={() => {
@@ -137,7 +138,7 @@ export default function Profile() {
                 <UserEditModal user={userInfo} setUserInfo={setUserInfo} />
               </>
             ) : (
-              <>
+              <div className={styles.container}>
                 <Avatar
                   src={
                     <Image
@@ -153,7 +154,7 @@ export default function Profile() {
                   size={256}
                 />
                 <FollowButton currentUser={getUserIdFromLocalStorage() as string} viewedUser={userId} />
-              </>
+              </div>
             )}
           </Space>
           <Col style={{ margin: '0rem 5rem', textAlign: 'start' }}>
