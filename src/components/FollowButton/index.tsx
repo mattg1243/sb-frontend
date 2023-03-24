@@ -29,14 +29,17 @@ export default function FollowButton(props: IFollowButtonProps) {
     // determining wether or not the current user is already following the
     // user whos page they are viewing (where this button renders)
     // to do this, we have to make an API call / HTTP request to our User server
-    axios
-      .get(`${gatewayUrl}/user/isfollowing?currentUser=${currentUser}&userToFollow=${viewedUser}`)
-      .then((res) => {
-        setIsFollowing(res.data.isFollowing);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+    // dont make this call if component is being tested
+    if (!stubFn) {
+      axios
+        .get(`${gatewayUrl}/user/isfollowing?currentUser=${currentUser}&userToFollow=${viewedUser}`)
+        .then((res) => {
+          setIsFollowing(res.data.isFollowing);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    }
   }, []);
 
   const followUser = async (viewedUser: string) => {

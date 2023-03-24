@@ -3,7 +3,7 @@ import { useState } from 'react';
 
 interface IButtonInfo {
   label: string;
-  onClick: Function;
+  onClick: () => void;
 }
 
 interface IModalFormProps {
