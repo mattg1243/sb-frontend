@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { Layout, Avatar, Row, Space, Col, Button, Modal, Image, Progress } from 'antd';
+import { Layout, Avatar, Row, Space, Col, Button, Modal, Image, Progress, Statistic } from 'antd';
 import { Content } from 'antd/es/layout/layout';
 import { UserOutlined, YoutubeFilled, AppleFilled, TwitterCircleFilled, CheckCircleOutlined } from '@ant-design/icons';
 import DashRow from '../../DashRow';
@@ -199,6 +199,14 @@ export default function Profile() {
               />
             </Space>
           </Col>
+          <Row gutter={96}>
+            <Col span={10}>
+              <Statistic title="Followers" value={Math.round(Math.random() * 100)} />
+            </Col>
+            <Col span={10}>
+              <Statistic title="Following" value={Math.round(Math.random() * 10)} />
+            </Col>
+          </Row>
         </Space>
       </Row>
       <div style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
