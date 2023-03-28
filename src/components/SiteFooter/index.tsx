@@ -14,7 +14,7 @@ export default function SiteFooter() {
             <a href="/contact">Contact</a>
           </li>
           <li>
-            <a href="/privacyPolicy">Privacy Policy</a>
+            <a href="/PRIVACYPOLICY.html">Privacy Policy</a>
           </li>
           <li>
             <a href="/TERMSANDCONDITIONS.html">Terms & Conditions</a>
