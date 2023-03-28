@@ -10,59 +10,19 @@ import { Beat } from '../../../types/beat';
 import PlaybackButtons from '../../PlaybackButtons';
 import styles from './Dashboard.module.css';
 import { DownOutlined } from '@ant-design/icons';
-
-type RecAlgos = 'Following' | 'Recommended';
+import RecAlgoMenu from '../../RecAlgoMenu';
+import type { RecAlgos } from '../../RecAlgoMenu';
 
 export default function Dashboard() {
   const [trackPlaying, setTrackPlaying] = useState<Beat>();
-  const [recAlgo, setRecAlgo] = useState<RecAlgos>('Recommended');
+  const [currentAlgo, setCurrentAlgo] = useState<RecAlgos>('Recommended');
 
   const { beats } = useGetBeats();
-
-  const algoOptions: MenuProps['items'] = [
-    {
-      key: 'Recommended',
-      label: (
-        <Button
-          type="ghost"
-          style={{ color: 'white' }}
-          onClick={() => {
-            if (recAlgo !== 'Recommended') {
-              setRecAlgo('Recommended');
-            }
-          }}
-        >
-          Recommended
-        </Button>
-      ),
-    },
-    {
-      key: 'Following',
-      label: (
-        <Button
-          type="ghost"
-          style={{ color: 'white' }}
-          onClick={() => {
-            if (recAlgo !== 'Following') {
-              setRecAlgo('Following');
-            }
-          }}
-        >
-          Following
-        </Button>
-      ),
-    },
-  ];
 
   return (
     <div data-testid="dashboard" style={{ width: '100%' }}>
       <h2 className={styles['for-you-text']}>For you:</h2>
-      <Dropdown menu={{ items: algoOptions }}>
-        <Button type="ghost" className={styles['algo-btn']}>
-          {recAlgo}
-          <DownOutlined />
-        </Button>
-      </Dropdown>
+      <RecAlgoMenu currentAlgo={currentAlgo} setCurrentAlgo={setCurrentAlgo} />
       <div className={styles['beats-container']}>
         {beats ? (
           beats.map((beat) => {
