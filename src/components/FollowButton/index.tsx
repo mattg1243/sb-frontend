@@ -65,14 +65,19 @@ export default function FollowButton(props: IFollowButtonProps) {
     }
   };
 
+  const clickFn = stubFn
+    ? () => {
+        stubFn();
+        setIsLoading(true);
+        setIsFollowing(!isFollowing);
+        setIsLoading(false);
+      }
+    : async () => {
+        await followAction();
+      };
+
   return (
-    <Button
-      type="ghost"
-      onClick={async () => await followAction()}
-      loading={isLoading}
-      className={styles.btn}
-      id="follow-btn"
-    >
+    <Button type="ghost" onClick={clickFn} loading={isLoading} className={styles.btn} id="follow-btn">
       {isFollowing ? 'Unfollow 🔨' : 'Follow 🔨'}
     </Button>
   );
