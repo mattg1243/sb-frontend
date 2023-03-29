@@ -47,6 +47,26 @@ export const updateAvatarReq = async (newAvatar: FormData, progressSetter: (p: n
     },
   });
 };
+
+export const followUserReq = async (userToFollow: string) => {
+  return await axios.post(
+    `${gatewayUrl}/user/follow`,
+    { userToFollow },
+    {
+      withCredentials: true,
+    }
+  );
+};
+
+export const unfollowUserReq = async (userToUnfollow: string) => {
+  return await axios.post(
+    `${gatewayUrl}/user/unfollow`,
+    { userToUnfollow },
+    {
+      withCredentials: true,
+    }
+  );
+};
 // beats
 export const uploadBeatReq = async (data: FormData, progressSetter: (p: number) => void): Promise<AxiosResponse> => {
   return await axios.post(`${gatewayUrl}/beats/upload`, data, {

@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Button } from 'antd';
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import gatewayUrl from '../../config/routing';
+import { followUserReq, unfollowUserReq } from '../../lib/axios';
 import styles from './FollowButton.module.css';
 
 interface IFollowButtonProps {
@@ -32,7 +33,7 @@ export default function FollowButton(props: IFollowButtonProps) {
     // dont make this call if component is being tested
     if (!stubFn) {
       axios
-        .get(`${gatewayUrl}/user/isfollowing?currentUser=${currentUser}&userToFollow=${viewedUser}`)
+        .get(`${gatewayUrl}/user/isfollowing?user=${currentUser}&userToCheck=${viewedUser}`)
         .then((res) => {
           setIsFollowing(res.data.isFollowing);
         })
@@ -42,64 +43,32 @@ export default function FollowButton(props: IFollowButtonProps) {
     }
   }, []);
 
-  const followUser = async (viewedUser: string) => {
+  const reqFn = isFollowing ? unfollowUserReq : followUserReq;
+
+  /**
+   * Wrapper function that handles loading state, making follow / unfollow request based on
+   * following status and catching errors within these requests.
+   * @param reqFn
+   */
+  const followAction = async () => {
     try {
       setIsLoading(true);
-      const res = await axios.post(
-        `${gatewayUrl}/user/follow`,
-        { userToFollow: viewedUser },
-        { withCredentials: true }
-      );
+      const res = await reqFn(viewedUser);
       console.log(res);
       if (res.status === 200) {
-        setIsFollowing(true);
-      }
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const unfollowUser = async (viewedUser: string) => {
-    setIsLoading(true);
-    try {
-      const res = await axios.post(
-        `${gatewayUrl}/user/unfollow`,
-        { userToUnfollow: viewedUser },
-        { withCredentials: true }
-      );
-      console.log(res);
-      if (res.status === 200) {
-        setIsFollowing(false);
-      }
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-  // check for stub fn passed to component during unit test
-  const clickFn: (viewedUser: string) => void = stubFn
-    ? () => {
-        stubFn();
-        setIsLoading(true);
-        setTimeout(() => {
-          console.log('done waiting for test');
-        }, 1000);
-        setIsLoading(false);
         setIsFollowing(!isFollowing);
       }
-    : isFollowing
-    ? unfollowUser
-    : followUser;
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <Button
       type="ghost"
-      onClick={() => {
-        clickFn(viewedUser);
-      }}
+      onClick={async () => await followAction()}
       loading={isLoading}
       className={styles.btn}
       id="follow-btn"
