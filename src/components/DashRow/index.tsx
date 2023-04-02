@@ -7,6 +7,7 @@ import artworkLoading from '../../assets/artwork_loading.jpg';
 import { useState } from 'react';
 import playIcon from '../../assets/play_black.png';
 import styles from './DashRow.module.css';
+import BeatDownloadModal from '../BeatDownloadModal';
 
 interface IBeatRowProps {
   beat: Beat;
@@ -31,7 +32,11 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
 
   return (
     <Row className={styles['row-container']}>
-      {buttonType === 'edit' ? <BeatEditModal beat={beat} /> : <PlusOutlined className={styles['download-button']} />}
+      {buttonType === 'edit' ? (
+        <BeatEditModal beat={beat} />
+      ) : (
+        <BeatDownloadModal title={beat.title} artistName={beat.artistName} cdnKey={beat.audioKey} />
+      )}
       <Col span={12}>
         <Row style={{ alignItems: 'center' }}>
           <Image

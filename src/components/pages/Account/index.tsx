@@ -1,15 +1,25 @@
+import { useState, useEffect } from 'react';
 import { Column } from '@ant-design/plots';
-import { Row, Avatar } from 'antd';
+import { Row, Avatar, Button } from 'antd';
 import styles from './Account.module.css';
 import { Divider } from 'antd';
 import DashRow from '../../DashRow';
 // import { useState } from 'react';
 import { Beat } from '../../../types/beat';
+import axios from 'axios';
+import gatewayUrl from '../../../config/routing';
 
 export default function AccountPage() {
   // TODO: create a hook so that the trackPlaying state and playbackButton
   // can work across page changes
   // const [trackPlaying, setTrackPlaying] = useState<Beat | undefined>();
+  const [creditsBalance, setCreditsBalance] = useState<number>();
+
+  useEffect(() => {
+    axios.get(`${gatewayUrl}/user/credits-balance`, { withCredentials: true }).then((res) => {
+      setCreditsBalance(res.data.creditBalance);
+    });
+  }, []);
 
   const data = [
     {
@@ -74,9 +84,27 @@ export default function AccountPage() {
     })
   );
 
+  const addCredits = async () => {
+    try {
+      const res = await axios.post(`${gatewayUrl}/user/add-credits`, { creditsToAdd: 10 }, { withCredentials: true });
+      console.log(res);
+      setCreditsBalance(res.data.creditBalance);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   return (
     <div style={{ width: '80%', marginBottom: '20px' }}>
       <h1 className={`${styles.heading} heading`}>My Account 🔨</h1>
+      <p>Credits: {creditsBalance}</p>
+      <Button
+        onClick={async () => {
+          await addCredits();
+        }}
+      >
+        +10 Credits
+      </Button>
       <Divider className={`${styles.divider} divider`}>
         <h3>Revenue by Month</h3>
       </Divider>
