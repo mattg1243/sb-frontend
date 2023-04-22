@@ -4,20 +4,25 @@ import DashRow from '../../DashRow';
 import { useState } from 'react';
 // import Navbar from '../../Navbar';
 import useGetBeats from '../../../hooks/useGetBeats';
-import { Button, Dropdown, MenuProps, Spin } from 'antd';
+import { Spin } from 'antd';
 import { cdnHostname } from '../../../config/routing';
 import { Beat } from '../../../types/beat';
 import PlaybackButtons from '../../PlaybackButtons';
 import styles from './Dashboard.module.css';
-import { DownOutlined } from '@ant-design/icons';
 import RecAlgoMenu from '../../RecAlgoMenu';
 import type { RecAlgos } from '../../RecAlgoMenu';
+import { getUserIdFromLocalStorage } from '../../../utils/localStorageParser';
 
 export default function Dashboard() {
   const [trackPlaying, setTrackPlaying] = useState<Beat>();
   const [currentAlgo, setCurrentAlgo] = useState<RecAlgos>('Recommended');
 
-  const { beats } = useGetBeats();
+  const userId = getUserIdFromLocalStorage();
+
+  const { beats, isLoading } = useGetBeats(
+    currentAlgo === 'Following' ? (userId as string) : undefined,
+    currentAlgo == 'Following' ? true : false
+  );
 
   return (
     <div data-testid="dashboard" style={{ width: '100%' }}>
@@ -37,7 +42,7 @@ export default function Dashboard() {
             );
           })
         ) : (
-          <Spin size="large" tip="Loading beats..." />
+          <Spin size="large" tip="Loading beats..." spinning={isLoading} />
         )}
       </div>
       {trackPlaying ? (
