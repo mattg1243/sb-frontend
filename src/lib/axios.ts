@@ -1,4 +1,4 @@
-import axios, { AxiosProgressEvent, AxiosResponse } from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import gatewayUrl from '../config/routing';
 import { User } from '../types';
 
@@ -67,6 +67,14 @@ export const unfollowUserReq = async (userToUnfollow: string) => {
     }
   );
 };
+
+export const getFollowersReq = async (userId: string) => {
+  return await axios.get(`${gatewayUrl}/user/followers?user=${userId}`);
+};
+
+export const getFollowingReq = async (userId: string) => {
+  return await axios.get(`${gatewayUrl}/user/following?user=${userId}`);
+};
 // beats
 export const uploadBeatReq = async (data: FormData, progressSetter: (p: number) => void): Promise<AxiosResponse> => {
   return await axios.post(`${gatewayUrl}/beats/upload`, data, {
@@ -86,6 +94,10 @@ export const getAllBeatsReq = async () => {
 
 export const getAllBeatsByUserReq = async (userId: string) => {
   return await axios.get(`${gatewayUrl}/beats/beats?userId=${userId}`, { withCredentials: true });
+};
+
+export const getAllBeatsFromFollowingReq = async (userId: string) => {
+  return await axios.get(`${gatewayUrl}/beats/beats?userId=${userId}&following=true`);
 };
 
 export const deleteBeatReq = async (beatId: string) => {
