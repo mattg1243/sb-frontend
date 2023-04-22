@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Button } from 'antd';
-import axios, { AxiosResponse } from 'axios';
+import axios from 'axios';
 import gatewayUrl from '../../config/routing';
 import { followUserReq, unfollowUserReq } from '../../lib/axios';
 import styles from './FollowButton.module.css';
@@ -48,7 +48,6 @@ export default function FollowButton(props: IFollowButtonProps) {
   /**
    * Wrapper function that handles loading state, making follow / unfollow request based on
    * following status and catching errors within these requests.
-   * @param reqFn
    */
   const followAction = async () => {
     try {

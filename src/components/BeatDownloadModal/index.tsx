@@ -4,6 +4,8 @@ import { useState } from 'react';
 import styles from './BeatDownloadModal.module.css';
 import gatewayUrl from '../../config/routing';
 import axios from 'axios';
+import CustomAlert from '../CustomAlert/index';
+import { AlertObj } from '../../types';
 
 interface IBeatDownloadModal {
   cdnKey: string;
@@ -16,6 +18,7 @@ export default function BeatDownloadModal(props: IBeatDownloadModal) {
 
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [errorMsg, setErrMsg] = useState<AlertObj>();
 
   const downloadBeat = async () => {
     setLoading(true);
@@ -34,7 +37,8 @@ export default function BeatDownloadModal(props: IBeatDownloadModal) {
       URL.revokeObjectURL(href);
       console.log(res);
       setOpen(false);
-    } catch (err) {
+    } catch (err: any) {
+      setErrMsg({ message: 'Insufficient credits', status: 'error' });
       console.error(err);
     } finally {
       setLoading(false);
@@ -78,7 +82,15 @@ export default function BeatDownloadModal(props: IBeatDownloadModal) {
           <h3>
             {title} - {artistName}
           </h3>
-          <p style={{ padding: '.5vw' }}>Are you sure you would like download and license this beat for 10 credits?</p>
+          {errorMsg ? (
+            <>
+              <CustomAlert message={errorMsg.message} status={errorMsg.status} />
+            </>
+          ) : (
+            <p style={{ padding: '.5vw' }}>
+              Are you sure you would like download and license this beat for 10 credits?
+            </p>
+          )}
         </Spin>
       </Modal>
     </>
