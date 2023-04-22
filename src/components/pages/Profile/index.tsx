@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { Layout, Avatar, Row, Space, Col, Button, Modal, Image, Progress, Statistic } from 'antd';
-import { Content } from 'antd/es/layout/layout';
+import { Avatar, Row, Space, Col, Button, Modal, Image, Progress, Statistic } from 'antd';
 import { UserOutlined, YoutubeFilled, AppleFilled, TwitterCircleFilled, CheckCircleOutlined } from '@ant-design/icons';
 import DashRow from '../../DashRow';
 import useGetBeats from '../../../hooks/useGetBeats';
@@ -9,11 +8,10 @@ import { Beat } from '../../../types';
 import { cdnHostname } from '../../../config/routing';
 import { getUserIdFromLocalStorage } from '../../../utils/localStorageParser';
 import LoadingPage from '../Loading';
-import Navbar from '../../Navbar';
 import { User } from '../../../types/user';
 import UserEditModal from '../../UserEditModal';
 import { AlertObj } from '../../../types/alerts';
-import { getUserReq, updateAvatarReq } from '../../../lib/axios';
+import { getFollowersReq, getFollowingReq, getUserReq, updateAvatarReq } from '../../../lib/axios';
 import UploadButton from '../../UploadButton';
 import CustomAlert from '../../CustomAlert';
 import PlaybackButtons from '../../PlaybackButtons';
@@ -29,6 +27,8 @@ export default function Profile() {
   const [uploadProgress, setUploadProgress] = useState<number>();
   const [trackPlaying, setTrackPlaying] = useState<Beat>();
   const [userInfo, setUserInfo] = useState<User | null>();
+  const [followers, setFollowers] = useState<Array<string>>();
+  const [following, setFollowing] = useState<Array<string>>();
   const [newAvatar, setNewAvatar] = useState<File>();
   const [newAvatarModalOpen, setNewAvatarModalOpen] = useState<boolean>(false);
   const [alert, setAlert] = useState<AlertObj>();
@@ -36,18 +36,26 @@ export default function Profile() {
   const userId = searchParams.get('id') || '';
   const isCurrentUser = userId === getUserIdFromLocalStorage();
   const { beats } = useGetBeats(userId);
-
+  // this could probably be optimized to run async
   useEffect(() => {
     getUserReq(userId)
       .then((res) => {
         setUserInfo(res.data);
       })
-      .then(() => {
-        setIsLoading(false);
+      .catch((err) => {
+        console.error(err);
+      });
+    getFollowersReq(userId)
+      .then((res) => {
+        setFollowers(res.data.followers);
       })
       .catch((err) => {
         console.error(err);
       });
+    getFollowingReq(userId)
+      .then((res) => setFollowing(res.data.following))
+      .then(() => setIsLoading(false))
+      .catch((err) => console.error(err));
   }, [userId]);
 
   const updateAvatar = async () => {
@@ -201,10 +209,10 @@ export default function Profile() {
           </Col>
           <Row gutter={96}>
             <Col span={10}>
-              <Statistic title="Followers" value={Math.round(Math.random() * 100)} />
+              <Statistic title="Followers" value={followers ? followers.length : '?'} />
             </Col>
             <Col span={10}>
-              <Statistic title="Following" value={Math.round(Math.random() * 10)} />
+              <Statistic title="Following" value={following ? following.length : '?'} />
             </Col>
           </Row>
         </Space>
