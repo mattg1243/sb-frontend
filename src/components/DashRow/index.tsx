@@ -15,6 +15,8 @@ interface IBeatRowProps {
   buttonType: 'edit' | 'download';
 }
 
+const isMobile: boolean = window.innerWidth < 480;
+
 export default function DashRow(props: IBeatRowProps): JSX.Element {
   const [artistNameColor, setArtistNameColor] = useState<'black' | 'blue'>('black');
 
@@ -50,33 +52,35 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
               currentTarget.onerror = null; // prevents looping
               currentTarget.src = artworkLoading;
             }}
-            width={125}
-            height={125}
+            width={isMobile ? 75 : 125}
+            height={isMobile ? 75 : 125}
             onClick={(e) => {
               onClick(e);
             }}
             className={styles.artwork}
           />
-          <h3
-            onClick={(e) => {
-              onClick(e);
-            }}
-            className={styles.title}
-          >
-            {beat.title} -{' '}
-            <a
-              style={{ color: artistNameColor }}
-              onMouseOver={() => {
-                setArtistNameColor('blue');
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <h3
+              onClick={(e) => {
+                onClick(e);
               }}
-              onMouseLeave={() => {
-                setArtistNameColor('black');
-              }}
-              href={`/app/user/?id=${beat.artistId}`}
+              className={styles.title}
             >
-              {beat.artistName}
-            </a>
-          </h3>
+              {beat.title} -{' '}
+              <a
+                style={{ color: artistNameColor }}
+                onMouseOver={() => {
+                  setArtistNameColor('blue');
+                }}
+                onMouseLeave={() => {
+                  setArtistNameColor('black');
+                }}
+                href={`/app/user/?id=${beat.artistId}`}
+              >
+                {beat.artistName}
+              </a>
+            </h3>
+          </div>
         </Row>
       </Col>
       <Col span={2}></Col>
