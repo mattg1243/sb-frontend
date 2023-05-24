@@ -8,4 +8,12 @@
   padding-left: min(30vw, 20px);
   align-self: flex-start;
   font-size: clamp(20px, 2vw, 30px);
+  z-index: 1;
+  margin-top: clamp(70px, 7vh, 150px);
+}
+
+@media (max-width: 480px) {
+  .for-you-text {
+    margin-top: 2vh;
+  }
 }

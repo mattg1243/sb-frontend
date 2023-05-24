@@ -71,7 +71,7 @@ export default function Navbar() {
   }, [currentUserId]);
 
   return (
-    <Header style={{ width: '100%', margin: 0, top: 100, background: 'black' }}>
+    <Header style={{ width: '100%', margin: 0, top: 0, background: 'black', position: 'fixed', zIndex: 1 }}>
       <Menu
         theme="dark"
         mode="horizontal"
