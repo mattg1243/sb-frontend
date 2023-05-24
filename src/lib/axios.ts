@@ -97,7 +97,7 @@ export const getAllBeatsByUserReq = async (userId: string) => {
 };
 
 export const getAllBeatsFromFollowingReq = async (userId: string) => {
-  return await axios.get(`${gatewayUrl}/beats/beats?userId=${userId}&following=true`);
+  return await axios.get(`${gatewayUrl}/beats/beats?userId=${userId}&following=true`, { withCredentials: true });
 };
 
 export const deleteBeatReq = async (beatId: string) => {
