@@ -1,23 +1,30 @@
-import Layout, { Footer } from 'antd/es/layout/layout';
 import styles from './Footer.module.css';
 
 export default function SiteFooter() {
   return (
     <footer className={styles.siteFooter}>
       <div className={styles.container}>
-        <p>Copyright &copy; 2023 Orange Music Entertainment</p>
+        <p id="copyright-notice">Copyright &copy; 2023 Orange Music Entertainment</p>
         <ul>
           <li>
-            <a href="/app/about">About</a>
+            <a href="/app/about" id="about-link">
+              About
+            </a>
           </li>
           <li>
-            <a href="/contact">Contact</a>
+            <a href="/contact" id="contact-link">
+              Contact
+            </a>
           </li>
           <li>
-            <a href="/PRIVACYPOLICY.html">Privacy Policy</a>
+            <a href="/PRIVACYPOLICY.html" id="privacy-policy-link">
+              Privacy Policy
+            </a>
           </li>
           <li>
-            <a href="/TERMSANDCONDITIONS.html">Terms & Conditions</a>
+            <a href="/TERMSANDCONDITIONS.html" id="terms-link">
+              Terms & Conditions
+            </a>
           </li>
         </ul>
       </div>

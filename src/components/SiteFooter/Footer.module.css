@@ -3,6 +3,8 @@
   background-color: black;
   padding: 2.5vh 0;
   text-align: center;
+  bottom: 0;
+  width: 100%;
 }
 
 .container {
