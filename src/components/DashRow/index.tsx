@@ -34,64 +34,57 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
 
   return (
     <Row className={styles['row-container']}>
-      {buttonType === 'edit' ? (
+      {isMobile ? null : buttonType === 'edit' ? (
         <BeatEditModal beat={beat} />
       ) : (
         <BeatDownloadModal title={beat.title} artistName={beat.artistName} cdnKey={beat.audioKey} />
       )}
-      <Col span={12}>
-        <Row style={{ alignItems: 'center' }}>
-          <Image
-            src={`${cdnHostname}/${beat.artworkKey}`}
-            alt="album artwork"
-            preview={{
-              mask: <Image src={playIcon} preview={false} />,
-            }}
-            placeholder={<Image src={artworkLoading} width={125} height={125} />}
-            onError={({ currentTarget }) => {
-              currentTarget.onerror = null; // prevents looping
-              currentTarget.src = artworkLoading;
-            }}
-            width={isMobile ? 75 : 125}
-            height={isMobile ? 75 : 125}
+      <Row style={{ alignItems: 'center', marginRight: 'auto', paddingLeft: '1vw' }}>
+        <Image
+          src={`${cdnHostname}/${beat.artworkKey}`}
+          alt="album artwork"
+          preview={{
+            mask: <Image src={playIcon} preview={false} />,
+          }}
+          placeholder={<Image src={artworkLoading} width={125} height={125} />}
+          onError={({ currentTarget }) => {
+            currentTarget.onerror = null; // prevents looping
+            currentTarget.src = artworkLoading;
+          }}
+          width={isMobile ? 75 : 125}
+          height={isMobile ? 75 : 125}
+          onClick={(e) => {
+            onClick(e);
+          }}
+          className={styles.artwork}
+        />
+        <div className={styles['text-container']}>
+          <h3
             onClick={(e) => {
               onClick(e);
             }}
-            className={styles.artwork}
-          />
-          <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <h3
-              onClick={(e) => {
-                onClick(e);
-              }}
-              className={styles.title}
-            >
-              {beat.title} -{' '}
-              <a
-                style={{ color: artistNameColor }}
-                onMouseOver={() => {
-                  setArtistNameColor('blue');
-                }}
-                onMouseLeave={() => {
-                  setArtistNameColor('black');
-                }}
-                href={`/app/user/?id=${beat.artistId}`}
-              >
-                {beat.artistName}
-              </a>
-            </h3>
-          </div>
-        </Row>
-      </Col>
-      <Col span={2}></Col>
-      <Col span={6} style={{ justifyItems: 'center', alignItems: 'end' }}>
-        <Row className={styles['info-row']}>
+            className={styles.title}
+          >
+            {beat.title}
+          </h3>
           <h4 className={styles['info-text']}>
-            {beat.genreTags[0]} | {beat.tempo} BPM | {beat.key}
-            {displayFlatOrSharp(beat.flatOrSharp)} {beat.majorOrMinor}
+            <a
+              style={{ color: artistNameColor }}
+              onMouseOver={() => {
+                setArtistNameColor('blue');
+              }}
+              onMouseLeave={() => {
+                setArtistNameColor('black');
+              }}
+              href={`/app/user/?id=${beat.artistId}`}
+            >
+              {beat.artistName}
+            </a>{' '}
+            |{isMobile ? null : ` ${beat.genreTags[0]} |`} {beat.key}
+            {displayFlatOrSharp(beat.flatOrSharp)} {beat.majorOrMinor} {isMobile ? null : `| ${beat.tempo} bpm`}
           </h4>
-        </Row>
-      </Col>
+        </div>
+      </Row>
     </Row>
   );
 }
