@@ -3,6 +3,7 @@ import type { User } from '../../types';
 import { Button, Modal, Form, Input, Space, Spin } from 'antd';
 import {
   AppleOutlined,
+  EditOutlined,
   InstagramOutlined,
   LinkOutlined,
   SoundOutlined,
@@ -18,6 +19,8 @@ interface IUserEditModal {
   user: User;
   setUserInfo: React.Dispatch<React.SetStateAction<User | null | undefined>>;
 }
+
+const isMobile = window.innerWidth < 480;
 
 export default function UserEditModal(props: IUserEditModal) {
   const { user, setUserInfo } = props;
@@ -88,15 +91,24 @@ export default function UserEditModal(props: IUserEditModal) {
 
   return (
     <>
-      <Button
-        type="ghost"
-        onClick={() => {
-          setIsOpen(true);
-        }}
-        className={styles.btn}
-      >
-        Edit Profile
-      </Button>
+      {isMobile ? (
+        <EditOutlined
+          onClick={() => {
+            setIsOpen(true);
+          }}
+          style={{ fontSize: '3vh' }}
+        />
+      ) : (
+        <Button
+          type="ghost"
+          onClick={() => {
+            setIsOpen(true);
+          }}
+          className={styles.btn}
+        >
+          Edit Profile
+        </Button>
+      )}
       <Modal
         open={isOpen}
         onCancel={handleCancel}

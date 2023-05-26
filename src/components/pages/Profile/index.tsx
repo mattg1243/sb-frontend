@@ -19,6 +19,8 @@ import defaultAvatar from '../../../assets/default_avatar_white.png';
 import styles from './Profile.module.css';
 import FollowButton from '../../FollowButton';
 
+const isMobile = window.innerWidth < 480;
+
 export default function Profile() {
   const searchParams = useSearchParams()[0];
 
@@ -90,7 +92,7 @@ export default function Profile() {
     <LoadingPage />
   ) : (
     <>
-      <Row style={{ margin: '5rem 5rem', width: '77%' }}>
+      <Row className={styles['profile-info-row']}>
         <Space direction="horizontal" style={{ alignContent: 'flex-start' }}>
           <Space direction="vertical" style={{ textAlign: 'center' }}>
             {isCurrentUser ? (
@@ -102,7 +104,7 @@ export default function Profile() {
                       setNewAvatarModalOpen(true);
                     }}
                     className={styles.useravatar}
-                    size={256}
+                    size={isMobile ? 110 : 256}
                   />
                   <div
                     onClick={() => {
@@ -159,23 +161,33 @@ export default function Profile() {
                     />
                   }
                   className={styles.useravatar}
-                  size={256}
+                  size={isMobile ? 110 : 256}
                 />
+                {isMobile ? (
+                  <>
+                    <h1 className={styles.username}>{userInfo.artistName}</h1>
+                    <p className={styles.bio}>{userInfo.bio}</p>
+                  </>
+                ) : null}
                 <FollowButton currentUser={getUserIdFromLocalStorage() as string} viewedUser={userId} />
               </div>
             )}
           </Space>
-          <Col style={{ margin: '0rem 5rem', textAlign: 'start' }}>
-            <h1 className={styles.username}>{userInfo.artistName}</h1>
-            <p className={styles.bio}>{userInfo.bio}</p>
-            <p className={styles.bio} style={{ fontSize: '.8vw' }}>
-              Member since{' '}
-              {new Date(userInfo.created_at).toLocaleDateString('en-us', {
-                year: 'numeric',
-                month: 'short',
-                day: 'numeric',
-              })}
-            </p>
+          {isMobile ? null : (
+            <>
+              <h1 className={styles.username}>{userInfo.artistName}</h1>
+              <p className={styles.bio}>{userInfo.bio}</p>
+              <p className={styles.bio} style={{ fontSize: '.8vw' }}>
+                Member since{' '}
+                {new Date(userInfo.created_at).toLocaleDateString('en-us', {
+                  year: 'numeric',
+                  month: 'short',
+                  day: 'numeric',
+                })}
+              </p>
+            </>
+          )}
+          <Col className={styles['text-col']}>
             <Space direction="horizontal" style={{ margin: '0rem 1rem', textAlign: 'start', justifyContent: 'center' }}>
               <YoutubeFilled
                 style={{ fontSize: '1.5rem' }}
@@ -207,7 +219,7 @@ export default function Profile() {
               />
             </Space>
           </Col>
-          <Row gutter={96}>
+          <Row gutter={isMobile ? 12 : 96}>
             <Col span={10}>
               <Statistic title="Followers" value={followers ? followers.length : '?'} />
             </Col>
