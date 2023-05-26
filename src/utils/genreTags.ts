@@ -24,6 +24,12 @@ export const genreTags = [
   'Grime',
   'Trap',
   'Psychedelic Rock',
+  'Afrobeats',
+  'Synthwave',
+  'Lo-fi',
+  'Dancehall',
+  'Dubstep',
+  'Industrial',
 ];
 // in option form for selector components
 interface Option {
