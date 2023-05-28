@@ -1,8 +1,8 @@
 .btn {
   border: solid 1px black;
   border-radius: 8px;
-  height: 36px;
+  height: clamp(20px, 5vh, 36px);
   margin: 10px;
   box-shadow: 4px 2px black;
-  font-size: 18px;
+  font-size: clamp(8px, 2vh, 18px);
 }

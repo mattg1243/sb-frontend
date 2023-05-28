@@ -77,7 +77,7 @@ export default function FollowButton(props: IFollowButtonProps) {
 
   return (
     <Button type="ghost" onClick={clickFn} loading={isLoading} className={styles.btn} id="follow-btn">
-      {isFollowing ? 'Unfollow 🔨' : 'Follow 🔨'}
+      {isFollowing ? 'Unfollow ' : 'Follow '}
     </Button>
   );
 }
