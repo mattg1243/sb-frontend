@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { Avatar, Row, Space, Col, Button, Modal, Image, Progress, Statistic } from 'antd';
+import { Avatar, Row, Space, Col, Button, Modal, Image, Progress, Statistic, Divider } from 'antd';
 import { UserOutlined, YoutubeFilled, AppleFilled, TwitterCircleFilled, CheckCircleOutlined } from '@ant-design/icons';
 import DashRow from '../../DashRow';
 import useGetBeats from '../../../hooks/useGetBeats';
@@ -93,7 +93,7 @@ export default function Profile() {
   ) : (
     <>
       <Row className={styles['profile-info-row']}>
-        <Space direction="horizontal" style={{ alignContent: 'flex-start' }}>
+        <Space direction="horizontal" className={styles['profile-info-space']}>
           <Space direction="vertical" style={{ textAlign: 'center' }}>
             {isCurrentUser ? (
               <>
@@ -104,7 +104,7 @@ export default function Profile() {
                       setNewAvatarModalOpen(true);
                     }}
                     className={styles.useravatar}
-                    size={isMobile ? 110 : 256}
+                    size={isMobile ? 140 : 256}
                   />
                   <div
                     onClick={() => {
@@ -115,6 +115,12 @@ export default function Profile() {
                     <div className={styles.texto}>+</div>
                   </div>
                 </div>
+                {isMobile ? (
+                  <>
+                    <UserEditModal user={userInfo} setUserInfo={setUserInfo} />
+                    <h1 className={styles.username}>{userInfo.artistName}</h1>
+                  </>
+                ) : null}
                 <Modal
                   key="Update Profile Picture"
                   open={newAvatarModalOpen}
@@ -145,7 +151,7 @@ export default function Profile() {
                     {alert ? <CustomAlert message={alert.message} status={alert.status} /> : null}
                   </div>
                 </Modal>
-                <UserEditModal user={userInfo} setUserInfo={setUserInfo} />
+                {isMobile ? null : <UserEditModal user={userInfo} setUserInfo={setUserInfo} />}
               </>
             ) : (
               <div className={styles.container}>
@@ -161,7 +167,7 @@ export default function Profile() {
                     />
                   }
                   className={styles.useravatar}
-                  size={isMobile ? 110 : 256}
+                  size={isMobile ? 140 : 256}
                 />
                 {isMobile ? (
                   <>
@@ -175,60 +181,66 @@ export default function Profile() {
           </Space>
           {isMobile ? null : (
             <>
-              <h1 className={styles.username}>{userInfo.artistName}</h1>
-              <p className={styles.bio}>{userInfo.bio}</p>
-              <p className={styles.bio} style={{ fontSize: '.8vw' }}>
-                Member since{' '}
-                {new Date(userInfo.created_at).toLocaleDateString('en-us', {
-                  year: 'numeric',
-                  month: 'short',
-                  day: 'numeric',
-                })}
-              </p>
+              <Col className={styles['text-col']}>
+                <h1 className={styles.username}>{userInfo.artistName}</h1>
+                <p className={styles.bio}>{userInfo.bio}</p>
+                <p className={styles.bio} style={{ fontSize: '.8vw' }}>
+                  Member since{' '}
+                  {new Date(userInfo.created_at).toLocaleDateString('en-us', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric',
+                  })}
+                </p>
+                <Space
+                  direction="horizontal"
+                  style={{ margin: '0rem 1rem', textAlign: 'start', justifyContent: 'center' }}
+                >
+                  <YoutubeFilled
+                    style={{ fontSize: '1.5rem' }}
+                    onClick={() => {
+                      window.open(
+                        userInfo.linkedSocials.youtube
+                          ? `https://www.youtube.com/@${userInfo.linkedSocials.youtube}`
+                          : 'https://www.youtube.com'
+                      );
+                    }}
+                  />
+                  <TwitterCircleFilled
+                    style={{ fontSize: '1.5rem' }}
+                    onClick={() => {
+                      window.open(
+                        userInfo.linkedSocials.youtube
+                          ? `https://www.twitter.com/${userInfo.linkedSocials.twitter}`
+                          : 'https://www.twitter.com'
+                      );
+                    }}
+                  />
+                  <AppleFilled
+                    style={{ fontSize: '1.5rem' }}
+                    onClick={() => {
+                      window.open(
+                        userInfo.linkedSocials.appleMusic
+                          ? userInfo.linkedSocials.appleMusic
+                          : 'https://music.apple.com/'
+                      );
+                    }}
+                  />
+                </Space>
+              </Col>
+              <Row gutter={isMobile ? 12 : 96}>
+                <Col span={10}>
+                  <Statistic title="Followers" value={followers ? followers.length : '?'} />
+                </Col>
+                <Col span={10}>
+                  <Statistic title="Following" value={following ? following.length : '?'} />
+                </Col>
+              </Row>
             </>
           )}
-          <Col className={styles['text-col']}>
-            <Space direction="horizontal" style={{ margin: '0rem 1rem', textAlign: 'start', justifyContent: 'center' }}>
-              <YoutubeFilled
-                style={{ fontSize: '1.5rem' }}
-                onClick={() => {
-                  window.open(
-                    userInfo.linkedSocials.youtube
-                      ? `https://www.youtube.com/@${userInfo.linkedSocials.youtube}`
-                      : 'https://www.youtube.com'
-                  );
-                }}
-              />
-              <TwitterCircleFilled
-                style={{ fontSize: '1.5rem' }}
-                onClick={() => {
-                  window.open(
-                    userInfo.linkedSocials.youtube
-                      ? `https://www.twitter.com/${userInfo.linkedSocials.twitter}`
-                      : 'https://www.twitter.com'
-                  );
-                }}
-              />
-              <AppleFilled
-                style={{ fontSize: '1.5rem' }}
-                onClick={() => {
-                  window.open(
-                    userInfo.linkedSocials.appleMusic ? userInfo.linkedSocials.appleMusic : 'https://music.apple.com/'
-                  );
-                }}
-              />
-            </Space>
-          </Col>
-          <Row gutter={isMobile ? 12 : 96}>
-            <Col span={10}>
-              <Statistic title="Followers" value={followers ? followers.length : '?'} />
-            </Col>
-            <Col span={10}>
-              <Statistic title="Following" value={following ? following.length : '?'} />
-            </Col>
-          </Row>
         </Space>
       </Row>
+      <Divider style={{ margin: '10px' }} />
       <div style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
         {beats ? (
           beats.map((beat) => (

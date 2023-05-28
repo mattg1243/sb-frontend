@@ -8,13 +8,16 @@
 }
 
 .container {
-  position: relative;
-  width: 10%;
+  margin-top: 5vh;
 }
 
 .profile-info-row {
   margin: 5rem 5rem;
   width: 77%;
+}
+
+.profile-info-space {
+  align-content: flex-start;
 }
 
 .text-col {
@@ -71,12 +74,33 @@
 }
 
 @media (max-width: 480px) {
+  .container {
+    margin-top: 0;
+    width: 85vw;
+    justify-content: center;
+    align-items: center;
+    padding: 1vh;
+  }
+
   .profile-info-row {
     flex-direction: column;
+    justify-content: center;
     margin: 1rem 0rem;
+    align-content: center;
+    text-align: center;
   }
 
   .text-col {
     margin: 5px;
+  }
+
+  .useravatar {
+    margin-bottom: 2vh;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .profile-info-space profile-info-row {
+    align-content: center;
   }
 }

@@ -1,8 +1,5 @@
-// import { Content } from 'antd/es/layout/layout';
-// import { Layout } from 'antd';
 import DashRow from '../../DashRow';
 import { useState } from 'react';
-// import Navbar from '../../Navbar';
 import useGetBeats from '../../../hooks/useGetBeats';
 import { Spin } from 'antd';
 import { cdnHostname } from '../../../config/routing';
