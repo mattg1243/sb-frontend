@@ -35,7 +35,7 @@ export default function Register(): JSX.Element {
           setAlert({ status: 'success', message: 'Account created succesfully, you may now login' });
           localStorage.setItem('sb-user', JSON.stringify(response.data.user));
           setIsLoading(false);
-          navigate('/dash');
+          navigate('/app/dash');
         }
       } catch (err: any) {
         console.log('message from server: ', err.response.data.message);
