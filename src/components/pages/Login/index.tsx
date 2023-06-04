@@ -31,6 +31,9 @@ export default function Login(): JSX.Element {
       console.error(err);
       if (err.response.status === 401) {
         setAlert({ status: 'error', message: 'Invalid login credentials' });
+      } else if (err.response.status === 403) {
+        localStorage.setItem('sb-user', JSON.stringify(err.response.data.user));
+        navigate('/verify-email');
       } else {
         setAlert({ status: 'error', message: 'An error occured while logging again. Please try again.' });
       }
