@@ -12,6 +12,7 @@ import AccountPage from './components/pages/Account';
 import MobileRedirect from './components/pages/MobileRedirect';
 import Contact from './components/pages/Contact';
 import './index.css';
+import VerifyEmail from './components/pages/VerifyEmail';
 
 function App() {
   return (
@@ -24,11 +25,15 @@ function App() {
           {/* MobileRedirect */}
           <Route path="/MobileRedirect" element={<MobileRedirect />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/verify-email" element={<VerifyEmail />} />
           {/* this route handles the main single page app, with navbar and layout */}
           <Route path="/app" element={<BaseLayout />}>
-            <Route path="dash" element={<Dashboard />} index />
+            {/* TODO: disable invalid nav bar links in public routes */}
+            {/* public routes */}
             <Route path="about" element={<AboutPage />} />
             <Route path="user" element={<Profile />} />
+            {/* protected routes */}
+            <Route path="dash" element={<Dashboard />} index />
             <Route path="loading" element={<LoadingPage />} />
             <Route path="account" element={<AccountPage />} />
           </Route>
