@@ -10,8 +10,10 @@ import gatewayUrl from '../../../config/routing';
 import TermsAndConditions from '../../TermsAndAgreements';
 import styles from './Register.module.css';
 
+const emailRe = /^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/;
+
 export default function Register(): JSX.Element {
-  const [email, setEmail] = useState<string>('');
+  const [email, setEmail] = useState<string | undefined>('');
   // TODO: change artistname globally across the frontend to username
   const [artistName, setArtistName] = useState<string>('');
   const [password, setPassword] = useState<string>('');
@@ -85,7 +87,17 @@ export default function Register(): JSX.Element {
             name="email"
             rules={[{ required: true, message: 'Please enter your email' }]}
           >
-            <Input className={styles.input} placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
+            <Input
+              className={styles.input}
+              placeholder="Email"
+              onChange={(e) => {
+                if (emailRe.test(e.target.value)) {
+                  setEmail(e.target.value);
+                } else {
+                  setEmail(undefined);
+                }
+              }}
+            />
           </Form.Item>
 
           <Form.Item
