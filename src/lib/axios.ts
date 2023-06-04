@@ -27,6 +27,10 @@ export const getUserAvatarReq = async (userId: string) => {
   return await axios.get(`${gatewayUrl}/user/avatar?id=${userId}`);
 };
 
+export const resendVerificationEmailReq = async (userId: string) => {
+  return await axios.get(`${gatewayUrl}/user/resend-verification-email?user=${userId}`);
+};
+
 interface UpdateUserArg extends Omit<User, 'avatar'> {
   avatar: File | string;
 }
