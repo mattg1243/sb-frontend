@@ -1,9 +1,13 @@
+import { Content, Header } from 'antd/lib/layout/layout';
+import { Layout, Row, Col, Button, Space } from 'antd';
 import { useEffect } from 'react';
 import { resendVerificationEmailReq } from '../../../lib/axios';
 import { getUserIdFromLocalStorage } from '../../../utils/localStorageParser';
 import { useNavigate } from 'react-router-dom';
 import gatewayUrl from '../../../config/routing';
 import axios from 'axios';
+import styles from './VerifyEmail.module.css';
+import logo from '../../../assets/orangelogo.png';
 
 export default function VerifyEmail() {
   const userId = getUserIdFromLocalStorage();
@@ -37,15 +41,23 @@ export default function VerifyEmail() {
   };
 
   return (
-    <>
-      <h1>Click the link in your email to verify your account</h1>
-      <button
-        onClick={() => {
-          resendEmail();
-        }}
-      >
-        Resend email
-      </button>
-    </>
+    <Layout>
+      <Content>
+        <>
+          <div className={styles.container}>
+            <h1>Click the link in your email to verify your account</h1>
+            <button
+              className={styles.button}
+              onClick={() => {
+                resendEmail();
+              }}
+            >
+              Resend email
+            </button>
+            <img src={logo} alt="Logo" className={styles.logo}></img>
+          </div>
+        </>
+      </Content>
+    </Layout>
   );
 }
