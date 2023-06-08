@@ -5,9 +5,9 @@
 }
 
 .typography {
+  margin-top: 15vh;
   width: 50vw;
   text-align: start;
-  margin-top: 3vh;
   z-index: 1;
 }
 
