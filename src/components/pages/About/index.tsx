@@ -54,6 +54,16 @@ export default function AboutPage() {
           <p>
             <strong>Questions? </strong> info@orangemusicent.com
           </p>
+          <p>
+            Check out our change logs{' '}
+            <a
+              href="https://intriguing-pantry-2a7.notion.site/Sweatshop-Beats-Change-Logs-8ddd377bd31e41908536cea6761ab622?pvs=4"
+              target="_blank"
+              data-cy="changelog-link"
+            >
+              here.
+            </a>
+          </p>
           <strong>Follow us on Twitter</strong>
           @mattg @montanab
         </Paragraph>
