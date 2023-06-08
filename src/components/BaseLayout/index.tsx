@@ -5,6 +5,8 @@ import Navbar from '../Navbar';
 import styles from './BaseLayout.module.css';
 import SiteFooter from '../SiteFooter';
 import MobileNav from '../MobileNav';
+import PlaybackButtons from '../PlaybackButtons';
+// redux
 
 const isMobile = window.innerWidth < 480;
 
@@ -15,6 +17,7 @@ export default function BaseLayout() {
         <Navbar data-cy="navbar" />
         <Content className={styles.content} data-cy="content">
           <Outlet />
+          <PlaybackButtons />
         </Content>
         {isMobile ? <MobileNav /> : <SiteFooter />}
       </Layout>
