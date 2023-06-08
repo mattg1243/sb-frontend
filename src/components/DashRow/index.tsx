@@ -1,5 +1,4 @@
-import { Image, Col, Row } from 'antd';
-import { PlusOutlined } from '@ant-design/icons';
+import { Image, Row } from 'antd';
 import BeatEditModal from '../BeatEditModal';
 import { Beat } from '../../types/beat';
 import { cdnHostname } from '../../config/routing';
@@ -45,6 +44,7 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
           alt="album artwork"
           preview={{
             mask: <Image src={playIcon} preview={false} />,
+            visible: false,
           }}
           placeholder={<Image src={artworkLoading} width={125} height={125} />}
           onError={({ currentTarget }) => {
