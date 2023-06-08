@@ -1,18 +1,21 @@
-import { Button, Tooltip } from 'antd';
+import { Tooltip } from 'antd';
 import { CaretRightOutlined, PauseOutlined } from '@ant-design/icons';
 import { useState, useRef, useEffect } from 'react';
 import styles from './PlaybackButtons.module.css';
+import { useSelector } from 'react-redux';
+import type { Beat } from '../../types';
+import { cdnHostname } from '../../config/routing';
 
-interface IPlaybackButtonsProps {
-  trackTitle: string;
-  trackArtist: string;
-  trackSrcUrl: string;
-}
-
-export default function PlaybackButtons(props: IPlaybackButtonsProps) {
-  const { trackTitle, trackArtist, trackSrcUrl } = props;
-
+export default function PlaybackButtons() {
   const [isPlaying, setIsPlaying] = useState<boolean>(true);
+  // get beatPlaying from redux store
+  const beatPlaying = useSelector<{ playback: { trackPlaying: Beat | null } }, Beat | null>(
+    (state) => state.playback.trackPlaying
+  );
+  // save the data needed to stream the beat and display infor
+  const trackTitle = beatPlaying ? beatPlaying.title : '';
+  const trackArtist = beatPlaying ? beatPlaying.artistName : '';
+  const trackSrcUrl = beatPlaying ? `${cdnHostname}/${beatPlaying.audioKey}` : '';
 
   const audio = useRef<HTMLAudioElement>();
 
@@ -36,29 +39,38 @@ export default function PlaybackButtons(props: IPlaybackButtonsProps) {
     }
   };
   useEffect(() => {
-    audio.current = new Audio(trackSrcUrl);
-    audio.current.play();
-  }, [trackSrcUrl]);
+    console.log('Track from redux : ', beatPlaying?.title);
+    if (beatPlaying) {
+      audio.current = new Audio(trackSrcUrl);
+      audio.current.play();
+      setIsPlaying(true);
+    } else {
+      console.log('No beat found for useSelector hook call');
+    }
+  }, [beatPlaying]);
 
   useEffect(() => {
     return () => {
       if (!audio.current) {
-        console.log('no audio ref detected on cleanup');
+        // console.log('no audio ref detected on cleanup');
         return;
       } else {
         audio.current.pause();
       }
     };
-  }, [trackSrcUrl]);
+  }, [beatPlaying]);
 
-  return (
-    <Tooltip title={`${trackTitle} - ${trackArtist}`} placement="topLeft">
-      <Button
-        onClick={isPlaying ? pause : play}
-        type="ghost"
-        className={styles.playbackbutton}
-        icon={isPlaying ? <PauseOutlined /> : <CaretRightOutlined />}
-      />
-    </Tooltip>
-  );
+  return beatPlaying ? (
+    <>
+      <Tooltip title={`${trackTitle} - ${trackArtist}`} placement="topLeft">
+        <button
+          onClick={isPlaying ? pause : play}
+          className={styles.playbackbutton}
+          style={{ animationDuration: '0s !important' }}
+        >
+          {isPlaying ? <PauseOutlined /> : <CaretRightOutlined />}
+        </button>
+      </Tooltip>
+    </>
+  ) : null;
 }

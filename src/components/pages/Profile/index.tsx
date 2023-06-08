@@ -255,13 +255,7 @@ export default function Profile() {
         ) : (
           <h3>This user hasn't uploaded any beats yet.</h3>
         )}
-        {trackPlaying ? (
-          <PlaybackButtons
-            trackTitle={trackPlaying ? trackPlaying.title : ''}
-            trackArtist={trackPlaying ? trackPlaying.artistName : ''}
-            trackSrcUrl={trackPlaying ? `${cdnHostname}/${trackPlaying.audioKey}` : ''}
-          />
-        ) : null}
+        {trackPlaying ? <PlaybackButtons /> : null}
       </div>
     </>
   );

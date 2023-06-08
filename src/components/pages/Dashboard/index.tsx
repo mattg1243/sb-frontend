@@ -2,19 +2,19 @@ import DashRow from '../../DashRow';
 import { useState } from 'react';
 import useGetBeats from '../../../hooks/useGetBeats';
 import { Spin } from 'antd';
-import { cdnHostname } from '../../../config/routing';
-import { Beat } from '../../../types/beat';
-import PlaybackButtons from '../../PlaybackButtons';
 import styles from './Dashboard.module.css';
 import RecAlgoMenu from '../../RecAlgoMenu';
 import type { RecAlgos } from '../../RecAlgoMenu';
 import { getUserIdFromLocalStorage } from '../../../utils/localStorageParser';
+import { useDispatch } from 'react-redux';
+import { playback } from '../../../reducers/playbackReducer';
 
 export default function Dashboard() {
-  const [trackPlaying, setTrackPlaying] = useState<Beat>();
   const [currentAlgo, setCurrentAlgo] = useState<RecAlgos>('Recommended');
 
   const userId = getUserIdFromLocalStorage();
+
+  const dispatch = useDispatch();
 
   const { beats, isLoading } = useGetBeats(
     currentAlgo === 'Following' ? (userId as string) : undefined,
@@ -32,7 +32,7 @@ export default function Dashboard() {
               <DashRow
                 beat={beat}
                 onClick={() => {
-                  setTrackPlaying(beat);
+                  dispatch(playback(beat));
                 }}
                 buttonType="download"
               />
@@ -42,13 +42,6 @@ export default function Dashboard() {
           <Spin size="large" tip="Loading beats..." spinning={isLoading} />
         )}
       </div>
-      {trackPlaying ? (
-        <PlaybackButtons
-          trackTitle={trackPlaying ? trackPlaying.title : ''}
-          trackArtist={trackPlaying ? trackPlaying.artistName : ''}
-          trackSrcUrl={trackPlaying ? `${cdnHostname}/${trackPlaying.audioKey}` : ''}
-        />
-      ) : null}
     </div>
   );
 }
