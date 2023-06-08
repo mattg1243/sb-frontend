@@ -3,6 +3,8 @@
 import { mount } from 'cypress/react18';
 import BaseLayout from '.';
 import { MemoryRouter, Routes, Route } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import { store } from '../../store';
 // import Dashboard from '../pages/Dashboard';
 // import gatewayUrl from '../../../config/routing';
 
@@ -12,13 +14,15 @@ const TestComp = () => <div data-cy="test-comp">test this</div>;
 describe('BaseLayout.test.tsx', () => {
   beforeEach(() => {
     mount(
-      <MemoryRouter>
-        <Routes>
-          <Route element={<BaseLayout />}>
-            <Route path="/" element={<TestComp />} index />
-          </Route>
-        </Routes>
-      </MemoryRouter>
+      <Provider store={store}>
+        <MemoryRouter>
+          <Routes>
+            <Route element={<BaseLayout />}>
+              <Route path="/" element={<TestComp />} index />
+            </Route>
+          </Routes>
+        </MemoryRouter>
+      </Provider>
     );
   });
   it('contains AntD Layout, custom Navbar, and AntD Content components', () => {
