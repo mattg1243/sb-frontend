@@ -4,7 +4,6 @@ import { Avatar, Row, Space, Col, Button, Modal, Image, Progress, Statistic, Div
 import { UserOutlined, YoutubeFilled, AppleFilled, TwitterCircleFilled, CheckCircleOutlined } from '@ant-design/icons';
 import DashRow from '../../DashRow';
 import useGetBeats from '../../../hooks/useGetBeats';
-import { Beat } from '../../../types';
 import { cdnHostname } from '../../../config/routing';
 import { getUserIdFromLocalStorage } from '../../../utils/localStorageParser';
 import LoadingPage from '../Loading';
@@ -14,10 +13,11 @@ import { AlertObj } from '../../../types/alerts';
 import { getFollowersReq, getFollowingReq, getUserReq, updateAvatarReq } from '../../../lib/axios';
 import UploadButton from '../../UploadButton';
 import CustomAlert from '../../CustomAlert';
-import PlaybackButtons from '../../PlaybackButtons';
 import defaultAvatar from '../../../assets/default_avatar_white.png';
 import styles from './Profile.module.css';
 import FollowButton from '../../FollowButton';
+import { useDispatch } from 'react-redux';
+import { playback } from '../../../reducers/playbackReducer';
 
 const isMobile = window.innerWidth < 480;
 
@@ -27,7 +27,6 @@ export default function Profile() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [updateIsLoading, setUpdateIsLoading] = useState<boolean>(false);
   const [uploadProgress, setUploadProgress] = useState<number>();
-  const [trackPlaying, setTrackPlaying] = useState<Beat>();
   const [userInfo, setUserInfo] = useState<User | null>();
   const [followers, setFollowers] = useState<Array<string>>();
   const [following, setFollowing] = useState<Array<string>>();
@@ -38,6 +37,7 @@ export default function Profile() {
   const userId = searchParams.get('id') || '';
   const isCurrentUser = userId === getUserIdFromLocalStorage();
   const { beats } = useGetBeats(userId);
+  const dispatch = useDispatch();
   // this could probably be optimized to run async
   useEffect(() => {
     getUserReq(userId)
@@ -247,7 +247,7 @@ export default function Profile() {
             <DashRow
               beat={beat}
               onClick={() => {
-                setTrackPlaying(beat);
+                dispatch(playback(beat));
               }}
               buttonType={isCurrentUser ? 'edit' : 'download'}
             />
@@ -255,7 +255,6 @@ export default function Profile() {
         ) : (
           <h3>This user hasn't uploaded any beats yet.</h3>
         )}
-        {trackPlaying ? <PlaybackButtons /> : null}
       </div>
     </>
   );
