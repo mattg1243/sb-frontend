@@ -1,6 +1,9 @@
 .playbackbutton {
   position: fixed;
-  bottom: 0;
+  background: transparent;
+  border: none !important;
+  bottom: 10vh;
+  left: 5vw;
   margin: 2rem;
   font-size: 2rem;
 }

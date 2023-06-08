@@ -30,7 +30,7 @@ body {
   color: var(--dark-text) !important;
   margin: 0;
 }
-
+/* ANTD overrides */
 .ant-layout-content, .ant-layout {
   background-color: var(--primary) !important;
 }
@@ -56,7 +56,6 @@ body {
   height: '65px';
   font-weight: 'bold';
 }
-
 .input-round {
   border-radius: '15px';
   height: '50px';
