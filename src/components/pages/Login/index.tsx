@@ -72,6 +72,8 @@ export default function Login(): JSX.Element {
               className={`${styles.input} emailinput`}
               id="email-input"
               placeholder="Email"
+              autoComplete="email"
+              autoCapitalize="off"
               onChange={(e) => setEmail(e.target.value)}
               onKeyPress={(e) => handleKeypress(e)}
             />
@@ -81,6 +83,8 @@ export default function Login(): JSX.Element {
             <Input.Password
               className={`${styles.input} passwordinput`}
               placeholder="Password"
+              autoComplete="password"
+              autoCapitalize="off"
               onChange={(e) => setPassword(e.target.value)}
               onKeyPress={(e) => handleKeypress(e)}
               id="password-input"
