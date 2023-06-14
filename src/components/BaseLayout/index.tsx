@@ -17,7 +17,7 @@ export default function BaseLayout() {
         <Navbar data-cy="navbar" />
         <Content className={styles.content} data-cy="content">
           <Outlet />
-          <PlaybackButtons />
+          {isMobile ? null : <PlaybackButtons />}
         </Content>
         {isMobile ? <MobileNav /> : <SiteFooter />}
       </Layout>
