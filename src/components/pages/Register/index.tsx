@@ -1,5 +1,5 @@
-import { Button, Form, Input, Layout, Checkbox, Spin } from 'antd';
-import React, { useEffect, useState } from 'react';
+import { Button, Form, Input, Layout, Checkbox, Spin, Switch, Space, Tooltip } from 'antd';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Content } from 'antd/lib/layout/layout';
 import { AlertObj } from '../../../types';
@@ -9,6 +9,7 @@ import CustomAlert from '../../CustomAlert';
 import gatewayUrl from '../../../config/routing';
 import TermsAndConditions from '../../TermsAndAgreements';
 import styles from './Register.module.css';
+import { InfoCircleOutlined } from '@ant-design/icons';
 
 const emailRe = /^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/;
 
@@ -20,6 +21,7 @@ export default function Register(): JSX.Element {
   const [passwordConfirm, setConfirmPassword] = useState<string>('');
   const [buttonColor, setButtonColor] = useState<'#D3D3D3' | 'black'>('#D3D3D3');
   const [agreedToTerms, setAgreedToTerms] = useState<boolean>(false);
+  const [paidAcct, setPaidAcct] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [alert, setAlert] = useState<AlertObj>({ status: 'none', message: '' });
 
@@ -72,7 +74,7 @@ export default function Register(): JSX.Element {
     <Layout>
       <Content className={styles.content}>
         <img src={orangelogo} alt="logo" className={styles.logo} width="120vw" />
-        <h1 className={styles.headie}>Create your free account</h1>
+        <h1 className={styles.headie}>Create your account</h1>
         <Form
           name="basic"
           layout="vertical"
@@ -137,22 +139,40 @@ export default function Register(): JSX.Element {
             {isLoading ? (
               <Spin />
             ) : (
-              <Button
-                type="primary"
-                shape="round"
-                size="large"
-                className={styles.regButton}
-                style={{
-                  backgroundColor: buttonColor,
-                  borderColor: buttonColor,
-                }}
-                disabled={buttonColor === '#D3D3D3'}
-                onClick={async () => {
-                  await sendRegisterRequest();
-                }}
-              >
-                Sign Up
-              </Button>
+              <Space style={{ display: 'block' }}>
+                Paid Account
+                <Switch
+                  style={{ background: paidAcct ? 'black' : 'grey', margin: '1vh' }}
+                  onChange={() => {
+                    setPaidAcct(!paidAcct);
+                  }}
+                />
+                <span style={{ display: 'flex', justifyContent: 'center', textAlign: 'center' }}>
+                  <Tooltip title="If you want to upload your beats and not purchase any, a free account is perfect for you!">
+                    <InfoCircleOutlined />
+                  </Tooltip>
+                </span>
+                <Button
+                  type="primary"
+                  shape="round"
+                  size="large"
+                  className={styles.regButton}
+                  style={{
+                    backgroundColor: buttonColor,
+                    borderColor: buttonColor,
+                  }}
+                  disabled={buttonColor === '#D3D3D3'}
+                  onClick={async () => {
+                    if (paidAcct) {
+                      navigate('/subscriptions');
+                    } else {
+                      await sendRegisterRequest();
+                    }
+                  }}
+                >
+                  Sign Up
+                </Button>
+              </Space>
             )}
             <CustomAlert status={alert.status} message={alert.message} />
             <h3>
