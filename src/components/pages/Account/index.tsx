@@ -105,7 +105,7 @@ export default function AccountPage() {
           await addCredits();
         }}
       >
-        Add 10 Credits
+        +10 Credits
       </Button>
       <Divider className={`${styles.divider} divider`}>
         <h3>Revenue by Month</h3>
