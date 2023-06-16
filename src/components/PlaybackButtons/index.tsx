@@ -39,13 +39,10 @@ export default function PlaybackButtons() {
     }
   };
   useEffect(() => {
-    console.log('Track from redux : ', beatPlaying?.title);
     if (beatPlaying) {
       audio.current = new Audio(trackSrcUrl);
       audio.current.play();
       setIsPlaying(true);
-    } else {
-      console.log('No beat found for useSelector hook call');
     }
   }, [beatPlaying]);
 

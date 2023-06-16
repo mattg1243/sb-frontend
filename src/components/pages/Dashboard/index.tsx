@@ -35,6 +35,7 @@ export default function Dashboard() {
                   dispatch(playback(beat));
                 }}
                 buttonType="download"
+                key={beat._id}
               />
             );
           })

@@ -45,7 +45,6 @@ export default function UploadBeatModal() {
         setAlert({ message: 'Your beat was uploaded successfully!', type: 'success' });
         window.location.reload();
       }
-      console.log(response);
     } catch (err) {
       setAlert({ message: 'There was an error uploading your beat.', type: 'error' });
       console.error(err);
@@ -70,10 +69,6 @@ export default function UploadBeatModal() {
   const handleMajorMinorChange = (e: RadioChangeEvent) => {
     setMajorOrMinor(e.target.value);
   };
-
-  useEffect(() => {
-    console.log(possibleKeyOptions);
-  });
 
   return (
     <>

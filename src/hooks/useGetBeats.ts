@@ -16,7 +16,7 @@ export default function useGetBeats(
   const [isLoading, setIsLoading] = useState<boolean>(false);
   useEffect(() => {
     setIsLoading(true);
-    console.log('getting beats...');
+    // console.log('getting beats...');
     try {
       if (!userId) {
         getAllBeatsReq().then((res) => {
@@ -35,7 +35,7 @@ export default function useGetBeats(
       console.error(err);
     } finally {
       setIsLoading(false);
-      console.log('done!');
+      // console.log('done!');
     }
   }, [userId]);
   if (beats?.length === 0) {
