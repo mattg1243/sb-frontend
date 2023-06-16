@@ -1,3 +1,4 @@
+import { Content } from 'antd/lib/layout/layout';
 import { useState, useEffect } from 'react';
 import { Column } from '@ant-design/plots';
 import { Row, Avatar, Button } from 'antd';
@@ -95,6 +96,7 @@ export default function AccountPage() {
   };
 
   return (
+    <Content className={styles.Content}>
     <div style={{ width: '80%', marginBottom: '20px' }}>
       <h1 className={`${styles.heading} heading`}>My Account 🔨</h1>
       <p>Credits: {creditsBalance}</p>
@@ -154,5 +156,6 @@ export default function AccountPage() {
         </Row>
       </div>
     </div>
+    </Content>
   );
 }
