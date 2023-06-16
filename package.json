@@ -55,6 +55,11 @@
       "last 1 safari version"
     ]
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": ""
+    }
+  },
   "devDependencies": {
     "@babel/core": "^7.20.7",
     "@babel/plugin-transform-modules-commonjs": "^7.20.11",
@@ -81,6 +86,6 @@
     "ts-node": "^10.9.1"
   },
   "lint-staged": {
-    "*.ts": "prettier --write"
+    "*.{ts,tsx,css,json}": "prettier --write"
   }
 }

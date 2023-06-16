@@ -97,65 +97,65 @@ export default function AccountPage() {
 
   return (
     <Content className={styles.Content}>
-    <div style={{ width: '80%', marginBottom: '20px' }}>
-      <h1 className={`${styles.heading} heading`}>My Account 🔨</h1>
-      <p>Credits: {creditsBalance}</p>
-      <Button
-        onClick={async () => {
-          await addCredits();
-        }}
-      >
-        +10 Credits
-      </Button>
-      <Divider className={`${styles.divider} divider`}>
-        <h3>Revenue by Month</h3>
-      </Divider>
-      <div className="chartcont">
-        <Column {...chartConfig} className="revchart" data-cy="chart" />
+      <div style={{ width: '80%', marginBottom: '20px' }}>
+        <h1 className={`${styles.heading} heading`}>My Account 🔨</h1>
+        <p>Credits: {creditsBalance}</p>
+        <Button
+          onClick={async () => {
+            await addCredits();
+          }}
+        >
+          Add 10 Credits
+        </Button>
+        <Divider className={`${styles.divider} divider`}>
+          <h3>Revenue by Month</h3>
+        </Divider>
+        <div className="chartcont">
+          <Column {...chartConfig} className="revchart" data-cy="chart" />
+        </div>
+        <Divider className={`${styles.divider} divider`}>
+          <h3>Downloaded Beats</h3>
+        </Divider>
+        <div className={styles['beats-container']}>
+          <DashRow beat={testBeat} buttonType="download" onClick={() => console.log('row clicked')} />
+          <DashRow beat={testBeat} buttonType="download" onClick={() => console.log('row clicked')} />
+          <DashRow beat={testBeat} buttonType="download" onClick={() => console.log('row clicked')} />
+        </div>
+        <Divider>
+          <h3>Following</h3>
+        </Divider>
+        <div className={`${styles.following} following`}>
+          <Row style={{ justifyContent: 'space-around' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'center' }}>
+              <Avatar
+                size="large"
+                shape="square"
+                src="https://d3fulr0i8qqtgb.cloudfront.net/images/f8fbe7320ae08929cc577e7ff18e15ee"
+                className={styles['following-avatar']}
+              />
+              <p>Matt G</p>
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'center' }}>
+              <Avatar
+                size="large"
+                shape="square"
+                src="https://d3fulr0i8qqtgb.cloudfront.net/images/4c1fd8d0142d1f7133adda163c5a6689"
+                className={styles['following-avatar']}
+              />
+              <p>Montana Brown</p>
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'center' }}>
+              <Avatar
+                size="large"
+                shape="square"
+                src="https://d3fulr0i8qqtgb.cloudfront.net/images/8b46e8da307f8904904a63c3bc9a22c7"
+                className={styles['following-avatar']}
+              />
+              <p>Dak</p>
+            </div>
+          </Row>
+        </div>
       </div>
-      <Divider className={`${styles.divider} divider`}>
-        <h3>Downloaded Beats</h3>
-      </Divider>
-      <div className={styles['beats-container']}>
-        <DashRow beat={testBeat} buttonType="download" onClick={() => console.log('row clicked')} />
-        <DashRow beat={testBeat} buttonType="download" onClick={() => console.log('row clicked')} />
-        <DashRow beat={testBeat} buttonType="download" onClick={() => console.log('row clicked')} />
-      </div>
-      <Divider>
-        <h3>Following</h3>
-      </Divider>
-      <div className={`${styles.following} following`}>
-        <Row style={{ justifyContent: 'space-around' }}>
-          <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'center' }}>
-            <Avatar
-              size="large"
-              shape="square"
-              src="https://d3fulr0i8qqtgb.cloudfront.net/images/f8fbe7320ae08929cc577e7ff18e15ee"
-              className={styles['following-avatar']}
-            />
-            <p>Matt G</p>
-          </div>
-          <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'center' }}>
-            <Avatar
-              size="large"
-              shape="square"
-              src="https://d3fulr0i8qqtgb.cloudfront.net/images/4c1fd8d0142d1f7133adda163c5a6689"
-              className={styles['following-avatar']}
-            />
-            <p>Montana Brown</p>
-          </div>
-          <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'center' }}>
-            <Avatar
-              size="large"
-              shape="square"
-              src="https://d3fulr0i8qqtgb.cloudfront.net/images/8b46e8da307f8904904a63c3bc9a22c7"
-              className={styles['following-avatar']}
-            />
-            <p>Dak</p>
-          </div>
-        </Row>
-      </div>
-    </div>
     </Content>
   );
 }
