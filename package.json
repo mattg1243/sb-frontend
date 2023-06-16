@@ -4,11 +4,12 @@
   "private": true,
   "type": "module",
   "dependencies": {
-    "@ant-design/charts": "^1.4.2",
     "@ant-design/icons": "^4.8.0",
     "@chakra-ui/react": "^2.4.4",
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
+    "@nivo/bar": "^0.83.0",
+    "@nivo/core": "^0.83.0",
     "@reduxjs/toolkit": "^1.9.5",
     "@testing-library/user-event": "^13.5.0",
     "@types/node": "^16.18.3",
@@ -39,7 +40,8 @@
     "test:watch": "./node_modules/.bin/cypress run --component --no-exit --config watchForFileChanges=true",
     "cypress": "cypress open",
     "format:all": "prettier --write .",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "prepare": "husky install"
   },
   "browserslist": {
     "production": [
@@ -72,8 +74,13 @@
     "eslint-config-prettier": "^8.6.0",
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-prettier": "^4.2.1",
+    "husky": "^8.0.3",
+    "lint-staged": "^13.2.2",
     "prettier": "^2.8.4",
     "ts-jest": "^29.0.3",
     "ts-node": "^10.9.1"
+  },
+  "lint-staged": {
+    "*.ts": "eslint --cache --fix"
   }
 }
