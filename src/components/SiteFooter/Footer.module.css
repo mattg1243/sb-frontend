@@ -17,11 +17,11 @@
 
 .siteFooter p {
   margin: 0;
-  font-size: 0.8vw;
+  font-size: clamp(10px, 0.9vw, 14px);
 }
 
 .siteFooter ul {
-  font-size: 0.8vw;
+  font-size: clamp(10px, 0.8vw, 12px);
   list-style: none;
   margin: 0;
   padding: 0;
