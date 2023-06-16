@@ -1,7 +1,5 @@
 @media (max-width: 480px) {
-
-
-/*
+  /*
 
 header {
 	display: flex;
@@ -13,18 +11,17 @@ header {
 
 */
 
-.container {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	padding-top: 40%;
-}
+  .container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-top: 40%;
+  }
 
-.orange {
-	padding-top: 5vh;
-	width: 25vw;
-	height: auto;
-}
-
+  .orange {
+    padding-top: 5vh;
+    width: 25vw;
+    height: auto;
+  }
 }

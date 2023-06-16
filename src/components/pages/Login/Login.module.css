@@ -40,7 +40,6 @@
 h1 {
   margin-top: 1vh;
   font-size: 2vw;
-
 }
 
 /* @media screen and (min-width: 1200px) {
@@ -52,76 +51,73 @@ h1 {
 /* Mobile CSS */
 
 @media (max-width: 480px) {
-
   .content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  margin-top: 6vh;
-  text-align: center;
-  height: 87.5vh;
-  padding: 0px;
-}
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 6vh;
+    text-align: center;
+    height: 87.5vh;
+    padding: 0px;
+  }
 
-.logo {
-  width: 25vw;
-  height: auto;
-}
+  .logo {
+    width: 25vw;
+    height: auto;
+  }
 
-.row {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
+  .row {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
 
-.form {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 75%;
-  margin-top: 4vh;
-  height: 50vh;
-  padding-right: 25vw;
-}
+  .form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 75%;
+    margin-top: 4vh;
+    height: 50vh;
+    padding-right: 25vw;
+  }
 
-.loginText {
-  font-size: 4vw;
-}
+  .loginText {
+    font-size: 4vw;
+  }
 
-.input {
-  width: 75vw;
-  max-width: 600px;
-  height: 5vh;
-  max-height: 50px;
-  border-radius: 40px;
-}
+  .input {
+    width: 75vw;
+    max-width: 600px;
+    height: 5vh;
+    max-height: 50px;
+    border-radius: 40px;
+  }
 
-.forgotPassword {
-  padding-left: 15vw;
-}
+  .forgotPassword {
+    padding-left: 15vw;
+  }
 
-.buttonUnOffset {
-  padding-left: 7.5vw;
-}
+  .buttonUnOffset {
+    padding-left: 7.5vw;
+  }
 
-.logButton {
-  font-size: 4vw;
-  background: black;
-  border-color: black;
-  width: 75vw;
-  max-width: 200px;
-  height: 8vh;
-  max-height: 75px;
-  margin-bottom: 1vh;
-}
+  .logButton {
+    font-size: 4vw;
+    background: black;
+    border-color: black;
+    width: 75vw;
+    max-width: 200px;
+    height: 8vh;
+    max-height: 75px;
+    margin-bottom: 1vh;
+  }
 
-h1 {
-  margin-top: 1vh;
-  font-size: 4vw;
-
-}
-
+  h1 {
+    margin-top: 1vh;
+    font-size: 4vw;
+  }
 }

@@ -1,83 +1,79 @@
 @media (min-width: 480px) {
+  .Content {
+    display: flex;
+    justify-content: center;
+    margin-top: 10vh;
+    width: 100%;
+  }
 
-.Content {
-  display: flex;
-  justify-content: center;
-  margin-top: 10vh;
-  width: 100%;
-}
+  .heading {
+    padding-left: min(30vw, 20px);
+    align-self: flex-start;
+    font-size: clamp(20px, 2vw, 30px);
+  }
 
-.heading {
-  padding-left: min(30vw, 20px);
-  align-self: flex-start;
-  font-size: clamp(20px, 2vw, 30px);
-}
+  .chartcont {
+    width: 100%;
+    height: 10vh;
+  }
 
-.chartcont {
-  width: 100%;
-  height: 10vh;
-}
+  .divider {
+    color: black;
+    width: 10vw;
+  }
 
-.divider {
-  color: black;
-  width: 10vw;
-}
+  .beats-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-items: center;
+    justify-content: center;
+  }
 
-.beats-container {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-items: center;
-  justify-content: center;
-}
-
-.following-avatar {
-  width: clamp(20px, 10vw, 300px);
-  height: clamp(20px, 10vw, 300px);
-}
-
+  .following-avatar {
+    width: clamp(20px, 10vw, 300px);
+    height: clamp(20px, 10vw, 300px);
+  }
 }
 
 @media (max-width: 480px) {
-
   .Content {
     display: flex;
     width: 100%;
     height: 100%;
     margin-left: 19vw;
-}
+  }
 
   .heading {
-  padding-left: min(30vw, 20px);
-  align-self: flex-start;
-  font-size: clamp(20px, 2vw, 30px);
-}
+    padding-left: min(30vw, 20px);
+    align-self: flex-start;
+    font-size: clamp(20px, 2vw, 30px);
+  }
 
-.chartcont {
-  width: 100%;
-  height: 10vh;
-}
+  .chartcont {
+    width: 100%;
+    height: 10vh;
+  }
 
-.divider {
-  color: black;
-  width: 10vw;
-  margin-bottom: 200px;
-}
+  .divider {
+    color: black;
+    width: 10vw;
+    margin-bottom: 200px;
+  }
 
-.beats-container {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-items: center;
-  justify-content: center;
-}
+  .beats-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-items: center;
+    justify-content: center;
+  }
 
-.following-avatar {
-  width: clamp(20px, 10vw, 300px);
-  height: clamp(20px, 10vw, 300px);
-  margin-bottom: 20px;
-}
-
+  .following-avatar {
+    width: clamp(20px, 10vw, 300px);
+    height: clamp(20px, 10vw, 300px);
+    margin-bottom: 20px;
+  }
 }

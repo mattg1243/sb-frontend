@@ -1,39 +1,36 @@
 /* Desktop CSS */
 
 @media (min-width: 480px) {
+  .row {
+    width: 100vw;
+    height: 110vh;
+    max-width: 2000px;
+    justify-content: center;
+    padding-left: 5.5vw;
+  }
 
-.row {
-  width: 100vw;
-  height: 110vh;
-  max-width: 2000px;
-  justify-content: center;
-  padding-left: 5.5vw;
-}
+  .header1 {
+    font-size: 3.5vw;
+    max-width: 40vw;
+    padding-top: 10vw;
+  }
 
-.header1 {
-  font-size: 3.5vw;
-  max-width: 40vw;
-  padding-top: 10vw;
-}
+  .paragraph1 {
+    margin: 1rem 0rem 1rem 0rem;
+    font-size: 2.5vw;
+    max-width: 40vw;
+  }
 
-.paragraph1 {
-  margin: 1rem 0rem 1rem 0rem;
-  font-size: 2.5vw;
-  max-width: 40vw;
-}
-
-.moneygraph {
-  width: 28vw;
-  height: auto;
-  padding-top: 25vh;
-}
-
+  .moneygraph {
+    width: 28vw;
+    height: auto;
+    padding-top: 25vh;
+  }
 }
 
 /* Mobile CSS */
 
 @media (max-width: 480px) {
-
   .row {
     display: none;
   }

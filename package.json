@@ -81,6 +81,6 @@
     "ts-node": "^10.9.1"
   },
   "lint-staged": {
-    "*.ts": "eslint --cache --fix"
+    "*.ts": "prettier --write"
   }
 }

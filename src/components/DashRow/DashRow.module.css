@@ -1,91 +1,87 @@
 @media (min-width: 1920px) {
+  .row-container {
+    width: 70vw;
+    max-width: 1400px;
+    text-align: center;
+    align-items: center;
+    align-self: center;
+    padding: 0 2rem 0 min(350px, 14vw);
+    justify-content: center;
+    margin: 1.25vw;
+  }
 
-.row-container {
-  width: 70vw;
-  max-width: 1400px;
-  text-align: center;
-  align-items: center;
-  align-self: center;
-  padding: 0 2rem 0 min(350px, 14vw);
-  justify-content: center;
-  margin: 1.25vw;
-}
+  .download-button {
+    font-size: 1.5vw;
+    margin-right: 1vw;
+  }
 
-.download-button {
-  font-size: 1.5vw;
-  margin-right: 1vw;
-}
+  .text-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
 
-.text-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-}
+  .title {
+    cursor: pointer;
+    margin-left: 3vw;
+    align-self: flex-start;
+    font-size: clamp(15px, 1vw, 20px);
+  }
 
-.title {
-  cursor: pointer;
-  margin-left: 3vw;
-  align-self: flex-start;
-  font-size: clamp(15px, 1vw, 20px);
-}
-
-.info-text {
-  margin-left: 3vw;
-  margin-top: -1vh;
-  align-self: flex-start;
-  font-size: clamp(13px, 0.8vw, 18px);
-}
-.artwork {
-  box-shadow: 6px 3px black;
-}
-
+  .info-text {
+    margin-left: 3vw;
+    margin-top: -1vh;
+    align-self: flex-start;
+    font-size: clamp(13px, 0.8vw, 18px);
+  }
+  .artwork {
+    box-shadow: 6px 3px black;
+  }
 }
 
 /* this is super fucked but it works */
 
 @media (min-width: 1366px) and (max-width: 1919px) {
-
   .row-container {
-  width: 75%;
-  max-width: 1400px;
-  text-align: center;
-  align-items: center;
-  align-self: center;
-  padding: 0 2rem 0 4rem;
-  justify-content: center;
-  margin: 1.25vw;
-  margin-left: 25%;
-}
+    width: 75%;
+    max-width: 1400px;
+    text-align: center;
+    align-items: center;
+    align-self: center;
+    padding: 0 2rem 0 4rem;
+    justify-content: center;
+    margin: 1.25vw;
+    margin-left: 25%;
+  }
 
-.download-button {
-  font-size: 1.5vw;
-  margin-right: 1vw;
-}
+  .download-button {
+    font-size: 1.5vw;
+    margin-right: 1vw;
+  }
 
-.text-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  margin-left: 2vw;
-}
+  .text-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    margin-left: 2vw;
+  }
 
-.title {
-  cursor: pointer;
-  margin-left: 3vw;
-  align-self: flex-start;
-  font-size: clamp(15px, 1vw, 20px);
-}
+  .title {
+    cursor: pointer;
+    margin-left: 3vw;
+    align-self: flex-start;
+    font-size: clamp(15px, 1vw, 20px);
+  }
 
-.info-text {
-  margin-left: 3vw;
-  margin-top: -1vh;
-  align-self: flex-start;
-  font-size: clamp(13px, 0.8vw, 18px);
-}
-.artwork {
-  box-shadow: 6px 3px black;
-}
-
+  .info-text {
+    margin-left: 3vw;
+    margin-top: -1vh;
+    align-self: flex-start;
+    font-size: clamp(13px, 0.8vw, 18px);
+  }
+  .artwork {
+    box-shadow: 6px 3px black;
+  }
 }
 
 /* mobile css */
@@ -97,32 +93,32 @@
     justify-content: space-between;
   }
 
-.download-button {
-  font-size: 1.5vw;
-  margin-right: 1vw;
-}
+  .download-button {
+    font-size: 1.5vw;
+    margin-right: 1vw;
+  }
 
-.text-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  margin-left: 2vw;
-}
+  .text-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    margin-left: 2vw;
+  }
 
-.title {
-  cursor: pointer;
-  margin-left: 3vw;
-  align-self: flex-start;
-  font-size: clamp(15px, 1vw, 20px);
-}
+  .title {
+    cursor: pointer;
+    margin-left: 3vw;
+    align-self: flex-start;
+    font-size: clamp(15px, 1vw, 20px);
+  }
 
-.info-text {
-  margin-left: 3vw;
-  margin-top: -1vh;
-  align-self: flex-start;
-  font-size: clamp(13px, 0.8vw, 18px);
-}
-.artwork {
-  box-shadow: 6px 3px black;
-}
+  .info-text {
+    margin-left: 3vw;
+    margin-top: -1vh;
+    align-self: flex-start;
+    font-size: clamp(13px, 0.8vw, 18px);
+  }
+  .artwork {
+    box-shadow: 6px 3px black;
+  }
 }
