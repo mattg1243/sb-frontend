@@ -1,7 +1,7 @@
 import { Content } from 'antd/lib/layout/layout';
 import { useState, useEffect } from 'react';
-import { Column } from '@ant-design/plots';
 import { Row, Avatar, Button } from 'antd';
+import { Bar, BarDatum } from '@nivo/bar';
 import styles from './Account.module.css';
 import { Divider } from 'antd';
 import DashRow from '../../DashRow';
@@ -22,46 +22,11 @@ export default function AccountPage() {
     });
   }, []);
 
-  const data = [
-    {
-      month: 'Jan',
-      Revenue: 152,
-    },
-    {
-      month: 'Feb',
-      Revenue: 232,
-    },
-    {
-      month: 'March',
-      Revenue: 78,
-    },
-    {
-      month: 'April',
-      Revenue: 280,
-    },
-    {
-      month: 'May',
-      Revenue: 153,
-    },
-    {
-      month: 'June',
-      Revenue: 200,
-    },
+  const data: Array<BarDatum> = [
+    { month: 'Jan', rev: 152 },
+    { month: 'Feb', rev: 356 },
+    { month: 'March', rev: 423 },
   ];
-  const chartConfig = {
-    data,
-    width: 800,
-    height: 200,
-    xField: 'month',
-    yField: 'Revenue',
-    xAxis: {
-      label: {
-        autoHide: true,
-        autoRotate: false,
-      },
-    },
-    color: 'black',
-  };
 
   // create a beat for testing
   const testBeat: Beat = JSON.parse(
@@ -111,7 +76,15 @@ export default function AccountPage() {
           <h3>Revenue by Month</h3>
         </Divider>
         <div className="chartcont">
-          <Column {...chartConfig} className="revchart" data-cy="chart" />
+          {/* <Bar
+            data={data}
+            height={400}
+            width={600}
+            indexBy={'month'}
+            valueScale={{ type: 'linear' }}
+            indexScale={{ type: 'band', round: true }}
+            colors={{ scheme: 'dark2' }}
+          /> */}
         </div>
         <Divider className={`${styles.divider} divider`}>
           <h3>Downloaded Beats</h3>
