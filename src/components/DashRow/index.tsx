@@ -22,7 +22,6 @@ const isMobile: boolean = window.innerWidth < 480;
 export default function DashRow(props: IBeatRowProps): JSX.Element {
   const [artistNameColor, setArtistNameColor] = useState<'black' | 'blue'>('black');
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
-  const [isSelected, setIsSelected] = useState<boolean>(false);
 
   const { beat, onClick, buttonType } = props;
 
