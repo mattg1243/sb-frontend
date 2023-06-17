@@ -16,7 +16,7 @@ export default function Contact() {
             <p className={styles.link}>
               <a href="mailto:info@orangemusicent.com">info@orangemusicent.com</a>
             </p>
-            <p className={styles.text}>Business inquiries</p>
+            <p className={styles.text}>Business inquiries:</p>
             <p className={styles.link}>
               <a href="mailto:montanabrown@orangemusicent.com">montanabrown@orangemusicent.com</a>
             </p>
