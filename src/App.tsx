@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Register from './components/pages/Register';
+import Subscription from './components/pages/Subscription';
 import Login from './components/pages/Login';
 import Splash from './components/pages/Splash';
 import Dashboard from './components/pages/Dashboard';
@@ -13,6 +14,7 @@ import MobileRedirect from './components/pages/MobileRedirect';
 import Contact from './components/pages/Contact';
 import './index.css';
 import VerifyEmail from './components/pages/VerifyEmail';
+import UnderConstruction from './components/pages/UnderConstruction';
 
 function App() {
   return (
@@ -22,10 +24,12 @@ function App() {
           <Route path="/" element={<Splash />} index />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/subscription" element={<Subscription />} />
           {/* MobileRedirect */}
           <Route path="/MobileRedirect" element={<MobileRedirect />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/verify-email" element={<VerifyEmail />} />
+          <Route path="/underconstruction" element={<UnderConstruction />} />
           {/* this route handles the main single page app, with navbar and layout */}
           <Route path="/app" element={<BaseLayout />}>
             {/* TODO: disable invalid nav bar links in public routes */}
