@@ -12,7 +12,6 @@ import BeatDownloadModal from '../BeatDownloadModal';
 import { useDispatch, useSelector } from 'react-redux';
 import { playback } from '../../reducers/playbackReducer';
 import { getUserLikesBeatReq, likeBeatReq, unlikeBeatReq } from '../../lib/axios';
-import Icon from '@ant-design/icons/lib/components/Icon';
 
 interface IBeatRowProps {
   beat: Beat;
@@ -196,25 +195,30 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
               |{isMobile ? null : ` ${beat.genreTags[0]} |`} {beat.key}
               {displayFlatOrSharp(beat.flatOrSharp)} {beat.majorOrMinor} {isMobile ? null : `| ${beat.tempo} bpm`}
             </h4>
-            <div style={{ display: 'flex', alignSelf: 'flex-start', marginLeft: '3vw', flexDirection: 'row' }}>
-              <div style={{ paddingRight: '1vw' }}>
+            <div
+              className={styles['info-text']}
+              style={{ display: 'flex', alignSelf: 'flex-start', flexDirection: 'row' }}
+            >
+              <div>
                 <PlayCircleOutlined style={{ paddingRight: '.5vw' }} />
                 {streamsCount}
               </div>
-              |
-              <div style={{ paddingLeft: '.5vw' }}>
-                <DownloadOutlined style={{ paddingRight: '.5vw', paddingLeft: '.5vw' }} />
+              {isMobile ? null : <div style={{ paddingLeft: '1vw', paddingRight: '.5vw' }}>|</div>}
+              <div>
+                <DownloadOutlined style={{ paddingRight: '.5vw', paddingLeft: isMobile ? '15px' : '.5vw' }} />
                 {downloadCount}
               </div>
             </div>
           </div>
         </Row>
-        <div style={{ alignItems: 'flex-end', marginRight: '25vw' }}>
-          <Col>
-            {liked ? <HeartFilled onClick={() => unlikeBeat()} /> : <HeartOutlined onClick={() => likeBeat()} />}
-            <Statistic title="Likes" value={likesCount} valueStyle={{ fontSize: '1.5vh' }} />
-          </Col>
-        </div>
+        {isMobile ? null : (
+          <div style={{ alignItems: 'flex-end', marginRight: '25vw' }}>
+            <Col>
+              {liked ? <HeartFilled onClick={() => unlikeBeat()} /> : <HeartOutlined onClick={() => likeBeat()} />}
+              <Statistic title="Likes" value={likesCount} valueStyle={{ fontSize: '1.5vh' }} />
+            </Col>
+          </div>
+        )}
       </Row>
       {isMobile ? (
         <audio preload="auto" style={{ display: 'none' }} id={`audio-player-${beat.audioKey}`}>
