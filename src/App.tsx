@@ -14,6 +14,7 @@ import Contact from './components/pages/Contact';
 import './index.css';
 import VerifyEmail from './components/pages/VerifyEmail';
 import Subscription from './components/pages/Subscription';
+import UnderConstruction from './components/pages/UnderConstruction';
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/verify-email" element={<VerifyEmail />} />
           <Route path="/subscriptions" element={<Subscription />} />
+          <Route path="/underconstruction" element={<UnderConstruction />} />
           {/* this route handles the main single page app, with navbar and layout */}
           <Route path="/app" element={<BaseLayout />}>
             {/* TODO: disable invalid nav bar links in public routes */}

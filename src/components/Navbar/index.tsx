@@ -98,7 +98,7 @@ export default function Navbar() {
             type="ghost"
             className={`uploadModal`}
             onClick={() => {
-              navigate('/app/beats');
+              navigate('/underconstruction');
             }}
             style={{ color: 'white' }}
           >
@@ -109,7 +109,7 @@ export default function Navbar() {
           <Button
             type="ghost"
             onClick={() => {
-              navigate('/app/settings');
+              navigate('/underconstruction');
             }}
             style={{ color: 'white' }}
           >
