@@ -5,6 +5,9 @@ export type Beat = {
   artworkKey: string | null;
   audioKey: string;
   description: string | null;
+  likesCount: number;
+  streamsCount: number;
+  downloadCount: number;
   genreTags: Array<string>;
   otherTags: Array<string> | null;
   key: string;
