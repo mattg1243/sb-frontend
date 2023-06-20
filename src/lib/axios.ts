@@ -114,3 +114,19 @@ export const updateBeatReq = async (data: FormData, beatId: string) => {
     withCredentials: true,
   });
 };
+
+export const likeBeatReq = async (beatId: string) => {
+  return await axios.get(`${gatewayUrl}/beats/like?beatId=${beatId}`, { withCredentials: true });
+};
+
+export const unlikeBeatReq = async (beatId: string) => {
+  return await axios.get(`${gatewayUrl}/beats/unlike?beatId=${beatId}`, { withCredentials: true });
+};
+
+export const getUserLikesBeatReq = async (beatId: string) => {
+  return await axios.get(`${gatewayUrl}/beats/user-likes?beatId=${beatId}`, { withCredentials: true });
+};
+
+export const getNumOfLikesReq = async (beatId: string) => {
+  return await axios.get(`${gatewayUrl}/beats/likes-count?beatId=${beatId}`);
+};
