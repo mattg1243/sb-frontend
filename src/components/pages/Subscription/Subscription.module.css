@@ -1,85 +1,176 @@
-.content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+@media (min-width: 1920px) and (max-width: 2000px) {
+  .content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .logo {
+    width: 7.5vw;
+    height: auto;
+    margin-top: 4vh;
+    margin-bottom: 2.5vh;
+  }
+
+  .headie {
+    font-size: 2vw;
+    font-weight: normal;
+  }
+
+  .subTiers {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .Text {
+    font-size: 1.5vw;
+    margin-top: 5vh;
+    color: white;
+  }
+
+  .subText {
+    font-size: 1vw;
+    color: white;
+    margin-top: 0px;
+    margin-bottom: 30vh;
+    font-weight: normal;
+  }
+
+  .subRows {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-style: solid;
+    border-color: #333333;
+    border-radius: 16px;
+    background-color: #333333;
+    width: 16vw;
+    margin-left: 5vw;
+    margin-right: 5vw;
+  }
+
+  .subRows {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-style: solid;
+    border-color: #333333;
+    border-radius: 16px;
+    background-color: #333333;
+    width: 16vw;
+    margin-left: 5vw;
+    margin-right: 5vw;
+  }
+
+  .buttons {
+    font-size: 1.25vw;
+    font-weight: bold;
+    font-style: italic;
+    width: 12vw;
+    max-width: 200px;
+    height: 8vh;
+    max-height: 75px;
+    border-radius: 12px;
+    background-color: black;
+    border: none;
+    color: white;
+    margin-bottom: 5vh;
+  }
+
+  .skip {
+    font-size: 1vw;
+    margin-top: 2vh;
+  }
 }
 
-.logo {
-  width: 7.5vw;
-  height: auto;
-  margin-top: 4vh;
-  margin-bottom: 2.5vh;
-}
+@media (min-width: 1280px) and (max-width: 1919px) {
+  .content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
 
-.headie {
-  font-size: 2vw;
-  font-weight: normal;
-}
+  .logo {
+    width: 7.5vw;
+    height: auto;
+    margin-top: 4vh;
+    margin-bottom: 2.5vh;
+  }
 
-.subTiers {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
+  .headie {
+    font-size: 2vw;
+    font-weight: normal;
+  }
 
-.Text {
-  margin-top: 5vh;
-  color: white;
-}
+  .subTiers {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
 
-.subText {
-  color: white;
-  margin-top: 0px;
-  margin-bottom: 30vh;
-  font-weight: normal;
-}
+  .Text {
+    margin-top: 5vh;
+    color: white;
+  }
 
-.subRows {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  border-style: solid;
-  border-color: #333333;
-  border-radius: 16px;
-  background-color: #333333;
-  width: 16vw;
-  margin-left: 5vw;
-  margin-right: 5vw;
-}
+  .subText {
+    color: white;
+    margin-top: 0px;
+    margin-bottom: 30vh;
+    font-weight: normal;
+  }
 
-.subRows {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  border-style: solid;
-  border-color: #333333;
-  border-radius: 16px;
-  background-color: #333333;
-  width: 16vw;
-  margin-left: 5vw;
-  margin-right: 5vw;
-}
+  .subRows {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-style: solid;
+    border-color: #333333;
+    border-radius: 16px;
+    background-color: #333333;
+    width: 16vw;
+    margin-left: 5vw;
+    margin-right: 5vw;
+  }
 
-.buttons {
-  font-size: 1.5vw;
-  font-weight: bold;
-  font-style: italic;
-  width: 12vw;
-  max-width: 200px;
-  height: 8vh;
-  max-height: 75px;
-  border-radius: 12px;
-  background-color: black;
-  border: none;
-  color: white;
-  margin-bottom: 5vh;
-}
+  .subRows {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-style: solid;
+    border-color: #333333;
+    border-radius: 16px;
+    background-color: #333333;
+    width: 16vw;
+    margin-left: 5vw;
+    margin-right: 5vw;
+  }
 
-.skip {
-  margin-top: 1vh;
+  .buttons {
+    font-size: 1.5vw;
+    font-weight: bold;
+    font-style: italic;
+    width: 12vw;
+    max-width: 200px;
+    height: 8vh;
+    max-height: 75px;
+    border-radius: 12px;
+    background-color: black;
+    border: none;
+    color: white;
+    margin-bottom: 5vh;
+  }
+
+  .skip {
+    margin-top: 1vh;
+  }
 }
 
 @media (max-width: 480px) {
@@ -159,5 +250,6 @@
 
   .skip {
     margin-top: 1vh;
+    margin-bottom: 5vh;
   }
 }

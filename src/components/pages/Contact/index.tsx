@@ -10,7 +10,6 @@ export default function Contact() {
       <Navbar />
       <Content>
         <div className={styles.container}>
-          <h1 className={styles.headie}>Contact</h1>
           <div>
             <p className={styles.text}>Support or general inquiries:</p>
             <p className={styles.link}>
