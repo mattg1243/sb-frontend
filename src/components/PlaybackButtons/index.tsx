@@ -5,6 +5,7 @@ import styles from './PlaybackButtons.module.css';
 import { useSelector } from 'react-redux';
 import type { Beat } from '../../types';
 import { cdnHostname } from '../../config/routing';
+import { addStreamReq } from '../../lib/axios';
 
 export default function PlaybackButtons() {
   const [isPlaying, setIsPlaying] = useState<boolean>(true);
@@ -43,6 +44,12 @@ export default function PlaybackButtons() {
       audio.current = new Audio(trackSrcUrl);
       audio.current.play();
       setIsPlaying(true);
+      // wait 20seconds before registering as stream
+      setTimeout(() => {
+        addStreamReq(beatPlaying._id)
+          .then((res) => console.log(res))
+          .catch((err) => console.error(err));
+      }, 20000);
     }
   }, [beatPlaying]);
 

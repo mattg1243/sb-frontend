@@ -11,7 +11,7 @@ import styles from './DashRow.module.css';
 import BeatDownloadModal from '../BeatDownloadModal';
 import { useDispatch, useSelector } from 'react-redux';
 import { playback } from '../../reducers/playbackReducer';
-import { getUserLikesBeatReq, likeBeatReq, unlikeBeatReq } from '../../lib/axios';
+import { addStreamReq, getUserLikesBeatReq, likeBeatReq, unlikeBeatReq } from '../../lib/axios';
 
 interface IBeatRowProps {
   beat: Beat;
@@ -33,17 +33,26 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [liked, setLiked] = useState<boolean>();
   const [likesCount, setLikesCount] = useState<number>(beat.likesCount);
-  const [streamsCount, setStreamsCount] = useState<string>();
+  const [streamsCount, setStreamsCount] = useState<string>(beat.streamsCount.toLocaleString());
   const [downloadCount, setDownloadCount] = useState<string>();
 
   useEffect(() => {
     getUserLikesBeatReq(beat._id)
       .then((res) => setLiked(res.data))
       .catch((err) => console.log(err));
-
-    setStreamsCount(randomNumber(1000, 100000).toLocaleString());
     setDownloadCount(randomNumber(100, 1000).toLocaleString());
   }, []);
+  // useEffect to track beat streaming on mobile
+  useEffect(() => {
+    if (isMobile && isPlaying) {
+      setTimeout(() => {
+        addStreamReq(beat._id)
+          .then((res) => console.log(res))
+          .then(() => setStreamsCount(streamsCount + 1))
+          .catch((err) => console.error(err));
+      }, 20000);
+    }
+  }, [isPlaying]);
 
   const dispatch = useDispatch();
   // TODO figure out why this has to be typed everytime its used
@@ -116,7 +125,6 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
     try {
       const res = await likeBeatReq(beat._id);
       console.log(res);
-      setLikesCount(likesCount + 1);
     } catch (err) {
       console.log(err);
       setLiked(false);
@@ -130,8 +138,6 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
     try {
       const res = await unlikeBeatReq(beat._id);
       console.log(res);
-      setLiked(false);
-      setLikesCount(likesCount - 1);
     } catch (err) {
       console.log(err);
       setLiked(true);
@@ -212,11 +218,9 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
           </div>
         </Row>
         {isMobile ? null : (
-          <div style={{ alignItems: 'flex-end', marginRight: '25vw' }}>
-            <Col>
-              {liked ? <HeartFilled onClick={() => unlikeBeat()} /> : <HeartOutlined onClick={() => likeBeat()} />}
-              <Statistic title="Likes" value={likesCount} valueStyle={{ fontSize: '1.5vh' }} />
-            </Col>
+          <div style={{ alignItems: 'flex-end', paddingRight: '15vw' }}>
+            {liked ? <HeartFilled onClick={() => unlikeBeat()} /> : <HeartOutlined onClick={() => likeBeat()} />}
+            <Statistic title="Likes" value={likesCount} valueStyle={{ fontSize: '1.5vh' }} />
           </div>
         )}
       </Row>

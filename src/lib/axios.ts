@@ -130,3 +130,7 @@ export const getUserLikesBeatReq = async (beatId: string) => {
 export const getNumOfLikesReq = async (beatId: string) => {
   return await axios.get(`${gatewayUrl}/beats/likes-count?beatId=${beatId}`);
 };
+
+export const addStreamReq = async (beatId: string) => {
+  return await axios.get(`${gatewayUrl}/beats/add-stream?beatId=${beatId}`, { withCredentials: true });
+};
