@@ -1,15 +1,14 @@
 :root {
   --primary: #ffbd59;
-  --secondary: #38639a
+  --secondary: #38639a;
   --dark-text: #191919;
 }
 
-*{
+* {
   -ms-overflow-style: none;
 }
 ::-webkit-scrollbar {
   display: none;
-
 }
 
 html {
@@ -31,7 +30,8 @@ body {
   margin: 0;
 }
 /* ANTD overrides */
-.ant-layout-content, .ant-layout {
+.ant-layout-content,
+.ant-layout {
   background-color: var(--primary) !important;
 }
 
