@@ -223,6 +223,12 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
             <Statistic title="Likes" value={likesCount} valueStyle={{ fontSize: '1.5vh' }} />
           </div>
         )}
+        {isMobile ? (
+          <div className={styles.mobileLikes} style={{ alignItems: 'flex-end', paddingRight: '10vw' }}>
+            {liked ? <HeartFilled onClick={() => unlikeBeat()} /> : <HeartOutlined onClick={() => likeBeat()} />}
+            <Statistic value={likesCount} valueStyle={{ display: 'none' }} />
+          </div>
+        ) : null}
       </Row>
       {isMobile ? (
         <audio preload="auto" style={{ display: 'none' }} id={`audio-player-${beat.audioKey}`}>

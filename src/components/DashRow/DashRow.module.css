@@ -164,4 +164,9 @@
   .artwork {
     box-shadow: 6px 3px black;
   }
+
+  .mobileLikes {
+    font-weight: bold;
+    padding-top: 5vh;
+  }
 }
