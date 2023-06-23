@@ -92,6 +92,11 @@ export const uploadBeatReq = async (data: FormData, progressSetter: (p: number) 
   });
 };
 
+type UploadFileTypes = 'beat' | 'stem' | 'image';
+export const getSignedUploadUrlReq = async (fileType: UploadFileTypes) => {
+  return await axios.get(`${gatewayUrl}/beats/signed-upload-url?fileType=${fileType}`, { withCredentials: true });
+};
+
 export const getAllBeatsReq = async () => {
   return await axios.get(`${gatewayUrl}/beats/beats`, { withCredentials: true });
 };
