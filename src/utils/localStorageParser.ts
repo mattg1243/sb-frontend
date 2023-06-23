@@ -15,3 +15,25 @@ export const getUserIdFromLocalStorage = () => {
   }
   return id;
 };
+
+export const getUserEmailFromLocalStorage = () => {
+  const userStr = localStorage.getItem('sb-user');
+  if (!userStr) {
+    return;
+  }
+  const email = JSON.parse(userStr)['email'] as string;
+  if (email !== undefined) {
+    return email;
+  }
+};
+
+export const getUserArtistNameFromLocalStorage = () => {
+  const userStr = localStorage.getItem('sb-user');
+  if (!userStr) {
+    return;
+  }
+  const artistName = JSON.parse(userStr)['artistName'] as string;
+  if (artistName !== undefined) {
+    return artistName;
+  }
+};

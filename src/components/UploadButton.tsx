@@ -1,18 +1,27 @@
 import { Button } from 'antd';
-import React, { useRef } from 'react';
+import React, { Dispatch, SetStateAction, useRef } from 'react';
 
-interface IUploadButtonProps {
+interface IUploadProps {
   label: string;
-  // this audio field needs to be narrowed down to mp3 and wav
   allowedFileType: 'audio/*' | 'image/*';
-  uploadStateSetter: (f: File) => void;
   sideIcon?: React.ReactNode;
   disabled?: boolean;
 }
 
-export default function UploadButton(props: IUploadButtonProps) {
-  const { label, allowedFileType, uploadStateSetter, sideIcon, disabled } = props;
+interface ISingleUploadButtonProps extends IUploadProps {
+  uploadStateSetter?: Dispatch<SetStateAction<File | undefined>>;
+}
 
+interface IMultiUploadButtonProps extends IUploadProps {
+  multiple?: boolean;
+  uploadMultiStateSetter?: Dispatch<SetStateAction<File[]>>;
+  currentState?: File[];
+}
+
+// this should be a union, but it wont pick up fields that are unique to each type...
+type Props = ISingleUploadButtonProps & IMultiUploadButtonProps;
+
+export default function UploadButton(props: Props) {
   const hiddenFileInput = useRef<HTMLInputElement>(null);
 
   const handleClick = () => {
@@ -23,17 +32,30 @@ export default function UploadButton(props: IUploadButtonProps) {
 
   return (
     <>
-      <Button onClick={handleClick} icon={sideIcon} disabled={disabled}>
-        {label}
+      <Button onClick={handleClick} icon={props.sideIcon} disabled={props.disabled}>
+        {props.label}
       </Button>
       <input
         type="file"
-        accept={allowedFileType}
+        accept={props.allowedFileType}
         style={{ display: 'none' }}
         ref={hiddenFileInput}
+        multiple={props.multiple}
         onChange={(e) => {
+          console.log(props.multiple);
           if (e.target.files) {
-            uploadStateSetter(e.target.files[0]);
+            if (props.uploadStateSetter) {
+              props.uploadStateSetter(e.target.files[0]);
+            } else if (props.multiple && props.uploadMultiStateSetter && props.currentState) {
+              props.uploadMultiStateSetter([...props.currentState, e.target.files[0]]);
+              console.log('uploading stems');
+            } else {
+              console.error(
+                'Error occured in UploadButton component handleChange fn call: either there was no multifile or stateSetter passed in'
+              );
+            }
+          } else {
+            console.warn('No files');
           }
         }}
       />

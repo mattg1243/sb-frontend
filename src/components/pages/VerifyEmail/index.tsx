@@ -1,8 +1,8 @@
-import { Content, Header } from 'antd/lib/layout/layout';
-import { Layout, Row, Col, Button, Space } from 'antd';
+import { Content } from 'antd/lib/layout/layout';
+import { Layout } from 'antd';
 import { useEffect } from 'react';
 import { resendVerificationEmailReq } from '../../../lib/axios';
-import { getUserIdFromLocalStorage } from '../../../utils/localStorageParser';
+import { getUserEmailFromLocalStorage, getUserIdFromLocalStorage } from '../../../utils/localStorageParser';
 import { useNavigate } from 'react-router-dom';
 import gatewayUrl from '../../../config/routing';
 import axios from 'axios';
@@ -11,6 +11,7 @@ import logo from '../../../assets/orangelogo.png';
 
 export default function VerifyEmail() {
   const userId = getUserIdFromLocalStorage();
+  const email = getUserEmailFromLocalStorage();
   const queryParams = new URLSearchParams(window.location.search);
   const code = queryParams.get('code');
 
@@ -19,7 +20,7 @@ export default function VerifyEmail() {
   useEffect(() => {
     if (code) {
       axios
-        .get(`${gatewayUrl}/user/verify-email?code=${code}&user=${userId}`)
+        .get(`${gatewayUrl}/verify-email?code=${code}&user=${userId}&email=${email}`)
         .then((res) => {
           if (res.status == 200) {
             navigate('/app/dash');
