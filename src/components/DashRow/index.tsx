@@ -6,12 +6,14 @@ import artworkLoading from '../../assets/artwork_loading.jpg';
 import { useState, useEffect } from 'react';
 import playIcon from '../../assets/play_black.png';
 import pauseIcon from '../../assets/pause_black.png';
-import { DownloadOutlined, HeartFilled, HeartOutlined, PlayCircleOutlined } from '@ant-design/icons';
+import { GoGitBranch } from 'react-icons/go';
+import { CheckOutlined, DownloadOutlined, HeartFilled, HeartOutlined, PlayCircleOutlined } from '@ant-design/icons';
 import styles from './DashRow.module.css';
 import BeatDownloadModal from '../BeatDownloadModal';
 import { useDispatch, useSelector } from 'react-redux';
 import { playback } from '../../reducers/playbackReducer';
 import { addStreamReq, getUserLikesBeatReq, likeBeatReq, unlikeBeatReq } from '../../lib/axios';
+import { getUserIdFromLocalStorage } from '../../utils/localStorageParser';
 
 interface IBeatRowProps {
   beat: Beat;
@@ -28,6 +30,8 @@ function randomNumber(min: number, max: number) {
 
 export default function DashRow(props: IBeatRowProps): JSX.Element {
   const { beat, onClick, buttonType } = props;
+
+  const userId = getUserIdFromLocalStorage();
 
   const [artistNameColor, setArtistNameColor] = useState<'black' | 'blue'>('black');
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
@@ -120,28 +124,28 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
   };
 
   const likeBeat = async () => {
-    setLiked(true);
-    setLikesCount(likesCount + 1);
-    try {
-      const res = await likeBeatReq(beat._id);
-      console.log(res);
-    } catch (err) {
-      console.log(err);
-      setLiked(false);
-      setLikesCount(likesCount - 1);
+    if (beat.artistId !== userId) {
+      setLiked(true);
+      try {
+        const res = await likeBeatReq(beat._id);
+        setLikesCount(likesCount + 1);
+        console.log(res);
+      } catch (err) {
+        setLiked(false);
+        console.error(err);
+      }
     }
   };
 
   const unlikeBeat = async () => {
     setLiked(false);
-    setLikesCount(likesCount - 1);
     try {
       const res = await unlikeBeatReq(beat._id);
+      setLikesCount(likesCount - 1);
       console.log(res);
     } catch (err) {
-      console.log(err);
       setLiked(true);
-      setLikesCount(likesCount + 1);
+      console.log(err);
     }
   };
 
@@ -214,6 +218,15 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
                 <DownloadOutlined style={{ paddingRight: '.5vw', paddingLeft: isMobile ? '15px' : '.5vw' }} />
                 {downloadCount}
               </div>
+              {}
+              {beat.hasStems ? (
+                <>
+                  {isMobile ? null : <div style={{ paddingLeft: '1vw', paddingRight: '1vw' }}>|</div>}
+                  <div>
+                    Stems: <CheckOutlined />
+                  </div>
+                </>
+              ) : null}
             </div>
           </div>
         </Row>
