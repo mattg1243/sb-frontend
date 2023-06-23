@@ -26,7 +26,7 @@ export default function BeatEditModal(props: IEditBeatModalProps) {
   const [key, setKey] = useState<string>(beat.key);
   const [flatOrSharp, setFlatOrSharp] = useState<'flat' | 'sharp' | ''>(beat.flatOrSharp);
   const [majorOrMinor, setMajorOrMinor] = useState(beat.majorOrMinor);
-  const [artwork, setArtwork] = useState<File | Blob>(); // NOTE: if this is empty, the artowrk will be uneffected
+  const [artwork, setArtwork] = useState<File>(); // NOTE: if this is empty, the artowrk will be uneffected
   const [genreTags, setGenreTags] = useState(beat.genreTags);
 
   const handleCancel = () => {
