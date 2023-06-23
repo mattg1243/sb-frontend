@@ -11,6 +11,7 @@ export type Beat = {
   genreTags: Array<string>;
   otherTags: Array<string> | null;
   key: string;
+  hasStems: boolean;
   majorOrMinor: 'major' | 'minor';
   flatOrSharp: 'flat' | 'sharp' | '';
   licensed: boolean;
