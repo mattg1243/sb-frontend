@@ -23,7 +23,7 @@ export default function VerifyEmail() {
         .get(`${gatewayUrl}/verify-email?code=${code}&user=${userId}&email=${email}`)
         .then((res) => {
           if (res.status == 200) {
-            navigate('/app/dash');
+            navigate('/login');
           }
         })
         .catch((err) => {
