@@ -1,16 +1,19 @@
-import { Spin, Button, Form, Input, Layout } from 'antd';
+import { Spin, Button, Form, Input, Layout, Modal } from 'antd';
 import React, { useState } from 'react';
 import { Content } from 'antd/lib/layout/layout';
 import orangelogo from '../../../assets/orangelogo.png';
 import { useNavigate } from 'react-router-dom';
 import { AlertObj } from '../../../types';
 import CustomAlert from '../../CustomAlert';
-import { loginUserReq } from '../../../lib/axios';
+import { loginUserReq, resetPasswordReq } from '../../../lib/axios';
 import styles from './Login.module.css';
 
 export default function Login(): JSX.Element {
   const [email, setEmail] = useState<string>('');
+  const [emailForReset, setEmailForReset] = useState<string>();
+  const [resetSuccessful, setResetSuccessful] = useState<boolean>(false);
   const [password, setPassword] = useState<string>('');
+  const [resetPasswordModalOpen, setResetPasswordModalOpen] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [alert, setAlert] = useState<AlertObj>({ status: 'none', message: '' });
 
@@ -39,6 +42,16 @@ export default function Login(): JSX.Element {
       }
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  // TODO handle different responses and display alerts on the modal
+  const handleResetPassword = async () => {
+    try {
+      const res = await resetPasswordReq(emailForReset as string);
+      console.log(res);
+    } catch (err) {
+      console.error(err);
     }
   };
 
@@ -92,7 +105,9 @@ export default function Login(): JSX.Element {
           </Form.Item>
 
           <Form.Item name="forgotPassword" className={styles.forgotPassword} wrapperCol={{ offset: 4, span: 16 }}>
-            <a href="/notImplementedYet">Forgot password?</a>
+            <a href="#" onClick={() => setResetPasswordModalOpen(true)}>
+              Forgot password?
+            </a>
           </Form.Item>
 
           {/* ill implment this eventually 
@@ -123,6 +138,20 @@ export default function Login(): JSX.Element {
             </h3>
           </Form.Item>
         </Form>
+        <Modal open={resetPasswordModalOpen} onOk={() => handleResetPassword()}>
+          {resetSuccessful ? (
+            <p>Please check your email for a password reset link</p>
+          ) : (
+            <>
+              <Input
+                placeholder="Email"
+                style={{ width: '50%', marginRight: 'auto' }}
+                onChange={(e) => setEmailForReset(e.target.value)}
+              />
+              <p>Please enter your email to reset your password.</p>
+            </>
+          )}
+        </Modal>
       </Content>
     </Layout>
   );

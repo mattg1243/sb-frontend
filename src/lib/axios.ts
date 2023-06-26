@@ -31,6 +31,16 @@ export const resendVerificationEmailReq = async (userId: string) => {
   return await axios.get(`${gatewayUrl}/user/resend-verification-email?user=${userId}`);
 };
 
+export const resetPasswordReq = async (userEmail: string) => {
+  return await axios.post(`${gatewayUrl}/user/reset-password?email=${userEmail}`);
+};
+
+export const changePasswordReq = async (userEmail: string, token: string, newPassword: string) => {
+  return await axios.post(`${gatewayUrl}/user/change-password?email=${userEmail}&token=${token}`, {
+    password: newPassword,
+  });
+};
+
 interface UpdateUserArg extends Omit<User, 'avatar'> {
   avatar: File | string;
 }
@@ -79,6 +89,7 @@ export const getFollowersReq = async (userId: string) => {
 export const getFollowingReq = async (userId: string) => {
   return await axios.get(`${gatewayUrl}/user/following?user=${userId}`);
 };
+
 // beats
 export const uploadBeatReq = async (data: FormData, progressSetter: (p: number) => void): Promise<AxiosResponse> => {
   return await axios.post(`${gatewayUrl}/beats/upload`, data, {

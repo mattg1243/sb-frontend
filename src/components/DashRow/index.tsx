@@ -155,7 +155,7 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
         {isMobile ? null : buttonType === 'edit' ? (
           <BeatEditModal beat={beat} />
         ) : (
-          <BeatDownloadModal title={beat.title} artistName={beat.artistName} cdnKey={beat.audioKey} />
+          <BeatDownloadModal beatId={beat._id} title={beat.title} artistName={beat.artistName} />
         )}
         <Row style={{ alignItems: 'center', marginRight: 'auto', paddingLeft: '1vw' }}>
           <Image
