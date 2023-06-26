@@ -15,7 +15,7 @@ import './index.css';
 import VerifyEmail from './components/pages/VerifyEmail';
 import Subscription from './components/pages/Subscription';
 import UnderConstruction from './components/pages/UnderConstruction';
-import ResetPasswordPage from './components/pages/ResetPassword.tsx';
+import ResetPasswordPage from './components/pages/ResetPassword';
 
 function App() {
   return (
