@@ -15,6 +15,7 @@ import './index.css';
 import VerifyEmail from './components/pages/VerifyEmail';
 import Subscription from './components/pages/Subscription';
 import UnderConstruction from './components/pages/UnderConstruction';
+import ResetPasswordPage from './components/pages/ResetPassword.tsx';
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
           <Route path="/MobileRedirect" element={<MobileRedirect />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/verify-email" element={<VerifyEmail />} />
+          <Route path="/reset-password" element={<ResetPasswordPage />} />
           <Route path="/subscriptions" element={<Subscription />} />
           <Route path="/underconstruction" element={<UnderConstruction />} />
           {/* this route handles the main single page app, with navbar and layout */}
