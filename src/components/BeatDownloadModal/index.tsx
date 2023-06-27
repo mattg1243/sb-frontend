@@ -1,6 +1,6 @@
 import { PlusOutlined } from '@ant-design/icons';
 import JSZip from 'jszip';
-import { Button, Modal, Spin } from 'antd';
+import { Button, Modal, Progress, Spin } from 'antd';
 import { useState } from 'react';
 import styles from './BeatDownloadModal.module.css';
 import gatewayUrl from '../../config/routing';
@@ -19,6 +19,10 @@ export default function BeatDownloadModal(props: IBeatDownloadModal) {
 
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [beatDownloading, setBeatDownloading] = useState(false);
+  const [beatDownloadProgress, setBeatDownloadProgress] = useState<number>(0);
+  const [stemDownloading, setStemDownloading] = useState(false);
+  const [stemDownloadProgress, setStemDownloadProgress] = useState<number>(0);
   const [errorMsg, setErrMsg] = useState<AlertObj>();
 
   const zip = new JSZip();
@@ -32,23 +36,47 @@ export default function BeatDownloadModal(props: IBeatDownloadModal) {
     }
     setLoading(true);
     try {
-      const res = await axios.get(`${gatewayUrl}/beats/download?beatId=${beatId}&`, { withCredentials: true });
+      setBeatDownloading(true);
+      const res = await axios.get(`${gatewayUrl}/beats/download?beatId=${beatId}&`, {
+        withCredentials: true,
+      });
       console.log(res.data);
       // start downloading beat
-      const downloadBeatRes = await axios.get(res.data.beat, { responseType: 'blob' });
+      const downloadBeatRes = await axios.get(res.data.beat, {
+        responseType: 'blob',
+        onDownloadProgress: (progressEvent) => {
+          if (progressEvent.total) {
+            setBeatDownloadProgress(Math.round((progressEvent.loaded * 100) / progressEvent.total));
+          }
+        },
+      });
       // add beat to zip file
       downloadZip.file(`${title}.mp3`, downloadBeatRes.data);
       // check for stems
       const stems = res.data.stems;
       if (stems) {
+        setStemDownloading(true);
         const numOfStems: number = stems.length;
+        let sizeOfStems = 0;
+        let downloadedStemBytes = 0;
         for (let i = 0; i < numOfStems; i++) {
-          console.log(stems[i]);
-          const stemResPromise = axios.get(stems[i].url, { responseType: 'blob' });
+          const stemResPromise = axios.get(stems[i].url, {
+            responseType: 'blob',
+            onDownloadProgress: (progressEvent) => {
+              if (progressEvent.total) {
+                downloadedStemBytes += progressEvent.bytes;
+                setStemDownloadProgress(Math.round(downloadedStemBytes / sizeOfStems));
+              }
+            },
+          });
+          //  not currently tracking properly
+          sizeOfStems += parseInt((await stemResPromise).headers['Content-Length'] as string);
           promiseArr.push(stemResPromise);
         }
       }
       const stemDownloadResArr = await Promise.all(promiseArr);
+      setBeatDownloading(false);
+      setStemDownloading(false);
       // add the stems
       for (let j = 0; j < stems.length; j++) {
         downloadZip.file(stems[j].name, stemDownloadResArr[j].data);
@@ -68,6 +96,8 @@ export default function BeatDownloadModal(props: IBeatDownloadModal) {
       console.error(err);
       setErrMsg({ message: 'You may have insufficient credits', status: 'error' });
     } finally {
+      setBeatDownloadProgress(0);
+      setStemDownloadProgress(0);
       setLoading(false);
     }
   };
@@ -119,6 +149,17 @@ export default function BeatDownloadModal(props: IBeatDownloadModal) {
             </p>
           )}
         </Spin>
+        {beatDownloading ? (
+          <>
+            <p>Downloading beats...</p>
+            <Progress percent={beatDownloadProgress} strokeColor={'var(--primary)'} />
+          </>
+        ) : null}
+        {stemDownloading ? (
+          <>
+            <p>Downloading stems...</p>
+          </>
+        ) : null}
       </Modal>
     </>
   );

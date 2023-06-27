@@ -43,10 +43,11 @@ export default function UploadBeatModal() {
   const [alert, setAlert] = useState<{ message: string; type: 'error' | 'success' }>();
   const [isUploading, setIsUploading] = useState<boolean>(false);
   const [uploadProgress, setUploadProgress] = useState<number>(0);
+  const [stemUploadProgress, setStemUploadProgress] = useState<number>(0);
   const [title, setTitle] = useState<string>('');
-  const [genreTags, setGenreTags] = useState<Array<string>>(['']);
-  const [tempo, setTempo] = useState<string>('');
-  const [key, setKey] = useState<string>('');
+  const [genreTags, setGenreTags] = useState<Array<string>>();
+  const [tempo, setTempo] = useState<string>();
+  const [key, setKey] = useState<string>();
   const [flatOrSharp, setFlatOrSharp] = useState<'flat' | 'sharp' | ''>('');
   const [majorOrMinor, setMajorOrMinor] = useState<'major' | 'minor'>('major');
   const [artwork, setArtwork] = useState<File>();
@@ -59,68 +60,96 @@ export default function UploadBeatModal() {
     setShowModal(false);
   };
 
+  const validForm = () => {
+    return (
+      title.length > 6 && genreTags !== undefined && key !== undefined && tempo !== undefined && audio !== undefined
+    );
+  };
+
   const handleSubmit = async () => {
-    const stemUploadPromises: Promise<AxiosResponse>[] = [];
-    const userId = getUserIdFromLocalStorage();
-    const userArtistName = getUserArtistNameFromLocalStorage();
-    try {
-      setIsUploading(true);
-      // first get a url for the beat file since there will be always be one
-      const beatUploadUrl = await getSignedUploadUrlReq('beat');
-      console.log('Response from beatUploadUrl:\n', beatUploadUrl);
-      const { url, s3Key } = beatUploadUrl.data;
-      const signedUrlFormData = new FormData();
-      signedUrlFormData.append('beat', audio as Blob);
-      // start the beat uplaod
-      await axios.put(url, audio as Blob, {
-        headers: { 'Content-Type': 'audio/*' },
-      });
+    if (validForm()) {
+      const stemUploadPromises: Promise<AxiosResponse>[] = [];
+      const userId = getUserIdFromLocalStorage();
+      const userArtistName = getUserArtistNameFromLocalStorage();
+      try {
+        setIsUploading(true);
+        // first get a url for the beat file since there will be always be one
+        const beatUploadUrl = await getSignedUploadUrlReq('beat');
+        console.log('Response from beatUploadUrl:\n', beatUploadUrl);
+        const { url, s3Key } = beatUploadUrl.data;
+        const signedUrlFormData = new FormData();
+        signedUrlFormData.append('beat', audio as Blob);
+        // start the beat uplaod
+        await axios.put(url, audio as Blob, {
+          headers: { 'Content-Type': 'audio/*' },
+          onUploadProgress: (progressEvent) => {
+            if (progressEvent.total) {
+              setUploadProgress(Math.round((progressEvent.loaded * 100) / progressEvent.total));
+            }
+          },
+        });
 
-      const hasStems = stems.length > 0;
-      const stemFields: Array<Stem> = [];
+        const hasStems = stems.length > 0;
+        const stemFields: Array<Stem> = [];
 
-      const beatFormData = new FormData();
-      beatFormData.append('title', title);
-      beatFormData.append('genreTags', JSON.stringify(genreTags));
-      beatFormData.append('tempo', tempo);
-      beatFormData.append('artwork', artwork as Blob);
-      beatFormData.append('key', key);
-      beatFormData.append('flatOrSharp', flatOrSharp as string);
-      beatFormData.append('majorOrMinor', majorOrMinor as string);
-      beatFormData.append('s3Key', s3Key);
-      beatFormData.append('hasStems', hasStems ? 'true' : 'false');
-      // need to add user.id, user.artistName
-      beatFormData.append('userId', userId as string);
-      beatFormData.append('artistName', userArtistName as string);
-      const res = await axios.post(`${gatewayUrl}/beats/save-beat`, beatFormData, {
-        withCredentials: true,
-        headers: { 'Content-Type': 'multipart/form-data' },
-      });
-      // save the beatId
-      const beatId = res.data.beatId;
-      // check if there are any stems
-      if (stems.length > 0) {
-        for (let i = 0; i < stems.length; i++) {
-          const { url: stemUrl, s3Key: stemS3Key } = (await getSignedUploadUrlReq('stem')).data;
-          const stemUplaodPromise = axios.put(stemUrl, stems[i], {
-            headers: { 'Content-Type': 'audio/*' },
-          });
-          stemUploadPromises.push(stemUplaodPromise);
-          stemFields.push({ audioKey: stemS3Key, trackName: stems[i].name, beatId: beatId });
+        const beatFormData = new FormData();
+        beatFormData.append('title', title);
+        beatFormData.append('genreTags', JSON.stringify(genreTags));
+        beatFormData.append('tempo', tempo as string);
+        beatFormData.append('artwork', artwork as Blob);
+        beatFormData.append('key', key as string);
+        beatFormData.append('flatOrSharp', flatOrSharp as string);
+        beatFormData.append('majorOrMinor', majorOrMinor as string);
+        beatFormData.append('s3Key', s3Key);
+        beatFormData.append('hasStems', hasStems ? 'true' : 'false');
+        // need to add user.id, user.artistName
+        beatFormData.append('userId', userId as string);
+        beatFormData.append('artistName', userArtistName as string);
+        const res = await axios.post(`${gatewayUrl}/beats/save-beat`, beatFormData, {
+          withCredentials: true,
+          headers: { 'Content-Type': 'multipart/form-data' },
+        });
+        // save the beatId
+        const beatId = res.data.beatId;
+        // check if there are any stems
+        if (stems.length > 0) {
+          let sizeOfStems = 0;
+          let uploadedStemBytes = 0;
+          for (let i = 0; i < stems.length; i++) {
+            sizeOfStems += stems[i].size;
+            const { url: stemUrl, s3Key: stemS3Key } = (await getSignedUploadUrlReq('stem')).data;
+            const stemUplaodPromise = axios.put(stemUrl, stems[i], {
+              headers: { 'Content-Type': 'audio/*' },
+              onUploadProgress: (progressEvent) => {
+                if (progressEvent.total) {
+                  uploadedStemBytes += progressEvent.bytes;
+                  setStemUploadProgress(Math.round((uploadedStemBytes * 100) / sizeOfStems));
+                }
+              },
+            });
+            stemUploadPromises.push(stemUplaodPromise);
+            stemFields.push({ audioKey: stemS3Key, trackName: stems[i].name, beatId: beatId });
+          }
         }
+        // wait for all stem upload promises to resolve
+        await Promise.all(stemUploadPromises);
+        // save all the stems in the database
+        await axios.post(`${gatewayUrl}/beats/save-stems`, { stems: stemFields }, { withCredentials: true });
+        setAlert({ message: 'Your beat was uploaded successfully!', type: 'success' });
+        window.location.reload();
+        console.log(res);
+      } catch (err) {
+        setAlert({ message: 'There was an error uploading your beat.', type: 'error' });
+        setIsUploading(false);
+        console.error(err);
+      } finally {
+        setIsUploading(false);
+        setUploadProgress(0);
+        setStemUploadProgress(0);
       }
-      // wait for all stem upload promises to resolve
-      await Promise.all(stemUploadPromises);
-      // save all the stems in the database
-      await axios.post(`${gatewayUrl}/beats/save-stems`, { stems: stemFields }, { withCredentials: true });
-      setIsUploading(false);
-      setAlert({ message: 'Your beat was uploaded successfully!', type: 'success' });
-      window.location.reload();
-      console.log(res);
-    } catch (err) {
-      setAlert({ message: 'There was an error uploading your beat.', type: 'error' });
-      setIsUploading(false);
-      console.error(err);
+    } else {
+      setAlert({ type: 'error', message: 'Missing a required field' });
+      console.log('Missing required field');
     }
   };
 
@@ -183,7 +212,7 @@ export default function UploadBeatModal() {
           data-cy="spin"
         >
           <Form style={{ margin: '2rem 2rem', width: '35vw' }}>
-            <Form.Item>
+            <Form.Item required={true}>
               <Input
                 placeholder="Title"
                 onChange={(e) => {
@@ -192,7 +221,7 @@ export default function UploadBeatModal() {
                 data-cy="title-input"
               ></Input>
             </Form.Item>
-            <Form.Item>
+            <Form.Item required={true}>
               <Select
                 placeholder="Genre Tags"
                 options={genreOptions}
@@ -202,7 +231,7 @@ export default function UploadBeatModal() {
                 data-cy="genre-select"
               />
             </Form.Item>
-            <Form.Item>
+            <Form.Item required>
               <Input
                 placeholder="BPM"
                 onChange={(e) => {
@@ -213,7 +242,7 @@ export default function UploadBeatModal() {
                 data-cy="bpm-input"
               ></Input>
             </Form.Item>
-            <Form.Item>
+            <Form.Item required>
               <Select placeholder="Key" options={possibleKeyOptions} onChange={handleKeyChange} />
               <Radio.Group
                 onChange={(e) => {
@@ -305,7 +334,17 @@ export default function UploadBeatModal() {
         </Spin>
         <Divider />
         {isUploading ? (
-          <Progress percent={uploadProgress} />
+          <>
+            <p>Uploading beat...</p>
+            <Progress percent={uploadProgress} strokeColor={'var(--primary)'} />
+            {uploadProgress > 99 && stems ? (
+              <>
+                {/* make this show the total percentage of bytes from all stems */}
+                <p>Uploading stems...</p>
+                <Progress percent={stemUploadProgress} strokeColor={'var(--primary)'} />
+              </>
+            ) : null}
+          </>
         ) : (
           <>
             <Button
@@ -328,13 +367,6 @@ export default function UploadBeatModal() {
             </Button>
           </>
         )}
-        {uploadProgress > 98 ? (
-          <Spin
-            tip="Preparing your beat for streaming..."
-            indicator={<LoadingOutlined />}
-            style={{ marginLeft: '17%' }}
-          />
-        ) : null}
       </Modal>
     </>
   );
