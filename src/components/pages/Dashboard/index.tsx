@@ -70,6 +70,9 @@ export default function Dashboard() {
             })}
           </>
         ) : null}
+        {(isSearching && beatsFromSearch === null) || beatsFromSearch?.length === 0 ? (
+          <h3 style={{ marginTop: '10vh' }}>No beats match that search :(</h3>
+        ) : null}
         {beats && !isSearching ? (
           beats.map((beat) => {
             return (

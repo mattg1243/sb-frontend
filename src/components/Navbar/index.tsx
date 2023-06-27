@@ -81,7 +81,11 @@ export default function Navbar() {
       dispatch(beats(null));
     } else {
       try {
-        const searchRes = await axios.get(`${gatewayUrl}/beats/search?search=${e.target.value}`);
+        let searchUrl = `${gatewayUrl}/beats/search?search=${e.target.value}`;
+        if (onProfilePage) {
+          searchUrl += `&artist=${currentUserId}`;
+        }
+        const searchRes = await axios.get(searchUrl);
         dispatch(beats(searchRes.data.beats));
         console.log(searchRes.data);
       } catch (err) {
@@ -150,17 +154,15 @@ export default function Navbar() {
         </Menu.Item>
         <Menu.Item key="profile" style={{ marginLeft: 'auto', padding: '0 2vw' }} className={styles['menu-item']}>
           <Space size={62}>
-            {!onProfilePage ? (
-              <Input
-                type="text"
-                style={{ borderRadius: '40px', width: '15vw' }}
-                placeholder="Search"
-                suffix={<SearchOutlined />}
-                onChange={(e) => {
-                  handleSearchChange(e);
-                }}
-              />
-            ) : null}
+            <Input
+              type="text"
+              style={{ borderRadius: '40px', width: '15vw' }}
+              placeholder="Search"
+              suffix={<SearchOutlined />}
+              onChange={(e) => {
+                handleSearchChange(e);
+              }}
+            />
             <Dropdown
               menu={{ items: userMenuItems }}
               placement="bottom"

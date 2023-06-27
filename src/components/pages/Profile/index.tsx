@@ -16,8 +16,9 @@ import CustomAlert from '../../CustomAlert';
 import defaultAvatar from '../../../assets/default_avatar_white.png';
 import styles from './Profile.module.css';
 import FollowButton from '../../FollowButton';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { playback } from '../../../reducers/playbackReducer';
+import type { Beat } from '../../../types';
 
 const isMobile = window.innerWidth < 480;
 
@@ -32,12 +33,14 @@ export default function Profile() {
   const [following, setFollowing] = useState<Array<string>>();
   const [newAvatar, setNewAvatar] = useState<File>();
   const [newAvatarModalOpen, setNewAvatarModalOpen] = useState<boolean>(false);
+  const [isSearching, setIsSearching] = useState<boolean>(false);
   const [alert, setAlert] = useState<AlertObj>();
 
   const userId = searchParams.get('id') || '';
   const isCurrentUser = userId === getUserIdFromLocalStorage();
   const { beats } = useGetBeats(userId);
   const dispatch = useDispatch();
+  const beatsFromSearch = useSelector<{ beats: { beats: Beat[] | null } }, Beat[] | null>((state) => state.beats.beats);
   // this could probably be optimized to run async
   useEffect(() => {
     getUserReq(userId)
@@ -87,6 +90,14 @@ export default function Profile() {
     setNewAvatarModalOpen(false);
     setNewAvatar(undefined);
   };
+
+  useEffect(() => {
+    if (beatsFromSearch) {
+      setIsSearching(true);
+    } else {
+      setIsSearching(false);
+    }
+  });
 
   return isLoading || !userInfo ? (
     <LoadingPage />
@@ -242,7 +253,27 @@ export default function Profile() {
       </Row>
       <Divider style={{ margin: '10px' }} />
       <div style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        {beats ? (
+        {isSearching && beatsFromSearch !== null ? (
+          <>
+            {beatsFromSearch.map((beat) => {
+              return (
+                <DashRow
+                  beat={beat}
+                  onClick={() => {
+                    dispatch(playback(beat));
+                  }}
+                  buttonType={isCurrentUser ? 'edit' : 'download'}
+                  key={beat._id}
+                />
+              );
+            })}
+          </>
+        ) : null}
+        {((isSearching && beatsFromSearch === null) || beatsFromSearch?.length === 0) &&
+        (beats?.length as number) > 0 ? (
+          <h3 style={{ marginTop: '10vh' }}>No beats match that search :(</h3>
+        ) : null}
+        {beats && !isSearching ? (
           beats.map((beat) => (
             <DashRow
               beat={beat}
@@ -252,9 +283,9 @@ export default function Profile() {
               buttonType={isCurrentUser ? 'edit' : 'download'}
             />
           ))
-        ) : (
+        ) : !beats ? (
           <h3>This user hasn't uploaded any beats yet.</h3>
-        )}
+        ) : null}
       </div>
     </>
   );

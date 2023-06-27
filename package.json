@@ -37,7 +37,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "echo '   ---   running all tests   ---\n' ./node_modules/.bin/cypress run --component & ./node_modules/.bin/cypress run",
+    "test": "echo '   ---   running all tests   ---\n' ./node_modules/.bin/cypress run --component --browser --chrome & ./node_modules/.bin/cypress run",
     "test:comp": "./node_modules/.bin/cypress run --component --browser chrome",
     "test:int": "./node_modules/.bin/cypress run --browser chrome",
     "test:watch": "./node_modules/.bin/cypress run --component --no-exit --config watchForFileChanges=true",
