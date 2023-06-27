@@ -14,6 +14,15 @@
   margin-top: clamp(70px, 7vh, 150px);
 }
 
+.exit-search-btn {
+  position: fixed;
+  background: transparent;
+  border: none !important;
+  margin: 2rem;
+  margin-top: 4rem;
+  font-size: 1.5rem;
+}
+
 @media (max-width: 480px) {
   .for-you-text {
     margin-top: 2vh;

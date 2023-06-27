@@ -7,8 +7,11 @@ import UploadBeatModal from '../BeatUploadModal';
 import logo from '../../assets/orangelogo.png';
 import { getUserIdFromLocalStorage } from '../../utils/localStorageParser';
 import { logoutUserReq, getUserAvatarReq } from '../../lib/axios';
-import { cdnHostname } from '../../config/routing';
+import axios from 'axios';
+import gatewayUrl, { cdnHostname } from '../../config/routing';
 import styles from './Navbar.module.css';
+import { useDispatch } from 'react-redux';
+import { beats } from '../../reducers/beatsReducer';
 
 export default function Navbar() {
   const [avatarUrl, setAvatarUrl] = useState();
@@ -59,6 +62,7 @@ export default function Navbar() {
   ];
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (currentUserId) {
@@ -69,6 +73,20 @@ export default function Navbar() {
         .catch((err) => console.error(err));
     }
   }, [currentUserId]);
+
+  const handleSearchChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.value === '') {
+      dispatch(beats(null));
+    } else {
+      try {
+        const searchRes = await axios.get(`${gatewayUrl}/beats/search?search=${e.target.value}`);
+        dispatch(beats(searchRes.data.beats));
+        console.log(searchRes.data);
+      } catch (err) {
+        console.error(err);
+      }
+    }
+  };
 
   return (
     <Header style={{ width: '100%', margin: 0, top: 0, background: 'black', position: 'fixed', zIndex: 1 }}>
@@ -135,6 +153,9 @@ export default function Navbar() {
               style={{ borderRadius: '40px', width: '15vw' }}
               placeholder="Search"
               suffix={<SearchOutlined />}
+              onChange={(e) => {
+                handleSearchChange(e);
+              }}
             />
             <Dropdown
               menu={{ items: userMenuItems }}
