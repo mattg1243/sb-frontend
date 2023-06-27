@@ -17,6 +17,8 @@ export default function Navbar() {
   const [avatarUrl, setAvatarUrl] = useState();
   const currentUserId = getUserIdFromLocalStorage();
 
+  const onProfilePage = window.location.pathname.includes('/app/user');
+
   const logoutUser = async () => {
     try {
       const logoutUserRes = await logoutUserReq();
@@ -148,15 +150,17 @@ export default function Navbar() {
         </Menu.Item>
         <Menu.Item key="profile" style={{ marginLeft: 'auto', padding: '0 2vw' }} className={styles['menu-item']}>
           <Space size={62}>
-            <Input
-              type="text"
-              style={{ borderRadius: '40px', width: '15vw' }}
-              placeholder="Search"
-              suffix={<SearchOutlined />}
-              onChange={(e) => {
-                handleSearchChange(e);
-              }}
-            />
+            {!onProfilePage ? (
+              <Input
+                type="text"
+                style={{ borderRadius: '40px', width: '15vw' }}
+                placeholder="Search"
+                suffix={<SearchOutlined />}
+                onChange={(e) => {
+                  handleSearchChange(e);
+                }}
+              />
+            ) : null}
             <Dropdown
               menu={{ items: userMenuItems }}
               placement="bottom"
