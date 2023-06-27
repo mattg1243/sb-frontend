@@ -1,15 +1,22 @@
 /// <reference types="Cypress" />
 
 import { MemoryRouter } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import configureStore from 'redux-mock-store';
 import Navbar from '.';
 import { mount } from 'cypress/react18';
 
 describe('Navbar.test.tsx', () => {
+  const mockedStore = configureStore();
+  const store = mockedStore({ playback: { trackPlaying: null } });
+
   beforeEach(() => {
     mount(
-      <MemoryRouter>
-        <Navbar />
-      </MemoryRouter>
+      <Provider store={store}>
+        <MemoryRouter>
+          <Navbar />
+        </MemoryRouter>
+      </Provider>
     );
   });
   it('links to dash', () => {
