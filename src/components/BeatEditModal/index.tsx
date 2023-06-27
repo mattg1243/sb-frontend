@@ -33,11 +33,11 @@ export default function BeatEditModal(props: IEditBeatModalProps) {
     setIsOpen(false);
   };
 
-  const deleteBeat = async (beatId: string) => {
+  const deleteBeat = async (beatId: string, audioKey: string) => {
     setDeleteIsOpen(false);
     setIsLoading(true);
     try {
-      const response = await deleteBeatReq(beatId);
+      const response = await deleteBeatReq(beatId, audioKey);
       if (response.status === 200) {
         setIsOpen(false);
         window.location.reload();
@@ -236,7 +236,7 @@ export default function BeatEditModal(props: IEditBeatModalProps) {
         centered={true}
         open={deleteIsOpen}
         onOk={() => {
-          deleteBeat(beat._id);
+          deleteBeat(beat._id, beat.audioKey);
         }}
         onCancel={() => {
           setDeleteIsOpen(false);
@@ -246,7 +246,7 @@ export default function BeatEditModal(props: IEditBeatModalProps) {
           <Button
             type="primary"
             style={{ marginLeft: '1rem', backgroundColor: 'var(--primary)', color: 'black' }}
-            onClick={() => deleteBeat(beat._id)}
+            onClick={() => deleteBeat(beat._id, beat.audioKey)}
           >
             Delete Beat
           </Button>,

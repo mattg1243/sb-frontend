@@ -120,8 +120,8 @@ export const getAllBeatsFromFollowingReq = async (userId: string) => {
   return await axios.get(`${gatewayUrl}/beats/beats?userId=${userId}&following=true`, { withCredentials: true });
 };
 
-export const deleteBeatReq = async (beatId: string) => {
-  return await axios.delete(`${gatewayUrl}/beats/${beatId}`, { withCredentials: true });
+export const deleteBeatReq = async (beatId: string, audioKey: string) => {
+  return await axios.delete(`${gatewayUrl}/beats/${beatId}?key=${audioKey}`, { withCredentials: true });
 };
 
 export const updateBeatReq = async (data: FormData, beatId: string) => {
