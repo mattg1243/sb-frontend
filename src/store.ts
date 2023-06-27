@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
 import playbackReducer from './reducers/playbackReducer';
+import beatsReducer from './reducers/beatsReducer';
 
 export const store = configureStore({
   reducer: {
     playback: playbackReducer,
+    beats: beatsReducer,
   },
 });
 
