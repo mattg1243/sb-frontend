@@ -11,7 +11,7 @@ import axios from 'axios';
 import gatewayUrl, { cdnHostname } from '../../config/routing';
 import styles from './Navbar.module.css';
 import { useDispatch } from 'react-redux';
-import { beats } from '../../reducers/beatsReducer';
+import { beats, searching, users } from '../../reducers/searchReducer';
 
 export default function Navbar() {
   const [avatarUrl, setAvatarUrl] = useState();
@@ -78,16 +78,23 @@ export default function Navbar() {
 
   const handleSearchChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.value === '') {
+      dispatch(searching(false));
+      dispatch(users(null));
       dispatch(beats(null));
     } else {
       try {
-        let searchUrl = `${gatewayUrl}/beats/search?search=${e.target.value}`;
+        dispatch(searching(true));
+        let beatSearchUrl = `${gatewayUrl}/beats/search?search=${e.target.value}`;
+        const userSearchUrl = `${gatewayUrl}/user/search?search=${e.target.value}`;
         if (onProfilePage) {
-          searchUrl += `&artist=${currentUserId}`;
+          beatSearchUrl += `&artist=${currentUserId}`;
         }
-        const searchRes = await axios.get(searchUrl);
-        dispatch(beats(searchRes.data.beats));
-        console.log(searchRes.data);
+        const beatSearchResPromise = axios.get(beatSearchUrl);
+        const userSearchResPromise = axios.get(userSearchUrl);
+        const [beatSearchRes, userSearchRes] = await Promise.all([beatSearchResPromise, userSearchResPromise]);
+        dispatch(beats(beatSearchRes.data.beats));
+        dispatch(users(userSearchRes.data.users));
+        console.log(beatSearchRes.data);
       } catch (err) {
         console.error(err);
       }
