@@ -7,16 +7,28 @@
     margin-top: 7.5vh;
   }
 
+  .Header {
+    margin-bottom: 1vh;
+  }
+
+  .subHeader {
+    font-style: italic;
+    font-weight: normal;
+  }
+
   .button {
+    font-size: 1.25vw;
+    font-weight: bold;
+    font-style: italic;
+    width: 12vw;
+    height: 8vh;
+    max-height: 75px;
+    border-radius: 12px;
+    background-color: black;
+    border: none;
+    color: white;
     margin-top: 2.5vh;
     margin-bottom: 2.5vh;
-    background-color: white;
-    size: 10%;
-    width: 8.5vw;
-    height: 5vh;
-    border: none;
-    font-size: 2vh;
-    border-radius: 12px;
   }
 
   .button:hover {
