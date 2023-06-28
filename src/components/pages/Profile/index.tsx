@@ -123,7 +123,7 @@ export default function Profile() {
                     }}
                     className={styles.middle}
                   >
-                    <div className={styles.texto}>+</div>
+                    <div className={styles.texto}></div>
                   </div>
                 </div>
                 {isMobile ? (
