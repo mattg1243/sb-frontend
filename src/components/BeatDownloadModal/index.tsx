@@ -131,7 +131,7 @@ export default function BeatDownloadModal(props: IBeatDownloadModal) {
               downloadBeat();
             }}
           >
-            Download
+            Download & License
           </Button>,
         ]}
       >
