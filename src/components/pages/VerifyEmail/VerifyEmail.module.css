@@ -12,6 +12,7 @@
   }
 
   .subHeader {
+    font-size: 2vh;
     font-style: italic;
     font-weight: normal;
   }
@@ -31,14 +32,6 @@
     margin-bottom: 2.5vh;
   }
 
-  .button:hover {
-    background-color: lightgrey;
-  }
-
-  .button:active {
-    background-color: grey;
-  }
-
   .logo {
     margin-top: 25vh;
     margin-left: 2.5vh;
@@ -56,19 +49,34 @@
     margin-top: 10vh;
   }
 
-  .button {
-    margin-top: 2.5vh;
-    margin-bottom: 5vh;
-    background-color: white;
-    size: 10%;
-    width: 30vw;
-    height: 4.5vh;
-    border: none;
-    border-radius: 12px;
+  .Header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1vh;
   }
 
-  .button:active {
-    background-color: lightgrey;
+  .subHeader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5vh;
+    font-style: italic;
+    font-weight: normal;
+  }
+
+  .button {
+    font-size: 3vw;
+    font-weight: bold;
+    font-style: italic;
+    width: 32vw;
+    height: 6vh;
+    border-radius: 12px;
+    background-color: black;
+    border: none;
+    color: white;
+    margin-top: 2.5vh;
+    margin-bottom: 2.5vh;
   }
 
   .logo {
