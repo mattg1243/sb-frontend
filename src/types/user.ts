@@ -12,7 +12,7 @@ export type User = {
   artistName: string;
   avatar: string;
   bio: string;
-  linkedSocials: ILinkedSocials;
+  link: string;
   creditsAcquired: number;
   creditsToSpend: number;
   email: string;
