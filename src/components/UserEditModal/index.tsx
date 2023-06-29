@@ -6,6 +6,7 @@ import { updateUserReq } from '../../lib/axios';
 import { AlertObj } from '../../types/alerts';
 import CustomAlert from '../CustomAlert';
 import styles from './UserEditModal.module.css';
+import { AxiosError } from 'axios';
 
 interface IUserEditModal {
   user: User;
@@ -40,8 +41,12 @@ export default function UserEditModal(props: IUserEditModal) {
         window.location.reload();
       }
     } catch (err) {
+      if (err instanceof AxiosError && err.response) {
+        setAlert({ status: 'error', message: err.response.data.message });
+      } else {
+        setAlert({ status: 'error', message: 'There was an error updating your user profile' });
+      }
       console.error(err);
-      setAlert({ status: 'error', message: 'There was an error updating your user profile.' });
     } finally {
       setIsLoading(false);
     }

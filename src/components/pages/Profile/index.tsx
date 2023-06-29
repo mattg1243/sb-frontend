@@ -209,7 +209,9 @@ export default function Profile() {
                   direction="horizontal"
                   style={{ margin: '0rem 1rem', textAlign: 'start', justifyContent: 'center' }}
                 >
-                  <a className={styles.link}>{userInfo.socialLink}</a>
+                  <a className={styles.link} href={userInfo.socialLink} target="_blank">
+                    {userInfo.socialLink}
+                  </a>
                 </Space>
               </Col>
               <Row gutter={isMobile ? 12 : 96}>
