@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { Avatar, Row, Space, Col, Button, Modal, Image, Progress, Statistic, Divider } from 'antd';
-import { UserOutlined, YoutubeFilled, AppleFilled, TwitterCircleFilled, CheckCircleOutlined } from '@ant-design/icons';
+import { UserOutlined, CheckCircleOutlined } from '@ant-design/icons';
 import DashRow from '../../DashRow';
 import useGetBeats from '../../../hooks/useGetBeats';
 import { cdnHostname } from '../../../config/routing';
@@ -19,6 +19,8 @@ import FollowButton from '../../FollowButton';
 import { useDispatch, useSelector } from 'react-redux';
 import { playback } from '../../../reducers/playbackReducer';
 import type { Beat } from '../../../types';
+import { RootState } from '../../../store';
+import { selectBeats } from '../../../reducers/searchReducer';
 
 const isMobile = window.innerWidth < 480;
 
@@ -40,7 +42,7 @@ export default function Profile() {
   const isCurrentUser = userId === getUserIdFromLocalStorage();
   const { beats } = useGetBeats(userId);
   const dispatch = useDispatch();
-  const beatsFromSearch = useSelector<{ beats: { beats: Beat[] | null } }, Beat[] | null>((state) => state.beats.beats);
+  const beatsFromSearch = useSelector<RootState, Beat[] | null>((state) => selectBeats(state));
   // this could probably be optimized to run async
   useEffect(() => {
     getUserReq(userId)
@@ -207,36 +209,7 @@ export default function Profile() {
                   direction="horizontal"
                   style={{ margin: '0rem 1rem', textAlign: 'start', justifyContent: 'center' }}
                 >
-                  <YoutubeFilled
-                    style={{ fontSize: '1.5rem' }}
-                    onClick={() => {
-                      window.open(
-                        userInfo.linkedSocials.youtube
-                          ? `https://www.youtube.com/@${userInfo.linkedSocials.youtube}`
-                          : 'https://www.youtube.com'
-                      );
-                    }}
-                  />
-                  <TwitterCircleFilled
-                    style={{ fontSize: '1.5rem' }}
-                    onClick={() => {
-                      window.open(
-                        userInfo.linkedSocials.youtube
-                          ? `https://www.twitter.com/${userInfo.linkedSocials.twitter}`
-                          : 'https://www.twitter.com'
-                      );
-                    }}
-                  />
-                  <AppleFilled
-                    style={{ fontSize: '1.5rem' }}
-                    onClick={() => {
-                      window.open(
-                        userInfo.linkedSocials.appleMusic
-                          ? userInfo.linkedSocials.appleMusic
-                          : 'https://music.apple.com/'
-                      );
-                    }}
-                  />
+                  <a className={styles.link}>{userInfo.socialLink}</a>
                 </Space>
               </Col>
               <Row gutter={isMobile ? 12 : 96}>
