@@ -1,5 +1,5 @@
 import { Content } from 'antd/lib/layout/layout';
-import { Layout } from 'antd';
+import { Layout, Button } from 'antd';
 import { useEffect } from 'react';
 import { resendVerificationEmailReq } from '../../../lib/axios';
 import { getUserEmailFromLocalStorage, getUserIdFromLocalStorage } from '../../../utils/localStorageParser';
@@ -46,15 +46,16 @@ export default function VerifyEmail() {
       <Content>
         <>
           <div className={styles.container}>
-            <h1>Click the link in your email to verify your account</h1>
-            <button
+            <h1 className={styles.Header}>Click the link in your email to verify your account</h1>
+            <h3 className={styles.subHeader}>If you can't find the verification email, check your spam folder.</h3>
+            <Button
               className={styles.button}
               onClick={() => {
                 resendEmail();
               }}
             >
               Resend email
-            </button>
+            </Button>
             <img src={logo} alt="Logo" className={styles.logo}></img>
           </div>
         </>

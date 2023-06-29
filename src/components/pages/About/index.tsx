@@ -52,7 +52,8 @@ export default function AboutPage() {
         </Paragraph>
         <Paragraph className={styles.footer} data-cy="footer">
           <p>
-            <strong>Questions? </strong> info@orangemusicent.com
+            <strong>Questions? </strong>
+            <a href="mailto:info@orangemusicent.com">info@orangemusicent.com</a>
           </p>
           <p>
             Check out our change logs{' '}

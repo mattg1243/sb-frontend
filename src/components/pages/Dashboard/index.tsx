@@ -50,7 +50,7 @@ export default function Dashboard() {
 
   return (
     <div data-testid="dashboard" style={{ width: '100%' }}>
-      <h2 className={styles['for-you-text']}>For you:</h2>
+      <h2 className={styles['for-you-text']}>For you</h2>
       {isSearching ? (
         <SearchFilter currentSearchFilter={currentSearchFilter} setCurrentSearchFilter={setCurrentSearchFilter} />
       ) : (

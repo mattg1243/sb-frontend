@@ -94,7 +94,7 @@ export default function BeatDownloadModal(props: IBeatDownloadModal) {
       setOpen(false);
     } catch (err) {
       console.error(err);
-      setErrMsg({ message: 'You may have insufficient credits', status: 'error' });
+      setErrMsg({ message: 'Insufficient credits', status: 'error' });
     } finally {
       setBeatDownloadProgress(0);
       setStemDownloadProgress(0);
@@ -131,7 +131,7 @@ export default function BeatDownloadModal(props: IBeatDownloadModal) {
               downloadBeat();
             }}
           >
-            Download
+            Download & License
           </Button>,
         ]}
       >

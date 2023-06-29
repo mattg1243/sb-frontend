@@ -301,7 +301,7 @@ export default function UploadBeatModal() {
                 </Form.Item>
                 <Form.Item>
                   <UploadButton
-                    label="Add Track Stem"
+                    label="Add Track Stems"
                     allowedFileType="audio/*"
                     uploadMultiStateSetter={setStems}
                     currentState={stems}

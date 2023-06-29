@@ -1,4 +1,4 @@
-@media (min-width: 1920px) and (max-width: 2000px) {
+@media (min-width: 1920px) and (max-width: 3440px) {
   .content {
     display: flex;
     flex-direction: column;
@@ -71,7 +71,6 @@
     font-weight: bold;
     font-style: italic;
     width: 12vw;
-    max-width: 200px;
     height: 8vh;
     max-height: 75px;
     border-radius: 12px;
