@@ -1,5 +1,5 @@
 import DashRow from '../../DashRow';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import useGetBeats from '../../../hooks/useGetBeats';
 import { Spin, Tooltip } from 'antd';
 import styles from './Dashboard.module.css';
@@ -18,12 +18,17 @@ import {
   searching as searchingReducer,
   beats as beatsSearchReducer,
   users as usersSearchReducer,
+  selectSearchQuery,
 } from '../../../reducers/searchReducer';
+import { matchSorter } from 'match-sorter';
 import { RootState } from '../../../store';
+import UserRow from '../../UserRow';
 
 export default function Dashboard() {
   const [currentAlgo, setCurrentAlgo] = useState<RecAlgos>('Recommended');
   const [currentSearchFilter, setCurrentSearchFilter] = useState<SearchFilterOptions>('Beats');
+  const [allFromSearch, setAllFromSeach] = useState<Array<Beat | User>>([]);
+  const [sortedAllFromSearch, setSortedAllFromSearch] = useState<Array<Beat | User>>([]);
   // const [isSearching, setIsSearching] = useState<boolean>();
 
   const userId = getUserIdFromLocalStorage();
@@ -37,16 +42,27 @@ export default function Dashboard() {
 
   const beatsFromSearch = useSelector<RootState, Beat[] | null>((state) => selectBeats(state));
   const usersFromSearch = useSelector<RootState, User[] | null>((state) => selectUsers(state));
+  const searchQuery = useSelector<RootState, string | null>((state) => selectSearchQuery(state));
   const isSearching = useSelector<RootState, boolean>((state) => selectIsSearching(state));
   // const usersFromSearch = useSelector<{ users}>
 
-  // useEffect(() => {
-  //   if (beatsFromSearch) {
-  //     setIsSearching(true);
-  //   } else {
-  //     setIsSearching(false);
-  //   }
-  // });
+  useEffect(() => {
+    const allResults: (User | Beat)[] = [];
+    if (beatsFromSearch) {
+      allResults.push(...beatsFromSearch);
+    }
+    if (usersFromSearch) {
+      allResults.push(...usersFromSearch);
+    }
+    setSortedAllFromSearch(
+      matchSorter(allResults, searchQuery as string, {
+        keys: ['title', 'artistName'],
+      })
+    );
+    console.log('query: ', searchQuery);
+    console.log('sorted: ', sortedAllFromSearch);
+    console.log('all: ', allResults);
+  }, [beatsFromSearch, usersFromSearch]);
 
   return (
     <div data-testid="dashboard" style={{ width: '100%' }}>
@@ -91,7 +107,26 @@ export default function Dashboard() {
         {isSearching && usersFromSearch !== null && currentSearchFilter === 'Users' ? (
           <>
             {usersFromSearch.map((user) => {
-              return <h3>{user.artistName}</h3>;
+              return <UserRow user={user} />;
+            })}
+          </>
+        ) : null}
+        {isSearching && allFromSearch !== null && currentSearchFilter === 'All' ? (
+          <>
+            {sortedAllFromSearch.map((result) => {
+              if ((result as User).creditsToSpend) {
+                return <UserRow user={result as User} />;
+              } else {
+                return (
+                  <DashRow
+                    beat={result as Beat}
+                    onClick={() => {
+                      dispatch(playback(result as Beat));
+                    }}
+                    buttonType="download"
+                  />
+                );
+              }
             })}
           </>
         ) : null}

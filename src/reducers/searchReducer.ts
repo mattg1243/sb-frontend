@@ -4,12 +4,14 @@ import type { Beat, User } from '../types';
 
 interface SearchState {
   isSearching: boolean;
+  searchQuery: string | null;
   beats: Array<Beat> | null;
   users: Array<User> | null;
 }
 
 const initialState: SearchState = {
   isSearching: false,
+  searchQuery: null,
   beats: null,
   users: null,
 };
@@ -27,13 +29,17 @@ export const searchSlice = createSlice({
     searching: (state, action: PayloadAction<boolean>) => {
       state.isSearching = action.payload;
     },
+    searchQuery: (state, action: PayloadAction<string | null>) => {
+      state.searchQuery = action.payload;
+    },
   },
 });
 
-export const { beats, users, searching } = searchSlice.actions;
+export const { beats, users, searching, searchQuery } = searchSlice.actions;
 
 export const selectBeats = (state: RootState) => state.search.beats;
 export const selectUsers = (state: RootState) => state.search.users;
 export const selectIsSearching = (state: RootState) => state.search.isSearching;
+export const selectSearchQuery = (state: RootState) => state.search.searchQuery;
 
 export default searchSlice.reducer;
