@@ -11,7 +11,7 @@ import axios from 'axios';
 import gatewayUrl, { cdnHostname } from '../../config/routing';
 import styles from './Navbar.module.css';
 import { useDispatch } from 'react-redux';
-import { beats, searching, users } from '../../reducers/searchReducer';
+import { beats, searching, users, searchQuery } from '../../reducers/searchReducer';
 
 export default function Navbar() {
   const [avatarUrl, setAvatarUrl] = useState();
@@ -79,11 +79,13 @@ export default function Navbar() {
   const handleSearchChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.value === '') {
       dispatch(searching(false));
+      dispatch(searchQuery(null));
       dispatch(users(null));
       dispatch(beats(null));
     } else {
       try {
         dispatch(searching(true));
+        dispatch(searchQuery(e.target.value));
         let beatSearchUrl = `${gatewayUrl}/beats/search?search=${e.target.value}`;
         const userSearchUrl = `${gatewayUrl}/user/search?search=${e.target.value}`;
         if (onProfilePage) {

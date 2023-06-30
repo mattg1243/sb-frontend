@@ -1,4 +1,4 @@
-import { Col, Image, Row, Statistic } from 'antd';
+import { Image, Row, Statistic } from 'antd';
 import BeatEditModal from '../BeatEditModal';
 import { Beat } from '../../types/beat';
 import { cdnHostname } from '../../config/routing';
@@ -6,7 +6,6 @@ import artworkLoading from '../../assets/artwork_loading.jpg';
 import { useState, useEffect } from 'react';
 import playIcon from '../../assets/play_black.png';
 import pauseIcon from '../../assets/pause_black.png';
-import { GoGitBranch } from 'react-icons/go';
 import { CheckOutlined, DownloadOutlined, HeartFilled, HeartOutlined, PlayCircleOutlined } from '@ant-design/icons';
 import styles from './DashRow.module.css';
 import BeatDownloadModal from '../BeatDownloadModal';

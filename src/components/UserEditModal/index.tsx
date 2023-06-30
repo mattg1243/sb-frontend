@@ -41,7 +41,7 @@ export default function UserEditModal(props: IUserEditModal) {
         window.location.reload();
       }
     } catch (err) {
-      if (err instanceof AxiosError && err.response) {
+      if (err instanceof AxiosError && err.response?.data.message) {
         setAlert({ status: 'error', message: err.response.data.message });
       } else {
         setAlert({ status: 'error', message: 'There was an error updating your user profile' });
