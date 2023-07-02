@@ -30,7 +30,7 @@ export default function UserRow(props: IUserRowProps) {
       .get(`${gatewayUrl}/beats/beats-count?user=${user._id}`)
       .then((res) => setUploadCount(res.data.count))
       .catch((err) => console.error(err));
-    getFollowersReq(user._id).then((res) => setFollowerCount(res.data.followers));
+    getFollowersReq(user._id).then((res) => setFollowerCount(res.data.followers.length));
   });
 
   return (
@@ -49,7 +49,17 @@ export default function UserRow(props: IUserRowProps) {
           <div className={styles['text-container']}>
             <h2 style={{ textAlign: 'start' }}>{user.artistName}</h2>
             {/* this needs to have a fixed width and not wrap on text overflow */}
-            <strong style={{ textAlign: 'start' }}>{user.bio}</strong>
+            <strong
+              style={{
+                textAlign: 'start',
+                maxWidth: '250px',
+                whiteSpace: 'nowrap',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+              }}
+            >
+              {user.bio}
+            </strong>
             <p style={{ textAlign: 'start' }}>
               Joined{' '}
               {new Date(user.created_at).toLocaleDateString('en-us', {
