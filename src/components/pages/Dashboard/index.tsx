@@ -114,7 +114,7 @@ export default function Dashboard() {
         {isSearching && allFromSearch !== null && currentSearchFilter === 'All' ? (
           <>
             {sortedAllFromSearch.map((result) => {
-              if ((result as User).creditsToSpend) {
+              if ('creditsToSpend' in result) {
                 return <UserRow user={result as User} />;
               } else {
                 return (
