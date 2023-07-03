@@ -4,7 +4,6 @@
   .row {
     width: 100vw;
     height: 110vh;
-    max-width: 3440px;
     justify-content: center;
     padding-left: 5.5vw;
   }

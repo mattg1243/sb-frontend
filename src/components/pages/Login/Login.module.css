@@ -1,5 +1,5 @@
 /* this should probably be global */
-@media (min-width: 1921px) and (max-width: 3440px) {
+@media (min-width: 1921px) {
   .content {
     display: flex;
     flex-direction: column;
