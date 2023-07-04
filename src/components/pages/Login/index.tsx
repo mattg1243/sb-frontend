@@ -133,7 +133,7 @@ export default function Login(): JSX.Element {
               </Button>
             )}
             <CustomAlert status={alert.status} message={alert.message} />
-            <h3 style={{ marginTop: '1vh' }}>
+            <h3 className={styles.noAccount} style={{ marginTop: '1vh' }}>
               Dont have an account? <a href="/register">Sign Up</a>
             </h3>
           </Form.Item>

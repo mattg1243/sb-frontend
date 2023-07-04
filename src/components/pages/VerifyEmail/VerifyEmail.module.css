@@ -1,4 +1,4 @@
-@media (min-width: 480px) {
+@media (min-width: 1024px) {
   .container {
     display: flex;
     flex-direction: column;
@@ -40,7 +40,9 @@
   }
 }
 
-@media (max-width: 480px) {
+/* Mobile & Tablet CSS */
+
+@media (max-width: 1024px) {
   .container {
     display: flex;
     flex-direction: column;

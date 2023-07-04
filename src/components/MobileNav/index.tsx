@@ -52,7 +52,7 @@ export default function MobileNav() {
           <Menu.Item>
             <Button
               onClick={() => {
-                navigate('/app/settings');
+                navigate('/underconstruction');
                 setCurrentSelection('Settings');
               }}
               type="ghost"
