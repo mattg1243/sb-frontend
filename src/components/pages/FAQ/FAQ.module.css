@@ -1,0 +1,22 @@
+.typography {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 4rem;
+  width: 100%;
+  text-align: start;
+}
+
+.faq {
+  margin-left: 2rem;
+  margin-top: 6rem;
+}
+
+.logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 8rem;
+  margin-top: 4rem;
+}

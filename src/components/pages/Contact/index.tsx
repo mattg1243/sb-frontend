@@ -19,6 +19,11 @@ export default function Contact() {
             <p className={styles.link}>
               <a href="mailto:montanabrown@orangemusicent.com">montanabrown@orangemusicent.com</a>
             </p>
+            <h3 className={styles.FAQ}>
+              <a className={styles.linkFAQ} href="/FAQ">
+                Frequently asked questions
+              </a>
+            </h3>
           </div>
           <div className={styles.logoContainer}>
             <img src={logo} alt="Logo" className={styles.logo}></img>
