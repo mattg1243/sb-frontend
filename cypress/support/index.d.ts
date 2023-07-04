@@ -11,6 +11,7 @@ declare global {
        * Custom command to get an element by the data-cy testing attribute.
        */
       getBySel(selector: string): Chainable<JQuery<HTMLElement>>;
+      multiSelect(selector: string, text: string): Chainable<JQuery<HTMLElement>>;
     }
   }
 }

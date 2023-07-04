@@ -29,3 +29,15 @@
 Cypress.Commands.add('getBySel', (selector) => {
   return cy.get(`[data-cy=${selector}]`);
 });
+
+Cypress.Commands.add('multiSelect', (selector, text) => {
+  cy.get(`.ant-select${selector} > .ant-select-selector > .ant-select-selection-overflow`).click();
+  cy.get(`.ant-select${selector} .ant-select-selection-search input`).clear();
+  cy.get(`.ant-select${selector} .ant-select-selection-search input`)
+    .invoke('attr', 'id')
+    .then((selElm) => {
+      const dropDownSelector = `#${selElm}_list`;
+      cy.get(`.ant-select${selector} .ant-select-selection-search input`).type(`${text}`);
+      cy.get(dropDownSelector).next().find('.ant-select-item-option-content').click();
+    });
+});
