@@ -10,8 +10,8 @@ export default defineConfig({
     video: false,
     watchForFileChanges: true,
     // experimentalInteractiveRunEvents: true,
-    // viewportHeight: 1080,
-    // viewportWidth: 1920,
+    viewportHeight: 1080,
+    viewportWidth: 1920,
   },
 
   e2e: {
