@@ -142,6 +142,7 @@ export default function Register(): JSX.Element {
               <Space style={{ display: 'block' }}>
                 Paid Account
                 <Switch
+                  className={styles.paidSwitch}
                   style={{ background: paidAcct ? 'black' : 'grey', margin: '1vh' }}
                   onChange={() => {
                     setPaidAcct(!paidAcct);
@@ -175,7 +176,7 @@ export default function Register(): JSX.Element {
               </Space>
             )}
             <CustomAlert status={alert.status} message={alert.message} />
-            <h3>
+            <h3 className={styles.alreadyAccount}>
               Already have an account? <a href="/login">Login</a>
             </h3>
           </Form.Item>

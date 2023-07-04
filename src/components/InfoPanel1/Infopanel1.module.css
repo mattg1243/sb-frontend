@@ -1,6 +1,6 @@
 /* Desktop CSS */
 
-@media (min-width: 480px) {
+@media (min-width: 1024px) {
   .row {
     background-color: black;
     color: white;
@@ -28,6 +28,14 @@
     width: 30vw;
     height: auto;
     padding-top: 16vh;
+  }
+}
+
+/* Tablet CSS */
+
+@media (min-width: 480px) and (max-width: 1024px) {
+  .row {
+    display: none;
   }
 }
 

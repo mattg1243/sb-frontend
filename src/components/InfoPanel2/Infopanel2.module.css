@@ -1,6 +1,6 @@
 /* Desktop CSS */
 
-@media (min-width: 480px) {
+@media (min-width: 1024px) {
   .row {
     width: 100vw;
     height: 110vh;
@@ -24,6 +24,14 @@
     width: 28vw;
     height: auto;
     padding-top: 25vh;
+  }
+}
+
+/* Tablet CSS */
+
+@media (min-width: 480px) and (max-width: 1024px) {
+  .row {
+    display: none;
   }
 }
 

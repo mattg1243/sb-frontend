@@ -50,6 +50,79 @@
   font-size: clamp(15px, 0.9vw, 20px);
 }
 
+/* Tablet CSS */
+
+@media (min-width: 480px) and (max-width: 1024px) {
+  .content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: clamp(10px, 2vh, 100px);
+    text-align: center;
+    height: 100vh;
+    padding-right: 4vw;
+  }
+
+  .logo {
+    width: 25vw;
+    height: auto;
+  }
+
+  .headie {
+    font-size: 4vw;
+    margin-top: 1vh;
+  }
+
+  .form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-top: 4vh;
+    padding-right: 22.5vw;
+  }
+
+  .input {
+    width: 75vw;
+    max-width: 600px;
+    height: clamp(30px, 4vh, 50px);
+    max-height: 50px;
+    border-radius: 40px;
+  }
+
+  .buttonUnOffset {
+    margin-left: 25vw;
+  }
+
+  .regButton {
+    width: 50vw;
+  }
+
+  .register-button {
+    font-size: 30vw;
+    margin: 1rem;
+    background: black;
+    border-color: black;
+    width: 25vw;
+    max-width: 500px;
+    height: 15vh;
+    max-height: 125px;
+  }
+
+  .small-text {
+    font-size: clamp(15px, 0.9vw, 20px);
+    padding-left: 3vw;
+  }
+
+  .paidSwitch {
+  }
+
+  .alreadyAccount {
+  }
+}
+
 @media (max-width: 480px) {
   .content {
     display: flex;
