@@ -110,6 +110,7 @@ export default function BeatDownloadModal(props: IBeatDownloadModal) {
           setOpen(true);
         }}
         icon={<PlusOutlined className={styles['plus-btn']} />}
+        data-cy="download-modal-btn"
       />
       <Modal
         title="Download & License Beat"
@@ -130,6 +131,7 @@ export default function BeatDownloadModal(props: IBeatDownloadModal) {
             onClick={() => {
               downloadBeat();
             }}
+            data-cy="download-beat-btn"
           >
             Download & License
           </Button>,

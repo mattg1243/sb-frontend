@@ -193,6 +193,7 @@ export default function UploadBeatModal() {
         }}
         style={{ color: 'white' }}
         id="open-modal-btn"
+        data-cy="upload-modal-nav"
       >
         Upload
       </Button>

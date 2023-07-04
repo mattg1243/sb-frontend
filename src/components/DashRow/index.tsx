@@ -178,6 +178,7 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
               playBeat(e);
             }}
             className={styles.artwork}
+            data-cy="beat-artwork"
           />
           <div className={styles['text-container']}>
             <h3
@@ -230,13 +231,26 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
           </div>
         </Row>
         {isMobile ? null : (
-          <div style={{ alignItems: 'flex-end', paddingRight: '15vw' }}>
-            {liked ? <HeartFilled onClick={() => unlikeBeat()} /> : <HeartOutlined onClick={() => likeBeat()} />}
-            <Statistic title="Likes" value={likesCount} valueStyle={{ fontSize: '1.5vh' }} />
+          <div style={{ alignItems: 'flex-end', paddingRight: '15vw' }} data-cy="beat-like-btn">
+            {liked ? (
+              <HeartFilled onClick={() => unlikeBeat()} id="like-beat-btn" />
+            ) : (
+              <HeartOutlined onClick={() => likeBeat()} id="unlike-beat-btn" />
+            )}
+            <Statistic
+              title="Likes"
+              value={likesCount}
+              valueStyle={{ fontSize: '1.5vh' }}
+              className="beat-like-count"
+            />
           </div>
         )}
         {isMobile ? (
-          <div className={styles.mobileLikes} style={{ alignItems: 'flex-end', paddingRight: '10vw' }}>
+          <div
+            className={styles.mobileLikes}
+            style={{ alignItems: 'flex-end', paddingRight: '10vw' }}
+            data-cy="beat-like-btn"
+          >
             {liked ? <HeartFilled onClick={() => unlikeBeat()} /> : <HeartOutlined onClick={() => likeBeat()} />}
             <Statistic value={likesCount} valueStyle={{ display: 'none' }} />
           </div>

@@ -87,7 +87,7 @@ export default function Dashboard() {
           </button>
         </Tooltip>
       ) : null}
-      <div className={styles['beats-container']}>
+      <div className={styles['beats-container']} data-cy="beats-container">
         {isSearching && beatsFromSearch !== null && currentSearchFilter === 'Beats' ? (
           <>
             {beatsFromSearch.map((beat) => {
