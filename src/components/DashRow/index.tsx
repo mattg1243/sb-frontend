@@ -20,7 +20,8 @@ interface IBeatRowProps {
   buttonType: 'edit' | 'download';
 }
 
-const isMobile: boolean = window.innerWidth < 480;
+// < 480px for mobile and < 1024px for tablet, combining the two for now
+const isMobile: boolean = window.innerWidth < 1024;
 
 // function to generate random number for likes count display
 function randomNumber(min: number, max: number) {

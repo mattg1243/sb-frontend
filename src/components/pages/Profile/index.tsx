@@ -214,7 +214,7 @@ export default function Profile() {
                   </a>
                 </Space>
               </Col>
-              <Row gutter={isMobile ? 12 : 96}>
+              <Row className={styles.followers} gutter={isMobile ? 12 : 96}>
                 <Col span={10}>
                   <Statistic title="Followers" value={followers ? followers.length : '?'} />
                 </Col>

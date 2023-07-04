@@ -16,6 +16,7 @@ import VerifyEmail from './components/pages/VerifyEmail';
 import Subscription from './components/pages/Subscription';
 import UnderConstruction from './components/pages/UnderConstruction';
 import ResetPasswordPage from './components/pages/ResetPassword';
+import FAQ from './components/pages/FAQ';
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
           <Route path="/reset-password" element={<ResetPasswordPage />} />
           <Route path="/subscriptions" element={<Subscription />} />
           <Route path="/underconstruction" element={<UnderConstruction />} />
+          <Route path="/faq" element={<FAQ />} />
           {/* this route handles the main single page app, with navbar and layout */}
           <Route path="/app" element={<BaseLayout />}>
             {/* TODO: disable invalid nav bar links in public routes */}
