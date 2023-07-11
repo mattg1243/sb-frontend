@@ -39,7 +39,11 @@ export default function Register(): JSX.Element {
           setAlert({ status: 'success', message: 'Account created succesfully, you may now login' });
           localStorage.setItem('sb-user', JSON.stringify(response.data.user));
           setIsLoading(false);
-          navigate('/verify-email');
+          if (paidAcct) {
+            navigate('/subscriptions');
+          } else {
+            navigate('/verify-email');
+          }
         }
       } catch (err: any) {
         console.log('message from server: ', err.response.data.message);
@@ -164,11 +168,7 @@ export default function Register(): JSX.Element {
                   }}
                   disabled={buttonColor === '#D3D3D3'}
                   onClick={async () => {
-                    if (paidAcct) {
-                      navigate('/subscriptions');
-                    } else {
-                      await sendRegisterRequest();
-                    }
+                    await sendRegisterRequest();
                   }}
                 >
                   Sign Up
