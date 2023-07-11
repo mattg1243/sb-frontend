@@ -37,3 +37,14 @@ export const getUserArtistNameFromLocalStorage = () => {
     return artistName;
   }
 };
+
+export const getStripeCustIdFromLocalStorage = () => {
+  const userStr = localStorage.getItem('sb-user');
+  if (!userStr) {
+    return;
+  }
+  const customerId = JSON.parse(userStr)['stripeCustomerId'] as string;
+  if (customerId !== undefined) {
+    return customerId;
+  }
+};
