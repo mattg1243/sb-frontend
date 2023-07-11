@@ -9,12 +9,15 @@ import DashRow from '../../DashRow';
 import { Beat } from '../../../types/beat';
 import axios from 'axios';
 import gatewayUrl from '../../../config/routing';
+import { getStripeCustIdFromLocalStorage } from '../../../utils/localStorageParser';
 
 export default function AccountPage() {
   // TODO: create a hook so that the trackPlaying state and playbackButton
   // can work across page changes
   // const [trackPlaying, setTrackPlaying] = useState<Beat | undefined>();
   const [creditsBalance, setCreditsBalance] = useState<number>();
+
+  const customerId = getStripeCustIdFromLocalStorage();
 
   useEffect(() => {
     axios.get(`${gatewayUrl}/user/credits-balance`, { withCredentials: true }).then((res) => {
@@ -63,10 +66,30 @@ export default function AccountPage() {
     }
   };
 
+  const openStripePortal = async () => {
+    if (!customerId) {
+      console.error('No customer id detected while attempting to create a portal session');
+      return;
+    }
+    try {
+      const res = await axios.get(`${gatewayUrl}/user/customer-portal?customerId=${customerId}`);
+      window.location = res.data.url;
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   return (
     <Content className={styles.Content}>
       <div style={{ width: '80%', marginBottom: '20px' }}>
         <h1 className={`${styles.heading} heading`}>My Account 🔨</h1>
+        <Button
+          onClick={async () => {
+            await openStripePortal();
+          }}
+        >
+          Subscription Portal
+        </Button>
         <p>Credits: {creditsBalance}</p>
         <Button
           onClick={async () => {
