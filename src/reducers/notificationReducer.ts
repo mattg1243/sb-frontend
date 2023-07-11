@@ -22,6 +22,9 @@ export const notificationSlice = createSlice({
 
 export const { notification } = notificationSlice.actions;
 
-export const selectNotification = (state: RootState) => state.notification.notification;
+export const selectNotification = (state: RootState) => {
+  if (state.notification) return state.notification.notification;
+  else return null;
+};
 
 export default notificationSlice.reducer;
