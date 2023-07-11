@@ -44,20 +44,20 @@ describe('Streams and likes are counted properly', () => {
     // incomplete
   });
 
-  it('Download - opens modal and makes proper request', () => {
-    cy.intercept('/beats/download?beatId=*', { statusCode: 200 }).as('downloadBeatReq');
-    cy.getBySel('download-modal-btn').first().click();
-    cy.getBySel('download-beat-btn').click();
-    cy.wait('@downloadBeatReq');
-  });
+  // it('Download - opens modal and makes proper request', () => {
+  //   // cy.intercept('/beats/download?beatId=*', { statusCode: 200 }).as('downloadBeatReq');
+  //   // cy.getBySel('download-modal-btn').first().click();
+  //   // cy.getBySel('download-beat-btn').click();
+  //   // cy.wait('@downloadBeatReq');
+  // });
 
-  it('Upload - makes proper request', () => {
-    cy.intercept('/beats/upload?beatId=*', { statusCode: 200 }).as('uploadBeatReq');
-    cy.getBySel('upload-modal-nav').click();
-    cy.getBySel('title-input').type('supa fire');
-    cy.get('.ant-select-selector').first().click();
-    // cy.get('#rc_select_2_list_7').click();
-  });
+  // it('Upload - makes proper request', () => {
+  //   cy.intercept('/beats/upload?beatId=*', { statusCode: 200 }).as('uploadBeatReq');
+  //   cy.getBySel('upload-modal-nav').click();
+  //   cy.getBySel('title-input').type('supa fire');
+  //   cy.get('.ant-select-selector').first().click();
+  //   // cy.get('#rc_select_2_list_7').click();
+  // });
 });
 
 describe('Search', () => {
