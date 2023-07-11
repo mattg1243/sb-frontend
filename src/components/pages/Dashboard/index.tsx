@@ -20,6 +20,7 @@ import {
   users as usersSearchReducer,
   selectSearchQuery,
 } from '../../../reducers/searchReducer';
+import { notification as notificationReducer } from '../../../reducers/notificationReducer';
 import { matchSorter } from 'match-sorter';
 import { RootState } from '../../../store';
 import UserRow from '../../UserRow';
@@ -63,6 +64,16 @@ export default function Dashboard() {
     console.log('sorted: ', sortedAllFromSearch);
     console.log('all: ', allResults);
   }, [beatsFromSearch, usersFromSearch]);
+
+  // check if being redirect after successful subscription purchase
+  useEffect(() => {
+    const subSuccessRedirect = new URLSearchParams(window.location.search).get('sub-success');
+    if (subSuccessRedirect) {
+      dispatch(notificationReducer({ type: 'success', message: 'Your subscription is now live!' }));
+    } else {
+      return;
+    }
+  }, []);
 
   return (
     <div data-testid="dashboard" style={{ width: '100%' }}>
