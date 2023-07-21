@@ -79,6 +79,18 @@ export default function AccountPage() {
     }
   };
 
+  const createStripeConnectAcct = async () => {
+    try {
+      const res = await axios.post(`${gatewayUrl}/user/create-stripe-connect-acct`, {}, { withCredentials: true });
+      if (res.data.url) {
+        window.location = res.data.url;
+      }
+      console.log(res);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   return (
     <Content className={styles.Content}>
       <div style={{ width: '80%', marginBottom: '20px' }}>
@@ -89,6 +101,15 @@ export default function AccountPage() {
           }}
         >
           Subscription Portal
+        </Button>
+        {/* this button needs to be its own component that checks wether or not a user 
+        already set up their stripe conneced and behaves accordingly */}
+        <Button
+          onClick={() => {
+            createStripeConnectAcct();
+          }}
+        >
+          Connect Stripe Payout
         </Button>
         <p>Credits: {creditsBalance}</p>
         <Button
