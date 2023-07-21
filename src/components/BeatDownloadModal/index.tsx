@@ -23,6 +23,7 @@ export default function BeatDownloadModal(props: IBeatDownloadModal) {
   const [beatDownloadProgress, setBeatDownloadProgress] = useState<number>(0);
   const [stemDownloading, setStemDownloading] = useState(false);
   const [stemDownloadProgress, setStemDownloadProgress] = useState<number>(0);
+  const [licenseType, setLicenseType] = useState<string>('unlimited');
   const [errorMsg, setErrMsg] = useState<AlertObj>();
 
   const zip = new JSZip();
@@ -37,7 +38,7 @@ export default function BeatDownloadModal(props: IBeatDownloadModal) {
     setLoading(true);
     try {
       setBeatDownloading(true);
-      const res = await axios.get(`${gatewayUrl}/beats/download?beatId=${beatId}&`, {
+      const res = await axios.get(`${gatewayUrl}/beats/download?beatId=${beatId}&licenseType=${licenseType}`, {
         withCredentials: true,
       });
       console.log(res.data);
@@ -96,6 +97,7 @@ export default function BeatDownloadModal(props: IBeatDownloadModal) {
       console.error(err);
       setErrMsg({ message: 'Insufficient credits', status: 'error' });
     } finally {
+      setBeatDownloading(false);
       setBeatDownloadProgress(0);
       setStemDownloadProgress(0);
       setLoading(false);
