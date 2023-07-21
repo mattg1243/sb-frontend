@@ -3,7 +3,7 @@ import { notification } from 'antd';
 import { useEffect } from 'react';
 
 export interface INotificationProps {
-  type: 'error' | 'success' | 'info';
+  type: 'error' | 'success' | 'info' | 'message';
   message: string;
   title?: string;
   test?: boolean;
