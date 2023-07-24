@@ -108,7 +108,7 @@ export default function Dashboard() {
                   onClick={() => {
                     dispatch(playback(beat));
                   }}
-                  buttonType="download"
+                  buttonType="license"
                   key={beat._id}
                 />
               );
@@ -134,7 +134,7 @@ export default function Dashboard() {
                     onClick={() => {
                       dispatch(playback(result as Beat));
                     }}
-                    buttonType="download"
+                    buttonType="license"
                   />
                 );
               }
@@ -164,7 +164,7 @@ export default function Dashboard() {
                 onClick={() => {
                   dispatch(playback(beat));
                 }}
-                buttonType="download"
+                buttonType="license"
                 key={beat._id}
               />
             );
