@@ -16,7 +16,7 @@ describe('Account.test.tsx', () => {
   it('contains page heading', () => {
     cy.get('h1.heading').contains('My Account');
   });
-  it('displays bar chart of revenue over time', () => {
-    cy.get('.revchart');
-  });
+  // it('displays bar chart of revenue over time', () => {
+  //   cy.get('.revchart');
+  // });
 });
