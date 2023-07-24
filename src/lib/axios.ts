@@ -116,6 +116,14 @@ export const getAllBeatsByUserReq = async (userId: string) => {
   return await axios.get(`${gatewayUrl}/beats/beats?userId=${userId}`, { withCredentials: true });
 };
 
+export const getLicensedBeatsByUser = async (userId: string, limit?: number) => {
+  let reqUrl = `${gatewayUrl}/beats/beats?userId=${userId}&licensed=true`;
+  if (limit) {
+    reqUrl += `&limit=${limit}`;
+  }
+  return await axios.get(reqUrl, { withCredentials: true });
+};
+
 export const getAllBeatsFromFollowingReq = async (userId: string) => {
   return await axios.get(`${gatewayUrl}/beats/beats?userId=${userId}&following=true`, { withCredentials: true });
 };

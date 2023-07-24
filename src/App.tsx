@@ -1,4 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import useWebSocket from 'react-use-websocket';
+import { socketUrl } from './config/routing';
 import Register from './components/pages/Register';
 import Login from './components/pages/Login';
 import Splash from './components/pages/Splash';
@@ -17,8 +19,28 @@ import Subscription from './components/pages/Subscription';
 import UnderConstruction from './components/pages/UnderConstruction';
 import ResetPasswordPage from './components/pages/ResetPassword';
 import FAQ from './components/pages/FAQ';
+import { WebSocketMessage } from 'react-use-websocket/dist/lib/types';
+import { getUserIdFromLocalStorage } from './utils/localStorageParser';
 
 function App() {
+  const userId = getUserIdFromLocalStorage();
+  // websocket connection
+  const { sendMessage, lastMessage, readyState } = useWebSocket(socketUrl, {
+    onOpen: () => {
+      console.log('Websocket communication established!');
+      if (userId) {
+        sendMessage(userId as WebSocketMessage);
+      }
+    },
+    onClose: () => {
+      console.log('Websocket connection closed.');
+    },
+    onMessage: (event) => {
+      console.log(event);
+      // processMessages(event);
+    },
+  });
+
   return (
     <div className="App">
       <Router>

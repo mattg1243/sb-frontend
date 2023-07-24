@@ -17,7 +17,7 @@ import { getUserIdFromLocalStorage } from '../../utils/localStorageParser';
 interface IBeatRowProps {
   beat: Beat;
   onClick: React.MouseEventHandler<HTMLHeadingElement>;
-  buttonType: 'edit' | 'download';
+  buttonType: 'edit' | 'license' | 'download';
 }
 
 // < 480px for mobile and < 1024px for tablet, combining the two for now
@@ -154,8 +154,10 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
       <Row className={styles['row-container']}>
         {isMobile ? null : buttonType === 'edit' ? (
           <BeatEditModal beat={beat} />
+        ) : buttonType === 'download' ? (
+          <BeatDownloadModal beatId={beat._id} title={beat.title} artistName={beat.artistName} license={false} />
         ) : (
-          <BeatDownloadModal beatId={beat._id} title={beat.title} artistName={beat.artistName} />
+          <BeatDownloadModal beatId={beat._id} title={beat.title} artistName={beat.artistName} license={true} />
         )}
         <Row style={{ alignItems: 'center', marginRight: 'auto', paddingLeft: '1vw' }}>
           <Image

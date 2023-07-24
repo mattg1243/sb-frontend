@@ -1,7 +1,7 @@
-import { PlusOutlined } from '@ant-design/icons';
+import { DownloadOutlined, PlusOutlined } from '@ant-design/icons';
 import JSZip from 'jszip';
 import { Button, Modal, Progress, Spin } from 'antd';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './BeatDownloadModal.module.css';
 import gatewayUrl from '../../config/routing';
 import axios, { AxiosResponse } from 'axios';
@@ -12,10 +12,11 @@ interface IBeatDownloadModal {
   beatId: string;
   title: string;
   artistName: string;
+  license: boolean;
 }
 
 export default function BeatDownloadModal(props: IBeatDownloadModal) {
-  const { beatId, title, artistName } = props;
+  const { beatId, title, artistName, license } = props;
 
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -23,10 +24,27 @@ export default function BeatDownloadModal(props: IBeatDownloadModal) {
   const [beatDownloadProgress, setBeatDownloadProgress] = useState<number>(0);
   const [stemDownloading, setStemDownloading] = useState(false);
   const [stemDownloadProgress, setStemDownloadProgress] = useState<number>(0);
+  const [licenseType, setLicenseType] = useState<string>('unlimited');
   const [errorMsg, setErrMsg] = useState<AlertObj>();
+
+  let modalTitle = 'Download & License Beat';
+  let modalTxt = 'Are you sure you would like download and license this beat for 1 credit?';
+  let btnTxt = 'Download & License';
+
+  if (!license) {
+    modalTitle = 'Download Beat';
+    modalTxt = 'You own a license for this beat. Would you like to download it?';
+    btnTxt = 'Download';
+  }
 
   const zip = new JSZip();
   const downloadZip = zip.folder(`${title}-${artistName}`);
+
+  const icon = props.license ? (
+    <PlusOutlined className={styles['plus-btn']} />
+  ) : (
+    <DownloadOutlined className={styles['plus-btn']} />
+  );
 
   const downloadBeat = async () => {
     const promiseArr: Array<Promise<AxiosResponse>> = [];
@@ -37,7 +55,7 @@ export default function BeatDownloadModal(props: IBeatDownloadModal) {
     setLoading(true);
     try {
       setBeatDownloading(true);
-      const res = await axios.get(`${gatewayUrl}/beats/download?beatId=${beatId}&`, {
+      const res = await axios.get(`${gatewayUrl}/beats/download?beatId=${beatId}&licenseType=${licenseType}`, {
         withCredentials: true,
       });
       console.log(res.data);
@@ -96,6 +114,7 @@ export default function BeatDownloadModal(props: IBeatDownloadModal) {
       console.error(err);
       setErrMsg({ message: 'Insufficient credits', status: 'error' });
     } finally {
+      setBeatDownloading(false);
       setBeatDownloadProgress(0);
       setStemDownloadProgress(0);
       setLoading(false);
@@ -109,11 +128,11 @@ export default function BeatDownloadModal(props: IBeatDownloadModal) {
         onClick={() => {
           setOpen(true);
         }}
-        icon={<PlusOutlined className={styles['plus-btn']} />}
+        icon={icon}
         data-cy="download-modal-btn"
       />
       <Modal
-        title="Download & License Beat"
+        title={modalTitle}
         open={open}
         centered
         onCancel={() => {
@@ -133,7 +152,7 @@ export default function BeatDownloadModal(props: IBeatDownloadModal) {
             }}
             data-cy="download-beat-btn"
           >
-            Download & License
+            {btnTxt}
           </Button>,
         ]}
       >
@@ -146,9 +165,7 @@ export default function BeatDownloadModal(props: IBeatDownloadModal) {
               <CustomAlert message={errorMsg.message} status={errorMsg.status} />
             </>
           ) : (
-            <p style={{ padding: '.5vw' }}>
-              Are you sure you would like download and license this beat for 10 credits?
-            </p>
+            <p style={{ padding: '.5vw' }}>{modalTxt}</p>
           )}
         </Spin>
         {beatDownloading ? (
