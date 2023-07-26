@@ -4,12 +4,15 @@ import { mount } from 'cypress/react18';
 import AccountPage from '.';
 import { Provider } from 'react-redux';
 import { store } from '../../../store';
+import { MemoryRouter } from 'react-router-dom';
 
 describe('Account.test.tsx', () => {
   beforeEach(() => {
     mount(
       <Provider store={store}>
-        <AccountPage />
+        <MemoryRouter>
+          <AccountPage />
+        </MemoryRouter>
       </Provider>
     );
   });
