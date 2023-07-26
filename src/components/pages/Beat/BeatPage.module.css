@@ -1,0 +1,12 @@
+.beat-info-row {
+  margin: 5rem 5rem;
+  width: 77%;
+}
+
+.beat-info-space {
+  align-content: flex-start;
+}
+
+.artwork {
+  box-shadow: 12px 6px black;
+}
