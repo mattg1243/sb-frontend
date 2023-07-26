@@ -1,17 +1,16 @@
 import { Content } from 'antd/lib/layout/layout';
 import { useState, useEffect } from 'react';
-import { Row, Avatar, Button, Col, Tooltip, Statistic, Spin } from 'antd';
-import { Bar, BarDatum } from '@nivo/bar';
+import { Row, Avatar, Button, Col, Spin } from 'antd';
 import styles from './Account.module.css';
 import { Divider } from 'antd';
 import { FaStripe } from 'react-icons/fa';
 import DashRow from '../../DashRow';
 // import { useState } from 'react';
-import { Beat } from '../../../types/beat';
 import axios from 'axios';
 import gatewayUrl from '../../../config/routing';
 import { getStripeCustIdFromLocalStorage, getUserIdFromLocalStorage } from '../../../utils/localStorageParser';
 import useGetBeats from '../../../hooks/useGetBeats';
+import { useNavigate } from 'react-router-dom';
 
 export default function AccountPage() {
   // TODO: create a hook so that the trackPlaying state and playbackButton
@@ -21,6 +20,7 @@ export default function AccountPage() {
 
   const customerId = getStripeCustIdFromLocalStorage();
   const userId = getUserIdFromLocalStorage();
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios.get(`${gatewayUrl}/user/credits-balance`, { withCredentials: true }).then((res) => {
@@ -108,7 +108,14 @@ export default function AccountPage() {
           {/* <DashRow beat={testBeat} buttonType="download" onClick={() => console.log('row clicked')} />
           <DashRow beat={testBeat} buttonType="download" onClick={() => console.log('row clicked')} />
           <DashRow beat={testBeat} buttonType="download" onClick={() => console.log('row clicked')} /> */}
-          <Button className={styles.btn}>View All 🔨</Button>
+          <Button
+            className={styles.btn}
+            onClick={() => {
+              navigate('/app/licensed-beats');
+            }}
+          >
+            View All
+          </Button>
         </div>
         <Divider>
           <h2>Following</h2>

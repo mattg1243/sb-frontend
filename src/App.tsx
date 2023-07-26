@@ -21,6 +21,7 @@ import ResetPasswordPage from './components/pages/ResetPassword';
 import FAQ from './components/pages/FAQ';
 import { WebSocketMessage } from 'react-use-websocket/dist/lib/types';
 import { getUserIdFromLocalStorage } from './utils/localStorageParser';
+import LicensedBeatsPage from './components/pages/LicensedBeats';
 
 function App() {
   const userId = getUserIdFromLocalStorage();
@@ -66,6 +67,7 @@ function App() {
             <Route path="dash" element={<Dashboard />} index />
             <Route path="loading" element={<LoadingPage />} />
             <Route path="account" element={<AccountPage />} />
+            <Route path="licensed-beats" element={<LicensedBeatsPage />} />
           </Route>
           {/* 404 route */}
           <Route path="*" element={<NotFound />} />
