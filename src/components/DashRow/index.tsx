@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { playback } from '../../reducers/playbackReducer';
 import { addStreamReq, getUserLikesBeatReq, likeBeatReq, unlikeBeatReq } from '../../lib/axios';
 import { getUserIdFromLocalStorage } from '../../utils/localStorageParser';
+import { useNavigate } from 'react-router-dom';
 
 interface IBeatRowProps {
   beat: Beat;
@@ -59,6 +60,7 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
   }, [isPlaying]);
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   // TODO figure out why this has to be typed everytime its used
   const beatPlaying = useSelector<{ playback: { trackPlaying: Beat | null } }, Beat | null>(
     (state) => state.playback.trackPlaying
@@ -185,8 +187,8 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
           />
           <div className={styles['text-container']}>
             <h3
-              onClick={(e) => {
-                playBeat(e);
+              onClick={() => {
+                navigate(`/app/beat?id=${beat._id}`);
               }}
               className={styles.title}
             >
