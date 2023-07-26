@@ -13,6 +13,9 @@ interface IPlyabackButtonsProps {
 
 export default function PlaybackButtons(props: IPlyabackButtonsProps) {
   const [isPlaying, setIsPlaying] = useState<boolean>(true);
+  const [currentTime, setCurrentTime] = useState<number>(0);
+  const [duration, setDuration] = useState<number>();
+
   let beatPlaying: Beat | null;
   // get beatPlaying from redux store
   const beatPlayingFromState = useSelector<{ playback: { trackPlaying: Beat | null } }, Beat | null>(
@@ -49,9 +52,22 @@ export default function PlaybackButtons(props: IPlyabackButtonsProps) {
       audio.current.pause();
     }
   };
+
+  const handleTimeUpdate = () => {
+    setCurrentTime(audio.current?.currentTime);
+    setDuration(audio.current?.duration);
+  };
+
+  const handleSeek = (e: any) => {
+    if (audio.current) {
+      audio.current.currentTime = e.target.value;
+    }
+  };
+
   useEffect(() => {
     if (beatPlaying) {
       audio.current = new Audio(trackSrcUrl);
+      audio.current.ontimeupdate = handleTimeUpdate;
       audio.current.onplaying = () => {
         setIsPlaying(true);
         streamTimeout = setTimeout(() => {
@@ -80,7 +96,8 @@ export default function PlaybackButtons(props: IPlyabackButtonsProps) {
     };
   }, [beatPlaying]);
 
-  return beatPlaying ? (
+  // playback button for all pages except beat page
+  const playbackBtn = (
     <>
       <Tooltip title={`${trackTitle} - ${trackArtist}`} placement="topLeft" id="playback-info">
         <button
@@ -93,5 +110,48 @@ export default function PlaybackButtons(props: IPlyabackButtonsProps) {
         </button>
       </Tooltip>
     </>
-  ) : null;
+  );
+
+  // playback bar for beat page
+  const playbackBar = (
+    <footer
+      style={{
+        background: 'black',
+        width: '100vw',
+        height: '9vh',
+        bottom: '0',
+        paddingBottom: '20px',
+        position: 'fixed',
+        justifyContent: 'center',
+      }}
+    >
+      <button
+        onClick={isPlaying ? pause : play}
+        style={{ animationDuration: '0s !important' }}
+        className={styles['playbackbtn-bar']}
+        data-cy="playback-btn"
+      >
+        {isPlaying ? <PauseOutlined data-cy="pause-icon" /> : <CaretRightOutlined data-cy="play-icon" />}
+      </button>
+      <input
+        type="range"
+        min={0}
+        max={duration}
+        value={currentTime}
+        className={styles['seek-bar']}
+        style={{ background: 'var(--primary)' }}
+        title="2:26"
+        onChange={(e) => {
+          handleSeek(e);
+        }}
+      />
+      <p style={{ color: 'white' }}>2:26</p>
+    </footer>
+  );
+
+  // determine which type to render
+  const onBeatPage = window.location.pathname === '/app/beat' ? true : false;
+  const toRender = onBeatPage ? playbackBar : playbackBtn;
+
+  return beatPlaying ? toRender : null;
 }
