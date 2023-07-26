@@ -1,6 +1,8 @@
 import { CheckOutlined, FrownOutlined, InfoCircleOutlined } from '@ant-design/icons';
 import { notification } from 'antd';
 import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { notification as notificationReducer } from '../../reducers/notificationReducer';
 
 export interface INotificationProps {
   type: 'error' | 'success' | 'info' | 'message';
@@ -11,6 +13,8 @@ export interface INotificationProps {
 
 export default function Notification(props: INotificationProps) {
   const [api, contextHolder] = notification.useNotification();
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     notification.destroy();
@@ -36,7 +40,11 @@ export default function Notification(props: INotificationProps) {
     api.open({
       message: notificationProps?.message,
       icon,
+      key: '12lkjhsdfg',
       duration: notificationProps.test ? 0 : 10,
+      onClose() {
+        dispatch(notificationReducer(null));
+      },
     });
   }, []);
 

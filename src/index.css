@@ -51,6 +51,10 @@ body {
   color: white !important;
 }
 
+.ant-notification-topRight {
+  margin-top: 5vh;
+}
+
 .button-lg-round {
   width: '200px';
   height: '65px';
