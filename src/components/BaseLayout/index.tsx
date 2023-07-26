@@ -17,6 +17,8 @@ const isMobile = window.innerWidth < 480;
 
 export default function BaseLayout() {
   const notificationFromStore = useSelector<RootState, INotificationProps | null>((state) => selectNotification(state));
+  const onBeatPage = window.location.pathname == '/app/beat';
+  console.log(onBeatPage);
 
   return (
     <>
@@ -27,7 +29,8 @@ export default function BaseLayout() {
           <Outlet />
           {isMobile ? null : <PlaybackButtons />}
         </Content>
-        {isMobile ? <MobileNav /> : <SiteFooter />}
+        {!isMobile && !onBeatPage ? <SiteFooter /> : null}
+        {isMobile && !onBeatPage ? <MobileNav /> : null}
       </Layout>
     </>
   );
