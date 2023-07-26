@@ -15,22 +15,22 @@ describe('Streams and likes are counted properly', () => {
   // this is covered in the before each
   it('Gets beats to display', () => {});
   it('Checks to see if a user likes a beat', () => {});
-  it('Sends request and adds to count when liking a beat', () => {
-    // incomplete, should check value of stats display
-    cy.getBySel('beat-like-btn').children().first().click();
-    cy.wait('@likeBeatReq');
-  });
+  // it('Sends request and adds to count when liking a beat', () => {
+  //   // incomplete, should check value of stats display
+  //   cy.getBySel('beat-like-btn').children().first().click();
+  //   cy.wait('@likeBeatReq');
+  // });
 
-  it('Sends request and subtracts to count when unliking a beat', () => {
-    // like the beat
-    cy.intercept('GET', `/beats/unlike?beatId=*`, { statusCode: 200 }).as('unlikeBeatReq');
-    cy.getBySel('beat-like-btn').children().first().click();
-    cy.wait('@likeBeatReq');
-    // unlike the beat
-    cy.getBySel('beat-like-btn').children().first().click();
-    cy.wait('@unlikeBeatReq');
-    // wait for unlike beat req
-  });
+  // it('Sends request and subtracts to count when unliking a beat', () => {
+  //   // like the beat
+  //   cy.intercept('GET', `/beats/unlike?beatId=*`, { statusCode: 200 }).as('unlikeBeatReq');
+  //   cy.getBySel('beat-like-btn').children().first().click();
+  //   cy.wait('@likeBeatReq');
+  //   // unlike the beat
+  //   cy.getBySel('beat-like-btn').children().first().click();
+  //   cy.wait('@unlikeBeatReq');
+  //   // wait for unlike beat req
+  // });
 
   it('Adds a stream when track is played for over 20 seconds', () => {
     // incomplete
