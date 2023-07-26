@@ -1,6 +1,6 @@
 import { DownloadOutlined, PlusOutlined } from '@ant-design/icons';
 import JSZip from 'jszip';
-import { Button, Modal, Progress, Spin } from 'antd';
+import { Button, Modal, Progress, Spin, Tooltip } from 'antd';
 import { useEffect, useState } from 'react';
 import styles from './BeatDownloadModal.module.css';
 import gatewayUrl from '../../config/routing';
@@ -13,10 +13,12 @@ interface IBeatDownloadModal {
   title: string;
   artistName: string;
   license: boolean;
+  tooltip?: boolean;
+  btnStyle?: React.CSSProperties;
 }
 
 export default function BeatDownloadModal(props: IBeatDownloadModal) {
-  const { beatId, title, artistName, license } = props;
+  const { beatId, title, artistName, license, tooltip, btnStyle } = props;
 
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -41,9 +43,9 @@ export default function BeatDownloadModal(props: IBeatDownloadModal) {
   const downloadZip = zip.folder(`${title}-${artistName}`);
 
   const icon = props.license ? (
-    <PlusOutlined className={styles['plus-btn']} />
+    <PlusOutlined className={styles['plus-btn']} style={btnStyle} />
   ) : (
-    <DownloadOutlined className={styles['plus-btn']} />
+    <DownloadOutlined className={styles['plus-btn']} style={btnStyle} />
   );
 
   const downloadBeat = async () => {
@@ -121,16 +123,28 @@ export default function BeatDownloadModal(props: IBeatDownloadModal) {
     }
   };
 
+  // check for tooltip wrapper
+  const btn = (
+    <Button
+      type="ghost"
+      onClick={() => {
+        setOpen(true);
+      }}
+      icon={icon}
+      data-cy="download-modal-btn"
+    />
+  );
+  const wrappedBtn = tooltip ? (
+    <Tooltip title="Download & License" placement="top">
+      {btn}
+    </Tooltip>
+  ) : (
+    <>{btn}</>
+  );
+
   return (
     <>
-      <Button
-        type="ghost"
-        onClick={() => {
-          setOpen(true);
-        }}
-        icon={icon}
-        data-cy="download-modal-btn"
-      />
+      {wrappedBtn}
       <Modal
         title={modalTitle}
         open={open}
