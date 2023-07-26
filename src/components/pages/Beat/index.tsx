@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
-import { Row, Image, Divider, Statistic, Spin } from 'antd';
+import { Row, Image, Divider, Statistic, Spin, Tooltip } from 'antd';
 import { HeartFilled, HeartOutlined } from '@ant-design/icons';
 import { GiTreeBranch } from 'react-icons/gi';
+import { FiShare } from 'react-icons/fi';
 import type { Beat } from '../../../types';
 import styles from './BeatPage.module.css';
 import { cdnHostname } from '../../../config/routing';
@@ -9,6 +10,10 @@ import artworkLoading from '../../../assets/artwork_loading.jpg';
 import { PlayCircleOutlined } from '@ant-design/icons';
 import { getBeatReq, getUserLikesBeatReq, likeBeatReq, unlikeBeatReq } from '../../../lib/axios';
 import { getUserIdFromLocalStorage } from '../../../utils/localStorageParser';
+import { useDispatch, useSelector } from 'react-redux';
+import { notification } from '../../../reducers/notificationReducer';
+import { playback } from '../../../reducers/playbackReducer';
+import BeatDownloadModal from '../../BeatDownloadModal';
 
 const isMobile: boolean = window.innerWidth < 1024;
 
@@ -17,6 +22,7 @@ export default function BeatPage() {
   const userId = getUserIdFromLocalStorage();
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [liked, setLiked] = useState<boolean>();
   const [beat, setBeat] = useState<Beat>();
   const [likesCount, setLikesCount] = useState<number>();
@@ -40,6 +46,66 @@ export default function BeatPage() {
       })
       .catch((err) => console.error(err));
   }, [beatId]);
+
+  const dispatch = useDispatch();
+
+  const beatPlaying = useSelector<{ playback: { trackPlaying: Beat | null } }, Beat | null>(
+    (state) => state.playback.trackPlaying
+  );
+
+  const stopAllAudio = () => {
+    document.querySelectorAll('audio').forEach((el) => {
+      el.pause();
+      el.currentTime = 0;
+    });
+  };
+
+  /**
+   * Sets the MediaSession metadata for display on mobile devices.
+   */
+  const setAudioMetadata = () => {
+    if (beat) {
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title: beat.title,
+        artist: beat.artistName,
+        artwork: [{ src: `${cdnHostname}/${beat.artworkKey}` }],
+      });
+    }
+  };
+
+  /**
+   * This function handles beat playback for mobile and passes through the provided
+   * function from the props if on desktop.
+   * @param e - MouseEvent
+   */
+  const playBeat = (e?: React.MouseEvent<HTMLHeadingElement | HTMLDivElement>) => {
+    if (beat) {
+      if (isMobile) {
+        // select the corresponding hidden audio tag form the DOM
+        const audio = document.getElementById(`audio-player-${beat.audioKey}`) as HTMLAudioElement;
+        // another beat is playing, stop it and play this beat
+        if (beatPlaying != beat) {
+          // set the beat playing in redux store and component state
+          stopAllAudio();
+          dispatch(playback(beat));
+          setAudioMetadata();
+          setIsPlaying(true);
+          // restart beat and play
+          audio.currentTime = 0;
+          audio.play();
+        } else if (beatPlaying == beat && isPlaying) {
+          setIsPlaying(false);
+          audio.pause();
+        } else if (beatPlaying == beat && !isPlaying) {
+          dispatch(playback(beat));
+          setIsPlaying(true);
+          audio.play();
+        }
+      } else {
+        dispatch(playback(beat));
+      }
+    }
+  };
 
   const likeBeat = async () => {
     if (beat && likesCount) {
@@ -73,12 +139,15 @@ export default function BeatPage() {
 
   return (
     <>
-      <div style={{ height: '100%', width: '50%', marginTop: '17vh', textAlign: 'center' }}>
+      <div style={{ height: '100%', width: '50%', marginTop: '11vh', textAlign: 'center' }}>
         {beat && !isLoading ? (
           <>
             <Image
               src={`${cdnHostname}/${beat.artworkKey}`}
               alt="album artwork"
+              onClick={(e) => {
+                playBeat(e);
+              }}
               placeholder={<Image src={artworkLoading} width={isMobile ? 250 : 400} height={isMobile ? 250 : 400} />}
               onError={({ currentTarget }) => {
                 currentTarget.onerror = null; // prevents looping
@@ -93,7 +162,7 @@ export default function BeatPage() {
             <h3>{beat.artistName}</h3>
             <Divider />
             <Row style={{ justifyContent: 'space-evenly' }}>
-              <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'centers' }}>
+              <div>
                 <PlayCircleOutlined style={{ fontSize: '2.5vh', marginBottom: '10px' }} />
                 <Statistic title="Streams" value={streamsCount} valueStyle={{ fontSize: '1.5vh' }} />
               </div>
@@ -124,6 +193,31 @@ export default function BeatPage() {
                   title="Stems"
                   value={beat.hasStems ? 'Available' : 'None :('}
                   valueStyle={{ fontSize: '1.5vh' }}
+                />
+              </div>
+            </Row>
+            <Divider />
+            <Row style={{ justifyContent: 'space-evenly', marginTop: '4vh' }}>
+              <div>
+                <Tooltip title="Copy share link">
+                  <FiShare
+                    onClick={() => {
+                      const url = location.href;
+                      navigator.clipboard.writeText(url);
+                      dispatch(notification({ type: 'success', message: 'Beat URL has been copied!' }));
+                    }}
+                    style={{ fontSize: '3vh' }}
+                  />
+                </Tooltip>
+              </div>
+              <div>
+                <BeatDownloadModal
+                  beatId={beat._id}
+                  title={beat.title}
+                  artistName={beat.artistName}
+                  license={true}
+                  tooltip={true}
+                  btnStyle={{ fontSize: '3vh' }}
                 />
               </div>
             </Row>
