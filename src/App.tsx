@@ -22,6 +22,7 @@ import FAQ from './components/pages/FAQ';
 import { WebSocketMessage } from 'react-use-websocket/dist/lib/types';
 import { getUserIdFromLocalStorage } from './utils/localStorageParser';
 import LicensedBeatsPage from './components/pages/LicensedBeats';
+import BeatPage from './components/pages/Beat';
 
 function App() {
   const userId = getUserIdFromLocalStorage();
@@ -63,6 +64,7 @@ function App() {
             {/* public routes */}
             <Route path="about" element={<AboutPage />} />
             <Route path="user" element={<Profile />} />
+            <Route path="beat" element={<BeatPage />} />
             {/* protected routes */}
             <Route path="dash" element={<Dashboard />} index />
             <Route path="loading" element={<LoadingPage />} />

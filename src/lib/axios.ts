@@ -108,6 +108,10 @@ export const getSignedUploadUrlReq = async (fileType: UploadFileTypes) => {
   return await axios.get(`${gatewayUrl}/beats/signed-upload-url?fileType=${fileType}`, { withCredentials: true });
 };
 
+export const getBeatReq = async (beatId: string) => {
+  return await axios.get(`${gatewayUrl}/beats?id=${beatId}`);
+};
+
 export const getAllBeatsReq = async () => {
   return await axios.get(`${gatewayUrl}/beats/beats`, { withCredentials: true });
 };
