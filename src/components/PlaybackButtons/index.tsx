@@ -1,5 +1,6 @@
-import { Tooltip } from 'antd';
+import { Tooltip, Input } from 'antd';
 import { CaretRightOutlined, PauseOutlined } from '@ant-design/icons';
+import { BsFillVolumeDownFill, BsVolumeMuteFill, BsVolumeUpFill } from 'react-icons/bs';
 import { useState, useRef, useEffect } from 'react';
 import styles from './PlaybackButtons.module.css';
 import { useSelector } from 'react-redux';
@@ -15,6 +16,9 @@ export default function PlaybackButtons(props: IPlyabackButtonsProps) {
   const [isPlaying, setIsPlaying] = useState<boolean>(true);
   const [currentTime, setCurrentTime] = useState<number>(0);
   const [duration, setDuration] = useState<number>();
+  const [volume, setVolume] = useState<number>(100);
+  const [secondsPlayed, setSecondsPlayed] = useState<number>(0);
+  const [minutesPlayed, setMinutesPlayed] = useState<number>(0);
 
   let beatPlaying: Beat | null;
   // get beatPlaying from redux store
@@ -54,13 +58,23 @@ export default function PlaybackButtons(props: IPlyabackButtonsProps) {
   };
 
   const handleTimeUpdate = () => {
-    setCurrentTime(audio.current?.currentTime);
-    setDuration(audio.current?.duration);
+    if (audio.current) {
+      setCurrentTime(audio.current.currentTime);
+      const minutes = currentTime / 60;
+      const seconds = minutes > 0 ? currentTime % (minutes * 60) : currentTime;
+      console.log('seconds: ', seconds, 'minutes: ', minutes);
+      setMinutesPlayed(Math.floor(minutes));
+      setSecondsPlayed(Math.floor(seconds));
+    }
   };
 
   const handleSeek = (e: any) => {
     if (audio.current) {
       audio.current.currentTime = e.target.value;
+      const minutes = Math.floor(audio.current.currentTime / 60);
+      const seconds = Math.floor(audio.current.currentTime % (minutes * 60));
+      setMinutesPlayed(minutes);
+      setSecondsPlayed(seconds);
     }
   };
 
@@ -123,6 +137,8 @@ export default function PlaybackButtons(props: IPlyabackButtonsProps) {
         paddingBottom: '20px',
         position: 'fixed',
         justifyContent: 'center',
+        alignContent: 'center',
+        color: 'white',
       }}
     >
       <button
@@ -137,15 +153,15 @@ export default function PlaybackButtons(props: IPlyabackButtonsProps) {
         type="range"
         min={0}
         max={duration}
+        step={0.01}
         value={currentTime}
         className={styles['seek-bar']}
         style={{ background: 'var(--primary)' }}
-        title="2:26"
         onChange={(e) => {
           handleSeek(e);
         }}
       />
-      <p style={{ color: 'white' }}>2:26</p>
+      {/* <BsVolumeUpFill className={styles['vol-icon']} /> */}
     </footer>
   );
 

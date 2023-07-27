@@ -215,7 +215,7 @@ export default function BeatPage() {
                   beatId={beat._id}
                   title={beat.title}
                   artistName={beat.artistName}
-                  license={true}
+                  license={false}
                   tooltip={true}
                   btnStyle={{ fontSize: '3vh' }}
                 />
