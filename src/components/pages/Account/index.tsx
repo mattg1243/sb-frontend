@@ -56,9 +56,9 @@ export default function AccountPage() {
   };
 
   return (
-    <Content className={styles.Content}>
-      <div style={{ width: '80%', marginBottom: '20px' }}>
-        <h1 className={`${styles.heading} heading`}>My Account</h1>
+    <>
+      <h1 className={`${styles.heading} heading`}>My Account</h1>
+      <div style={{ width: '75%', marginBottom: '20px' }}>
         {/* <p>Credits: {creditsBalance}</p>
         <Button
           onClick={async () => {
@@ -70,7 +70,14 @@ export default function AccountPage() {
         <Divider className={`${styles.divider} divider`}>
           <h2>Credits</h2>
         </Divider>
-        <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-evenly', alignItems: 'center' }}>
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'space-evenly',
+            alignItems: 'center',
+          }}
+        >
           <div>
             <p style={{ fontSize: '2vh' }}>{creditsBalance}</p>
             <h3>Balance</h3>
@@ -121,7 +128,7 @@ export default function AccountPage() {
           <h2>Following</h2>
         </Divider>
         <div className={`${styles.following} following`}>
-          <Row style={{ justifyContent: 'space-around' }}>
+          <Row style={{ justifyContent: 'space-evenly' }}>
             <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'center' }}>
               <Avatar
                 src="https://d3fulr0i8qqtgb.cloudfront.net/images/f8fbe7320ae08929cc577e7ff18e15ee"
@@ -180,6 +187,6 @@ export default function AccountPage() {
           </Col>
         </div>
       </div>
-    </Content>
+    </>
   );
 }
