@@ -23,33 +23,37 @@ export default function useGetBeats(
   licensed?: boolean
 ): { beats: Array<Beat> | undefined; isLoading: boolean } {
   const [beats, setBeats] = useState<Array<Beat>>();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   useEffect(() => {
-    setIsLoading(true);
     // console.log('getting beats...');
     try {
       if (!userId) {
-        getAllBeatsReq().then((res) => {
-          setBeats(res.data);
-        });
+        getAllBeatsReq()
+          .then((res) => {
+            setBeats(res.data);
+          })
+          .then(() => setIsLoading(false));
       } else if (userId && following) {
-        getAllBeatsFromFollowingReq(userId).then((res) => {
-          setBeats(res.data);
-        });
+        getAllBeatsFromFollowingReq(userId)
+          .then((res) => {
+            setBeats(res.data);
+          })
+          .then(() => setIsLoading(false));
       } else if (userId && licensed) {
-        getLicensedBeatsByUser(userId, limit).then((res) => {
-          setBeats(res.data);
-        });
+        getLicensedBeatsByUser(userId, limit)
+          .then((res) => {
+            setBeats(res.data);
+          })
+          .then(() => setIsLoading(false));
       } else {
-        getAllBeatsByUserReq(userId).then((res) => {
-          setBeats(res.data);
-        });
+        getAllBeatsByUserReq(userId)
+          .then((res) => {
+            setBeats(res.data);
+          })
+          .then(() => setIsLoading(false));
       }
     } catch (err) {
       console.error(err);
-    } finally {
-      setIsLoading(false);
-      // console.log('done!');
     }
   }, [userId]);
   if (beats?.length === 0) {

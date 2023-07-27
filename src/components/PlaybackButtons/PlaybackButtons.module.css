@@ -2,7 +2,7 @@
   position: fixed;
   background: transparent;
   border: none !important;
-  bottom: 10vh;
+  bottom: 5vh;
   left: 5vw;
   margin: 2rem;
   font-size: 2rem;
@@ -12,14 +12,23 @@
   background: transparent;
   border: none !important;
   color: white;
-  margin: 2rem;
+  margin-top: 1.5rem;
+  margin-right: 2rem;
   margin-left: 30%;
   padding-bottom: 2vh;
+  font-size: 2.5rem;
+}
+
+.vol-icon {
+  background: transparent;
+  border: none !important;
+  margin-left: 2vw;
+  padding-top: 0.5vh;
   font-size: 2.5rem;
 }
 
 .seek-bar {
   accent-color: var(--primary);
   width: 30vw;
-  margin-bottom: 2vh;
+  margin-bottom: 1rem;
 }
