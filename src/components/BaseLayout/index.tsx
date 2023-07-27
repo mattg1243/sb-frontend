@@ -1,6 +1,6 @@
 import { Layout } from 'antd';
-import { Outlet } from 'react-router-dom';
-import { Content } from 'antd/es/layout/layout';
+import { Outlet, useLocation } from 'react-router-dom';
+import { Content, Footer } from 'antd/es/layout/layout';
 import Navbar from '../Navbar';
 import styles from './BaseLayout.module.css';
 import SiteFooter from '../SiteFooter';
@@ -11,14 +11,26 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
 import { INotificationProps } from '../Notification';
 import { selectNotification } from '../../reducers/notificationReducer';
+import { useEffect, useState } from 'react';
 // redux
 
 const isMobile = window.innerWidth < 480;
 
 export default function BaseLayout() {
+  const [displayFooter, setDisplayFooter] = useState<boolean>(true);
+
   const notificationFromStore = useSelector<RootState, INotificationProps | null>((state) => selectNotification(state));
-  const onBeatPage = window.location.pathname == '/app/beat';
-  console.log(onBeatPage);
+
+  const location = useLocation();
+
+  useEffect(() => {
+    const onBeatPage = window.location.pathname == '/app/beat';
+    if (onBeatPage) {
+      setDisplayFooter(false);
+    } else {
+      setDisplayFooter(true);
+    }
+  }, [location]);
 
   return (
     <>
@@ -28,9 +40,9 @@ export default function BaseLayout() {
           {notificationFromStore ? <Notification {...notificationFromStore} /> : null}
           <Outlet />
           {isMobile ? null : <PlaybackButtons />}
+          {!isMobile && displayFooter ? <SiteFooter /> : null}
         </Content>
-        {!isMobile && !onBeatPage ? <SiteFooter /> : null}
-        {isMobile && !onBeatPage ? <MobileNav /> : null}
+        {isMobile && displayFooter ? <MobileNav /> : null}
       </Layout>
     </>
   );
