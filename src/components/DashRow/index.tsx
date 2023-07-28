@@ -207,8 +207,8 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
               >
                 {beat.artistName}
               </a>{' '}
-              |{isMobile ? null : ` ${beat.genreTags[0]} |`} {beat.key}
-              {displayFlatOrSharp(beat.flatOrSharp)} {beat.majorOrMinor} {isMobile ? null : `| ${beat.tempo} bpm`}
+              |{isMobile ? null : ` ${beat.genreTags[0]} |`} {beat.key} {beat.majorOrMinor}{' '}
+              {isMobile ? null : `| ${beat.tempo} bpm`}
             </h4>
             <div
               className={styles['info-text']}

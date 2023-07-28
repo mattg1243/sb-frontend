@@ -24,7 +24,7 @@ export default function BeatEditModal(props: IEditBeatModalProps) {
   const [description, setDescription] = useState<string>(beat.description as string);
   const [tempo, setTempo] = useState<number>(beat.tempo);
   const [key, setKey] = useState<string>(beat.key);
-  const [flatOrSharp, setFlatOrSharp] = useState<'flat' | 'sharp' | ''>(beat.flatOrSharp);
+  const [flatOrSharp, setFlatOrSharp] = useState<string>(beat.key.slice(1));
   const [majorOrMinor, setMajorOrMinor] = useState(beat.majorOrMinor);
   const [artwork, setArtwork] = useState<File>(); // NOTE: if this is empty, the artowrk will be uneffected
   const [genreTags, setGenreTags] = useState(beat.genreTags);
@@ -60,7 +60,6 @@ export default function BeatEditModal(props: IEditBeatModalProps) {
     formData.append('tempo', tempo.toString());
     formData.append('artwork', artwork as Blob);
     formData.append('key', key);
-    formData.append('flatOrSharp', flatOrSharp as string);
     formData.append('majorOrMinor', majorOrMinor as string);
 
     try {
@@ -84,10 +83,6 @@ export default function BeatEditModal(props: IEditBeatModalProps) {
 
   const handleKeyChange = (val: string) => {
     setKey(val);
-  };
-
-  const handleSharpFlatChange = (e: RadioChangeEvent) => {
-    setFlatOrSharp(e.target.value);
   };
 
   const handleMajorMinorChange = (e: RadioChangeEvent) => {
@@ -172,19 +167,6 @@ export default function BeatEditModal(props: IEditBeatModalProps) {
                     defaultValue={key}
                   />
                 </Form.Item>
-                <Radio.Group
-                  onChange={(e) => {
-                    handleSharpFlatChange(e);
-                  }}
-                  style={{ marginTop: '.5rem' }}
-                  defaultValue={flatOrSharp}
-                >
-                  <Radio value="" checked>
-                    None
-                  </Radio>
-                  <Radio value="flat">♭</Radio>
-                  <Radio value="sharp">#</Radio>
-                </Radio.Group>
                 <Form.Item>
                   <Radio.Group
                     onChange={(e) => {

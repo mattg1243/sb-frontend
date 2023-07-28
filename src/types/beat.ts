@@ -13,7 +13,6 @@ export type Beat = {
   key: string;
   hasStems: boolean;
   majorOrMinor: 'major' | 'minor';
-  flatOrSharp: 'flat' | 'sharp' | '';
   licensed: boolean;
   tempo: number;
   title: string;

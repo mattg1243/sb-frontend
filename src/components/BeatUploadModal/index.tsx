@@ -29,9 +29,11 @@ import UploadButton from '../UploadButton';
 import styles from './BeatUploadModal.module.css';
 import gatewayUrl from '../../config/routing';
 import { getUserArtistNameFromLocalStorage, getUserIdFromLocalStorage } from '../../utils/localStorageParser';
+import { useDispatch } from 'react-redux';
+import { notification } from '../../reducers/notificationReducer';
+import { Keys } from '../../types';
 
-const possibleKeys = ['A', 'B', 'C', 'D', 'E', 'F', 'G'];
-export const possibleKeyOptions = possibleKeys.map((key) => ({ value: key, label: key }));
+export const possibleKeyOptions = Keys.map((key) => ({ value: key, label: key }));
 interface Stem {
   audioKey: string;
   trackName: string;
@@ -48,13 +50,15 @@ export default function UploadBeatModal() {
   const [genreTags, setGenreTags] = useState<Array<string>>();
   const [tempo, setTempo] = useState<string>();
   const [key, setKey] = useState<string>();
-  const [flatOrSharp, setFlatOrSharp] = useState<'flat' | 'sharp' | ''>('');
+  const [flatOrSharp, setFlatOrSharp] = useState<'♭' | '♯' | ''>('');
   const [majorOrMinor, setMajorOrMinor] = useState<'major' | 'minor'>('major');
   const [artwork, setArtwork] = useState<File>();
   const [audio, setAudio] = useState<File>();
   const [stems, setStems] = useState<File[]>([]);
 
   const stemFileNames: Array<string> = [];
+
+  const dispatch = useDispatch();
 
   const handleCancel = () => {
     setShowModal(false);
@@ -98,7 +102,6 @@ export default function UploadBeatModal() {
         beatFormData.append('tempo', tempo as string);
         beatFormData.append('artwork', artwork as Blob);
         beatFormData.append('key', key as string);
-        beatFormData.append('flatOrSharp', flatOrSharp as string);
         beatFormData.append('majorOrMinor', majorOrMinor as string);
         beatFormData.append('s3Key', s3Key);
         beatFormData.append('hasStems', hasStems ? 'true' : 'false');
@@ -135,11 +138,10 @@ export default function UploadBeatModal() {
         await Promise.all(stemUploadPromises);
         // save all the stems in the database
         await axios.post(`${gatewayUrl}/beats/save-stems`, { stems: stemFields }, { withCredentials: true });
-        setAlert({ message: 'Your beat was uploaded successfully!', type: 'success' });
-        window.location.reload();
+        dispatch(notification({ message: 'Your beat was uploaded successfully!', type: 'success' }));
         console.log(res);
       } catch (err) {
-        setAlert({ message: 'There was an error uploading your beat.', type: 'error' });
+        dispatch(notification({ message: 'There was an error uploading your beat.', type: 'error' }));
         setIsUploading(false);
         console.error(err);
       } finally {
@@ -159,10 +161,6 @@ export default function UploadBeatModal() {
 
   const handleKeyChange = (val: string) => {
     setKey(val);
-  };
-
-  const handleSharpFlatChange = (e: RadioChangeEvent) => {
-    setFlatOrSharp(e.target.value);
   };
 
   const handleMajorMinorChange = (e: RadioChangeEvent) => {
@@ -245,24 +243,6 @@ export default function UploadBeatModal() {
             </Form.Item>
             <Form.Item required>
               <Select placeholder="Key" options={possibleKeyOptions} onChange={handleKeyChange} />
-              <Radio.Group
-                onChange={(e) => {
-                  handleSharpFlatChange(e);
-                }}
-                style={{ marginTop: '.5rem' }}
-                defaultValue={flatOrSharp}
-                data-cy="flat-sharp-group"
-              >
-                <Radio value="" checked={flatOrSharp === ''} data-cy="regular">
-                  None
-                </Radio>
-                <Radio value="flat" checked={flatOrSharp === 'flat'} data-cy="flat">
-                  ♭
-                </Radio>
-                <Radio value="sharp" checked={flatOrSharp === 'flat'} data-cy="sharp">
-                  #
-                </Radio>
-              </Radio.Group>
               <Form.Item>
                 <Radio.Group
                   onChange={(e) => {
