@@ -4,6 +4,8 @@ import { genreOptions, genreTags } from '../../utils/genreTags';
 import styles from './SearchBeatFilter.module.css';
 import { Dropdown, Button, MenuProps, Space } from 'antd';
 import { CloseOutlined, DownOutlined } from '@ant-design/icons';
+import { useDispatch } from 'react-redux';
+import { searchFilters } from '../../reducers/searchReducer';
 
 export type SearchBeatFilterOptions = {
   // need to find an efficient way to type this
@@ -23,6 +25,8 @@ export default function SearchBeatFilter(props: ISearchBeatFilterProps) {
     currentSearchBeatFilter.genre
   );
 
+  const dispatch = useDispatch();
+
   const keyMenuOptions: MenuProps['items'] = Keys.map((keyStr) => {
     return {
       key: keyStr,
@@ -31,7 +35,7 @@ export default function SearchBeatFilter(props: ISearchBeatFilterProps) {
           type="ghost"
           style={{ color: 'white' }}
           onClick={() => {
-            setCurrentSearchBeatFilter({ key: keyStr, genre: currentSearchBeatFilter.genre });
+            dispatch(searchFilters({ key: keyStr, genre: currentGenre }));
             setCurrentKey(keyStr);
           }}
         >
@@ -49,7 +53,7 @@ export default function SearchBeatFilter(props: ISearchBeatFilterProps) {
           type="ghost"
           style={{ color: 'white' }}
           onClick={() => {
-            setCurrentSearchBeatFilter({ key: currentSearchBeatFilter.key, genre });
+            dispatch(searchFilters({ key: currentKey, genre }));
             setCurrentGenre(genre);
           }}
         >
@@ -69,7 +73,7 @@ export default function SearchBeatFilter(props: ISearchBeatFilterProps) {
             <CloseOutlined
               style={{ color: 'white' }}
               onClick={() => {
-                setCurrentSearchBeatFilter({ key: undefined, genre: currentSearchBeatFilter.genre });
+                dispatch(searchFilters({ key: undefined, genre: currentSearchBeatFilter.genre }));
               }}
             />
           ) : null}
@@ -88,7 +92,7 @@ export default function SearchBeatFilter(props: ISearchBeatFilterProps) {
             <CloseOutlined
               style={{ color: 'white' }}
               onClick={() => {
-                setCurrentSearchBeatFilter({ key: currentSearchBeatFilter.key, genre: undefined });
+                dispatch(searchFilters({ key: currentSearchBeatFilter.key, genre: undefined }));
               }}
             />
           ) : null}
