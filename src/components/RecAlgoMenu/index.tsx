@@ -53,7 +53,7 @@ export default function RecAlgoMenu(props: IRecAlgoProps) {
 
   return (
     <Dropdown menu={{ items: algoOptions }} className="rec-algo-menu">
-      <Button type="ghost" className={styles['algo-btn']}>
+      <Button className={styles['algo-btn']}>
         {currentAlgo}
         <DownOutlined />
       </Button>

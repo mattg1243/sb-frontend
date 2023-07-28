@@ -69,7 +69,7 @@ export default function SearchFilter(props: ISearchFilterProps) {
 
   return (
     <Dropdown menu={{ items: filterMenuOptions }}>
-      <Button type="ghost" className={styles['filter-btn']}>
+      <Button className={styles['filter-btn']}>
         {currentSearchFilter}
         <DownOutlined />
       </Button>
