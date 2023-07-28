@@ -24,10 +24,12 @@ import { notification as notificationReducer } from '../../../reducers/notificat
 import { matchSorter } from 'match-sorter';
 import { RootState } from '../../../store';
 import UserRow from '../../UserRow';
+import SearchBeatFilter, { SearchBeatFilterOptions } from '../../SearchBeatFilter';
 
 export default function Dashboard() {
   const [currentAlgo, setCurrentAlgo] = useState<RecAlgos>('Recommended');
   const [currentSearchFilter, setCurrentSearchFilter] = useState<SearchFilterOptions>('Beats');
+  const [currentSearchBeatFilter, setCurrentSearchBeatFilter] = useState<SearchBeatFilterOptions>({});
   const [allFromSearch, setAllFromSeach] = useState<Array<Beat | User>>([]);
   const [sortedAllFromSearch, setSortedAllFromSearch] = useState<Array<Beat | User>>([]);
   // const [isSearching, setIsSearching] = useState<boolean>();
@@ -79,24 +81,32 @@ export default function Dashboard() {
     <div data-testid="dashboard" style={{ width: '100%' }}>
       <h2 className={styles['for-you-text']}>For you</h2>
       {isSearching ? (
-        <SearchFilter currentSearchFilter={currentSearchFilter} setCurrentSearchFilter={setCurrentSearchFilter} />
+        <>
+          <SearchFilter currentSearchFilter={currentSearchFilter} setCurrentSearchFilter={setCurrentSearchFilter} />
+        </>
       ) : (
         <RecAlgoMenu currentAlgo={currentAlgo} setCurrentAlgo={setCurrentAlgo} />
       )}
       {isSearching ? (
-        <Tooltip title="Exit search">
-          <button
-            onClick={() => {
-              dispatch(searchingReducer(false));
-              dispatch(beatsSearchReducer(null));
-              dispatch(usersSearchReducer(null));
-            }}
-            className={styles['exit-search-btn']}
-            style={{ animationDuration: '0s !important' }}
-          >
-            <CloseOutlined />
-          </button>
-        </Tooltip>
+        <>
+          <Tooltip title="Exit search">
+            <button
+              onClick={() => {
+                dispatch(searchingReducer(false));
+                dispatch(beatsSearchReducer(null));
+                dispatch(usersSearchReducer(null));
+              }}
+              className={styles['exit-search-btn']}
+              style={{ animationDuration: '0s !important' }}
+            >
+              <CloseOutlined />
+            </button>
+          </Tooltip>
+          <SearchBeatFilter
+            currentSearchBeatFilter={currentSearchBeatFilter}
+            setCurrentSearchBeatFilter={setCurrentSearchBeatFilter}
+          />
+        </>
       ) : null}
       <div className={styles['beats-container']} data-cy="beats-container">
         {isSearching && beatsFromSearch !== null && currentSearchFilter === 'Beats' ? (
