@@ -10,8 +10,18 @@ import { logoutUserReq, getUserAvatarReq } from '../../lib/axios';
 import axios from 'axios';
 import gatewayUrl, { cdnHostname } from '../../config/routing';
 import styles from './Navbar.module.css';
-import { useDispatch } from 'react-redux';
-import { beats, searching, users, searchQuery } from '../../reducers/searchReducer';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  beats,
+  searching,
+  users,
+  searchQuery,
+  selectSearchBeatFilters,
+  ISearchBeatFilters,
+  selectSearchQuery,
+  searchFilters,
+} from '../../reducers/searchReducer';
+import { RootState } from '../../store';
 
 export default function Navbar() {
   const [avatarUrl, setAvatarUrl] = useState();
@@ -66,6 +76,11 @@ export default function Navbar() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const searchBeatFiltersState = useSelector<RootState, ISearchBeatFilters | null>((state) =>
+    selectSearchBeatFilters(state)
+  );
+  const searchQueryState = useSelector<RootState, string | null>((state) => selectSearchQuery(state));
+
   useEffect(() => {
     if (currentUserId) {
       getUserAvatarReq(currentUserId)
@@ -76,10 +91,29 @@ export default function Navbar() {
     }
   }, [currentUserId]);
 
+  useEffect(() => {
+    let searchUrl = `${gatewayUrl}/beats/search?search=`;
+    if (searchQueryState) {
+      searchUrl += `${searchQueryState}`;
+    }
+    if (searchBeatFiltersState) {
+      if (searchBeatFiltersState.genre) {
+        searchUrl += `&genre=${searchBeatFiltersState.genre}`;
+      }
+      if (searchBeatFiltersState.key) {
+        searchUrl += `&key=${searchBeatFiltersState.key}`;
+      }
+      axios.get(searchUrl).then((res) => {
+        dispatch(beats(res.data.beats));
+      });
+    }
+  }, [searchBeatFiltersState, searchQueryState]);
+
   const handleSearchChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.value === '') {
       dispatch(searching(false));
       dispatch(searchQuery(null));
+      dispatch(searchFilters(null));
       dispatch(users(null));
       dispatch(beats(null));
     } else {
@@ -90,6 +124,14 @@ export default function Navbar() {
         const userSearchUrl = `${gatewayUrl}/user/search?search=${e.target.value}`;
         if (onProfilePage) {
           beatSearchUrl += `&artist=${currentUserId}`;
+        }
+        if (searchBeatFiltersState) {
+          if (searchBeatFiltersState.genre) {
+            beatSearchUrl += `&genre=${searchBeatFiltersState.genre}`;
+          }
+          if (searchBeatFiltersState.key) {
+            beatSearchUrl += `&key=${searchBeatFiltersState.key}`;
+          }
         }
         const beatSearchResPromise = axios.get(beatSearchUrl);
         const userSearchResPromise = axios.get(userSearchUrl);
@@ -104,7 +146,16 @@ export default function Navbar() {
   };
 
   return (
-    <Header style={{ width: '100%', margin: 0, top: 0, background: 'black', position: 'fixed', zIndex: 1 }}>
+    <Header
+      style={{
+        width: '100%',
+        top: 0,
+        background: 'black',
+        position: 'fixed',
+        zIndex: 1,
+        boxShadow: '0px 5px rgb(232, 162, 21)',
+      }}
+    >
       <Menu
         theme="dark"
         mode="horizontal"
