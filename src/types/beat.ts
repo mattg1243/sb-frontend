@@ -20,3 +20,25 @@ export type Beat = {
   created_at: string | Date;
   updated_at: string | Date;
 };
+
+export const Keys = [
+  'A',
+  'A♯',
+  'A♭',
+  'B',
+  'B♭',
+  'C',
+  'C#',
+  'D',
+  'D♭',
+  'D♯',
+  'E',
+  'E♭',
+  'F',
+  'F♯',
+  'G',
+  'G♭',
+  'G#',
+] as const;
+
+export type Key = (typeof Keys)[number];
