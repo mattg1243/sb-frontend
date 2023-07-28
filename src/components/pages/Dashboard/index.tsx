@@ -19,6 +19,7 @@ import {
   beats as beatsSearchReducer,
   users as usersSearchReducer,
   selectSearchQuery,
+  searchFilters,
 } from '../../../reducers/searchReducer';
 import { notification as notificationReducer } from '../../../reducers/notificationReducer';
 import { matchSorter } from 'match-sorter';
@@ -93,6 +94,7 @@ export default function Dashboard() {
             <button
               onClick={() => {
                 dispatch(searchingReducer(false));
+                dispatch(searchFilters(null));
                 dispatch(beatsSearchReducer(null));
                 dispatch(usersSearchReducer(null));
               }}

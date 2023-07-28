@@ -11,7 +11,8 @@
   align-self: flex-start;
   font-size: clamp(20px, 2vw, 30px);
   z-index: 1;
-  margin-top: clamp(70px, 7vh, 150px);
+  margin-left: 2vw;
+  margin-top: clamp(70px, 9vh, 150px);
 }
 
 .exit-search-btn {
