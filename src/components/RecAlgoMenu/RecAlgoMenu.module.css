@@ -8,4 +8,6 @@
   background-color: black;
   color: rgb(240, 240, 240);
   font-size: 18px;
+  position: fixed;
+  top: 13vh;
 }

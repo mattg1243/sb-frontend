@@ -20,6 +20,7 @@ import {
   users as usersSearchReducer,
   selectSearchQuery,
   searchFilters,
+  selectSearchIsLoading,
 } from '../../../reducers/searchReducer';
 import { notification as notificationReducer } from '../../../reducers/notificationReducer';
 import { matchSorter } from 'match-sorter';
@@ -30,7 +31,7 @@ import SearchBeatFilter, { SearchBeatFilterOptions } from '../../SearchBeatFilte
 export default function Dashboard() {
   const [currentAlgo, setCurrentAlgo] = useState<RecAlgos>('Recommended');
   const [currentSearchFilter, setCurrentSearchFilter] = useState<SearchFilterOptions>('Beats');
-  const [currentSearchBeatFilter, setCurrentSearchBeatFilter] = useState<SearchBeatFilterOptions>({});
+  const [currentSearchBeatFilter, setCurrentSearchBeatFilter] = useState<SearchBeatFilterOptions | null>({});
   const [allFromSearch, setAllFromSeach] = useState<Array<Beat | User>>([]);
   const [sortedAllFromSearch, setSortedAllFromSearch] = useState<Array<Beat | User>>([]);
   // const [isSearching, setIsSearching] = useState<boolean>();
@@ -48,6 +49,7 @@ export default function Dashboard() {
   const usersFromSearch = useSelector<RootState, User[] | null>((state) => selectUsers(state));
   const searchQuery = useSelector<RootState, string | null>((state) => selectSearchQuery(state));
   const isSearching = useSelector<RootState, boolean>((state) => selectIsSearching(state));
+  const searchIsLoading = useSelector<RootState, boolean>((state) => selectSearchIsLoading(state));
   // const usersFromSearch = useSelector<{ users}>
 
   useEffect(() => {
@@ -80,36 +82,36 @@ export default function Dashboard() {
 
   return (
     <div data-testid="dashboard" style={{ width: '100%' }}>
-      <h2 className={styles['for-you-text']}>For you</h2>
-      {isSearching ? (
-        <>
-          <SearchFilter currentSearchFilter={currentSearchFilter} setCurrentSearchFilter={setCurrentSearchFilter} />
-        </>
-      ) : (
-        <RecAlgoMenu currentAlgo={currentAlgo} setCurrentAlgo={setCurrentAlgo} />
-      )}
-      {isSearching ? (
-        <>
-          <Tooltip title="Exit search">
-            <button
-              onClick={() => {
-                dispatch(searchingReducer(false));
-                dispatch(searchFilters(null));
-                dispatch(beatsSearchReducer(null));
-                dispatch(usersSearchReducer(null));
-              }}
-              className={styles['exit-search-btn']}
-              style={{ animationDuration: '0s !important' }}
-            >
-              <CloseOutlined />
-            </button>
-          </Tooltip>
-          <SearchBeatFilter
-            currentSearchBeatFilter={currentSearchBeatFilter}
-            setCurrentSearchBeatFilter={setCurrentSearchBeatFilter}
-          />
-        </>
-      ) : null}
+      <div>
+        <h2 className={styles['for-you-text']}>For you</h2>
+        {isSearching ? (
+          <div style={{ position: 'fixed', top: '13vh' }}>
+            <SearchFilter currentSearchFilter={currentSearchFilter} setCurrentSearchFilter={setCurrentSearchFilter} />
+            <Tooltip title="Exit search">
+              <button
+                onClick={() => {
+                  dispatch(searchingReducer(false));
+                  dispatch(searchFilters(null));
+                  dispatch(beatsSearchReducer(null));
+                  dispatch(usersSearchReducer(null));
+                  setCurrentSearchBeatFilter(null);
+                }}
+                className={styles['exit-search-btn']}
+                style={{ animationDuration: '0s !important' }}
+              >
+                <CloseOutlined />
+              </button>
+            </Tooltip>
+          </div>
+        ) : (
+          <RecAlgoMenu currentAlgo={currentAlgo} setCurrentAlgo={setCurrentAlgo} />
+        )}
+      </div>
+      {isSearching ? <></> : null}
+      <SearchBeatFilter
+        currentSearchBeatFilter={currentSearchBeatFilter}
+        setCurrentSearchBeatFilter={setCurrentSearchBeatFilter}
+      />
       <div className={styles['beats-container']} data-cy="beats-container">
         {isSearching && beatsFromSearch !== null && currentSearchFilter === 'Beats' ? (
           <>
@@ -154,20 +156,22 @@ export default function Dashboard() {
           </>
         ) : null}
         {/* display no beats found message when searching beats */}
-        {(isSearching && beatsFromSearch === null) ||
-        (beatsFromSearch?.length === 0 && currentSearchFilter === 'Beats') ? (
+        {(isSearching && beatsFromSearch === null && !searchIsLoading) ||
+        (beatsFromSearch?.length === 0 && currentSearchFilter === 'Beats' && !searchIsLoading) ? (
           <h3 style={{ marginTop: '10vh' }}>No beats match that search :(</h3>
         ) : null}
         {/* no users found message when searching users */}
-        {(isSearching && usersFromSearch === null) ||
-        (usersFromSearch?.length === 0 && currentSearchFilter === 'Users') ? (
+        {(isSearching && currentSearchFilter == 'Users') ||
+        (currentSearchFilter == 'All' && usersFromSearch === null) ||
+        (usersFromSearch?.length === 0 && currentSearchFilter === 'Users' && !searchIsLoading) ? (
           <h3 style={{ marginTop: '10vh' }}>No users match that search :(</h3>
         ) : null}
         {/* nothing found when searching all */}
-        {(isSearching && usersFromSearch === null && beatsFromSearch === null) ||
+        {(isSearching && usersFromSearch === null && beatsFromSearch === null && !searchIsLoading) ||
         (usersFromSearch?.length === 0 && beatsFromSearch?.length === 0 && currentSearchFilter === 'All') ? (
           <h3 style={{ marginTop: '10vh' }}>Nothing matches that search :(</h3>
         ) : null}
+        {/* search is loading */}
         {beats && !isSearching ? (
           beats.map((beat) => {
             return (
@@ -181,9 +185,12 @@ export default function Dashboard() {
               />
             );
           })
-        ) : (
-          <Spin size="large" tip="Loading beats..." spinning={isLoading} />
-        )}
+        ) : isLoading || searchIsLoading ? (
+          <>
+            <Spin size="large" tip="Loading beats..." spinning={true} style={{ marginTop: '35vh' }} />
+            <p>Loading beats...</p>
+          </>
+        ) : null}
       </div>
     </div>
   );
