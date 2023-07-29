@@ -1,5 +1,5 @@
-import { Tooltip, Input } from 'antd';
-import { CaretRightOutlined, PauseOutlined } from '@ant-design/icons';
+import { Tooltip, Spin } from 'antd';
+import { CaretRightOutlined, PauseOutlined, LoadingOutlined } from '@ant-design/icons';
 import { BsFillVolumeDownFill, BsVolumeMuteFill, BsVolumeUpFill } from 'react-icons/bs';
 import { useState, useRef, useEffect } from 'react';
 import styles from './PlaybackButtons.module.css';
@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux';
 import type { Beat } from '../../types';
 import { cdnHostname } from '../../config/routing';
 import { addStreamReq } from '../../lib/axios';
+import { error } from 'console';
 
 interface IPlyabackButtonsProps {
   testBeatPlaying?: Beat;
@@ -14,6 +15,7 @@ interface IPlyabackButtonsProps {
 
 export default function PlaybackButtons(props: IPlyabackButtonsProps) {
   const [isPlaying, setIsPlaying] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [currentTime, setCurrentTime] = useState<number>(0);
   const [duration, setDuration] = useState<number>();
   const [volume, setVolume] = useState<number>(100);
@@ -80,7 +82,9 @@ export default function PlaybackButtons(props: IPlyabackButtonsProps) {
 
   useEffect(() => {
     if (beatPlaying) {
+      setIsLoading(true);
       audio.current = new Audio(trackSrcUrl);
+      setIsLoading(false);
       audio.current.ontimeupdate = handleTimeUpdate;
       audio.current.onplaying = () => {
         setIsPlaying(true);
@@ -93,6 +97,9 @@ export default function PlaybackButtons(props: IPlyabackButtonsProps) {
       audio.current.onpause = () => {
         setIsPlaying(false);
         clearTimeout(streamTimeout);
+      };
+      audio.current.onerror = () => {
+        console.log('error loading audio file');
       };
       audio.current.play();
       // wait 20seconds before registering as stream
@@ -113,16 +120,20 @@ export default function PlaybackButtons(props: IPlyabackButtonsProps) {
   // playback button for all pages except beat page
   const playbackBtn = (
     <>
-      <Tooltip title={`${trackTitle} - ${trackArtist}`} placement="topLeft" id="playback-info">
-        <button
-          onClick={isPlaying ? pause : play}
-          className={styles.playbackbutton}
-          style={{ animationDuration: '0s !important' }}
-          data-cy="playback-btn"
-        >
-          {isPlaying ? <PauseOutlined data-cy="pause-icon" /> : <CaretRightOutlined data-cy="play-icon" />}
-        </button>
-      </Tooltip>
+      {isLoading ? (
+        <Spin indicator={<LoadingOutlined style={{ backgroundColor: 'black' }} />} />
+      ) : (
+        <Tooltip title={`${trackTitle} - ${trackArtist}`} placement="topLeft" id="playback-info">
+          <button
+            onClick={isPlaying ? pause : play}
+            className={styles.playbackbutton}
+            style={{ animationDuration: '0s !important' }}
+            data-cy="playback-btn"
+          >
+            {isPlaying ? <PauseOutlined data-cy="pause-icon" /> : <CaretRightOutlined data-cy="play-icon" />}
+          </button>
+        </Tooltip>
+      )}
     </>
   );
 
@@ -147,6 +158,7 @@ export default function PlaybackButtons(props: IPlyabackButtonsProps) {
         className={styles['playbackbtn-bar']}
         data-cy="playback-btn"
       >
+        {isLoading ? <Spin indicator={<LoadingOutlined />} /> : null}
         {isPlaying ? <PauseOutlined data-cy="pause-icon" /> : <CaretRightOutlined data-cy="play-icon" />}
       </button>
       <input
