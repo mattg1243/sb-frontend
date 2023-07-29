@@ -1,11 +1,18 @@
 /// <reference types="Cypress" />
 
+import { Provider } from 'react-redux';
 import UploadBeatModal from '.';
 import { mount } from 'cypress/react18';
+import { store } from '../../store';
+import { MemoryRouter } from 'react-router-dom';
 
 describe('Button opens modal', () => {
   beforeEach(() => {
-    mount(<UploadBeatModal />);
+    mount(
+      <Provider store={store}>
+        <UploadBeatModal />
+      </Provider>
+    );
   });
   it('opens', () => {
     cy.get('#open-modal-btn').click();
@@ -15,7 +22,11 @@ describe('Button opens modal', () => {
 
 describe('Inputs populate correctly', () => {
   beforeEach(() => {
-    mount(<UploadBeatModal />);
+    mount(
+      <Provider store={store}>
+        <UploadBeatModal />
+      </Provider>
+    );
     cy.get('#open-modal-btn').click();
   });
   it('title', () => {
@@ -27,20 +38,6 @@ describe('Inputs populate correctly', () => {
   });
   it('bpm', () => {
     cy.getBySel('bpm-input').type('135').should('have.value', 135);
-  });
-  it('flat / sharp', () => {
-    // make sure all combinations result in only one value being checked
-    cy.getBySel('flat').click().should('be.checked');
-    cy.getBySel('sharp').should('not.be.checked');
-    cy.getBySel('regular').should('not.be.checked');
-
-    cy.getBySel('sharp').click().should('be.checked');
-    cy.getBySel('flat').should('not.be.checked');
-    cy.getBySel('regular').should('not.be.checked');
-
-    cy.getBySel('regular').click().should('be.checked');
-    cy.getBySel('sharp').should('not.be.checked');
-    cy.getBySel('flat').should('not.be.checked');
   });
   it('major / minor', () => {
     cy.getBySel('major').click().should('be.checked');

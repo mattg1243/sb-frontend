@@ -4,7 +4,7 @@ import { mount } from 'cypress/react18';
 import BaseLayout from '.';
 import { MemoryRouter, Routes, Route } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import configureStore from 'redux-mock-store';
+import { store } from '../../store';
 // import { store } from '../../store';
 // import Dashboard from '../pages/Dashboard';
 // import gatewayUrl from '../../../config/routing';
@@ -13,9 +13,6 @@ import configureStore from 'redux-mock-store';
 const TestComp = () => <div data-cy="test-comp">test this</div>;
 
 describe('BaseLayout.test.tsx', () => {
-  const mockedStore = configureStore();
-  const store = mockedStore({ playback: { trackPlaying: null } });
-
   beforeEach(() => {
     mount(
       <Provider store={store}>

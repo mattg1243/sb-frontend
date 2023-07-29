@@ -5,11 +5,9 @@ import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
 import Navbar from '.';
 import { mount } from 'cypress/react18';
+import { store } from '../../store';
 
 describe('Navbar.test.tsx', () => {
-  const mockedStore = configureStore();
-  const store = mockedStore({ playback: { trackPlaying: null } });
-
   beforeEach(() => {
     mount(
       <Provider store={store}>
