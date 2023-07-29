@@ -20,6 +20,7 @@ import {
   ISearchBeatFilters,
   selectSearchQuery,
   searchFilters,
+  searchIsLoading,
 } from '../../reducers/searchReducer';
 import { RootState } from '../../store';
 
@@ -92,20 +93,36 @@ export default function Navbar() {
   }, [currentUserId]);
 
   useEffect(() => {
-    let searchUrl = `${gatewayUrl}/beats/search?search=`;
+    let searchUrl = `${gatewayUrl}/beats/search?`;
     if (searchQueryState) {
-      searchUrl += `${searchQueryState}`;
+      if (!searchUrl.endsWith('?')) {
+        searchUrl += '&';
+      }
+      searchUrl += `search=${searchQueryState}`;
     }
     if (searchBeatFiltersState) {
+      dispatch(searching(true));
+      dispatch(searchIsLoading(true));
       if (searchBeatFiltersState.genre) {
-        searchUrl += `&genre=${searchBeatFiltersState.genre}`;
+        if (!searchUrl.endsWith('?')) {
+          searchUrl += '&';
+        }
+        searchUrl += `genre=${searchBeatFiltersState.genre}`;
       }
       if (searchBeatFiltersState.key) {
-        searchUrl += `&key=${searchBeatFiltersState.key}`;
+        if (!searchUrl.endsWith('?')) {
+          searchUrl += '&';
+        }
+        searchUrl += `key=${searchBeatFiltersState.key}`;
       }
-      axios.get(searchUrl).then((res) => {
-        dispatch(beats(res.data.beats));
-      });
+      axios
+        .get(searchUrl)
+        .then((res) => {
+          dispatch(beats(res.data.beats));
+        })
+        .then(() => {
+          dispatch(searchIsLoading(false));
+        });
     }
   }, [searchBeatFiltersState, searchQueryState]);
 
@@ -133,11 +150,13 @@ export default function Navbar() {
             beatSearchUrl += `&key=${searchBeatFiltersState.key}`;
           }
         }
+        dispatch(searchIsLoading(true));
         const beatSearchResPromise = axios.get(beatSearchUrl);
         const userSearchResPromise = axios.get(userSearchUrl);
         const [beatSearchRes, userSearchRes] = await Promise.all([beatSearchResPromise, userSearchResPromise]);
         dispatch(beats(beatSearchRes.data.beats));
         dispatch(users(userSearchRes.data.users));
+        dispatch(searchIsLoading(false));
         console.log(beatSearchRes.data);
       } catch (err) {
         console.error(err);
