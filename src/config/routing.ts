@@ -1,6 +1,6 @@
 const devGatewayUrl = 'http://localhost:8000';
 const prodGatewayUrl = 'https://sb-gateway.onrender.com';
-const devSocketUrl = 'ws://localhost:4242';
+const devSocketUrl = 'ws://localhost:8083/ws/ws';
 
 let gatewayUrl: string;
 

@@ -24,6 +24,7 @@ import { WebSocketMessage } from 'react-use-websocket/dist/lib/types';
 import { getUserIdFromLocalStorage } from './utils/localStorageParser';
 import LicensedBeatsPage from './components/pages/LicensedBeats';
 import BeatPage from './components/pages/Beat';
+import { useEffect } from 'react';
 
 function App() {
   const userId = getUserIdFromLocalStorage();
@@ -38,10 +39,17 @@ function App() {
     onClose: () => {
       console.log('Websocket connection closed.');
     },
+    onError: (event) => {
+      console.log(event);
+    },
     onMessage: (event) => {
       console.log(event);
       // processMessages(event);
     },
+  });
+
+  useEffect(() => {
+    console.log('WS state: ', readyState);
   });
 
   return (

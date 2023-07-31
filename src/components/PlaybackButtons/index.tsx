@@ -40,28 +40,29 @@ export default function PlaybackButtons(props: IPlyabackButtonsProps) {
 
   const audio = useRef<HTMLAudioElement>();
   let streamTimeout: NodeJS.Timeout;
+  const audioEl = document.getElementById(`audio-player-${beatPlaying?.audioKey}`) as HTMLAudioElement;
 
   const play = async () => {
-    if (!audio.current) {
+    if (!audioEl) {
       console.log('no audio ref detected');
       return;
-    } else if (audio.current.paused && !isPlaying) {
-      return audio.current.play();
+    } else if (audioEl.paused && !isPlaying) {
+      return audioEl.play();
     }
   };
 
   const pause = () => {
-    if (!audio.current) {
+    if (!audioEl) {
       console.log('no audio ref detected');
       return;
-    } else if (!audio.current.paused && isPlaying) {
-      audio.current.pause();
+    } else if (!audioEl.paused && isPlaying) {
+      audioEl.pause();
     }
   };
 
   const handleTimeUpdate = () => {
-    if (audio.current) {
-      setCurrentTime(audio.current.currentTime);
+    if (audioEl) {
+      setCurrentTime(audioEl.currentTime);
       const minutes = currentTime / 60;
       const seconds = minutes > 0 ? currentTime % (minutes * 60) : currentTime;
       console.log('seconds: ', seconds, 'minutes: ', minutes);
@@ -71,10 +72,10 @@ export default function PlaybackButtons(props: IPlyabackButtonsProps) {
   };
 
   const handleSeek = (e: any) => {
-    if (audio.current) {
-      audio.current.currentTime = e.target.value;
-      const minutes = Math.floor(audio.current.currentTime / 60);
-      const seconds = Math.floor(audio.current.currentTime % (minutes * 60));
+    if (audioEl) {
+      audioEl.currentTime = e.target.value;
+      const minutes = Math.floor(audioEl.currentTime / 60);
+      const seconds = Math.floor(audioEl.currentTime % (minutes * 60));
       setMinutesPlayed(minutes);
       setSecondsPlayed(seconds);
     }
@@ -83,10 +84,11 @@ export default function PlaybackButtons(props: IPlyabackButtonsProps) {
   useEffect(() => {
     if (beatPlaying) {
       setIsLoading(true);
+
       audio.current = new Audio(trackSrcUrl);
       setIsLoading(false);
-      audio.current.ontimeupdate = handleTimeUpdate;
-      audio.current.onplaying = () => {
+      audioEl.ontimeupdate = handleTimeUpdate;
+      audioEl.onplaying = () => {
         setIsPlaying(true);
         streamTimeout = setTimeout(() => {
           addStreamReq(beatPlaying?._id as string)
@@ -94,25 +96,25 @@ export default function PlaybackButtons(props: IPlyabackButtonsProps) {
             .catch((err) => console.error(err));
         }, 20000);
       };
-      audio.current.onpause = () => {
+      audioEl.onpause = () => {
         setIsPlaying(false);
         clearTimeout(streamTimeout);
       };
-      audio.current.onerror = () => {
+      audioEl.onerror = () => {
         console.log('error loading audio file');
       };
-      audio.current.play();
+      audioEl.play();
       // wait 20seconds before registering as stream
     }
   }, [beatPlaying]);
 
   useEffect(() => {
     return () => {
-      if (!audio.current) {
+      if (!audioEl) {
         console.log('no audio ref detected on cleanup');
         return;
       } else {
-        audio.current.pause();
+        audioEl.pause();
       }
     };
   }, [beatPlaying]);

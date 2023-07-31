@@ -3,7 +3,7 @@ import BeatEditModal from '../BeatEditModal';
 import { Beat } from '../../types/beat';
 import { cdnHostname } from '../../config/routing';
 import artworkLoading from '../../assets/artwork_loading.jpg';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, createRef } from 'react';
 import playIcon from '../../assets/play_black.png';
 import pauseIcon from '../../assets/pause_black.png';
 import { CheckOutlined, DownloadOutlined, HeartFilled, HeartOutlined, PlayCircleOutlined } from '@ant-design/icons';
@@ -29,13 +29,18 @@ function randomNumber(min: number, max: number) {
   return Math.floor(Math.random() * (max - min) + min);
 }
 
+export const audioRef = createRef<HTMLAudioElement>();
+
 export default function DashRow(props: IBeatRowProps): JSX.Element {
   const { beat, onClick, buttonType } = props;
 
   const userId = getUserIdFromLocalStorage();
+  let streamTimeout: NodeJS.Timeout;
+  const audio = document.getElementById(`audio-player-${beat.audioKey}`) as HTMLAudioElement;
 
   const [artistNameColor, setArtistNameColor] = useState<'black' | 'blue'>('black');
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
+  const [currentTime, setCurrentTime] = useState<number>(0);
   const [liked, setLiked] = useState<boolean>();
   const [likesCount, setLikesCount] = useState<number>(beat.likesCount);
   const [streamsCount, setStreamsCount] = useState<string>(beat.streamsCount.toLocaleString());
@@ -66,16 +71,6 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
     (state) => state.playback.trackPlaying
   );
 
-  const displayFlatOrSharp = (flatOrSharpStr: 'flat' | 'sharp' | '') => {
-    if (flatOrSharpStr === '') {
-      return flatOrSharpStr;
-    } else if (flatOrSharpStr === 'sharp') {
-      return '#';
-    } else {
-      return '♭';
-    }
-  };
-
   const stopAllAudio = () => {
     document.querySelectorAll('audio').forEach((el) => {
       el.pause();
@@ -93,15 +88,40 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
       artwork: [{ src: `${cdnHostname}/${beat.artworkKey}` }],
     });
   };
+
+  // audio config
+  if (audio) {
+    audio.ontimeupdate = () => {
+      setCurrentTime(audio.currentTime);
+      const minutes = currentTime / 60;
+      const seconds = minutes > 0 ? currentTime % (minutes * 60) : currentTime;
+      console.log('seconds: ', seconds, 'minutes: ', minutes);
+    };
+    audio.onplaying = () => {
+      setIsPlaying(true);
+      streamTimeout = setTimeout(() => {
+        addStreamReq(beatPlaying?._id as string)
+          .then((res) => console.log(res))
+          .catch((err) => console.error(err));
+      }, 20000);
+    };
+    audio.onpause = () => {
+      setIsPlaying(false);
+      clearTimeout(streamTimeout);
+    };
+    audio.onerror = () => {
+      console.log('error loading audio file');
+    };
+  }
   /**
    * This function handles beat playback for mobile and passes through the provided
    * function from the props if on desktop.
    * @param e - MouseEvent
    */
   const playBeat = (e: React.MouseEvent<HTMLHeadingElement | HTMLDivElement>) => {
-    if (isMobile) {
+    if (!isMobile) {
       // select the corresponding hidden audio tag form the DOM
-      const audio = document.getElementById(`audio-player-${beat.audioKey}`) as HTMLAudioElement;
+
       // another beat is playing, stop it and play this beat
       if (beatPlaying != beat) {
         // set the beat playing in redux store and component state
@@ -111,6 +131,7 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
         setIsPlaying(true);
         // restart beat and play
         audio.currentTime = 0;
+        audio.pause();
         audio.play();
       } else if (beatPlaying == beat && isPlaying) {
         setIsPlaying(false);
@@ -261,11 +282,9 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
           </div>
         ) : null}
       </Row>
-      {isMobile ? (
-        <audio preload="auto" style={{ display: 'none' }} id={`audio-player-${beat.audioKey}`}>
-          <source src={`${cdnHostname}/${beat.audioKey}`} type="audio/mpeg" />
-        </audio>
-      ) : null}
+      <audio preload="auto" autoPlay={false} style={{ display: 'none' }} id={`audio-player-${beat.audioKey}`}>
+        <source src={`${cdnHostname}/${beat.audioKey}`} type="audio/mpeg" />
+      </audio>
     </>
   );
 }
