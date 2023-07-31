@@ -76,13 +76,6 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
     }
   };
 
-  const stopAllAudio = () => {
-    document.querySelectorAll('audio').forEach((el) => {
-      el.pause();
-      el.currentTime = 0;
-    });
-  };
-
   /**
    * Sets the MediaSession metadata for display on mobile devices.
    */
@@ -99,26 +92,23 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
    * @param e - MouseEvent
    */
   const playBeat = (e: React.MouseEvent<HTMLHeadingElement | HTMLDivElement>) => {
-    if (isMobile) {
+    if (!isMobile) {
       // select the corresponding hidden audio tag form the DOM
       const audio = document.getElementById(`audio-player-${beat.audioKey}`) as HTMLAudioElement;
       // another beat is playing, stop it and play this beat
       if (beatPlaying != beat) {
         // set the beat playing in redux store and component state
-        stopAllAudio();
         dispatch(playback(beat));
         setAudioMetadata();
         setIsPlaying(true);
         // restart beat and play
         audio.currentTime = 0;
-        audio.play();
       } else if (beatPlaying == beat && isPlaying) {
         setIsPlaying(false);
         audio.pause();
       } else if (beatPlaying == beat && !isPlaying) {
         dispatch(playback(beat));
         setIsPlaying(true);
-        audio.play();
       }
     } else {
       onClick(e);
@@ -261,7 +251,7 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
           </div>
         ) : null}
       </Row>
-      {isMobile ? (
+      {!isMobile ? (
         <audio preload="auto" style={{ display: 'none' }} id={`audio-player-${beat.audioKey}`}>
           <source src={`${cdnHostname}/${beat.audioKey}`} type="audio/mpeg" />
         </audio>

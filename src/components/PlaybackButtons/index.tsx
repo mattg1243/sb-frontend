@@ -80,10 +80,18 @@ export default function PlaybackButtons(props: IPlyabackButtonsProps) {
     }
   };
 
+  const stopAllAudio = () => {
+    document.querySelectorAll('audio').forEach((el) => {
+      el.pause();
+      el.currentTime = 0;
+    });
+  };
+
   useEffect(() => {
     if (beatPlaying) {
+      stopAllAudio();
       setIsLoading(true);
-      audio.current = new Audio(trackSrcUrl);
+      audio.current = document.getElementById(`audio-player-${beatPlaying.audioKey}`) as HTMLAudioElement;
       setIsLoading(false);
       audio.current.ontimeupdate = handleTimeUpdate;
       audio.current.onplaying = () => {
@@ -97,6 +105,9 @@ export default function PlaybackButtons(props: IPlyabackButtonsProps) {
       audio.current.onpause = () => {
         setIsPlaying(false);
         clearTimeout(streamTimeout);
+      };
+      audio.current.onplay = () => {
+        setIsPlaying(true);
       };
       audio.current.onerror = () => {
         console.log('error loading audio file');
