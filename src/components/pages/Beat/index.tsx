@@ -3,6 +3,8 @@ import { Row, Image, Divider, Statistic, Spin, Tooltip } from 'antd';
 import { HeartFilled, HeartOutlined } from '@ant-design/icons';
 import { GiTreeBranch } from 'react-icons/gi';
 import { FiShare } from 'react-icons/fi';
+import playIcon from '../../../assets/play_black.png';
+import pauseIcon from '../../../assets/pause_black.png';
 import type { Beat } from '../../../types';
 import styles from './BeatPage.module.css';
 import { cdnHostname } from '../../../config/routing';
@@ -10,7 +12,7 @@ import artworkLoading from '../../../assets/artwork_loading.jpg';
 import { PlayCircleOutlined } from '@ant-design/icons';
 import { getBeatReq, getUserLikesBeatReq, likeBeatReq, unlikeBeatReq } from '../../../lib/axios';
 import { getUserIdFromLocalStorage } from '../../../utils/localStorageParser';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { notification } from '../../../reducers/notificationReducer';
 import { playback } from '../../../reducers/playbackReducer';
 import BeatDownloadModal from '../../BeatDownloadModal';
@@ -51,6 +53,11 @@ export default function BeatPage() {
 
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    dispatch(playback(beat || null));
+    setIsPlaying(true);
+  });
+
   /**
    * Sets the MediaSession metadata for display on mobile devices.
    */
@@ -64,6 +71,13 @@ export default function BeatPage() {
     }
   };
 
+  const stopAllAudio = () => {
+    document.querySelectorAll('audio').forEach((el) => {
+      el.pause();
+      el.currentTime = 0;
+    });
+  };
+
   /**
    * This function handles beat playback for mobile and passes through the provided
    * function from the props if on desktop.
@@ -72,7 +86,7 @@ export default function BeatPage() {
   const playBeat = () => {
     if (beat && !isPlaying) {
       setIsPlaying(true);
-      audio.play();
+      dispatch(playback(beat));
     }
   };
 
@@ -118,21 +132,19 @@ export default function BeatPage() {
       <div style={{ height: '100%', width: '50%', marginTop: '11vh', textAlign: 'center' }}>
         {beat && !isLoading ? (
           <>
-            <Image
+            <img
               src={`${cdnHostname}/${beat.artworkKey}`}
               alt="album artwork"
-              onClick={() => {
-                isPlaying ? pauseBeat() : playBeat();
-                dispatch(playback(beat));
-              }}
-              placeholder={<Image src={artworkLoading} width={isMobile ? 250 : 400} height={isMobile ? 250 : 400} />}
+              // onClick={() => {
+              //   isPlaying ? pauseBeat() : playBeat();
+              //   dispatch(playback(beat));
+              // }}
               onError={({ currentTarget }) => {
                 currentTarget.onerror = null; // prevents looping
                 currentTarget.src = artworkLoading;
               }}
               width={isMobile ? 250 : 400}
               height={isMobile ? 250 : 400}
-              preview={{ visible: false }}
               className={styles.artwork}
             />
             <h1 style={{ marginTop: '3vh' }}>{beat.title}</h1>
@@ -198,7 +210,7 @@ export default function BeatPage() {
                 />
               </div>
             </Row>
-            <audio preload="auto" style={{ display: 'none' }} id={`audio-player-${beat.audioKey}`}>
+            <audio preload="metadata" style={{ display: 'none' }} id={`audio-player-${beat.audioKey}`}>
               <source src={`${cdnHostname}/${beat.audioKey}`} type="audio/mpeg" />
             </audio>
           </>

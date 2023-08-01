@@ -14,6 +14,7 @@ import { playback } from '../../reducers/playbackReducer';
 import { addStreamReq, getUserLikesBeatReq, likeBeatReq, unlikeBeatReq } from '../../lib/axios';
 import { getUserIdFromLocalStorage } from '../../utils/localStorageParser';
 import { useNavigate } from 'react-router-dom';
+import { BsVolumeUp } from 'react-icons/bs';
 
 interface IBeatRowProps {
   beat: Beat;
@@ -36,6 +37,7 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
 
   const [artistNameColor, setArtistNameColor] = useState<'black' | 'blue'>('black');
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
+  const [playbackLoading, setPlaybackIsLoading] = useState<boolean>(false);
   const [liked, setLiked] = useState<boolean>();
   const [likesCount, setLikesCount] = useState<number>(beat.likesCount);
   const [streamsCount, setStreamsCount] = useState<string>(beat.streamsCount.toLocaleString());
@@ -58,6 +60,16 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
       }, 20000);
     }
   }, [isPlaying]);
+
+  // useEffect(() => {
+  //   return () => {
+  //     const audio = document.getElementById(`audio-player-${beat.audioKey}`) as HTMLAudioElement;
+  //     audio.pause();
+  //     audio.currentTime = 0;
+  //     setIsPlaying(false);
+  //     dispatch(playback(null));
+  //   };
+  // }, []);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -91,28 +103,24 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
    * function from the props if on desktop.
    * @param e - MouseEvent
    */
-  const playBeat = (e: React.MouseEvent<HTMLHeadingElement | HTMLDivElement>) => {
-    if (!isMobile) {
-      // select the corresponding hidden audio tag form the DOM
-      const audio = document.getElementById(`audio-player-${beat.audioKey}`) as HTMLAudioElement;
-      // another beat is playing, stop it and play this beat
-      if (beatPlaying != beat) {
-        // set the beat playing in redux store and component state
-        dispatch(playback(beat));
-        setAudioMetadata();
-        setIsPlaying(true);
-        // restart beat and play
-        audio.currentTime = 0;
-      } else if (beatPlaying == beat && isPlaying) {
-        setIsPlaying(false);
-        audio.pause();
-      } else if (beatPlaying == beat && !isPlaying) {
-        dispatch(playback(beat));
-        setIsPlaying(true);
-      }
-    } else {
-      onClick(e);
-    }
+  const playBeat = () => {
+    navigate(`/app/beat?id=${beat._id}`);
+    // setPlaybackIsLoading(true);
+    // dispatch(playback(beat));
+    // if (!isMobile) {
+    //   // select the corresponding hidden audio tag form the DOM
+    //   const audio = document.getElementById(`audio-player-${beat.audioKey}`) as HTMLAudioElement;
+    //   if (isPlaying) {
+    //     setIsPlaying(false);
+    //     audio.pause();
+    //   } else if (!isPlaying) {
+    //     audio.play();
+    //     setIsPlaying(true);
+    //   }
+    //   setPlaybackIsLoading(false);
+    // } else {
+    //   onClick(e);
+    // }
   };
 
   const likeBeat = async () => {
@@ -169,8 +177,8 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
             // onClick={(e) => {
             //   playBeat(e);
             // }}
-            onClick={(e) => {
-              playBeat(e);
+            onClick={() => {
+              playBeat();
             }}
             className={styles.artwork}
             data-cy="beat-artwork"
@@ -208,12 +216,6 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
                 <PlayCircleOutlined style={{ paddingRight: '.5vw' }} />
                 {streamsCount}
               </div>
-              {isMobile ? null : <div style={{ paddingLeft: '1vw', paddingRight: '.5vw' }}>|</div>}
-              <div>
-                <DownloadOutlined style={{ paddingRight: '.5vw', paddingLeft: isMobile ? '15px' : '.5vw' }} />
-                {downloadCount}
-              </div>
-              {}
               {beat.hasStems ? (
                 <>
                   {isMobile ? null : <div style={{ paddingLeft: '1vw', paddingRight: '1vw' }}>|</div>}
@@ -226,7 +228,10 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
           </div>
         </Row>
         {isMobile ? null : (
-          <div style={{ alignItems: 'flex-end', paddingRight: '15vw' }} data-cy="beat-like-btn">
+          <div
+            style={{ alignItems: 'flex-end', paddingRight: '15vw', position: 'absolute', left: '73vw' }}
+            data-cy="beat-like-btn"
+          >
             {liked ? (
               <HeartFilled onClick={() => unlikeBeat()} id="like-beat-btn" />
             ) : (
@@ -250,12 +255,13 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
             <Statistic value={likesCount} valueStyle={{ display: 'none' }} />
           </div>
         ) : null}
+        {isPlaying ? <BsVolumeUp style={{ fontSize: '3vh', marginRight: '7vw' }} /> : null}
       </Row>
-      {!isMobile ? (
+      {/* {!isMobile ? (
         <audio preload="auto" style={{ display: 'none' }} id={`audio-player-${beat.audioKey}`}>
           <source src={`${cdnHostname}/${beat.audioKey}`} type="audio/mpeg" />
         </audio>
-      ) : null}
+      ) : null} */}
     </>
   );
 }
