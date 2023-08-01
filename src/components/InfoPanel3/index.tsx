@@ -10,8 +10,7 @@ export default function InfoPanel1() {
           Collect royalties on your beats <em>forever</em>.
         </h1>
         <p className={styles.paragraph1}>
-          When an artist licenses your beat through Sweatshop Beats, you are entitled to 3%-5% royalties{' '}
-          <em>forever</em>.
+          When an artist licenses your beat through Sweatshop Beats, you are entitled to 5% royalties <em>forever</em>.
         </p>
       </Col>
       <Col span={12}>

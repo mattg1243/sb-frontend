@@ -19,6 +19,9 @@ describe('SiteFooter', () => {
     cy.get('#privacy-policy-link').contains('Privacy Policy').should('have.attr', 'href', '/PRIVACYPOLICY.html');
   });
   it('has link to terms and conditions document', () => {
-    cy.get('#terms-link').contains('Terms & Conditions').should('have.attr', 'href', '/TERMSANDCONDITIONS.html');
+    cy.get('#terms-link').contains('Terms of Service').should('have.attr', 'href', '/TERMSOFSERVICE.html');
+  });
+  it('has link to cookie policy', () => {
+    cy.get('#cookie-policy-link').contains('Cookie Policy').should('have.attr', 'href', '/COOKIEPOLICY.html');
   });
 });
