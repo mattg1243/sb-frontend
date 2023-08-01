@@ -14,7 +14,7 @@ export const playbackSlice = createSlice({
   name: 'playback',
   initialState,
   reducers: {
-    playback: (state, action: PayloadAction<Beat>) => {
+    playback: (state, action: PayloadAction<Beat | null>) => {
       state.trackPlaying = action.payload;
     },
   },

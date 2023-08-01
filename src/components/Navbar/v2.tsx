@@ -30,7 +30,7 @@ export default function Navbar() {
         theme="dark"
         mode="horizontal"
         defaultSelectedKeys={['2']}
-        style={{ background: 'black', marginBottom: '3rem', width: '100%' }}
+        style={{ background: 'black', marginBottom: '3rem', width: '100%', flex: 'auto' }}
       >
         <Menu.Item>
           <Image

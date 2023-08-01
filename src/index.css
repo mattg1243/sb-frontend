@@ -11,6 +11,10 @@
   display: none;
 }
 
+::-webkit-slider-thumb {
+  background: transparent;
+}
+
 html {
   margin: 0 !important;
 }

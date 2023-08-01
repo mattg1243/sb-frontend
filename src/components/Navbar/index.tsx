@@ -175,16 +175,10 @@ export default function Navbar() {
         boxShadow: '0px 5px rgb(232, 162, 21)',
       }}
     >
-      <Menu
-        theme="dark"
-        mode="horizontal"
-        defaultSelectedKeys={['2']}
-        style={{ background: 'black', marginBottom: '3rem', width: '100%' }}
-        selectable={false}
-      >
+      <Menu theme="dark" mode="horizontal" style={{ background: 'black', marginBottom: '3rem', width: '100%' }}>
         <Menu.Item className={styles['menu-item']}>
           <Image
-            height="45px"
+            width="45px"
             src={logo}
             preview={false}
             className={`dashNav`}
