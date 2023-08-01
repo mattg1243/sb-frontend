@@ -139,6 +139,7 @@ export default function Register(): JSX.Element {
               onChange={(date, dateStr) => {
                 setDateOfBirth(dateStr);
               }}
+              placeholder="Date Of Birth"
             />
           </Form.Item>
 
