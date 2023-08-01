@@ -51,12 +51,13 @@ export default function RecAlgoMenu(props: IRecAlgoProps) {
     },
   ];
 
-  return (
+  // hide on mobile for now
+  return window.innerWidth > 480 ? (
     <Dropdown menu={{ items: algoOptions }} className="rec-algo-menu">
       <Button className={styles['algo-btn']}>
         {currentAlgo}
         <DownOutlined />
       </Button>
     </Dropdown>
-  );
+  ) : null;
 }

@@ -37,6 +37,7 @@ export default function Dashboard() {
   // const [isSearching, setIsSearching] = useState<boolean>();
 
   const userId = getUserIdFromLocalStorage();
+  const isMobile = window.innerWidth < 480;
 
   const dispatch = useDispatch();
 
@@ -107,11 +108,13 @@ export default function Dashboard() {
           <RecAlgoMenu currentAlgo={currentAlgo} setCurrentAlgo={setCurrentAlgo} />
         )}
       </div>
-      {isSearching ? <></> : null}
-      <SearchBeatFilter
-        currentSearchBeatFilter={currentSearchBeatFilter}
-        setCurrentSearchBeatFilter={setCurrentSearchBeatFilter}
-      />
+      {isSearching && !isMobile ? <></> : null}
+      {!isMobile ? (
+        <SearchBeatFilter
+          currentSearchBeatFilter={currentSearchBeatFilter}
+          setCurrentSearchBeatFilter={setCurrentSearchBeatFilter}
+        />
+      ) : null}
       <div className={styles['beats-container']} data-cy="beats-container">
         {isSearching && beatsFromSearch !== null && currentSearchFilter === 'Beats' ? (
           <>
