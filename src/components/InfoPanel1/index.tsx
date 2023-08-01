@@ -8,7 +8,7 @@ export default function InfoPanel1() {
       <Col span={12}>
         <h1 className={styles.header1}>Stop spending $300 to license a single beat.</h1>
         <p className={styles.paragraph1}>
-          For as low as $19.99/month, you can license and download multiple beats from professional artists.
+          For as low as $19.99/month, you can license and download multiple beats from professional producers.
         </p>
       </Col>
       <Col span={12}>

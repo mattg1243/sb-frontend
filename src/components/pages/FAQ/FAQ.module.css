@@ -5,12 +5,16 @@
   align-items: center;
   margin-top: 4rem;
   width: 100%;
-  text-align: start;
+  text-align: center;
 }
 
 .faq {
   margin-left: 2rem;
   margin-top: 6rem;
+}
+
+.yikes {
+  width: 60%;
 }
 
 .logo {

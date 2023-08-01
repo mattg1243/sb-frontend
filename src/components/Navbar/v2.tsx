@@ -42,17 +42,6 @@ export default function Navbar() {
             }}
           />
         </Menu.Item>
-        <Menu.Item key="beats">
-          <Button
-            type="ghost"
-            onClick={() => {
-              navigate('/beats');
-            }}
-            style={{ color: 'white' }}
-          >
-            Beats
-          </Button>
-        </Menu.Item>
         <Menu.Item key="about">
           <Button
             type="ghost"

@@ -22,8 +22,13 @@ export default function SiteFooter() {
             </a>
           </li>
           <li>
-            <a href="/TERMSANDCONDITIONS.html" id="terms-link">
-              Terms & Conditions
+            <a href="/TERMSOFSERVICE.html" id="terms-link">
+              Terms of Service
+            </a>
+          </li>
+          <li>
+            <a href="/COOKIEPOLICY.html" id="cookie-policy-link">
+              Cookie Policy
             </a>
           </li>
         </ul>
