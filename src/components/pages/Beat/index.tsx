@@ -28,6 +28,8 @@ export default function BeatPage() {
   const [likesCount, setLikesCount] = useState<number>();
   const [streamsCount, setStreamsCount] = useState<number>();
 
+  const audio = document.getElementById(`audio-player-${beat?.audioKey}`) as HTMLAudioElement;
+
   useEffect(() => {
     getBeatReq(beatId as string)
       .then((res) => {
@@ -49,17 +51,6 @@ export default function BeatPage() {
 
   const dispatch = useDispatch();
 
-  const beatPlaying = useSelector<{ playback: { trackPlaying: Beat | null } }, Beat | null>(
-    (state) => state.playback.trackPlaying
-  );
-
-  const stopAllAudio = () => {
-    document.querySelectorAll('audio').forEach((el) => {
-      el.pause();
-      el.currentTime = 0;
-    });
-  };
-
   /**
    * Sets the MediaSession metadata for display on mobile devices.
    */
@@ -78,32 +69,17 @@ export default function BeatPage() {
    * function from the props if on desktop.
    * @param e - MouseEvent
    */
-  const playBeat = (e?: React.MouseEvent<HTMLHeadingElement | HTMLDivElement>) => {
-    if (beat) {
-      if (isMobile) {
-        // select the corresponding hidden audio tag form the DOM
-        const audio = document.getElementById(`audio-player-${beat.audioKey}`) as HTMLAudioElement;
-        // another beat is playing, stop it and play this beat
-        if (beatPlaying != beat) {
-          // set the beat playing in redux store and component state
-          stopAllAudio();
-          dispatch(playback(beat));
-          setAudioMetadata();
-          setIsPlaying(true);
-          // restart beat and play
-          audio.currentTime = 0;
-          audio.play();
-        } else if (beatPlaying == beat && isPlaying) {
-          setIsPlaying(false);
-          audio.pause();
-        } else if (beatPlaying == beat && !isPlaying) {
-          dispatch(playback(beat));
-          setIsPlaying(true);
-          audio.play();
-        }
-      } else {
-        dispatch(playback(beat));
-      }
+  const playBeat = () => {
+    if (beat && !isPlaying) {
+      setIsPlaying(true);
+      audio.play();
+    }
+  };
+
+  const pauseBeat = () => {
+    if (beat && isPlaying) {
+      setIsPlaying(false);
+      audio.pause();
     }
   };
 
@@ -145,8 +121,9 @@ export default function BeatPage() {
             <Image
               src={`${cdnHostname}/${beat.artworkKey}`}
               alt="album artwork"
-              onClick={(e) => {
-                playBeat(e);
+              onClick={() => {
+                isPlaying ? pauseBeat() : playBeat();
+                dispatch(playback(beat));
               }}
               placeholder={<Image src={artworkLoading} width={isMobile ? 250 : 400} height={isMobile ? 250 : 400} />}
               onError={({ currentTarget }) => {
@@ -221,6 +198,9 @@ export default function BeatPage() {
                 />
               </div>
             </Row>
+            <audio preload="auto" style={{ display: 'none' }} id={`audio-player-${beat.audioKey}`}>
+              <source src={`${cdnHostname}/${beat.audioKey}`} type="audio/mpeg" />
+            </audio>
           </>
         ) : null}
         {!beat && !isLoading ? <h1 style={{ marginTop: '25vh' }}>No beat found :(</h1> : null}

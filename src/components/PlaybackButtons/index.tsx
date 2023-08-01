@@ -7,7 +7,6 @@ import { useSelector } from 'react-redux';
 import type { Beat } from '../../types';
 import { cdnHostname } from '../../config/routing';
 import { addStreamReq } from '../../lib/axios';
-import { error } from 'console';
 
 interface IPlyabackButtonsProps {
   testBeatPlaying?: Beat;
@@ -179,7 +178,7 @@ export default function PlaybackButtons(props: IPlyabackButtonsProps) {
         step={0.01}
         value={currentTime}
         className={styles['seek-bar']}
-        style={{ background: 'var(--primary)' }}
+        style={{ background: 'white' }}
         onChange={(e) => {
           handleSeek(e);
         }}
