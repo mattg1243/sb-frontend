@@ -18,7 +18,13 @@ export default function VerifyEmail() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (code) {
+    // check if on mobile safari
+    const redir = new URLSearchParams().get('redir');
+    const safariAgent = navigator.userAgent.indexOf('Safari') > -1;
+    const isMobile = window.innerWidth < 480;
+    if (safariAgent && isMobile && !redir) {
+      window.open(window.location.href + '&redir=true', '_system');
+    } else if (code) {
       axios
         .get(`${gatewayUrl}/user/verify-email?code=${code}&user=${userId}&email=${email}`)
         .then(() => {
