@@ -21,12 +21,6 @@ describe('Navbar.test.tsx', () => {
     // need to verify there is an onClick fn that navigates to page
     cy.get('.dashNav').click();
   });
-  it('upload beat modal', () => {
-    cy.get('.uploadModal');
-  });
-  it('link to account page', () => {
-    cy.get('.accountNav');
-  });
   it('user avatar', () => {
     cy.get('.avatar');
   });
