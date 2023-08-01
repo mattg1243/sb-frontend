@@ -133,6 +133,9 @@ export default function AccountPage() {
               <Avatar
                 src="https://d3fulr0i8qqtgb.cloudfront.net/images/f8fbe7320ae08929cc577e7ff18e15ee"
                 className={styles.useravatar}
+                onClick={() => {
+                  navigate('/app/user/?id=127a79a2-bcc9-4e9e-8e46-6284f57e7420');
+                }}
               />
               <p>Matt G</p>
             </div>
@@ -140,6 +143,9 @@ export default function AccountPage() {
               <Avatar
                 src="https://d3fulr0i8qqtgb.cloudfront.net/images/4c1fd8d0142d1f7133adda163c5a6689"
                 className={styles.useravatar}
+                onClick={() => {
+                  navigate('/app/user/?id=c690083b-4597-478a-9e15-68c61789807c');
+                }}
               />
               <p>Montana Brown</p>
             </div>
@@ -147,6 +153,9 @@ export default function AccountPage() {
               <Avatar
                 src="https://d3fulr0i8qqtgb.cloudfront.net/images/8b46e8da307f8904904a63c3bc9a22c7"
                 className={styles.useravatar}
+                onClick={() => {
+                  navigate('/app/user/?id=7ab81fa8-c40d-42ee-b3f5-01765617a2a2');
+                }}
               />
               <p>Dak</p>
             </div>

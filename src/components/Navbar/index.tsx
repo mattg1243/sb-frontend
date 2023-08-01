@@ -190,41 +190,6 @@ export default function Navbar() {
         <Menu.Item key="upload">
           <UploadBeatModal />
         </Menu.Item>
-        <Menu.Item key="beats">
-          <Button
-            type="ghost"
-            className={`uploadModal`}
-            onClick={() => {
-              navigate('/underconstruction');
-            }}
-            style={{ color: 'white' }}
-          >
-            Beats
-          </Button>
-        </Menu.Item>
-        <Menu.Item key="settings" className={styles['menu-item']}>
-          <Button
-            type="ghost"
-            onClick={() => {
-              navigate('/underconstruction');
-            }}
-            style={{ color: 'white' }}
-          >
-            Settings
-          </Button>
-        </Menu.Item>
-        <Menu.Item key="account" className={styles['menu-item']}>
-          <Button
-            type="ghost"
-            className="accountNav"
-            onClick={() => {
-              navigate('/app/account');
-            }}
-            style={{ color: 'white' }}
-          >
-            Account
-          </Button>
-        </Menu.Item>
         <Menu.Item key="profile" style={{ marginLeft: 'auto', padding: '0 2vw' }} className={styles['menu-item']}>
           <Space size={62}>
             <Input

@@ -46,44 +46,36 @@ function App() {
 
   return (
     <div className="App">
-      <ConfigProvider
-        theme={{
-          token: {
-            colorSplit: '#ffbd59',
-          },
-        }}
-      >
-        <Router>
-          <Routes>
-            <Route path="/" element={<Splash />} index />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            {/* MobileRedirect */}
-            <Route path="/MobileRedirect" element={<MobileRedirect />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/verify-email" element={<VerifyEmail />} />
-            <Route path="/reset-password" element={<ResetPasswordPage />} />
-            <Route path="/subscriptions" element={<Subscription />} />
-            <Route path="/underconstruction" element={<UnderConstruction />} />
-            <Route path="/faq" element={<FAQ />} />
-            {/* this route handles the main single page app, with navbar and layout */}
-            <Route path="/app" element={<BaseLayout />}>
-              {/* TODO: disable invalid nav bar links in public routes */}
-              {/* public routes */}
-              <Route path="about" element={<AboutPage />} />
-              <Route path="user" element={<Profile />} />
-              <Route path="beat" element={<BeatPage />} />
-              {/* protected routes */}
-              <Route path="dash" element={<Dashboard />} index />
-              <Route path="loading" element={<LoadingPage />} />
-              <Route path="account" element={<AccountPage />} />
-              <Route path="licensed-beats" element={<LicensedBeatsPage />} />
-            </Route>
-            {/* 404 route */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </Router>
-      </ConfigProvider>
+      <Router>
+        <Routes>
+          <Route path="/" element={<Splash />} index />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          {/* MobileRedirect */}
+          <Route path="/MobileRedirect" element={<MobileRedirect />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/verify-email" element={<VerifyEmail />} />
+          <Route path="/reset-password" element={<ResetPasswordPage />} />
+          <Route path="/subscriptions" element={<Subscription />} />
+          <Route path="/underconstruction" element={<UnderConstruction />} />
+          <Route path="/faq" element={<FAQ />} />
+          {/* this route handles the main single page app, with navbar and layout */}
+          <Route path="/app" element={<BaseLayout />}>
+            {/* TODO: disable invalid nav bar links in public routes */}
+            {/* public routes */}
+            <Route path="about" element={<AboutPage />} />
+            <Route path="user" element={<Profile />} />
+            <Route path="beat" element={<BeatPage />} />
+            {/* protected routes */}
+            <Route path="dash" element={<Dashboard />} index />
+            <Route path="loading" element={<LoadingPage />} />
+            <Route path="account" element={<AccountPage />} />
+            <Route path="licensed-beats" element={<LicensedBeatsPage />} />
+          </Route>
+          {/* 404 route */}
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </Router>
     </div>
   );
 }
