@@ -17,6 +17,7 @@ export default function Register(): JSX.Element {
   const [email, setEmail] = useState<string | undefined>('');
   // TODO: change artistname globally across the frontend to username
   const [artistName, setArtistName] = useState<string>('');
+  const [dateOfBirth, setDateOfBirth] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [passwordConfirm, setConfirmPassword] = useState<string>('');
   const [buttonColor, setButtonColor] = useState<'#D3D3D3' | 'black'>('#D3D3D3');
@@ -30,7 +31,7 @@ export default function Register(): JSX.Element {
   const sendRegisterRequest = async () => {
     if (password === passwordConfirm && agreedToTerms && email !== undefined && artistName !== undefined) {
       setIsLoading(true);
-      const data = { email, artistName, password };
+      const data = { email, artistName, dateOfBirth, password };
       console.log(data);
       try {
         const response = await axios.post(`${gatewayUrl}/user/register`, data);
@@ -66,7 +67,8 @@ export default function Register(): JSX.Element {
       password === passwordConfirm &&
       agreedToTerms &&
       email !== (undefined || '') &&
-      artistName !== (undefined || '')
+      artistName !== (undefined || '') &&
+      dateOfBirth !== ''
     ) {
       setButtonColor('black');
     } else {
@@ -132,7 +134,12 @@ export default function Register(): JSX.Element {
 
           <Form.Item name="date of birth" style={{ marginTop: '-1vh' }}>
             <p>Date of Birth</p>
-            <DatePicker format={'YYYY/MM/DD'} />
+            <DatePicker
+              format={'YYYY/MM/DD'}
+              onChange={(date, dateStr) => {
+                setDateOfBirth(dateStr);
+              }}
+            />
           </Form.Item>
 
           <Form.Item name="terms and conditions" className={styles['small-text']}>
