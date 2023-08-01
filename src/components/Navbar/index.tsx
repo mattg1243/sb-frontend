@@ -187,9 +187,23 @@ export default function Navbar() {
             }}
           />
         </Menu.Item>
-        <Menu.Item key="upload">
-          <UploadBeatModal />
-        </Menu.Item>
+        {window.location.pathname === '/' ? (
+          <Menu.Item key="about">
+            <Button
+              type="ghost"
+              onClick={() => {
+                navigate('/app/about');
+              }}
+              style={{ color: 'white' }}
+            >
+              About
+            </Button>
+          </Menu.Item>
+        ) : (
+          <Menu.Item key="upload">
+            <UploadBeatModal />
+          </Menu.Item>
+        )}
         <Menu.Item key="profile" style={{ marginLeft: 'auto', padding: '0 2vw' }} className={styles['menu-item']}>
           <Space size={62}>
             <Input
@@ -200,6 +214,12 @@ export default function Navbar() {
               onChange={(e) => {
                 handleSearchChange(e);
               }}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' && window.location.pathname === '/') {
+                  navigate('/app/dash');
+                }
+              }}
+              value={searchQueryState as string}
             />
             <Dropdown
               menu={{ items: userMenuItems }}

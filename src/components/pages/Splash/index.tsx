@@ -8,7 +8,7 @@ import Infopanel3 from '../../InfoPanel3';
 import SiteFooter from '../../SiteFooter';
 
 import styles from './Splash.module.css';
-import Navbar from '../../Navbar/v2';
+import Navbar from '../../Navbar';
 
 export default function Splash() {
   const navigate = useNavigate();
