@@ -12,6 +12,7 @@ input[type='range']::-webkit-slider-runnable-track {
   background: var(--primary);
   height: 0.3rem;
   border-radius: 4px;
+  margin-top: -2.8vh;
 }
 
 /******** Firefox ********/
@@ -46,9 +47,10 @@ input[type='range']::-webkit-slider-thumb {
   background: transparent;
   border: none !important;
   color: white;
-  margin-top: 1.5rem;
+  margin-top: 2vh;
   margin-right: 2rem;
   margin-left: 30%;
+  margin-right: 2vh;
   padding-bottom: 2vh;
   font-size: 2.5rem;
 }
@@ -65,5 +67,5 @@ input[type='range']::-webkit-slider-thumb {
   accent-color: white;
   width: 30vw;
   outline: 2px;
-  margin-bottom: 1rem;
+  margin-bottom: 2rem;
 }

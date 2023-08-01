@@ -10,3 +10,7 @@
 .artwork {
   box-shadow: 12px 12px black;
 }
+
+.artwork:hover {
+  animation: none !important;
+}
