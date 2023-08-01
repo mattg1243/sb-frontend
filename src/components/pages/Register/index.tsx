@@ -7,9 +7,9 @@ import orangelogo from '../../../assets/orangelogo.png';
 import { useNavigate } from 'react-router-dom';
 import CustomAlert from '../../CustomAlert';
 import gatewayUrl from '../../../config/routing';
-import TermsAndConditions from '../../TermsAndAgreements';
+import TermsOfService from '../../TermsOfService';
 import styles from './Register.module.css';
-import { InfoCircleOutlined } from '@ant-design/icons';
+import { CheckCircleOutlined, InfoCircleOutlined } from '@ant-design/icons';
 
 const emailRe = /^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/;
 
@@ -143,13 +143,8 @@ export default function Register(): JSX.Element {
           </Form.Item>
 
           <Form.Item name="terms and conditions" className={styles['small-text']}>
-            <Checkbox
-              onChange={(e) => {
-                setAgreedToTerms(e.target.checked);
-              }}
-            >
-              I agree to the <TermsAndConditions />
-            </Checkbox>
+            Agree to the <TermsOfService setAgreedToTerms={setAgreedToTerms} />
+            {agreedToTerms ? <CheckCircleOutlined style={{ marginLeft: '1rem', fontSize: '1.2vh' }} /> : null}
           </Form.Item>
           <Form.Item className={styles.buttonUnOffset} wrapperCol={{ offset: 4, span: 16 }}>
             {isLoading ? (
