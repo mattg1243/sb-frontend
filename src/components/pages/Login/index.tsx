@@ -1,4 +1,4 @@
-import { Spin, Button, Form, Input, Layout, Modal } from 'antd';
+import { Spin, Button, Form, Input, Layout, Modal, Divider } from 'antd';
 import React, { useState } from 'react';
 import { Content } from 'antd/lib/layout/layout';
 import orangelogo from '../../../assets/orangelogo.png';
@@ -49,6 +49,7 @@ export default function Login(): JSX.Element {
   const handleResetPassword = async () => {
     try {
       const res = await resetPasswordReq(emailForReset as string);
+      setResetSuccessful(true);
       console.log(res);
     } catch (err) {
       console.error(err);
@@ -138,7 +139,7 @@ export default function Login(): JSX.Element {
             </h3>
           </Form.Item>
         </Form>
-        <Modal open={resetPasswordModalOpen} onOk={() => handleResetPassword()}>
+        <Modal open={resetPasswordModalOpen} onOk={() => handleResetPassword()} centered footer={null}>
           {resetSuccessful ? (
             <p>Please check your email for a password reset link</p>
           ) : (
@@ -151,6 +152,14 @@ export default function Login(): JSX.Element {
               <p>Please enter your email to reset your password.</p>
             </>
           )}
+          <Divider />
+          <Button>Cancel</Button>
+          <Button
+            style={{ marginLeft: '1rem', background: 'var(--primary)' }}
+            onClick={() => (resetSuccessful ? setResetPasswordModalOpen(false) : handleResetPassword())}
+          >
+            Ok{resetSuccessful ? '✔️' : null}
+          </Button>
         </Modal>
       </Content>
     </Layout>

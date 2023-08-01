@@ -39,7 +39,7 @@ export default function ChangePasswordPage() {
           <Form style={{ height: '100%', justifyContent: 'center', alignItems: 'center', marginTop: 'auto' }}>
             <Form.Item label="New Password">
               <Input
-                type="text"
+                type="password"
                 onChange={(e) => {
                   setNewPassword(e.target.value);
                 }}
@@ -47,7 +47,7 @@ export default function ChangePasswordPage() {
             </Form.Item>
             <Form.Item label="Confirm New Password">
               <Input
-                type="text"
+                type="password"
                 onChange={(e) => {
                   setConfirmNewPassword(e.target.value);
                 }}
