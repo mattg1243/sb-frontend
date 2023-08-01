@@ -1,4 +1,4 @@
-import { Button, Form, Input, Layout, Checkbox, Spin, Switch, Space, Tooltip } from 'antd';
+import { Button, Form, Input, Layout, Checkbox, Spin, Switch, Space, Tooltip, DatePicker } from 'antd';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Content } from 'antd/lib/layout/layout';
@@ -128,6 +128,11 @@ export default function Register(): JSX.Element {
               placeholder="Confirm Password"
               onChange={(e) => setConfirmPassword(e.target.value)}
             />
+          </Form.Item>
+
+          <Form.Item name="date of birth" style={{ marginTop: '-1vh' }}>
+            <p>Date of Birth</p>
+            <DatePicker format={'YYYY/MM/DD'} />
           </Form.Item>
 
           <Form.Item name="terms and conditions" className={styles['small-text']}>

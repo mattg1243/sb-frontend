@@ -2,7 +2,6 @@ import { Content } from 'antd/lib/layout/layout';
 import { Layout, Button } from 'antd';
 import { useEffect, useState } from 'react';
 import { resendVerificationEmailReq } from '../../../lib/axios';
-import { getUserEmailFromLocalStorage, getUserIdFromLocalStorage } from '../../../utils/localStorageParser';
 import { useNavigate } from 'react-router-dom';
 import gatewayUrl from '../../../config/routing';
 import axios from 'axios';
@@ -10,21 +9,17 @@ import styles from './VerifyEmail.module.css';
 import logo from '../../../assets/orangelogo.png';
 
 export default function VerifyEmail() {
-  const userId = getUserIdFromLocalStorage();
-  const email = getUserEmailFromLocalStorage();
+  // const userId = getUserIdFromLocalStorage();
+  // const email = getUserEmailFromLocalStorage();
   const queryParams = new URLSearchParams(window.location.search);
   const code = queryParams.get('code');
+  const userId = queryParams.get('user');
+  const email = queryParams.get('email');
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    // check if on mobile safari
-    const redir = new URLSearchParams().get('redir');
-    const safariAgent = navigator.userAgent.indexOf('Safari') > -1;
-    const isMobile = window.innerWidth < 480;
-    if (safariAgent && isMobile && !redir) {
-      window.open(window.location.href + '&redir=true', '_system');
-    } else if (code) {
+    if (code) {
       axios
         .get(`${gatewayUrl}/user/verify-email?code=${code}&user=${userId}&email=${email}`)
         .then(() => {
