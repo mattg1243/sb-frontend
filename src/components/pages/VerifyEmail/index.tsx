@@ -1,6 +1,6 @@
 import { Content } from 'antd/lib/layout/layout';
 import { Layout, Button } from 'antd';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { resendVerificationEmailReq } from '../../../lib/axios';
 import { getUserEmailFromLocalStorage, getUserIdFromLocalStorage } from '../../../utils/localStorageParser';
 import { useNavigate } from 'react-router-dom';
@@ -20,10 +20,10 @@ export default function VerifyEmail() {
   useEffect(() => {
     if (code) {
       axios
-        .get(`${gatewayUrl}/verify-email?code=${code}&user=${userId}&email=${email}`)
-        .then((res) => {
-          if (res.status == 200) {
-            navigate('/login');
+        .get(`${gatewayUrl}/user/verify-email?code=${code}&user=${userId}&email=${email}`)
+        .then(() => {
+          {
+            window.location.href = '/login';
           }
         })
         .catch((err) => {
