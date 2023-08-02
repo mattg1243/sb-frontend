@@ -6,7 +6,7 @@ export default function Terms() {
 
   return (
     <>
-      <Title className={styles.title} data-cy="title">
+      <Title className={styles.title} data-cy="title" level={4}>
         ORANGE MUSIC ENTERTAINMENT TERMS OF SERVICE
       </Title>
       <Typography className={styles.masterContainer}>
