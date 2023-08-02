@@ -148,7 +148,11 @@ export default function BeatPage() {
               className={styles.artwork}
             />
             <h1 style={{ marginTop: '3vh' }}>{beat.title}</h1>
-            <h3>{beat.artistName}</h3>
+            <h3>
+              <a style={{ color: 'black' }} href={`/app/user/?id=${beat.artistId}`}>
+                {beat.artistName}
+              </a>
+            </h3>
             <Divider />
             <Row style={{ justifyContent: 'space-evenly' }}>
               <div>
