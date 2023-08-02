@@ -39,7 +39,7 @@ export default function AboutPage() {
         <Paragraph>
           <strong>How it works: </strong>
           Our platform is user-friendy and offers a constantly expanding library of beats. Producers upload beats, and
-          artists subscribe to recieve creatids each month to download the beats the need.
+          artists subscribe to recieve credits each month to download the beats they need.
         </Paragraph>
 
         <Paragraph>
@@ -65,8 +65,11 @@ export default function AboutPage() {
               here.
             </a>
           </p>
-          <strong>Follow us on Twitter</strong>
-          @mattg @montanab
+          <strong>Follow us on Twitter/X</strong>
+          <strong>CEO:</strong>
+          <a href="https://twitter.com/bontanamrown">@bontanamrown</a>
+          <strong>CTO:</strong>
+          <a href="https://twitter.com/mgallucci_cto">@mgallucci_cto</a>
         </Paragraph>
       </Typography>
     </>
