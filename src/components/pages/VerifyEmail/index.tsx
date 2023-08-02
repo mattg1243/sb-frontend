@@ -57,6 +57,11 @@ export default function VerifyEmail() {
             >
               Resend email
             </Button>
+            <h3 className={styles.subHeader}>
+              <strong>
+                If you aren't automatically redirected after verifying your email, <a href="./login">click here</a>
+              </strong>
+            </h3>
             <img src={logo} alt="Logo" className={styles.logo}></img>
           </div>
         </>
