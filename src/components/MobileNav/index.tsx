@@ -6,7 +6,13 @@ import styles from './MobileNav.module.css';
 import { getUserIdFromLocalStorage } from '../../utils/localStorageParser';
 import { Ref, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { searchQuery, selectSearchQuery, searchIsLoading, searching } from '../../reducers/searchReducer';
+import {
+  searchQuery,
+  selectSearchQuery,
+  searchIsLoading,
+  searching,
+  selectIsSearching,
+} from '../../reducers/searchReducer';
 import { beats } from '../../reducers/searchReducer';
 import { RootState } from '../../store';
 import gatewayUrl from '../../config/routing';
@@ -22,6 +28,7 @@ export default function MobileNav() {
   const dispatch = useDispatch();
 
   const searchQueryState = useSelector<RootState, string | null>((state) => selectSearchQuery(state));
+  const isSearching = useSelector<RootState, boolean>((state) => selectIsSearching(state));
 
   useEffect(() => {
     if (currentSelection === 'Search') {
@@ -66,6 +73,9 @@ export default function MobileNav() {
             onClick={() => {
               navigate('/app/dash');
               setCurrentSelection('Home');
+              if (isSearching) {
+                dispatch(searching(false));
+              }
             }}
             type="ghost"
             className={styles.btn}
@@ -128,11 +138,17 @@ export default function MobileNav() {
             onChange={(e) => {
               dispatch(searchQuery(e.target.value));
             }}
+            onKeyPress={(e) => {
+              if (e.key === 'Enter') {
+                setSearchOpen(false);
+              }
+            }}
             prefix={
               <CloseOutlined
                 onClick={() => {
                   setSearchOpen(false);
                 }}
+                data-cy="mobile-search-bar-close"
               />
             }
             suffix={<SearchOutlined />}
@@ -148,6 +164,7 @@ export default function MobileNav() {
             }}
             className={searchOpen ? styles['search-bar-visible'] : styles['search-bar-hidden']}
             ref={inputRef}
+            data-cy="mobile-search-bar"
           />
         </Col>
       </Row>
