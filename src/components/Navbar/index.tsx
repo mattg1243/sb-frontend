@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Header } from 'antd/es/layout/layout';
 import { Button, Menu, Image, Avatar, Dropdown, MenuProps, Input, Space } from 'antd';
-import { SearchOutlined } from '@ant-design/icons';
+import { SearchOutlined, UserOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import UploadBeatModal from '../BeatUploadModal';
 import logo from '../../assets/orangelogo.png';
@@ -208,7 +208,10 @@ export default function Navbar() {
           <Space size={62}>
             <Input
               type="text"
-              style={{ borderRadius: '40px', width: '15vw' }}
+              style={{
+                borderRadius: '40px',
+                width: window.location.pathname == '/' ? '20vw' : '14vw',
+              }}
               placeholder="Search"
               suffix={<SearchOutlined />}
               onChange={(e) => {
@@ -221,22 +224,44 @@ export default function Navbar() {
               }}
               value={searchQueryState as string}
             />
-            <Dropdown
-              menu={{ items: userMenuItems }}
-              placement="bottom"
-              overlayStyle={{ color: 'blue', fontSize: '2rem' }}
-              arrow={true}
-            >
-              <Avatar
-                size={48}
-                src={`${cdnHostname}/${avatarUrl}`}
-                style={{ border: 'solid 3px', borderColor: 'var(--primary)', backgroundColor: 'black' }}
-                className="avatar"
-                onClick={() => {
-                  navigate(`/app/user/?id=${currentUserId}`);
+            {window.location.pathname !== '/' ? (
+              <Dropdown
+                menu={{
+                  items: currentUserId
+                    ? userMenuItems
+                    : [
+                        {
+                          key: 'login',
+                          label: (
+                            <Button
+                              type="ghost"
+                              style={{ color: 'white' }}
+                              onClick={() => {
+                                navigate('/login');
+                              }}
+                            >
+                              Login
+                            </Button>
+                          ),
+                        },
+                      ],
                 }}
-              />
-            </Dropdown>
+                placement="bottom"
+                overlayStyle={{ color: 'blue', fontSize: '2rem' }}
+                arrow={true}
+              >
+                <Avatar
+                  size={48}
+                  src={avatarUrl ? `${cdnHostname}/${avatarUrl}` : undefined}
+                  style={{ border: 'solid 3px', borderColor: 'var(--primary)', backgroundColor: 'black' }}
+                  icon={avatarUrl ? undefined : <UserOutlined style={{ color: 'white', fontSize: '2vh' }} />}
+                  className="avatar"
+                  onClick={() => {
+                    currentUserId ? navigate(`/app/user/?id=${currentUserId}`) : navigate('/login');
+                  }}
+                />
+              </Dropdown>
+            ) : null}
           </Space>
         </Menu.Item>
       </Menu>

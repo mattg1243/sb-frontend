@@ -44,7 +44,7 @@ export default function Subscription() {
                 checkoutSubscription('basic');
               }}
             >
-              $24.99/month
+              $19.99/month
             </Button>
           </div>
           <div className={styles.subRows}>
