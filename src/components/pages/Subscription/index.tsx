@@ -72,7 +72,7 @@ export default function Subscription() {
             </Button>
           </div>
         </Row>
-        <a className={styles.skip} href="./app/dash">
+        <a className={styles.skip} href="/verify-email">
           Skip for now
         </a>
       </Content>
