@@ -84,6 +84,7 @@ export default function Login(): JSX.Element {
             {/* this needs to be able to accept an email OR username */}
             <Input
               className={`${styles.input} emailinput`}
+              style={{ fontSize: 'min(16px)' }}
               id="email-input"
               placeholder="Email"
               autoComplete="email"
@@ -96,6 +97,7 @@ export default function Login(): JSX.Element {
           <Form.Item name="password" rules={[{ required: true, message: 'Please input your password!' }]}>
             <Input.Password
               className={`${styles.input} passwordinput`}
+              style={{ fontSize: 'min(16px)' }}
               placeholder="Password"
               autoComplete="password"
               autoCapitalize="off"
