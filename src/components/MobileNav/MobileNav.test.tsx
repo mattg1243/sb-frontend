@@ -5,6 +5,7 @@ import { MemoryRouter } from 'react-router-dom';
 import MobileNav from '.';
 import { Provider } from 'react-redux';
 import { store } from '../../store';
+import gatewayUrl from '../../config/routing';
 
 const searchBarId = 'mobile-search-bar';
 const searchBtnId = 'search-icon';
@@ -51,9 +52,20 @@ describe('MobileNav', () => {
     cy.getBySel('search-icon').click();
     cy.getBySel('mobile-search-bar').should('have.css', 'visibility', 'hidden');
   });
-  it('profile nav button', () => {
-    cy.getBySel('profile-icon').should('have.css', 'opacity', '0.5').click().should('have.css', 'opacity', '1');
-    cy.getBySel('home-icon').should('have.css', 'opacity', '0.5');
-    cy.getBySel('search-icon').should('have.css', 'opacity', '0.5');
+  describe('profile nav button', () => {
+    it('highlighted properly', () => {
+      // highlighted properly
+      cy.getBySel('profile-icon').should('have.css', 'opacity', '0.5').click().should('have.css', 'opacity', '1');
+      cy.getBySel('home-icon').should('have.css', 'opacity', '0.5');
+      cy.getBySel('search-icon').should('have.css', 'opacity', '0.5');
+    });
+    it('contains profile nav and logout btns', () => {
+      // contains profile page nav btn
+      cy.intercept('GET', '/app/user/?id=*', { statusCode: 200 }).as('profileNavReq');
+      cy.getBySel('profile-icon').click();
+      cy.getBySel('mobile-logout-menu-opt');
+      cy.getBySel('mobile-profile-menu-opt').click();
+      cy.wait('@profileNavReq');
+    });
   });
 });

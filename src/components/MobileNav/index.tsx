@@ -1,10 +1,11 @@
 import axios from 'axios';
-import { Button, Menu, Row, Col, Modal, Input, InputRef } from 'antd';
+import { Button, Menu, Row, Col, Modal, Input, InputRef, MenuProps, Dropdown } from 'antd';
 import { CloseOutlined, HomeOutlined, SearchOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import styles from './MobileNav.module.css';
 import { getUserIdFromLocalStorage } from '../../utils/localStorageParser';
 import { Ref, useEffect, useRef, useState } from 'react';
+import { logoutUserReq } from '../../lib/axios';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   searchQuery,
@@ -20,6 +21,7 @@ import gatewayUrl from '../../config/routing';
 export default function MobileNav() {
   const [currentSelection, setCurrentSelection] = useState<'Home' | 'Search' | 'Settings' | 'Profile'>('Home');
   const [searchOpen, setSearchOpen] = useState<boolean>(false);
+  const [userMenuOpen, setUserMenuOpen] = useState<boolean>(false);
 
   const navigate = useNavigate();
   const userId = getUserIdFromLocalStorage();
@@ -29,6 +31,44 @@ export default function MobileNav() {
 
   const searchQueryState = useSelector<RootState, string | null>((state) => selectSearchQuery(state));
   const isSearching = useSelector<RootState, boolean>((state) => selectIsSearching(state));
+
+  const logoutUser = async () => {
+    try {
+      const logoutUserRes = await logoutUserReq();
+      localStorage.removeItem('sb-user');
+      console.log(logoutUserRes);
+      navigate('/login');
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  // TODO when mobile accont page is done, the desktop and mobeil navbars can share this obj
+  const userMenuItems: MenuProps['items'] = [
+    {
+      key: 'profile',
+      label: (
+        <Button type="ghost" href={`/app/user/?id=${userId}`} data-cy="mobile-profile-menu-opt">
+          Profile
+        </Button>
+      ),
+    },
+    {
+      key: 'logout',
+      label: (
+        <Button
+          type="ghost"
+          style={{ color: 'white' }}
+          onClick={() => {
+            logoutUser();
+          }}
+          data-cy="mobile-logout-menu-opt"
+        >
+          Logout
+        </Button>
+      ),
+    },
+  ];
 
   useEffect(() => {
     if (currentSelection === 'Search') {
@@ -109,25 +149,34 @@ export default function MobileNav() {
           </Button>
         </Col>
         <Col span={8}>
-          <Button
-            onClick={() => {
-              navigate(`/app/user/?id=${userId}`);
-              setCurrentSelection('Profile');
+          <Dropdown
+            menu={{ items: userMenuItems }}
+            onOpenChange={() => {
+              setUserMenuOpen(!userMenuOpen);
             }}
-            type="ghost"
-            className={styles.btn}
-            style={{ width: '100%' }}
-            data-cy="profile-btn"
           >
-            <UserOutlined
-              style={{
-                fontSize: '24px',
-                color: 'white',
-                opacity: currentSelection == 'Profile' ? 1 : 0.5,
+            <Button
+              onClick={() => {
+                setCurrentSelection('Profile');
+                if (userMenuOpen) {
+                  navigate(`/app/user/?id=${userId}`);
+                }
               }}
-              data-cy="profile-icon"
-            />
-          </Button>
+              type="ghost"
+              className={styles.btn}
+              style={{ width: '100%' }}
+              data-cy="profile-btn"
+            >
+              <UserOutlined
+                style={{
+                  fontSize: '24px',
+                  color: 'white',
+                  opacity: currentSelection == 'Profile' ? 1 : 0.5,
+                }}
+                data-cy="profile-icon"
+              />
+            </Button>
+          </Dropdown>
         </Col>
       </Row>
       <Row style={{ position: 'absolute', width: '100vw' }} justify="center">
