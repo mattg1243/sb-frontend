@@ -17,5 +17,6 @@
 @media (max-width: 480px) {
   .content {
     margin-bottom: 10vh;
+    width: 100vw;
   }
 }

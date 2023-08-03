@@ -39,7 +39,7 @@ export default function BaseLayout() {
         <Content className={styles.content} data-cy="content">
           {notificationFromStore ? <Notification {...notificationFromStore} /> : null}
           <Outlet />
-          {isMobile ? null : <PlaybackButtons />}
+          <PlaybackButtons />
           {!isMobile && displayFooter ? <SiteFooter /> : null}
         </Content>
         {isMobile && displayFooter ? <MobileNav /> : null}

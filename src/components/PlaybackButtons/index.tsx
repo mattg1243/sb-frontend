@@ -1,4 +1,4 @@
-import { Tooltip, Spin } from 'antd';
+import { Tooltip, Spin, Row, Col } from 'antd';
 import { CaretRightOutlined, PauseOutlined, LoadingOutlined } from '@ant-design/icons';
 import { BsFillVolumeDownFill, BsVolumeMuteFill, BsVolumeUpFill } from 'react-icons/bs';
 import { useState, useRef, useEffect } from 'react';
@@ -23,6 +23,8 @@ interface IPlyabackButtonsProps {
 const strPadLeft = (string: string, pad: string, length: number) => {
   return (new Array(length + 1).join(pad) + string).slice(-length);
 };
+
+const isMobile = window.innerWidth < 480;
 
 export default function PlaybackButtons(props: IPlyabackButtonsProps) {
   const [isPlaying, setIsPlaying] = useState<boolean>(true);
@@ -179,46 +181,50 @@ export default function PlaybackButtons(props: IPlyabackButtonsProps) {
 
   // playback bar for beat page
   const playbackBar = (
-    <footer
+    <Row
       style={{
         background: 'black',
+        alignContent: 'center',
         width: '100vw',
         height: '9vh',
         bottom: '0',
-        paddingBottom: '20px',
         position: 'fixed',
         color: 'white',
       }}
+      align="middle"
     >
-      <button
-        onClick={isPlaying ? pause : play}
-        style={{ animationDuration: '0s !important' }}
-        className={styles['playbackbtn-bar']}
-        data-cy="playback-btn"
-      >
-        {isLoading ? <Spin indicator={<LoadingOutlined />} /> : null}
-        {isPlaying ? <PauseOutlined data-cy="pause-icon" /> : <CaretRightOutlined data-cy="play-icon" />}
-      </button>
-      <Tooltip
-        title={`${minutesPlayed.toString()}:${strPadLeft(secondsPlayed.toString(), '0', 2)} / ${duration}`}
-        placement="top"
-        overlayStyle={{ top: '87vh' }}
-      >
-        <input
-          type="range"
-          min={0}
-          max={audio.current?.duration}
-          step={0.01}
-          value={currentTime}
-          className={styles['seek-bar']}
-          style={{ background: 'white' }}
-          onChange={(e) => {
-            handleSeek(e);
-          }}
-        />
-      </Tooltip>
+      <Col span={4} offset={isMobile ? 0 : 4}>
+        <button
+          onClick={isPlaying ? pause : play}
+          style={{ animationDuration: '0s !important' }}
+          className={styles['playbackbtn-bar']}
+          data-cy="playback-btn"
+        >
+          {isLoading ? <Spin indicator={<LoadingOutlined />} /> : null}
+          {isPlaying ? <PauseOutlined data-cy="pause-icon" /> : <CaretRightOutlined data-cy="play-icon" />}
+        </button>
+      </Col>
+      <Col span={isMobile ? 18 : 12} offset={isMobile ? 2 : 0}>
+        <Tooltip
+          title={`${minutesPlayed.toString()}:${strPadLeft(secondsPlayed.toString(), '0', 2)} / ${duration}`}
+          placement="top"
+          overlayStyle={{ top: '87vh' }}
+        >
+          <input
+            type="range"
+            min={0}
+            max={audio.current?.duration}
+            step={0.01}
+            value={currentTime}
+            className={styles['seek-bar']}
+            onChange={(e) => {
+              handleSeek(e);
+            }}
+          />
+        </Tooltip>
+      </Col>
       {/* <BsVolumeUpFill className={styles['vol-icon']} /> */}
-    </footer>
+    </Row>
   );
 
   // determine which type to render
