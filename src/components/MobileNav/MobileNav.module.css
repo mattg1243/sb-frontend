@@ -1,7 +1,4 @@
 .container {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
   position: fixed;
   height: 10vh;
   width: 100vw;
@@ -11,7 +8,6 @@
 
 .btn {
   height: 100%;
-  width: 100%;
   color: white;
   background: black;
   overflow: visible;
