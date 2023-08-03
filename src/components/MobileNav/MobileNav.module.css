@@ -17,3 +17,19 @@
 .icon {
   font-size: 16px;
 }
+
+.ant-modal-body {
+  opacity: 0% !important;
+}
+
+.search-bar-hidden {
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0s 0.25s, opacity 0.25s linear;
+}
+
+.search-bar-visible {
+  visibility: visible;
+  opacity: 1;
+  transition: opacity 0.25s linear;
+}

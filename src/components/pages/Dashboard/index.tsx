@@ -84,25 +84,32 @@ export default function Dashboard() {
   return (
     <div data-testid="dashboard" style={{ width: '100%' }}>
       <div>
-        <h2 className={styles['for-you-text']}>For you</h2>
+        <h2 className={styles['for-you-text']}>{isSearching ? 'Search results' : 'For you'}</h2>
         {isSearching ? (
           <div style={{ position: 'fixed', top: '13vh' }}>
-            <SearchFilter currentSearchFilter={currentSearchFilter} setCurrentSearchFilter={setCurrentSearchFilter} />
-            <Tooltip title="Exit search">
-              <button
-                onClick={() => {
-                  dispatch(searchingReducer(false));
-                  dispatch(searchFilters(null));
-                  dispatch(beatsSearchReducer(null));
-                  dispatch(usersSearchReducer(null));
-                  setCurrentSearchBeatFilter(null);
-                }}
-                className={styles['exit-search-btn']}
-                style={{ animationDuration: '0s !important' }}
-              >
-                <CloseOutlined />
-              </button>
-            </Tooltip>
+            {!isMobile ? (
+              <>
+                <SearchFilter
+                  currentSearchFilter={currentSearchFilter}
+                  setCurrentSearchFilter={setCurrentSearchFilter}
+                />
+                <Tooltip title="Exit search">
+                  <button
+                    onClick={() => {
+                      dispatch(searchingReducer(false));
+                      dispatch(searchFilters(null));
+                      dispatch(beatsSearchReducer(null));
+                      dispatch(usersSearchReducer(null));
+                      setCurrentSearchBeatFilter(null);
+                    }}
+                    className={styles['exit-search-btn']}
+                    style={{ animationDuration: '0s !important' }}
+                  >
+                    <CloseOutlined />
+                  </button>
+                </Tooltip>
+              </>
+            ) : null}
           </div>
         ) : (
           <RecAlgoMenu currentAlgo={currentAlgo} setCurrentAlgo={setCurrentAlgo} />
