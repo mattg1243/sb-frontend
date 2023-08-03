@@ -98,7 +98,7 @@ export default function BeatPage() {
   };
 
   const likeBeat = async () => {
-    if (beat && likesCount) {
+    if (beat && typeof likesCount == 'number') {
       if (beat.artistId !== userId) {
         setLiked(true);
         try {
@@ -129,7 +129,7 @@ export default function BeatPage() {
 
   return (
     <>
-      <div style={{ height: '100%', width: '50%', marginTop: '11vh', textAlign: 'center' }}>
+      <div style={{ height: '100%', width: isMobile ? '100%' : '50%', marginTop: '11vh', textAlign: 'center' }}>
         {beat && !isLoading ? (
           <>
             <img
