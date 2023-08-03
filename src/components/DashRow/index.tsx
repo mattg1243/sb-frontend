@@ -126,12 +126,13 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
   const likeBeat = async () => {
     if (beat.artistId !== userId) {
       setLiked(true);
+      setLikesCount(likesCount + 1);
       try {
         const res = await likeBeatReq(beat._id);
-        setLikesCount(likesCount + 1);
         console.log(res);
       } catch (err) {
         setLiked(false);
+        setLikesCount(likesCount - 1);
         console.error(err);
       }
     }
