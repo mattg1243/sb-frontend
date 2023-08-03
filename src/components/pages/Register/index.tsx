@@ -22,7 +22,6 @@ export default function Register(): JSX.Element {
   const [passwordConfirm, setConfirmPassword] = useState<string>('');
   const [buttonColor, setButtonColor] = useState<'#D3D3D3' | 'black'>('#D3D3D3');
   const [agreedToTerms, setAgreedToTerms] = useState<boolean>(false);
-  const [paidAcct, setPaidAcct] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [alert, setAlert] = useState<AlertObj>({ status: 'none', message: '' });
 
@@ -40,11 +39,7 @@ export default function Register(): JSX.Element {
           setAlert({ status: 'success', message: 'Account created succesfully, you may now login' });
           localStorage.setItem('sb-user', JSON.stringify(response.data.user));
           setIsLoading(false);
-          if (paidAcct) {
-            navigate('/subscriptions');
-          } else {
-            navigate('/verify-email');
-          }
+          navigate('/subscriptions');
         }
       } catch (err: any) {
         console.log('message from server: ', err.response.data.message);
@@ -153,19 +148,6 @@ export default function Register(): JSX.Element {
               <Spin />
             ) : (
               <Space style={{ display: 'block' }}>
-                Paid Account
-                <Switch
-                  className={styles.paidSwitch}
-                  style={{ background: paidAcct ? 'black' : 'grey', margin: '1vh' }}
-                  onChange={() => {
-                    setPaidAcct(!paidAcct);
-                  }}
-                />
-                <span style={{ display: 'flex', justifyContent: 'center', textAlign: 'center' }}>
-                  <Tooltip title="If you want to upload your beats and not purchase any, a free account is perfect for you!">
-                    <InfoCircleOutlined />
-                  </Tooltip>
-                </span>
                 <Button
                   type="primary"
                   shape="round"
