@@ -3,12 +3,17 @@
 import { mount } from 'cypress/react18';
 import { MemoryRouter } from 'react-router-dom';
 import MobileNav from '.';
+import { Provider } from 'react-redux';
+import { store } from '../../store';
 
 describe('MobileNav', () => {
   beforeEach(() => {
+    <MobileNav />;
     mount(
       <MemoryRouter>
-        <MobileNav />
+        <Provider store={store}>
+          <MobileNav />
+        </Provider>
       </MemoryRouter>
     );
   });
