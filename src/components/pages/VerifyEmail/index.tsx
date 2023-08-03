@@ -44,25 +44,31 @@ export default function VerifyEmail() {
 
   return (
     <Layout>
-      <Content>
+      <Content data-cy="verify-email-cont">
         <>
           <div className={styles.container}>
-            <h1 className={styles.Header}>Click the link in your email to verify your account</h1>
+            <img src={logo} alt="Logo" className={styles.logo}></img>
+            <h1 className={styles.Header} data-cy="verify-email-instruct">
+              Click the link in your email to verify your account
+            </h1>
             <h3 className={styles.subHeader}>If you can't find the verification email, check your spam folder.</h3>
             <Button
               className={styles.button}
               onClick={() => {
                 resendEmail();
               }}
+              data-cy="resend-email-btn"
             >
               Resend email
             </Button>
             <h3 className={styles.subHeader}>
               <strong>
-                If you aren't automatically redirected after verifying your email, <a href="./login">click here</a>
+                If you aren't automatically redirected after verifying your email,{' '}
+                <a href="/login" data-cy="verify-email-login-link">
+                  click here
+                </a>
               </strong>
             </h3>
-            <img src={logo} alt="Logo" className={styles.logo}></img>
           </div>
         </>
       </Content>

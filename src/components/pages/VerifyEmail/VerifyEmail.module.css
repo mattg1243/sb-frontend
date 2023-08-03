@@ -4,7 +4,6 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin-top: 7.5vh;
   }
 
   .Header {
@@ -47,8 +46,9 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+    text-align: center;
     align-items: center;
-    margin-top: 10vh;
+    margin: 15vh 5vw;
   }
 
   .Header {
