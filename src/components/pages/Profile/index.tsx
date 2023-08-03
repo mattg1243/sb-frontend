@@ -118,6 +118,7 @@ export default function Profile() {
                     }}
                     className={styles.useravatar}
                     size={isMobile ? 140 : 256}
+                    icon={userInfo.avatar ? undefined : <UserOutlined style={{ color: 'white', fontSize: '12vh' }} />}
                   />
                   <div
                     onClick={() => {
