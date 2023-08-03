@@ -132,7 +132,7 @@ export default function Register(): JSX.Element {
             />
           </Form.Item>
 
-          <Form.Item name="date of birth" style={{ marginTop: '-1vh' }}>
+          <Form.Item name="date of birth" style={{ marginTop: '-1vh', justifyContent: 'center', width: '100%' }}>
             <p>Date of Birth</p>
             <DatePicker
               format={'YYYY/MM/DD'}
@@ -140,6 +140,7 @@ export default function Register(): JSX.Element {
                 setDateOfBirth(dateStr);
               }}
               placeholder="Date Of Birth"
+              style={{ alignSelf: 'center' }}
             />
           </Form.Item>
 

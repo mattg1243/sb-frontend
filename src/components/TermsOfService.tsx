@@ -7,7 +7,7 @@ import Terms from './pages/Terms';
 export default function TermsOfService(props: { setAgreedToTerms: React.Dispatch<React.SetStateAction<boolean>> }) {
   const { setAgreedToTerms } = props;
 
-  const [isOpen, setIsOpen] = useState<boolean>(true);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
   const [scrolledDown, setScrolledDown] = useState<boolean>();
   const [agreed, setAgreed] = useState<boolean>(false);
 
