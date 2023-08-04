@@ -4,7 +4,6 @@ import { Provider } from 'react-redux';
 import UploadBeatModal from '.';
 import { mount } from 'cypress/react18';
 import { store } from '../../store';
-import { MemoryRouter } from 'react-router-dom';
 
 describe('Button opens modal', () => {
   beforeEach(() => {

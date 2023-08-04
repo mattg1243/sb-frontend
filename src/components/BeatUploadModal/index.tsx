@@ -66,7 +66,7 @@ export default function UploadBeatModal() {
 
   const validForm = () => {
     return (
-      title.length > 6 && genreTags !== undefined && key !== undefined && tempo !== undefined && audio !== undefined
+      title.length > 0 && genreTags !== undefined && key !== undefined && tempo !== undefined && audio !== undefined
     );
   };
 
@@ -133,11 +133,11 @@ export default function UploadBeatModal() {
             stemUploadPromises.push(stemUplaodPromise);
             stemFields.push({ audioKey: stemS3Key, trackName: stems[i].name, beatId: beatId });
           }
+          // wait for all stem upload promises to resolve
+          await Promise.all(stemUploadPromises);
+          // save all the stems in the database
+          await axios.post(`${gatewayUrl}/beats/save-stems`, { stems: stemFields }, { withCredentials: true });
         }
-        // wait for all stem upload promises to resolve
-        await Promise.all(stemUploadPromises);
-        // save all the stems in the database
-        await axios.post(`${gatewayUrl}/beats/save-stems`, { stems: stemFields }, { withCredentials: true });
         dispatch(notification({ message: 'Your beat was uploaded successfully!', type: 'success' }));
         console.log(res);
       } catch (err) {
@@ -195,7 +195,6 @@ export default function UploadBeatModal() {
       >
         Upload
       </Button>
-      {alert ? <Alert message={alert.message} type={alert.type} closable showIcon /> : null}
       <Modal
         title="Upload Your Beat"
         open={showModal}
@@ -211,13 +210,15 @@ export default function UploadBeatModal() {
           data-cy="spin"
         >
           <Form style={{ margin: '2rem 2rem', width: '35vw' }}>
-            <Form.Item required={true}>
+            <Form.Item>
               <Input
                 placeholder="Title"
                 onChange={(e) => {
                   setTitle(e.target.value);
                 }}
                 data-cy="title-input"
+                showCount
+                minLength={6}
               ></Input>
             </Form.Item>
             <Form.Item required={true}>
@@ -277,6 +278,7 @@ export default function UploadBeatModal() {
                     allowedFileType="audio/*"
                     uploadStateSetter={setAudio}
                     sideIcon={<SoundOutlined />}
+                    data-cy="beat-upload-beat-input"
                   />
                   {audio ? <CheckCircleOutlined style={{ marginLeft: '1rem', fontSize: '1rem' }} /> : null}
                 </Form.Item>
@@ -287,6 +289,7 @@ export default function UploadBeatModal() {
                     uploadMultiStateSetter={setStems}
                     currentState={stems}
                     multiple={true}
+                    data-cy="beat-upload-stem-input"
                   />
                 </Form.Item>
               </Col>
@@ -313,6 +316,16 @@ export default function UploadBeatModal() {
             </Row>
           </Form>
         </Spin>
+        {alert ? (
+          <Alert
+            message={alert.message}
+            type={alert.type}
+            closable
+            showIcon
+            style={{ width: '50%', marginLeft: '25%', textAlign: 'center' }}
+            data-cy="beat-upload-alert"
+          />
+        ) : null}
         <Divider />
         {isUploading ? (
           <>
