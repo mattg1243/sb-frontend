@@ -232,12 +232,19 @@ export default function BeatPage(props?: IBeatPageProps) {
                 />
               </div>
             </Row>
-            <audio
-              preload="metadata"
-              style={{ display: 'none' }}
-              id={`audio-player-${beat.audioKey}`}
-              src={`${cdnHostname}/${beat.audioKey}`}
-            />
+            {isMobile ? (
+              <audio preload="metadata" style={{ display: 'none' }} id={`audio-player-${beat.audioKey}`}>
+                <source src={`${cdnHostname}/${beat.audioKey}`} type="audio/mpeg" />
+                <source src={`${cdnHostname}/${beat.audioKey}`} type="audio/ogg" />
+              </audio>
+            ) : (
+              <audio
+                preload="metadata"
+                style={{ display: 'none' }}
+                id={`audio-player-${beat.audioKey}`}
+                src={`${cdnHostname}/${beat.audioKey}`}
+              />
+            )}
           </>
         ) : null}
         {!beat && !isLoading ? <h1 style={{ marginTop: '25vh' }}>No beat found :(</h1> : null}
