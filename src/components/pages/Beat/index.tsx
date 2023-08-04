@@ -237,7 +237,7 @@ export default function BeatPage(props?: IBeatPageProps) {
               style={{ display: 'none' }}
               id={`audio-player-${beat.audioKey}`}
               src={`${cdnHostname}/${beat.audioKey}`}
-            ></audio>
+            />
           </>
         ) : null}
         {!beat && !isLoading ? <h1 style={{ marginTop: '25vh' }}>No beat found :(</h1> : null}
