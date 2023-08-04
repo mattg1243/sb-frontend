@@ -1,3 +1,5 @@
+/// <reference types="Cypress" />
+
 import { mount } from 'cypress/react18';
 import VerifyEmail from '.';
 import { MemoryRouter } from 'react-router-dom';

@@ -18,6 +18,8 @@ import { beats } from '../../reducers/searchReducer';
 import { RootState } from '../../store';
 import gatewayUrl from '../../config/routing';
 
+const onProfilePage = window.location.pathname == '/app/user';
+
 export default function MobileNav() {
   const [currentSelection, setCurrentSelection] = useState<'Home' | 'Search' | 'Settings' | 'Profile'>('Home');
   const [searchOpen, setSearchOpen] = useState<boolean>(false);
@@ -92,6 +94,9 @@ export default function MobileNav() {
         searchUrl += '&';
       }
       searchUrl += `search=${searchQueryState}`;
+      if (onProfilePage) {
+        searchUrl += `&artist=${userId}`;
+      }
       axios
         .get(searchUrl)
         .then((res) => {

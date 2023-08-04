@@ -17,9 +17,13 @@ import { notification } from '../../../reducers/notificationReducer';
 import { playback } from '../../../reducers/playbackReducer';
 import BeatDownloadModal from '../../BeatDownloadModal';
 
+interface IBeatPageProps {
+  testBeat?: Beat;
+}
+
 const isMobile: boolean = window.innerWidth < 1024;
 
-export default function BeatPage() {
+export default function BeatPage(props?: IBeatPageProps) {
   const beatId = new URLSearchParams(window.location.search).get('id');
   const userId = getUserIdFromLocalStorage();
 
@@ -56,6 +60,13 @@ export default function BeatPage() {
   useEffect(() => {
     dispatch(playback(beat || null));
     setIsPlaying(true);
+  });
+
+  // check if testing
+  useEffect(() => {
+    if (props?.testBeat) {
+      setBeat(props.testBeat);
+    }
   });
 
   /**
@@ -129,7 +140,10 @@ export default function BeatPage() {
 
   return (
     <>
-      <div style={{ height: '100%', width: isMobile ? '100%' : '50%', marginTop: '11vh', textAlign: 'center' }}>
+      <div
+        style={{ height: '100%', width: isMobile ? '100%' : '50%', marginTop: '11vh', textAlign: 'center' }}
+        cy-data="beat-page-cont"
+      >
         {beat && !isLoading ? (
           <>
             <img
@@ -147,8 +161,10 @@ export default function BeatPage() {
               height={isMobile ? 250 : 400}
               className={styles.artwork}
             />
-            <h1 style={{ marginTop: '3vh' }}>{beat.title}</h1>
-            <h3>
+            <h1 style={{ marginTop: '3vh' }} data-cy="beat-page-title">
+              {beat.title}
+            </h1>
+            <h3 data-cy="beat-page-artist">
               <a style={{ color: 'black' }} href={`/app/user/?id=${beat.artistId}`}>
                 {beat.artistName}
               </a>
@@ -165,12 +181,14 @@ export default function BeatPage() {
                     onClick={() => unlikeBeat()}
                     id="like-beat-btn"
                     style={{ fontSize: '2.5vh', marginBottom: '10px' }}
+                    data-cy="beat-page-like-btn"
                   />
                 ) : (
                   <HeartOutlined
                     onClick={() => likeBeat()}
                     id="unlike-beat-btn"
                     style={{ fontSize: '2.5vh', marginBottom: '10px' }}
+                    data-cy="beat-page-unlike-btn"
                   />
                 )}
                 <Statistic
@@ -214,9 +232,12 @@ export default function BeatPage() {
                 />
               </div>
             </Row>
-            <audio preload="metadata" style={{ display: 'none' }} id={`audio-player-${beat.audioKey}`}>
-              <source src={`${cdnHostname}/${beat.audioKey}`} type="audio/mpeg" />
-            </audio>
+            <audio
+              preload="metadata"
+              style={{ display: 'none' }}
+              id={`audio-player-${beat.audioKey}`}
+              src={`${cdnHostname}/${beat.audioKey}`}
+            ></audio>
           </>
         ) : null}
         {!beat && !isLoading ? <h1 style={{ marginTop: '25vh' }}>No beat found :(</h1> : null}
