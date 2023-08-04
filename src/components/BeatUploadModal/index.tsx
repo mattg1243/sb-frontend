@@ -221,7 +221,9 @@ export default function UploadBeatModal() {
       >
         <Spin
           spinning={isUploading}
-          tip={'Your beat is being uploaded, you can close this window. You will be notified when it is done.'}
+          tip={
+            'Your beat is being uploaded, you can close this window. You will be notified when it is done. DO NOT close your browser window as this could lead to your beat being corrupted'
+          }
           indicator={<LoadingOutlined />}
           data-cy="spin"
         >

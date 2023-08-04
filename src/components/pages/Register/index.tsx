@@ -1,4 +1,5 @@
-import { Button, Form, Input, Layout, Checkbox, Spin, Switch, Space, Tooltip, DatePicker } from 'antd';
+import { Button, Form, Input, Layout, Checkbox, Spin, Switch, Space, Tooltip, DatePicker, Col } from 'antd';
+import { Input as ChakraInput, ChakraProvider } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Content } from 'antd/lib/layout/layout';
@@ -72,107 +73,143 @@ export default function Register(): JSX.Element {
   }, [password, passwordConfirm, agreedToTerms, email, artistName]);
 
   return (
-    <Layout>
-      <Content className={styles.content}>
-        <img src={orangelogo} alt="logo" className={styles.logo} width="120vw" />
-        <h1 className={styles.headie}>Create your account</h1>
-        <Form
-          name="basic"
-          layout="vertical"
-          initialValues={{ remember: true }}
-          wrapperCol={{ span: 16, offset: 4 }}
-          labelCol={{ span: 16, offset: 4 }}
-          autoComplete="off"
-          className={styles.form}
-        >
-          <Form.Item
-            style={{ justifySelf: 'center' }}
-            name="email"
-            rules={[{ required: true, message: 'Please enter your email' }]}
+    <ChakraProvider>
+      <Layout>
+        <Content className={styles.content}>
+          <img src={orangelogo} alt="logo" className={styles.logo} width="120vw" />
+          <h1 className={styles.headie}>Create your account</h1>
+          <Form
+            name="basic"
+            layout="vertical"
+            initialValues={{ remember: true }}
+            wrapperCol={{ span: 16, offset: 4 }}
+            labelCol={{ span: 16, offset: 4 }}
+            autoComplete="off"
+            className={styles.form}
           >
-            <Input
-              className={styles.input}
-              placeholder="Email"
-              onChange={(e) => {
-                if (emailRe.test(e.target.value)) {
-                  setEmail(e.target.value);
-                } else {
-                  setEmail(undefined);
-                }
+            <Form.Item
+              style={{ justifySelf: 'center' }}
+              name="email"
+              rules={[{ required: true, message: 'Please enter your email' }]}
+            >
+              <Input
+                className={styles.input}
+                placeholder="Email"
+                onChange={(e) => {
+                  if (emailRe.test(e.target.value)) {
+                    setEmail(e.target.value);
+                  } else {
+                    setEmail(undefined);
+                  }
+                }}
+                style={{ fontSize: 'min(16px)' }}
+              />
+            </Form.Item>
+            <Form.Item
+              style={{ justifySelf: 'center' }}
+              name="username"
+              rules={[{ required: true, message: 'Please input your username' }]}
+            >
+              <Input
+                className={styles.input}
+                placeholder="Username"
+                onChange={(e) => setArtistName(e.target.value)}
+                style={{ fontSize: 'min(16px)' }}
+              />
+            </Form.Item>
+            <Form.Item name="password" rules={[{ required: true, message: 'Please input your password!' }]}>
+              <Input.Password
+                className={styles.input}
+                placeholder="Password"
+                onChange={(e) => setPassword(e.target.value)}
+                style={{ fontSize: 'min(16px)' }}
+              />
+            </Form.Item>
+            <Form.Item name="confirm password" rules={[{ required: true, message: 'Please input your password!' }]}>
+              <Input.Password
+                className={styles.input}
+                placeholder="Confirm Password"
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                style={{ fontSize: 'min(16px)' }}
+              />
+            </Form.Item>
+            <Form.Item
+              name="date of birth"
+              style={{
+                marginTop: '-1vh',
+                justifyContent: 'center',
+                width: '100%',
+                alignItems: 'center',
+                textAlign: 'center',
+                display: 'block !important',
               }}
-            />
-          </Form.Item>
-
-          <Form.Item
-            style={{ justifySelf: 'center' }}
-            name="username"
-            rules={[{ required: true, message: 'Please input your username' }]}
-          >
-            <Input className={styles.input} placeholder="Username" onChange={(e) => setArtistName(e.target.value)} />
-          </Form.Item>
-
-          <Form.Item name="password" rules={[{ required: true, message: 'Please input your password!' }]}>
-            <Input.Password
-              className={styles.input}
-              placeholder="Password"
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </Form.Item>
-
-          <Form.Item name="confirm password" rules={[{ required: true, message: 'Please input your password!' }]}>
-            <Input.Password
-              className={styles.input}
-              placeholder="Confirm Password"
-              onChange={(e) => setConfirmPassword(e.target.value)}
-            />
-          </Form.Item>
-
-          <Form.Item name="date of birth" style={{ marginTop: '-1vh', justifyContent: 'center', width: '100%' }}>
-            <p>Date of Birth</p>
-            <DatePicker
-              format={'YYYY/MM/DD'}
-              onChange={(date, dateStr) => {
-                setDateOfBirth(dateStr);
-              }}
-              placeholder="Date Of Birth"
-              style={{ alignSelf: 'center' }}
-            />
-          </Form.Item>
-
-          <Form.Item name="terms and conditions" className={styles['small-text']}>
-            Agree to the <TermsOfService setAgreedToTerms={setAgreedToTerms} />
-            {agreedToTerms ? <CheckCircleOutlined style={{ marginLeft: '1rem', fontSize: '1.2vh' }} /> : null}
-          </Form.Item>
-          <Form.Item className={styles.buttonUnOffset} wrapperCol={{ offset: 4, span: 16 }}>
-            {isLoading ? (
-              <Spin />
-            ) : (
-              <Space style={{ display: 'block' }}>
-                <Button
-                  type="primary"
-                  shape="round"
-                  size="large"
-                  className={styles.regButton}
-                  style={{
-                    backgroundColor: buttonColor,
-                    borderColor: buttonColor,
+            >
+              {window.innerWidth > 480 ? (
+                <DatePicker
+                  format={'YYYY/MM/DD'}
+                  onChange={(date, dateStr) => {
+                    setDateOfBirth(dateStr);
                   }}
-                  disabled={buttonColor === '#D3D3D3'}
-                  onClick={async () => {
-                    await sendRegisterRequest();
+                  placeholder="Date Of Birth"
+                  style={{ alignSelf: 'center', fontSize: 'min(16px)' }}
+                  popupStyle={{
+                    marginLeft: '-40vw',
+                    fontSize: 'min(16px)',
                   }}
-                >
-                  Sign Up
-                </Button>
-              </Space>
-            )}
-            <CustomAlert status={alert.status} message={alert.message} />
-            <h3 className={styles.alreadyAccount}>
-              Already have an account? <a href="/login">Login</a>
-            </h3>
-          </Form.Item>
-        </Form>
-      </Content>
-    </Layout>
+                  placement="topRight"
+                />
+              ) : (
+                <Col>
+                  <p>Date of Birth</p>
+                  <ChakraInput
+                    type="date"
+                    size="md"
+                    placeholder="Date of Birth"
+                    style={{ width: '50vw', margin: '10px', background: 'white', color: 'black' }}
+                    onChange={(e) => {
+                      setDateOfBirth(e.target.value);
+                    }}
+                  />
+                </Col>
+              )}
+              Date of Birth
+            </Form.Item>
+
+            <Form.Item name="terms and conditions" className={styles['small-text']}>
+              Agree to the <TermsOfService setAgreedToTerms={setAgreedToTerms} />
+              {agreedToTerms ? <CheckCircleOutlined style={{ marginLeft: '1rem', fontSize: '1.2vh' }} /> : null}
+            </Form.Item>
+            <Form.Item className={styles.buttonUnOffset} wrapperCol={{ offset: 4, span: 16 }}>
+              {isLoading ? (
+                <Spin />
+              ) : (
+                <Space style={{ display: 'block' }}>
+                  <Button
+                    type="primary"
+                    shape="round"
+                    size="large"
+                    className={styles.regButton}
+                    style={{
+                      backgroundColor: buttonColor,
+                      borderColor: buttonColor,
+                    }}
+                    disabled={buttonColor === '#D3D3D3'}
+                    onClick={async () => {
+                      await sendRegisterRequest();
+                    }}
+                  >
+                    Sign Up
+                  </Button>
+                </Space>
+              )}
+              <CustomAlert status={alert.status} message={alert.message} />
+              <h3 className={styles.alreadyAccount}>
+                Already have an account? <a href="/login">Login</a>
+              </h3>
+            </Form.Item>
+          </Form>
+        </Content>
+      </Layout>
+    </ChakraProvider>
   );
 }
