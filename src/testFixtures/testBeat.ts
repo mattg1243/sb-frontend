@@ -7,6 +7,7 @@ export const testBeat: Beat = {
   title: 'Thriller',
   artworkKey: 'images/1a29769b6c15669886384931327819de',
   audioKey: 'beats/aa0cf1e6703d60ba22be47546066ac44',
+  audioStreamKey: 'beats/aa0cf1e6703d60ba22be47546066ac44',
   artistId: 'c690083b-4597-478a-9e15-68c61789807c',
   artistName: 'Montana Brown',
   description: 'Hot ass beat clap',

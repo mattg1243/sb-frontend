@@ -34,7 +34,7 @@ export default function BeatPage(props?: IBeatPageProps) {
   const [likesCount, setLikesCount] = useState<number>();
   const [streamsCount, setStreamsCount] = useState<number>();
 
-  const audio = document.getElementById(`audio-player-${beat?.audioKey}`) as HTMLAudioElement;
+  const audio = document.getElementById(`audio-player-${beat?.audioStreamKey}`) as HTMLAudioElement;
 
   useEffect(() => {
     getBeatReq(beatId as string)
@@ -233,16 +233,15 @@ export default function BeatPage(props?: IBeatPageProps) {
               </div>
             </Row>
             {isMobile ? (
-              <audio preload="metadata" style={{ display: 'none' }} id={`audio-player-${beat.audioKey}`}>
-                <source src={`${cdnHostname}/${beat.audioKey}`} type="audio/mpeg" />
-                <source src={`${cdnHostname}/${beat.audioKey}`} type="audio/ogg" />
+              <audio preload="metadata" style={{ display: 'none' }} id={`audio-player-${beat.audioStreamKey}`}>
+                <source src={`${cdnHostname}/${beat.audioStreamKey}`} type="audio/mpeg" />
               </audio>
             ) : (
               <audio
                 preload="metadata"
                 style={{ display: 'none' }}
-                id={`audio-player-${beat.audioKey}`}
-                src={`${cdnHostname}/${beat.audioKey}`}
+                id={`audio-player-${beat.audioStreamKey}`}
+                src={`${cdnHostname}/${beat.audioStreamKey}`}
               />
             )}
           </>

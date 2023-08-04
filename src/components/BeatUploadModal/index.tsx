@@ -46,6 +46,7 @@ export default function UploadBeatModal() {
   const [isUploading, setIsUploading] = useState<boolean>(false);
   const [uploadProgress, setUploadProgress] = useState<number>(0);
   const [stemUploadProgress, setStemUploadProgress] = useState<number>(0);
+  const [preparingForStreaming, setPreparingForStreaming] = useState<boolean>(false);
   const [title, setTitle] = useState<string>('');
   const [genreTags, setGenreTags] = useState<Array<string>>();
   const [tempo, setTempo] = useState<string>();
@@ -75,6 +76,7 @@ export default function UploadBeatModal() {
       const stemUploadPromises: Promise<AxiosResponse>[] = [];
       const userId = getUserIdFromLocalStorage();
       const userArtistName = getUserArtistNameFromLocalStorage();
+      const isMp3 = audio?.type == 'audio/mp3';
       try {
         setIsUploading(true);
         // first get a url for the beat file since there will be always be one
@@ -92,7 +94,20 @@ export default function UploadBeatModal() {
             }
           },
         });
-
+        // check if the audio is an mp3 file, if not make a converted copy for streaming
+        let createMp3Res: AxiosResponse;
+        let streamKey = s3Key;
+        if (!isMp3) {
+          console.log('detected uncompressed audio file...');
+          setPreparingForStreaming(true);
+          const createMp3Form = new FormData();
+          createMp3Form.append('audio', audio as Blob);
+          createMp3Res = await axios.post(`${gatewayUrl}/beats/create-mp3`, createMp3Form, {
+            withCredentials: true,
+            headers: { 'Content-Type': 'multipart/form-data' },
+          });
+          streamKey = createMp3Res.data.streamKey;
+        }
         const hasStems = stems.length > 0;
         const stemFields: Array<Stem> = [];
 
@@ -104,6 +119,7 @@ export default function UploadBeatModal() {
         beatFormData.append('key', key as string);
         beatFormData.append('majorOrMinor', majorOrMinor as string);
         beatFormData.append('s3Key', s3Key);
+        beatFormData.append('s3StreamKey', streamKey);
         beatFormData.append('hasStems', hasStems ? 'true' : 'false');
         // need to add user.id, user.artistName
         beatFormData.append('userId', userId as string);

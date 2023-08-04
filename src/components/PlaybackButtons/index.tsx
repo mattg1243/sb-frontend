@@ -53,7 +53,6 @@ export default function PlaybackButtons(props: IPlyabackButtonsProps) {
   // save the data needed to stream the beat and display infor
   const trackTitle = beatPlaying ? beatPlaying.title : '';
   const trackArtist = beatPlaying ? beatPlaying.artistName : '';
-  const trackSrcUrl = beatPlaying ? `${cdnHostname}/${beatPlaying.audioKey}` : '';
 
   const audio = useRef<HTMLAudioElement>();
   let streamTimeout: NodeJS.Timeout;
@@ -107,7 +106,7 @@ export default function PlaybackButtons(props: IPlyabackButtonsProps) {
   useEffect(() => {
     if (beatPlaying && currentBeatId !== beatPlaying._id) {
       setIsLoading(true);
-      audio.current = document.getElementById(`audio-player-${beatPlaying.audioKey}`) as HTMLAudioElement;
+      audio.current = document.getElementById(`audio-player-${beatPlaying.audioStreamKey}`) as HTMLAudioElement;
       setCurrentTime(0);
       setIsLoading(false);
       audio.current.onloadedmetadata = () => {
