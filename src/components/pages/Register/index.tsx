@@ -136,7 +136,7 @@ export default function Register(): JSX.Element {
             <Form.Item
               name="date of birth"
               style={{
-                marginTop: '-1vh',
+                marginTop: '4vh',
                 justifyContent: 'center',
                 width: '100%',
                 alignItems: 'center',
@@ -172,7 +172,7 @@ export default function Register(): JSX.Element {
                   />
                 </Col>
               )}
-              Date of Birth
+              {window.innerWidth > 480 ? null : 'Date of Birth'}
             </Form.Item>
 
             <Form.Item name="terms and conditions" className={styles['small-text']}>
