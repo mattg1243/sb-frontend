@@ -1,3 +1,21 @@
+/* global */
+/* global */
+.row {
+  background-color: black;
+  color: white;
+  width: 100%;
+  height: 110vh;
+  justify-content: center;
+  padding-left: 5.5vw;
+}
+
+.header1 {
+  color: #ffbd59;
+  font-size: 3.5vw;
+  max-width: 40vw;
+  padding-top: 10vw;
+}
+
 /* Desktop CSS */
 
 @media (min-width: 1024px) {
@@ -35,14 +53,55 @@
 
 @media (min-width: 480px) and (max-width: 1024px) {
   .row {
-    display: none;
+    padding-top: 5vh;
+    width: 100%;
+    height: 50vh;
+    justify-content: center;
+  }
+
+  .header1 {
+    color: #ffbd59;
+    font-size: 6.5vw;
+    max-width: 50vw;
+    padding-top: 7.5vh;
+  }
+
+  .moneyhands {
+    width: 28vw;
+    height: auto;
+    padding-top: 22vh;
+  }
+
+  .paragraph1 {
+    font-size: 4vw;
+    max-width: 90%;
   }
 }
-
 /* Mobile CSS */
 
 @media (max-width: 480px) {
   .row {
-    display: none;
+    padding-top: 5vh;
+    width: 100%;
+    height: 50vh;
+    justify-content: center;
+  }
+
+  .header1 {
+    color: #ffbd59;
+    font-size: 6.5vw;
+    max-width: 50vw;
+    padding-top: 7.5vh;
+  }
+
+  .moneyhands {
+    width: 40vw;
+    height: auto;
+    padding-top: 4vh;
+  }
+
+  .paragraph1 {
+    font-size: 4vw;
+    max-width: 90%;
   }
 }

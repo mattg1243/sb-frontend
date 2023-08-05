@@ -1,5 +1,6 @@
 import { Content } from 'antd/lib/layout/layout';
-import { Layout, Row, Button, Space } from 'antd';
+import { Layout, Row, Button, Space, Input } from 'antd';
+import { SearchOutlined } from '@ant-design/icons';
 import orangelogo from '../../../assets/orangelogo.png';
 import { useNavigate } from 'react-router-dom';
 import Infopanel1 from '../../InfoPanel1';
@@ -22,10 +23,10 @@ export default function Splash() {
             <div className={styles.container}>
               <img src={orangelogo} alt="Orange Music Entertainment Logo" className={styles.logo} />
               <div className={styles.orangetext}>
-                <p style={{ fontSize: '8vw', margin: '0vw', letterSpacing: '0.5vw' }}>SWEATSHOP BEATS</p>
-                <p style={{ fontSize: '2.1vw', paddingLeft: '18vw', margin: '0vw', letterSpacing: '0.25vw' }}>
-                  THE WORLD'S FIRST BEAT SUBSCRIPTION SITE
+                <p style={{ margin: '0vw', letterSpacing: '0.5vw', zIndex: '1' }} className={styles.title}>
+                  SWEATSHOP BEATS
                 </p>
+                <p className={styles.subtitle}>THE WORLD'S FIRST BEAT SUBSCRIPTION SITE</p>
                 <Space size="large" className={styles.buttonspace}>
                   <Button
                     shape="round"
