@@ -48,12 +48,9 @@ export default function BeatPage(props?: IBeatPageProps) {
         console.error(err);
         setIsLoading(false);
       });
-    const reqTimeLabel = 'get like req time:';
-    console.time(reqTimeLabel);
     getUserLikesBeatReq(beatId as string)
       .then((res) => {
         setLiked(res.data);
-        console.timeEnd(reqTimeLabel);
       })
       .catch((err) => console.error(err));
   }, [beatId]);

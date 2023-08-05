@@ -44,12 +44,9 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
   const [downloadCount, setDownloadCount] = useState<string>();
 
   useEffect(() => {
-    const reqTimeLabel = 'get like req time:';
-    console.time(reqTimeLabel);
     getUserLikesBeatReq(beat._id)
       .then((res) => {
         setLiked(res.data);
-        console.timeEnd(reqTimeLabel);
       })
       .catch((err) => console.log(err));
     setDownloadCount(randomNumber(100, 1000).toLocaleString());
