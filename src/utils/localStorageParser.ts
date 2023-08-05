@@ -48,3 +48,14 @@ export const getStripeCustIdFromLocalStorage = () => {
     return customerId;
   }
 };
+
+export const getUserSubTierFromLocalStorage = () => {
+  const userStr = localStorage.getItem('sb-user');
+  if (!userStr) {
+    return;
+  }
+  const subTier = JSON.parse(userStr)['subTier'] as string;
+  if (subTier !== undefined || '') {
+    return subTier;
+  }
+};
