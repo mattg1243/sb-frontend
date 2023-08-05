@@ -1,5 +1,5 @@
 const devGatewayUrl = 'http://localhost:8000';
-const prodGatewayUrl = 'https://sb-gateway.onrender.com';
+const prodGatewayUrl = 'https://api.sweatshopbeats.com';
 const devSocketUrl = 'ws://localhost:4242';
 
 let gatewayUrl: string;
