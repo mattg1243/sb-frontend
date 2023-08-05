@@ -17,7 +17,7 @@ describe('MobileNav', () => {
     mount(
       <MemoryRouter>
         <Provider store={store}>
-          <MobileNav />
+          <MobileNav testUserId="127a79a2-bcc9-4e9e-8e46-6284f57e7420" />
         </Provider>
       </MemoryRouter>
     );

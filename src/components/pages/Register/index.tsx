@@ -70,7 +70,7 @@ export default function Register(): JSX.Element {
     } else {
       setButtonColor('#D3D3D3');
     }
-  }, [password, passwordConfirm, agreedToTerms, email, artistName]);
+  }, [password, passwordConfirm, agreedToTerms, email, artistName, dateOfBirth]);
 
   return (
     <ChakraProvider>

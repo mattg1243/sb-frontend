@@ -20,7 +20,11 @@ import gatewayUrl from '../../config/routing';
 
 const onProfilePage = window.location.pathname == '/app/user';
 
-export default function MobileNav() {
+interface IMobileNavProps {
+  testUserId?: string;
+}
+
+export default function MobileNav(props: IMobileNavProps) {
   const [currentSelection, setCurrentSelection] = useState<'Home' | 'Search' | 'Settings' | 'Profile'>('Home');
   const [searchOpen, setSearchOpen] = useState<boolean>(false);
   const [userMenuOpen, setUserMenuOpen] = useState<boolean>(false);
@@ -28,6 +32,7 @@ export default function MobileNav() {
   const navigate = useNavigate();
   const userId = getUserIdFromLocalStorage();
   const inputRef = useRef<InputRef>(null);
+  const currentUserId = props.testUserId || getUserIdFromLocalStorage();
 
   const dispatch = useDispatch();
 
@@ -155,9 +160,9 @@ export default function MobileNav() {
         </Col>
         <Col span={8}>
           <Dropdown
-            menu={{ items: userMenuItems }}
+            menu={{ items: currentUserId ? userMenuItems : undefined }}
             onOpenChange={() => {
-              setUserMenuOpen(!userMenuOpen);
+              currentUserId ? setUserMenuOpen(!userMenuOpen) : navigate('/login');
             }}
           >
             <Button
