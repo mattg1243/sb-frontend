@@ -8,7 +8,11 @@ import DashRow from '../../DashRow';
 // import { useState } from 'react';
 import axios from 'axios';
 import gatewayUrl from '../../../config/routing';
-import { getStripeCustIdFromLocalStorage, getUserIdFromLocalStorage } from '../../../utils/localStorageParser';
+import {
+  getStripeCustIdFromLocalStorage,
+  getUserIdFromLocalStorage,
+  getUserSubTierFromLocalStorage,
+} from '../../../utils/localStorageParser';
 import useGetBeats from '../../../hooks/useGetBeats';
 import { useNavigate } from 'react-router-dom';
 
@@ -17,9 +21,13 @@ export default function AccountPage() {
   // can work across page changes
   // const [trackPlaying, setTrackPlaying] = useState<Beat | undefined>();
   const [creditsBalance, setCreditsBalance] = useState<number>();
+  const [subBtnLoading, setSubBtnLoading] = useState<boolean>(false);
+  const [connectBtnLoading, setConnectBtnLoading] = useState<boolean>(false);
 
   const customerId = getStripeCustIdFromLocalStorage();
   const userId = getUserIdFromLocalStorage();
+  const subTier = getUserSubTierFromLocalStorage();
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -173,23 +181,41 @@ export default function AccountPage() {
             marginBottom: '5vh',
           }}
         >
-          <FaStripe size={72} />
           <Col>
             <Button
               onClick={async () => {
-                await openStripePortal();
+                setSubBtnLoading(true);
+                if (subTier) {
+                  try {
+                    await openStripePortal();
+                  } catch (err) {
+                    console.error(err);
+                  }
+                } else {
+                  navigate('/subscriptions');
+                }
+                setSubBtnLoading(false);
               }}
               className={styles.btn}
+              loading={subBtnLoading}
             >
-              Manage Subscription
+              {subTier ? 'Manage Subscription' : 'Purchase Subscription'}
             </Button>
             {/* this button needs to be its own component that checks wether or not a user 
         already set up their stripe conneced and behaves accordingly */}
             <Button
-              onClick={() => {
-                createStripeConnectAcct();
+              onClick={async () => {
+                setConnectBtnLoading(true);
+                try {
+                  await createStripeConnectAcct();
+                } catch (err) {
+                  console.error(err);
+                } finally {
+                  setConnectBtnLoading(false);
+                }
               }}
               className={styles.btn}
+              loading={connectBtnLoading}
             >
               Connect Stripe Payout
             </Button>
