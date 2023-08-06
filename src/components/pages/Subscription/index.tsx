@@ -72,7 +72,7 @@ export default function Subscription() {
             </Button>
           </div>
         </Row>
-        <a className={styles.skip} href="/verify-email">
+        <a className={styles.skip} href="javascript:history.back()">
           Skip for now
         </a>
       </Content>
