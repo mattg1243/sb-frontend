@@ -11,6 +11,9 @@ import gatewayUrl from '../../../config/routing';
 import TermsOfService from '../../TermsOfService';
 import styles from './Register.module.css';
 import { CheckCircleOutlined, InfoCircleOutlined } from '@ant-design/icons';
+import { useDispatch } from 'react-redux';
+import { notification } from '../../../reducers/notificationReducer';
+import { loginUserReq } from '../../../lib/axios';
 
 const emailRe = /^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/;
 
@@ -27,6 +30,7 @@ export default function Register(): JSX.Element {
   const [alert, setAlert] = useState<AlertObj>({ status: 'none', message: '' });
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const sendRegisterRequest = async () => {
     if (password === passwordConfirm && agreedToTerms && email !== undefined && artistName !== undefined) {
@@ -37,10 +41,9 @@ export default function Register(): JSX.Element {
         const response = await axios.post(`${gatewayUrl}/user/register`, data);
         console.log(response);
         if (response.status === 200) {
-          setAlert({ status: 'success', message: 'Account created succesfully, you may now login' });
           localStorage.setItem('sb-user', JSON.stringify(response.data.user));
           setIsLoading(false);
-          navigate('/subscriptions');
+          navigate('/verify-email');
         }
       } catch (err: any) {
         console.log('message from server: ', err.response.data.message);
