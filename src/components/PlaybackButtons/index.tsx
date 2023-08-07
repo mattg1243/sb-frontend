@@ -1,11 +1,10 @@
 import { Tooltip, Spin, Row, Col } from 'antd';
 import { CaretRightOutlined, PauseOutlined, LoadingOutlined } from '@ant-design/icons';
-import { BsFillVolumeDownFill, BsVolumeMuteFill, BsVolumeUpFill } from 'react-icons/bs';
 import { useState, useRef, useEffect } from 'react';
+import { isSafari } from 'react-device-detect';
 import styles from './PlaybackButtons.module.css';
 import { useDispatch, useSelector } from 'react-redux';
 import type { Beat } from '../../types';
-import { cdnHostname } from '../../config/routing';
 import { addStreamReq } from '../../lib/axios';
 import { playback } from '../../reducers/playbackReducer';
 
@@ -27,7 +26,7 @@ const strPadLeft = (string: string, pad: string, length: number) => {
 const isMobile = window.innerWidth < 480;
 
 export default function PlaybackButtons(props: IPlyabackButtonsProps) {
-  const [isPlaying, setIsPlaying] = useState<boolean>(true);
+  const [isPlaying, setIsPlaying] = useState<boolean>(isSafari ? false : true);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [currentTime, setCurrentTime] = useState<number>(0);
   const [duration, setDuration] = useState<string>();
@@ -80,7 +79,6 @@ export default function PlaybackButtons(props: IPlyabackButtonsProps) {
       setCurrentTime(audio.current.currentTime);
       const minutes = Math.floor(audio.current.currentTime / 60);
       const seconds = Math.floor(audio.current.currentTime - minutes * 60);
-      console.log('seconds: ', seconds, 'minutes: ', minutes);
       setMinutesPlayed(Math.floor(minutes));
       setSecondsPlayed(Math.floor(seconds));
     }
@@ -110,7 +108,6 @@ export default function PlaybackButtons(props: IPlyabackButtonsProps) {
       setCurrentTime(0);
       setIsLoading(false);
       audio.current.onloadedmetadata = () => {
-        console.log('audio duration: ', audio.current?.duration);
         const minutes = Math.floor((audio.current?.duration as number) / 60);
         const seconds = Math.floor((audio.current?.duration as number) - minutes * 60);
         setDuration(`${minutes}:${strPadLeft(seconds.toString(), '0', 2)}`);
@@ -139,7 +136,9 @@ export default function PlaybackButtons(props: IPlyabackButtonsProps) {
         setCurrentTime(0);
         audio.current?.pause();
       };
-      audio.current.play();
+      if (!isMobile) {
+        audio.current.play();
+      }
       // wait 20seconds before registering as stream
     }
   }, [beatPlaying]);
