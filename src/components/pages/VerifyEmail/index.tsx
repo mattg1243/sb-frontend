@@ -7,13 +7,14 @@ import gatewayUrl from '../../../config/routing';
 import axios from 'axios';
 import styles from './VerifyEmail.module.css';
 import logo from '../../../assets/orangelogo.png';
+import { getUserIdFromLocalStorage } from '../../../utils/localStorageParser';
 
 export default function VerifyEmail() {
   // const userId = getUserIdFromLocalStorage();
   // const email = getUserEmailFromLocalStorage();
   const queryParams = new URLSearchParams(window.location.search);
   const code = queryParams.get('code');
-  const userId = queryParams.get('user');
+  const userId = queryParams.get('user') || getUserIdFromLocalStorage();
   const email = queryParams.get('email');
 
   const navigate = useNavigate();
