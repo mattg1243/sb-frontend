@@ -26,7 +26,7 @@ const strPadLeft = (string: string, pad: string, length: number) => {
 const isMobile = window.innerWidth < 480;
 
 export default function PlaybackButtons(props: IPlyabackButtonsProps) {
-  const [isPlaying, setIsPlaying] = useState<boolean>(isSafari ? false : true);
+  const [isPlaying, setIsPlaying] = useState<boolean>(isMobile ? false : true);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [currentTime, setCurrentTime] = useState<number>(0);
   const [duration, setDuration] = useState<string>();
