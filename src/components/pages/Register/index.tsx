@@ -16,6 +16,7 @@ import { notification } from '../../../reducers/notificationReducer';
 import { loginUserReq } from '../../../lib/axios';
 
 const emailRe = /^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/;
+const isMobile = window.innerWidth < 480;
 
 export default function Register(): JSX.Element {
   const [email, setEmail] = useState<string | undefined>('');
@@ -139,7 +140,7 @@ export default function Register(): JSX.Element {
             <Form.Item
               name="date of birth"
               style={{
-                marginTop: '4vh',
+                marginTop: '2vh',
                 justifyContent: 'center',
                 width: '100%',
                 alignItems: 'center',
@@ -147,34 +148,24 @@ export default function Register(): JSX.Element {
                 display: 'block !important',
               }}
             >
-              {window.innerWidth > 480 ? (
-                <DatePicker
-                  format={'YYYY/MM/DD'}
-                  onChange={(date, dateStr) => {
-                    setDateOfBirth(dateStr);
+              <Col>
+                <ChakraInput
+                  type="date"
+                  size="md"
+                  placeholder="Date of Birth"
+                  style={{
+                    width: isMobile ? '50vw' : 'clamp(200px, 10vw, 600px)',
+                    background: 'white',
+                    color: 'black',
+                    textAlign: 'center',
                   }}
-                  placeholder="Date Of Birth"
-                  style={{ alignSelf: 'center', fontSize: 'min(16px)' }}
-                  popupStyle={{
-                    marginLeft: '-40vw',
-                    fontSize: 'min(16px)',
+                  className={styles['dob-picker']}
+                  onChange={(e) => {
+                    setDateOfBirth(e.target.value);
                   }}
-                  placement="topRight"
                 />
-              ) : (
-                <Col>
-                  <p>Date of Birth</p>
-                  <ChakraInput
-                    type="date"
-                    size="md"
-                    placeholder="Date of Birth"
-                    style={{ width: '50vw', margin: '10px', background: 'white', color: 'black' }}
-                    onChange={(e) => {
-                      setDateOfBirth(e.target.value);
-                    }}
-                  />
-                </Col>
-              )}
+              </Col>
+              <p>Date of Birth</p>
               {window.innerWidth > 480 ? null : 'Date of Birth'}
             </Form.Item>
 

@@ -50,6 +50,10 @@
   font-size: clamp(15px, 0.9vw, 20px);
 }
 
+.dob-picker {
+  margin: 1vh 0;
+}
+
 /* Tablet CSS */
 
 @media (min-width: 480px) and (max-width: 1024px) {
@@ -67,6 +71,7 @@
   .logo {
     width: 25vw;
     height: auto;
+    margin-right: -5vw;
   }
 
   .headie {
@@ -94,11 +99,15 @@
   }
 
   .buttonUnOffset {
-    margin-left: 25vw;
+    margin-left: 9vw;
   }
 
   .regButton {
     width: 50vw;
+  }
+
+  .dob-picker {
+    margin-left: 25vw;
   }
 
   .register-button {
@@ -114,13 +123,15 @@
 
   .small-text {
     font-size: clamp(15px, 0.9vw, 20px);
-    padding-left: 3vw;
+    padding-left: 25vw;
   }
 
   .paidSwitch {
   }
 
   .alreadyAccount {
+    margin-left: 15vw;
+    margin-right: -2.5vw;
   }
 }
 
