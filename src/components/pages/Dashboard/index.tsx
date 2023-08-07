@@ -1,6 +1,7 @@
 import DashRow from '../../DashRow';
 import { useState, useEffect } from 'react';
-import useGetBeats from '../../../hooks/useGetBeats';
+import axios from 'axios';
+import useGetBeats, { IUseGetBeatsOptions } from '../../../hooks/useGetBeats';
 import { Spin, Tooltip } from 'antd';
 import styles from './Dashboard.module.css';
 import RecAlgoMenu from '../../RecAlgoMenu';
@@ -27,6 +28,8 @@ import { matchSorter } from 'match-sorter';
 import { RootState } from '../../../store';
 import UserRow from '../../UserRow';
 import SearchBeatFilter, { SearchBeatFilterOptions } from '../../SearchBeatFilter';
+import InfiniteScroll from 'react-infinite-scroll-component';
+import gatewayUrl from '../../../config/routing';
 
 export default function Dashboard() {
   const [currentAlgo, setCurrentAlgo] = useState<RecAlgos>('Recommended');
@@ -34,17 +37,24 @@ export default function Dashboard() {
   const [currentSearchBeatFilter, setCurrentSearchBeatFilter] = useState<SearchBeatFilterOptions | null>({});
   const [allFromSearch, setAllFromSeach] = useState<Array<Beat | User>>([]);
   const [sortedAllFromSearch, setSortedAllFromSearch] = useState<Array<Beat | User>>([]);
+  const [pageNum, setPageNum] = useState<number>(1);
+  const [moreBeatsToLoad, setMoreBeatsToLoad] = useState<boolean>(true);
   // const [isSearching, setIsSearching] = useState<boolean>();
 
   const userId = getUserIdFromLocalStorage();
   const isMobile = window.innerWidth < 480;
+  const beatsPerPage = isMobile ? 8 : 5;
 
   const dispatch = useDispatch();
 
-  const { beats, isLoading } = useGetBeats(
-    currentAlgo === 'Following' ? (userId as string) : undefined,
-    currentAlgo == 'Following' ? true : false
-  );
+  const getBeatOptions: IUseGetBeatsOptions = {
+    userId: currentAlgo === 'Following' ? (userId as string) : undefined,
+    following: currentAlgo == 'Following' ? true : false,
+    take: beatsPerPage,
+    skip: 0,
+  };
+
+  const { beats, isLoading } = useGetBeats(getBeatOptions);
 
   const beatsFromSearch = useSelector<RootState, Beat[] | null>((state) => selectBeats(state));
   const usersFromSearch = useSelector<RootState, User[] | null>((state) => selectUsers(state));
@@ -52,6 +62,23 @@ export default function Dashboard() {
   const isSearching = useSelector<RootState, boolean>((state) => selectIsSearching(state));
   const searchIsLoading = useSelector<RootState, boolean>((state) => selectSearchIsLoading(state));
   // const usersFromSearch = useSelector<{ users}>
+
+  const fetchMoreBeats = async () => {
+    try {
+      const res = await axios.get(
+        `${gatewayUrl}/beats/beats?skip=${(pageNum - 1) * beatsPerPage}&take=${beatsPerPage}`
+      );
+      const beatsFromRes = res.data as Array<Beat>;
+      if (beatsFromRes.length === 0) {
+        setMoreBeatsToLoad(false);
+      } else {
+        beats?.push(...res.data);
+        setPageNum(pageNum + 1);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   useEffect(() => {
     const allResults: (User | Beat)[] = [];
@@ -82,7 +109,7 @@ export default function Dashboard() {
   }, []);
 
   return (
-    <div data-testid="dashboard" style={{ width: '100%' }}>
+    <div data-testid="dashboard" style={{ width: '100vw' }}>
       <div>
         <h2 className={styles['for-you-text']}>{isSearching ? 'Search results' : 'For you'}</h2>
         {isSearching ? (
@@ -122,10 +149,94 @@ export default function Dashboard() {
           setCurrentSearchBeatFilter={setCurrentSearchBeatFilter}
         />
       ) : null}
-      <div className={styles['beats-container']} data-cy="beats-container">
-        {isSearching && beatsFromSearch !== null && currentSearchFilter === 'Beats' ? (
-          <>
-            {beatsFromSearch.map((beat) => {
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+        }}
+      >
+        <InfiniteScroll
+          dataLength={beats?.length || 5}
+          next={fetchMoreBeats}
+          hasMore={moreBeatsToLoad}
+          height={'90vh'}
+          scrollThreshold={0.8}
+          loader={<h4>Loading beats...</h4>}
+          endMessage={<p>You've seen all the beats!</p>}
+          className={styles['beats-container']}
+          data-cy="beats-container"
+        >
+          {isSearching && beatsFromSearch !== null && currentSearchFilter === 'Beats' ? (
+            <>
+              {beatsFromSearch.map((beat) => {
+                return (
+                  <DashRow
+                    beat={beat}
+                    onClick={() => {
+                      dispatch(playback(beat));
+                    }}
+                    buttonType="license"
+                    key={beat._id}
+                  />
+                );
+              })}
+            </>
+          ) : null}
+          {isSearching && usersFromSearch !== null && currentSearchFilter === 'Users' ? (
+            <>
+              {usersFromSearch.map((user) => {
+                return <UserRow user={user} />;
+              })}
+            </>
+          ) : null}
+          {isSearching && allFromSearch !== null && currentSearchFilter === 'All' ? (
+            <>
+              {sortedAllFromSearch.map((result) => {
+                if ('creditsToSpend' in result) {
+                  return <UserRow user={result as User} />;
+                } else {
+                  return (
+                    <DashRow
+                      beat={result as Beat}
+                      onClick={() => {
+                        dispatch(playback(result as Beat));
+                      }}
+                      buttonType="license"
+                    />
+                  );
+                }
+              })}
+            </>
+          ) : null}
+          {/* display no beats found message when searching beats */}
+          {(isSearching && beatsFromSearch === null && !searchIsLoading) ||
+          (beatsFromSearch?.length === 0 && currentSearchFilter === 'Beats' && !searchIsLoading) ? (
+            <h3 style={{ marginTop: '10vh' }}>No beats match that search :(</h3>
+          ) : null}
+          {/* no users found message when searching users */}
+          {(isSearching && currentSearchFilter == 'Users') ||
+          (currentSearchFilter == 'All' && usersFromSearch === null) ||
+          (usersFromSearch?.length === 0 && currentSearchFilter === 'Users' && !searchIsLoading) ? (
+            <h3 style={{ marginTop: '10vh' }}>No users match that search :(</h3>
+          ) : null}
+          {/* nothing found when searching all */}
+          {(isSearching && usersFromSearch === null && beatsFromSearch === null && !searchIsLoading) ||
+          (usersFromSearch?.length === 0 && beatsFromSearch?.length === 0 && currentSearchFilter === 'All') ? (
+            <h3 style={{ marginTop: '10vh' }}>Nothing matches that search :(</h3>
+          ) : null}
+          {/* search is loading */}
+          {beats && !isSearching ? (
+            // <InfiniteScroll
+            // dataLength={beats.length}
+            // next={fetchMoreBeats}
+            // hasMore={true}
+            // height={'70vh'}
+            // loader={<h4>Loading beats...</h4>}
+            // endMessage={<p>You've seen all the beats!</p>}
+            // >
+
+            beats.map((beat) => {
               return (
                 <DashRow
                   beat={beat}
@@ -136,71 +247,14 @@ export default function Dashboard() {
                   key={beat._id}
                 />
               );
-            })}
-          </>
-        ) : null}
-        {isSearching && usersFromSearch !== null && currentSearchFilter === 'Users' ? (
-          <>
-            {usersFromSearch.map((user) => {
-              return <UserRow user={user} />;
-            })}
-          </>
-        ) : null}
-        {isSearching && allFromSearch !== null && currentSearchFilter === 'All' ? (
-          <>
-            {sortedAllFromSearch.map((result) => {
-              if ('creditsToSpend' in result) {
-                return <UserRow user={result as User} />;
-              } else {
-                return (
-                  <DashRow
-                    beat={result as Beat}
-                    onClick={() => {
-                      dispatch(playback(result as Beat));
-                    }}
-                    buttonType="license"
-                  />
-                );
-              }
-            })}
-          </>
-        ) : null}
-        {/* display no beats found message when searching beats */}
-        {(isSearching && beatsFromSearch === null && !searchIsLoading) ||
-        (beatsFromSearch?.length === 0 && currentSearchFilter === 'Beats' && !searchIsLoading) ? (
-          <h3 style={{ marginTop: '10vh' }}>No beats match that search :(</h3>
-        ) : null}
-        {/* no users found message when searching users */}
-        {(isSearching && currentSearchFilter == 'Users') ||
-        (currentSearchFilter == 'All' && usersFromSearch === null) ||
-        (usersFromSearch?.length === 0 && currentSearchFilter === 'Users' && !searchIsLoading) ? (
-          <h3 style={{ marginTop: '10vh' }}>No users match that search :(</h3>
-        ) : null}
-        {/* nothing found when searching all */}
-        {(isSearching && usersFromSearch === null && beatsFromSearch === null && !searchIsLoading) ||
-        (usersFromSearch?.length === 0 && beatsFromSearch?.length === 0 && currentSearchFilter === 'All') ? (
-          <h3 style={{ marginTop: '10vh' }}>Nothing matches that search :(</h3>
-        ) : null}
-        {/* search is loading */}
-        {beats && !isSearching ? (
-          beats.map((beat) => {
-            return (
-              <DashRow
-                beat={beat}
-                onClick={() => {
-                  dispatch(playback(beat));
-                }}
-                buttonType="license"
-                key={beat._id}
-              />
-            );
-          })
-        ) : isLoading || searchIsLoading ? (
-          <>
-            <Spin size="large" tip="Loading beats..." spinning={true} style={{ marginTop: '35vh' }} />
-            <p>Loading beats...</p>
-          </>
-        ) : null}
+            })
+          ) : isLoading || searchIsLoading ? (
+            <>
+              <Spin size="large" tip="Loading beats..." spinning={true} style={{ marginTop: '35vh' }} />
+              <p>Loading beats...</p>
+            </>
+          ) : null}
+        </InfiniteScroll>
       </div>
     </div>
   );

@@ -112,8 +112,12 @@ export const getBeatReq = async (beatId: string) => {
   return await axios.get(`${gatewayUrl}/beats?id=${beatId}`);
 };
 
-export const getAllBeatsReq = async () => {
-  return await axios.get(`${gatewayUrl}/beats/beats`, { withCredentials: true });
+export const getAllBeatsReq = async (page?: { skip: number; take: number }) => {
+  let requestUrl = `${gatewayUrl}/beats/beats`;
+  if (page) {
+    requestUrl = requestUrl + `?skip=${page.skip}` + `&take=${page.take}`;
+  }
+  return await axios.get(requestUrl, { withCredentials: true });
 };
 
 export const getAllBeatsByUserReq = async (userId: string) => {

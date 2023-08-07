@@ -1,12 +1,19 @@
 import { Spin } from 'antd';
-import useGetBeats from '../../../hooks/useGetBeats';
+import useGetBeats, { IUseGetBeatsOptions } from '../../../hooks/useGetBeats';
 import { getUserIdFromLocalStorage } from '../../../utils/localStorageParser';
 import DashRow from '../../DashRow';
 import styles from './LicensedBeatPage.module.css';
 
 export default function LicensedBeatsPage() {
   const userId = getUserIdFromLocalStorage();
-  const { beats, isLoading } = useGetBeats(userId, false, 100, true);
+
+  const getBeatsOptions: IUseGetBeatsOptions = {
+    userId: userId as string,
+    following: false,
+    take: 10,
+    licensed: true,
+  };
+  const { beats, isLoading } = useGetBeats(getBeatsOptions);
 
   return (
     <div style={{ width: '100%' }}>

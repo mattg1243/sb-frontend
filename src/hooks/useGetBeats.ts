@@ -7,6 +7,13 @@ import {
   getLicensedBeatsByUser,
 } from '../lib/axios';
 // TODO refactor to take a config object instead having 4 params
+export interface IUseGetBeatsOptions {
+  userId?: string;
+  following?: boolean;
+  take?: number;
+  skip?: number;
+  licensed?: boolean;
+}
 /**
  * A hook that gets Beats from the server, if supplied with a user ID, returns all beats created
  * by that user. If supplied with licensed = true & a user ID, returns Beats that are licensed by that user.
@@ -16,37 +23,35 @@ import {
  * @param licensed - Optional param used for getting all Beats licensed by a given user.
  * @returns An array of Beat objects or undefined if no beats match the query.
  */
-export default function useGetBeats(
-  userId?: string,
-  following?: boolean,
-  limit?: number,
-  licensed?: boolean
-): { beats: Array<Beat> | undefined; isLoading: boolean } {
+export default function useGetBeats(options?: IUseGetBeatsOptions): {
+  beats: Array<Beat> | undefined;
+  isLoading: boolean;
+} {
   const [beats, setBeats] = useState<Array<Beat>>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   useEffect(() => {
     // console.log('getting beats...');
     try {
-      if (!userId) {
-        getAllBeatsReq()
+      if (!options?.userId) {
+        getAllBeatsReq({ skip: 0, take: 5 })
           .then((res) => {
             setBeats(res.data);
           })
           .then(() => setIsLoading(false));
-      } else if (userId && following) {
-        getAllBeatsFromFollowingReq(userId)
+      } else if (options.userId && options.following) {
+        getAllBeatsFromFollowingReq(options.userId)
           .then((res) => {
             setBeats(res.data);
           })
           .then(() => setIsLoading(false));
-      } else if (userId && licensed) {
-        getLicensedBeatsByUser(userId, limit)
+      } else if (options.userId && options.licensed) {
+        getLicensedBeatsByUser(options.userId, options.take)
           .then((res) => {
             setBeats(res.data);
           })
           .then(() => setIsLoading(false));
       } else {
-        getAllBeatsByUserReq(userId)
+        getAllBeatsByUserReq(options.userId)
           .then((res) => {
             setBeats(res.data);
           })
@@ -55,7 +60,7 @@ export default function useGetBeats(
     } catch (err) {
       console.error(err);
     }
-  }, [userId]);
+  }, [options?.userId]);
   if (beats?.length === 0) {
     return { beats: undefined, isLoading };
   }

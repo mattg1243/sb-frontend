@@ -13,7 +13,7 @@ import {
   getUserIdFromLocalStorage,
   getUserSubTierFromLocalStorage,
 } from '../../../utils/localStorageParser';
-import useGetBeats from '../../../hooks/useGetBeats';
+import useGetBeats, { IUseGetBeatsOptions } from '../../../hooks/useGetBeats';
 import { useNavigate } from 'react-router-dom';
 
 export default function AccountPage() {
@@ -36,7 +36,14 @@ export default function AccountPage() {
     });
   }, []);
 
-  const { beats, isLoading: beatsLoading } = useGetBeats(userId, false, 3, true);
+  const getBeatOptions: IUseGetBeatsOptions = {
+    userId: userId as string,
+    following: false,
+    take: 3,
+    skip: 0,
+  };
+
+  const { beats, isLoading: beatsLoading } = useGetBeats(getBeatOptions);
 
   const openStripePortal = async () => {
     if (!customerId) {
