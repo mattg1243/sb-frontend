@@ -11,7 +11,7 @@ export default function TermsOfService(props: { setAgreedToTerms: React.Dispatch
   const [scrolledDown, setScrolledDown] = useState<boolean>();
   const [agreed, setAgreed] = useState<boolean>(false);
 
-  const scrollRef = useBottomScrollListener<HTMLDivElement>(() => setScrolledDown(true));
+  const scrollRef = useBottomScrollListener<HTMLDivElement>(() => setScrolledDown(true), { offset: 750 });
 
   return (
     <>
