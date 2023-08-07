@@ -32,6 +32,15 @@ export default function VerifyEmail() {
           console.error(err);
         });
     }
+    // no verification code but userId from login
+    if (!code && userId) {
+      axios
+        .get(`${gatewayUrl}/user/verify-email?user=${userId}`)
+        .then(() => {
+          navigate('/app/dash');
+        })
+        .catch((err) => console.error(err));
+    }
   });
 
   const resendEmail = async () => {
