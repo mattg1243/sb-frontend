@@ -73,9 +73,12 @@ export default function Login(): JSX.Element {
       axios
         .get(`${gatewayUrl}/auth?user=${userId}`, { withCredentials: true })
         .then(() => navigate('/app/dash'))
-        .catch(() => console.log('no logged in'));
+        .catch(() => {
+          console.log('no logged in');
+          setCheckingAuth(false);
+        });
     }
-  });
+  }, []);
 
   return (
     <Layout>
