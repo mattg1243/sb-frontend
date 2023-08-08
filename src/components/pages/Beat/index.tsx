@@ -154,6 +154,7 @@ export default function BeatPage(props?: IBeatPageProps) {
               //   dispatch(playback(beat));
               // }}
               onError={({ currentTarget }) => {
+                console.error('error loading img on beat page: \n', currentTarget);
                 currentTarget.onerror = null; // prevents looping
                 currentTarget.src = artworkLoading;
               }}

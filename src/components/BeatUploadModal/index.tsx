@@ -349,7 +349,7 @@ export default function UploadBeatModal() {
           <>
             <p>Uploading beat...</p>
             <Progress percent={uploadProgress} strokeColor={'var(--primary)'} />
-            {uploadProgress > 99 && stems ? (
+            {uploadProgress > 99 && stems.length > 0 ? (
               <>
                 {/* make this show the total percentage of bytes from all stems */}
                 <p>Uploading stems...</p>
