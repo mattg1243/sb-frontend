@@ -37,7 +37,9 @@ export default function UploadButton(props: Props) {
       </Button>
       <input
         type="file"
-        accept={props.allowedFileType}
+        accept={
+          props.allowedFileType === 'image/*' ? 'image/jpg, image/jpeg, image/png, image/gif, image/bmp' : 'audio/*'
+        }
         style={{ display: 'none' }}
         ref={hiddenFileInput}
         multiple={props.multiple}
