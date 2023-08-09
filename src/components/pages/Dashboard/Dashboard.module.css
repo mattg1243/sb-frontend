@@ -1,10 +1,17 @@
 .beats-container {
-  width: 100%;
-  display: flex;
-  margin-top: 15vh;
+  width: 100vw;
+  padding-left: 9vw;
+  padding-top: 15vh;
+  text-align: center;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  overflow: visible;
+}
+
+.beats-container > * {
+  margin: 4vh 0;
+  padding: 0 1vh;
 }
 
 .for-you-text {
@@ -47,7 +54,13 @@
   }
 
   .beats-container {
-    margin-top: 2vh;
+    padding-top: 2vh;
+    padding-left: 2vw;
+    padding-bottom: 10vh;
     width: 100vw;
+  }
+
+  .beats-container > * {
+    margin: 15px 0;
   }
 }

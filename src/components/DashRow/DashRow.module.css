@@ -196,6 +196,10 @@
     margin-left: 3vw;
     align-self: flex-start;
     font-size: clamp(15px, 1vw, 20px);
+    max-width: 50vw;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
   }
 
   .info-text {

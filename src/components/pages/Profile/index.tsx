@@ -3,7 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 import { Avatar, Row, Space, Col, Button, Modal, Image, Progress, Statistic, Divider } from 'antd';
 import { UserOutlined, CheckCircleOutlined } from '@ant-design/icons';
 import DashRow from '../../DashRow';
-import useGetBeats from '../../../hooks/useGetBeats';
+import useGetBeats, { IUseGetBeatsOptions } from '../../../hooks/useGetBeats';
 import { cdnHostname } from '../../../config/routing';
 import { getUserIdFromLocalStorage } from '../../../utils/localStorageParser';
 import LoadingPage from '../Loading';
@@ -40,7 +40,11 @@ export default function Profile() {
 
   const userId = searchParams.get('id') || '';
   const isCurrentUser = userId === getUserIdFromLocalStorage();
-  const { beats } = useGetBeats(userId);
+
+  const getBeatsOptions: IUseGetBeatsOptions = {
+    userId: userId as string,
+  };
+  const { beats } = useGetBeats(getBeatsOptions);
   const dispatch = useDispatch();
   const beatsFromSearch = useSelector<RootState, Beat[] | null>((state) => selectBeats(state));
   // this could probably be optimized to run async
