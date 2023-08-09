@@ -45,7 +45,7 @@ describe('Handles invalid credentials properly', () => {
     cy.get('#password-input').type('asdlkf', { force: true });
     cy.get('#login-btn').click({ force: true });
     cy.wait('@badUserLoginReq').then(() => {
-      cy.get('.custom-alert');
+      cy.getBySel('custom-alert');
     });
     cy.url().should('include', '/login');
   });
