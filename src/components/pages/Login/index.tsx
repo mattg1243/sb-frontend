@@ -23,6 +23,9 @@ export default function Login(): JSX.Element {
 
   const navigate = useNavigate();
 
+  const goBack = new URLSearchParams(window.location.search).get('goBack');
+  console.log('goBack = ', goBack);
+
   const loginUser = async (email: string, password: string) => {
     setIsLoading(true);
     try {
@@ -30,7 +33,11 @@ export default function Login(): JSX.Element {
       console.log(loginResponse);
       if (loginResponse.status === 200 && loginResponse.data.user) {
         localStorage.setItem('sb-user', JSON.stringify(loginResponse.data.user));
-        navigate('/app/dash');
+        if (goBack === 'true') {
+          navigate(-1);
+        } else {
+          navigate('/app/dash');
+        }
       } else {
         setAlert({ status: 'success', message: 'User successfully logged in' });
       }
@@ -155,6 +162,9 @@ export default function Login(): JSX.Element {
                 </Button>
               )}
               <CustomAlert status={alert.status} message={alert.message} />
+              {goBack == 'true' ? (
+                <CustomAlert status="warning" message="You must be logged in to access that feature" />
+              ) : null}
               <h3 className={styles.noAccount} style={{ marginTop: '1vh' }}>
                 Dont have an account? <a href="/register">Sign Up</a>
               </h3>
