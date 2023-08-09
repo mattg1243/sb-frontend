@@ -1,5 +1,6 @@
 import { Alert } from 'antd';
 import { AlertObj } from '../../types';
+import styles from './CustomAlert.module.css';
 
 export default function CustomAlert(props: AlertObj) {
   // destructure props
@@ -8,15 +9,6 @@ export default function CustomAlert(props: AlertObj) {
   if (status === 'none') {
     return <></>;
   } else {
-    return (
-      <Alert
-        message={message}
-        type={status}
-        showIcon
-        style={{ maxWidth: '50%', padding: '1rem', margin: 'auto' }}
-        closable={true}
-        className="custom-alert"
-      />
-    );
+    return <Alert message={message} type={status} showIcon closable={true} className={styles['custom-alert']} />;
   }
 }

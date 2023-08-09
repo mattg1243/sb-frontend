@@ -1,0 +1,14 @@
+@media (min-width: 1024px) {
+  .custom-alert {
+    max-width: 50%;
+    margin: auto;
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 480) {
+  .custom-alert {
+    max-width: 80vw;
+    margin: 0;
+  }
+}
