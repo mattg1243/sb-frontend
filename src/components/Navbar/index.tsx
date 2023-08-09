@@ -23,6 +23,7 @@ import {
   searchIsLoading,
 } from '../../reducers/searchReducer';
 import { RootState } from '../../store';
+import { ensureLoggedIn } from '../../utils/auth';
 
 export default function Navbar() {
   const [avatarUrl, setAvatarUrl] = useState();
@@ -45,7 +46,18 @@ export default function Navbar() {
     {
       key: 'profile',
       label: (
-        <Button type="ghost" href={`/app/user/?id=${currentUserId}`}>
+        <Button
+          type="ghost"
+          style={{ color: 'white' }}
+          onClick={async () => {
+            try {
+              await ensureLoggedIn();
+              navigate(`/app/user/?id=${currentUserId}`);
+            } catch (err) {
+              console.error(err);
+            }
+          }}
+        >
           Profile
         </Button>
       ),
@@ -53,7 +65,18 @@ export default function Navbar() {
     {
       key: 'account',
       label: (
-        <Button type="ghost" style={{ color: 'white' }} href="/app/account">
+        <Button
+          type="ghost"
+          style={{ color: 'white' }}
+          onClick={async () => {
+            try {
+              await ensureLoggedIn();
+              navigate('/app/account');
+            } catch (err) {
+              console.error(err);
+            }
+          }}
+        >
           Account
         </Button>
       ),

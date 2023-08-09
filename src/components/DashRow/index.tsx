@@ -15,6 +15,7 @@ import { addStreamReq, getUserLikesBeatReq, likeBeatReq, unlikeBeatReq } from '.
 import { getUserIdFromLocalStorage } from '../../utils/localStorageParser';
 import { useNavigate } from 'react-router-dom';
 import { BsVolumeUp } from 'react-icons/bs';
+import { ensureLoggedIn } from '../../utils/auth';
 
 interface IBeatRowProps {
   beat: Beat;
@@ -127,10 +128,11 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
 
   const likeBeat = async () => {
     if (beat.artistId !== userId) {
-      setLiked(true);
-      setLikesCount(likesCount + 1);
       try {
+        await ensureLoggedIn();
+        setLiked(true);
         const res = await likeBeatReq(beat._id);
+        setLikesCount(likesCount + 1);
         console.log(res);
       } catch (err) {
         setLiked(false);
@@ -141,8 +143,9 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
   };
 
   const unlikeBeat = async () => {
-    setLiked(false);
     try {
+      await ensureLoggedIn();
+      setLiked(false);
       const res = await unlikeBeatReq(beat._id);
       setLikesCount(likesCount - 1);
       console.log(res);

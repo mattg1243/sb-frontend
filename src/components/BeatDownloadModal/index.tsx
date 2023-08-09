@@ -7,6 +7,7 @@ import gatewayUrl from '../../config/routing';
 import axios, { AxiosResponse } from 'axios';
 import CustomAlert from '../CustomAlert/index';
 import { AlertObj } from '../../types';
+import { ensureLoggedIn } from '../../utils/auth';
 
 interface IBeatDownloadModal {
   beatId: string;
@@ -127,8 +128,13 @@ export default function BeatDownloadModal(props: IBeatDownloadModal) {
   const btn = (
     <Button
       type="ghost"
-      onClick={() => {
-        setOpen(true);
+      onClick={async () => {
+        try {
+          await ensureLoggedIn();
+          setOpen(true);
+        } catch (err) {
+          console.error(err);
+        }
       }}
       icon={icon}
       data-cy="download-modal-btn"

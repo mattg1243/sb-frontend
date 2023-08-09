@@ -8,6 +8,7 @@ import { possibleKeyOptions } from '../BeatUploadModal';
 import { AlertObj } from '../../types/alerts';
 import CustomAlert from '../CustomAlert';
 import UploadButton from '../UploadButton';
+import { ensureLoggedIn } from '../../utils/auth';
 
 interface IEditBeatModalProps {
   beat: Beat;
@@ -93,8 +94,13 @@ export default function BeatEditModal(props: IEditBeatModalProps) {
     <>
       <Button
         type="ghost"
-        onClick={() => {
-          setIsOpen(true);
+        onClick={async () => {
+          try {
+            await ensureLoggedIn();
+            setIsOpen(true);
+          } catch (err) {
+            console.error(err);
+          }
         }}
         data-cy="edit button"
       >

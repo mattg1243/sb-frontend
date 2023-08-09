@@ -7,6 +7,7 @@ import { AlertObj } from '../../types/alerts';
 import CustomAlert from '../CustomAlert';
 import styles from './UserEditModal.module.css';
 import { AxiosError } from 'axios';
+import { ensureLoggedIn } from '../../utils/auth';
 
 interface IUserEditModal {
   user: User;
@@ -62,16 +63,26 @@ export default function UserEditModal(props: IUserEditModal) {
     <>
       {isMobile ? (
         <EditOutlined
-          onClick={() => {
-            setIsOpen(true);
+          onClick={async () => {
+            try {
+              await ensureLoggedIn();
+              setIsOpen(true);
+            } catch (err) {
+              console.error(err);
+            }
           }}
           style={{ fontSize: '3vh' }}
         />
       ) : (
         <Button
           type="ghost"
-          onClick={() => {
-            setIsOpen(true);
+          onClick={async () => {
+            try {
+              await ensureLoggedIn();
+              setIsOpen(true);
+            } catch (err) {
+              console.error(err);
+            }
           }}
           className={styles.btn}
         >

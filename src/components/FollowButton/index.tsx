@@ -4,6 +4,7 @@ import axios from 'axios';
 import gatewayUrl from '../../config/routing';
 import { followUserReq, unfollowUserReq } from '../../lib/axios';
 import styles from './FollowButton.module.css';
+import { ensureLoggedIn } from '../../utils/auth';
 
 interface IFollowButtonProps {
   currentUser: string;
@@ -52,6 +53,7 @@ export default function FollowButton(props: IFollowButtonProps) {
   const followAction = async () => {
     try {
       setIsLoading(true);
+      await ensureLoggedIn();
       const res = await reqFn(viewedUser);
       console.log(res);
       if (res.status === 200) {

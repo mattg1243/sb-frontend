@@ -16,6 +16,7 @@ import { useDispatch } from 'react-redux';
 import { notification } from '../../../reducers/notificationReducer';
 import { playback } from '../../../reducers/playbackReducer';
 import BeatDownloadModal from '../../BeatDownloadModal';
+import { ensureLoggedIn } from '../../../utils/auth';
 
 interface IBeatPageProps {
   testBeat?: Beat;
@@ -113,6 +114,7 @@ export default function BeatPage(props?: IBeatPageProps) {
       if (beat.artistId !== userId) {
         setLiked(true);
         try {
+          await ensureLoggedIn();
           const res = await likeBeatReq(beat._id);
           setLikesCount(likesCount + 1);
           console.log(res);
@@ -128,6 +130,7 @@ export default function BeatPage(props?: IBeatPageProps) {
     setLiked(false);
     if (beat && likesCount) {
       try {
+        await ensureLoggedIn();
         const res = await unlikeBeatReq(beat._id);
         setLikesCount(likesCount - 1);
         console.log(res);

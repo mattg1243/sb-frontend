@@ -32,6 +32,7 @@ import { getUserArtistNameFromLocalStorage, getUserIdFromLocalStorage } from '..
 import { useDispatch } from 'react-redux';
 import { notification } from '../../reducers/notificationReducer';
 import { Keys } from '../../types';
+import { ensureLoggedIn } from '../../utils/auth';
 
 export const possibleKeyOptions = Keys.map((key) => ({ value: key, label: key }));
 interface Stem {
@@ -202,8 +203,13 @@ export default function UploadBeatModal() {
     <>
       <Button
         type="ghost"
-        onClick={() => {
-          setShowModal(true);
+        onClick={async () => {
+          try {
+            await ensureLoggedIn();
+            setShowModal(true);
+          } catch (err) {
+            console.error(err);
+          }
         }}
         style={{ color: 'white' }}
         id="open-modal-btn"
