@@ -141,7 +141,12 @@ export default function BeatPage(props?: IBeatPageProps) {
   return (
     <>
       <div
-        style={{ height: '100%', width: isMobile ? '100%' : '50%', marginTop: '11vh', textAlign: 'center' }}
+        style={{
+          height: '100%',
+          width: isMobile ? '100%' : '50%',
+          marginTop: '11vh',
+          textAlign: 'center',
+        }}
         cy-data="beat-page-cont"
       >
         {beat && !isLoading ? (
@@ -161,7 +166,10 @@ export default function BeatPage(props?: IBeatPageProps) {
               height={isMobile ? 250 : 400}
               className={styles.artwork}
             />
-            <h1 style={{ marginTop: '3vh' }} data-cy="beat-page-title">
+            <h1
+              style={{ marginTop: '3vh', maxWidth: isMobile ? '90vw' : '500px', marginLeft: isMobile ? '5vw' : '12vw' }}
+              data-cy="beat-page-title"
+            >
               {beat.title}
             </h1>
             <h3 data-cy="beat-page-artist">
