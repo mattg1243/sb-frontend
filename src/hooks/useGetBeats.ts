@@ -33,7 +33,7 @@ export default function useGetBeats(options?: IUseGetBeatsOptions): {
     // console.log('getting beats...');
     try {
       if (!options?.userId) {
-        getAllBeatsReq({ skip: 0, take: 5 })
+        getAllBeatsReq({ skip: 0, take: options?.take || 8 })
           .then((res) => {
             setBeats(res.data);
           })
