@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 import UploadBeatModal from '.';
 import { mount } from 'cypress/react18';
 import { store } from '../../store';
+import gatewayUrl from '../../config/routing';
 
 describe('Button opens modal', () => {
   beforeEach(() => {
@@ -14,6 +15,8 @@ describe('Button opens modal', () => {
     );
   });
   it('opens', () => {
+    window.localStorage.setItem('sb-user', JSON.stringify({ id: '2f4f569c-d3ec-4329-a7a9-e656028d3ed0' }));
+    cy.intercept(`${gatewayUrl}/auth?user=2f4f569c-d3ec-4329-a7a9-e656028d3ed0`, { statusCode: 200 });
     cy.get('#open-modal-btn').click();
     cy.getBySel('modal');
   });
@@ -26,6 +29,8 @@ describe('Inputs populate correctly', () => {
         <UploadBeatModal />
       </Provider>
     );
+    window.localStorage.setItem('sb-user', JSON.stringify({ id: '2f4f569c-d3ec-4329-a7a9-e656028d3ed0' }));
+    cy.intercept(`${gatewayUrl}/auth?user=2f4f569c-d3ec-4329-a7a9-e656028d3ed0`, { statusCode: 200 });
     cy.get('#open-modal-btn').click();
   });
   it('title', () => {

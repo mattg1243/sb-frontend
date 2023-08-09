@@ -3,10 +3,13 @@
 import { mount } from 'cypress/react18';
 import BeatEditModal from '.';
 import { testBeat } from '../../testFixtures/testBeat';
+import gatewayUrl from '../../config/routing';
 
 describe('BeatEditModal.test.tsx', () => {
   beforeEach(() => {
     mount(<BeatEditModal beat={testBeat} />);
+    window.localStorage.setItem('sb-user', JSON.stringify({ id: '2f4f569c-d3ec-4329-a7a9-e656028d3ed0' }));
+    cy.intercept(`${gatewayUrl}/auth?user=2f4f569c-d3ec-4329-a7a9-e656028d3ed0`, { statusCode: 200 });
     cy.get('[data-cy="edit button"]').click();
   });
   it('contains title in correct input field', () => {

@@ -9,6 +9,15 @@ export default function CustomAlert(props: AlertObj) {
   if (status === 'none') {
     return <></>;
   } else {
-    return <Alert message={message} type={status} showIcon closable={true} className={styles['custom-alert']} />;
+    return (
+      <Alert
+        message={message}
+        type={status}
+        showIcon
+        closable={true}
+        className={styles['custom-alert']}
+        data-cy="custom-alert"
+      />
+    );
   }
 }
