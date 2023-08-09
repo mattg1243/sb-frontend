@@ -4,7 +4,7 @@ const GATEWAY_URL = 'http://localhost:8000';
 
 describe('Streams and likes are counted properly', () => {
   beforeEach(() => {
-    cy.intercept('GET', `/beats/beats`, { fixture: 'getBeatsRes.json' }).as('getBeatsReq');
+    cy.intercept('GET', `/beats/beats*`, { fixture: 'getBeatsRes.json' }).as('getBeatsReq');
     cy.intercept('GET', `/beats/user-likes?beatId=*`, { statusCode: 200 }).as('getLikesReq');
     cy.intercept('GET', `/beats/like?beatId=*`, { statusCode: 200 }).as('likeBeatReq');
     cy.clock();
