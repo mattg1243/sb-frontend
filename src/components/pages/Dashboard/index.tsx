@@ -43,7 +43,7 @@ export default function Dashboard() {
 
   const userId = getUserIdFromLocalStorage();
   const isMobile = window.innerWidth < 480;
-  const beatsPerPage = isMobile ? 8 : 5;
+  const beatsPerPage = isMobile ? 12 : 8;
 
   const dispatch = useDispatch();
 
@@ -154,16 +154,25 @@ export default function Dashboard() {
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'center',
+          alignItems: 'center',
+          overflow: 'auto',
         }}
+        id="scroll-div"
       >
         <InfiniteScroll
-          dataLength={beats?.length || 5}
+          dataLength={beats?.length || 8}
           next={fetchMoreBeats}
           hasMore={moreBeatsToLoad}
-          height={'90vh'}
-          scrollThreshold={0.8}
-          loader={<h4>Loading beats...</h4>}
-          endMessage={<p>You've seen all the beats!</p>}
+          height="100vh"
+          style={{
+            paddingBottom: '5vh',
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginRight: isMobile ? '0' : '-20vw',
+          }}
+          scrollThreshold={1}
+          loader={<h4 style={{ marginLeft: isMobile ? '0' : '-26vw' }}>Loading beats...</h4>}
+          endMessage={<p style={{ marginLeft: isMobile ? '0' : '-26vw' }}>You've seen all the beats!</p>}
           className={styles['beats-container']}
           data-cy="beats-container"
         >

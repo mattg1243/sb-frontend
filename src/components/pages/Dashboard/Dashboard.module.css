@@ -6,6 +6,12 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  overflow: visible;
+}
+
+.beats-container > * {
+  margin: 4vh 0;
+  padding: 0 1vh;
 }
 
 .for-you-text {
@@ -50,6 +56,11 @@
   .beats-container {
     padding-top: 2vh;
     padding-left: 2vw;
+    padding-bottom: 10vh;
     width: 100vw;
+  }
+
+  .beats-container > * {
+    margin: 15px 0;
   }
 }
