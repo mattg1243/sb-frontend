@@ -121,6 +121,7 @@ export default function UploadBeatModal() {
         beatFormData.append('majorOrMinor', majorOrMinor as string);
         beatFormData.append('s3Key', s3Key);
         beatFormData.append('s3StreamKey', streamKey);
+        beatFormData.append('fileName', audio?.name as string);
         beatFormData.append('hasStems', hasStems ? 'true' : 'false');
         // need to add user.id, user.artistName
         beatFormData.append('userId', userId as string);
