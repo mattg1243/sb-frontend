@@ -65,9 +65,7 @@ export default function Dashboard() {
 
   const fetchMoreBeats = async () => {
     try {
-      const res = await axios.get(
-        `${gatewayUrl}/beats/beats?skip=${(pageNum - 1) * beatsPerPage}&take=${beatsPerPage}`
-      );
+      const res = await axios.get(`${gatewayUrl}/beats/beats?skip=${pageNum * beatsPerPage}&take=${beatsPerPage}`);
       const beatsFromRes = res.data as Array<Beat>;
       if (beatsFromRes.length === 0) {
         setMoreBeatsToLoad(false);
@@ -156,6 +154,7 @@ export default function Dashboard() {
           justifyContent: 'center',
           alignItems: 'center',
           overflow: 'auto',
+          overflowX: 'hidden',
         }}
         id="scroll-div"
       >
@@ -169,6 +168,7 @@ export default function Dashboard() {
             justifyContent: 'center',
             alignItems: 'center',
             marginRight: isMobile ? '0' : '-20vw',
+            overflowX: 'hidden',
           }}
           scrollThreshold={1}
           loader={<h4 style={{ marginLeft: isMobile ? '0' : '-26vw' }}>Loading beats...</h4>}

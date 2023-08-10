@@ -58,6 +58,7 @@
     padding-left: 2vw;
     padding-bottom: 10vh;
     width: 100vw;
+    overflow-x: hidden;
   }
 
   .beats-container > * {
