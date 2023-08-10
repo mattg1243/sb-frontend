@@ -39,6 +39,7 @@ export default function AccountPage() {
   const getBeatOptions: IUseGetBeatsOptions = {
     userId: userId as string,
     following: false,
+    licensed: true,
     take: 3,
     skip: 0,
   };
