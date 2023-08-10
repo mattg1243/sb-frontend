@@ -43,7 +43,7 @@ export default function Dashboard() {
 
   const userId = getUserIdFromLocalStorage();
   const isMobile = window.innerWidth < 480;
-  const beatsPerPage = isMobile ? 12 : 8;
+  const beatsPerPage = isMobile ? 12 : window.innerWidth < 770 ? 5 : 8;
 
   const dispatch = useDispatch();
 
@@ -168,9 +168,8 @@ export default function Dashboard() {
             justifyContent: 'center',
             alignItems: 'center',
             marginRight: isMobile ? '0' : '-20vw',
-            overflowX: 'hidden',
           }}
-          scrollThreshold={1}
+          scrollThreshold={0.8}
           loader={<h4 style={{ marginLeft: isMobile ? '0' : '-26vw' }}>Loading beats...</h4>}
           endMessage={<p style={{ marginLeft: isMobile ? '0' : '-26vw' }}>You've seen all the beats!</p>}
           className={styles['beats-container']}
