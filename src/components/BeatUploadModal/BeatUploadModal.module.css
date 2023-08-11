@@ -31,6 +31,10 @@
     align-items: center;
   }
 
+  .txt-inputs {
+    font-size: min(16px) !important;
+  }
+
   .stems-table {
     margin-left: 12vw;
     width: 100%;

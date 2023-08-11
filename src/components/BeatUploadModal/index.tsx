@@ -260,6 +260,7 @@ export default function UploadBeatModal(props: IBeatUploadModalProps) {
                 data-cy="title-input"
                 showCount
                 minLength={6}
+                style={{ fontSize: 'min(16px)' }}
               ></Input>
             </Form.Item>
             <Form.Item required={true}>
@@ -269,10 +270,11 @@ export default function UploadBeatModal(props: IBeatUploadModalProps) {
                 mode="multiple"
                 maxTagCount="responsive"
                 onChange={handleGenreTagsChange}
+                style={{ fontSize: 'min(16px)' }}
                 data-cy="genre-select"
               />
             </Form.Item>
-            <Form.Item required>
+            <Form.Item required style={{ fontSize: 'min(16px)' }}>
               <Input
                 placeholder="BPM"
                 onChange={(e) => {
@@ -280,11 +282,18 @@ export default function UploadBeatModal(props: IBeatUploadModalProps) {
                 }}
                 addonAfter="BPM"
                 type="number"
+                style={{ fontSize: 'min(16px)' }}
                 data-cy="bpm-input"
               ></Input>
             </Form.Item>
-            <Form.Item required>
-              <Select placeholder="Key" options={possibleKeyOptions} onChange={handleKeyChange} />
+            <Form.Item required style={{ fontSize: 'min(16px)' }}>
+              <Select
+                placeholder="Key"
+                options={possibleKeyOptions}
+                dropdownStyle={{ fontSize: 'min(16px)' }}
+                style={{ fontSize: 'min(16px)' }}
+                onChange={handleKeyChange}
+              />
               <Form.Item style={{ justifyContent: 'center' }}>
                 <Radio.Group
                   onChange={(e) => {
