@@ -1,10 +1,10 @@
 import axios from 'axios';
-import { Button, Menu, Row, Col, Modal, Input, InputRef, MenuProps, Dropdown } from 'antd';
-import { CloseOutlined, HomeOutlined, SearchOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
+import { Button, Row, Col, Input, InputRef, MenuProps, Dropdown } from 'antd';
+import { CloseOutlined, HomeOutlined, SearchOutlined, UserOutlined, UploadOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import styles from './MobileNav.module.css';
 import { getUserIdFromLocalStorage } from '../../utils/localStorageParser';
-import { Ref, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { logoutUserReq } from '../../lib/axios';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -17,6 +17,7 @@ import {
 import { beats } from '../../reducers/searchReducer';
 import { RootState } from '../../store';
 import gatewayUrl from '../../config/routing';
+import UploadBeatModal from '../BeatUploadModal';
 
 const onProfilePage = window.location.pathname == '/app/user';
 
@@ -25,9 +26,10 @@ interface IMobileNavProps {
 }
 
 export default function MobileNav(props: IMobileNavProps) {
-  const [currentSelection, setCurrentSelection] = useState<'Home' | 'Search' | 'Settings' | 'Profile'>('Home');
+  const [currentSelection, setCurrentSelection] = useState<'Home' | 'Search' | 'Upload' | 'Profile'>('Home');
   const [searchOpen, setSearchOpen] = useState<boolean>(false);
   const [userMenuOpen, setUserMenuOpen] = useState<boolean>(false);
+  const [uploadModalOpen, setUploadModalOpen] = useState<boolean>(false);
 
   const navigate = useNavigate();
   const userId = getUserIdFromLocalStorage();
@@ -118,7 +120,7 @@ export default function MobileNav(props: IMobileNavProps) {
   return (
     <>
       <Row className={styles.container} justify="space-around">
-        <Col span={8}>
+        <Col span={6}>
           <Button
             onClick={() => {
               navigate('/app/dash');
@@ -139,7 +141,7 @@ export default function MobileNav(props: IMobileNavProps) {
           </Button>
         </Col>
 
-        <Col span={8}>
+        <Col span={6}>
           <Button
             onClick={() => {
               console.log('search featrure in progress');
@@ -158,7 +160,26 @@ export default function MobileNav(props: IMobileNavProps) {
             />
           </Button>
         </Col>
-        <Col span={8}>
+        <Col span={6}>
+          <UploadBeatModal
+            btn={
+              <Button
+                type="ghost"
+                className={styles.btn}
+                style={{ width: '100%' }}
+                onClick={() => setUploadModalOpen(true)}
+                data-cy="upload-btn"
+              >
+                <UploadOutlined
+                  style={{ fontSize: '24px', color: 'white', opacity: currentSelection == 'Upload' ? 1 : 0.5 }}
+                />
+              </Button>
+            }
+            isOpenParent={uploadModalOpen}
+            setIsOpenParent={setUploadModalOpen}
+          />
+        </Col>
+        <Col span={6}>
           <Dropdown
             menu={{ items: currentUserId ? userMenuItems : undefined }}
             onOpenChange={() => {
@@ -227,6 +248,7 @@ export default function MobileNav(props: IMobileNavProps) {
           />
         </Col>
       </Row>
+      <UploadBeatModal />
     </>
   );
 }

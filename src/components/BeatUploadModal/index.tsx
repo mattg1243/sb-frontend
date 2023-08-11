@@ -22,7 +22,7 @@ import {
   DeleteOutlined,
 } from '@ant-design/icons';
 import axios, { AxiosResponse } from 'axios';
-import { useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { getSignedUploadUrlReq, uploadBeatReq } from '../../lib/axios';
 import { genreOptions } from '../../utils/genreTags';
 import UploadButton from '../UploadButton';
@@ -41,8 +41,19 @@ interface Stem {
   beatId: string;
 }
 
-export default function UploadBeatModal() {
-  const [showModal, setShowModal] = useState<boolean>(false);
+interface IBeatUploadModalProps {
+  // this will only accept antd buttons for now
+  btn?: React.ReactNode;
+  isOpenParent?: boolean;
+  setIsOpenParent?: Dispatch<SetStateAction<boolean>>;
+}
+
+const isMobile = window.innerWidth < 480;
+
+export default function UploadBeatModal(props: IBeatUploadModalProps) {
+  const { btn, isOpenParent, setIsOpenParent } = props;
+
+  const [showModal, setShowModal] = useState<boolean>(isOpenParent ? isOpenParent : false);
   const [alert, setAlert] = useState<{ message: string; type: 'error' | 'success' }>();
   const [isUploading, setIsUploading] = useState<boolean>(false);
   const [uploadProgress, setUploadProgress] = useState<number>(0);
@@ -63,7 +74,7 @@ export default function UploadBeatModal() {
   const dispatch = useDispatch();
 
   const handleCancel = () => {
-    setShowModal(false);
+    setIsOpenParent ? setIsOpenParent(false) : setShowModal(false);
   };
 
   const validForm = () => {
@@ -202,28 +213,33 @@ export default function UploadBeatModal() {
 
   return (
     <>
-      <Button
-        type="ghost"
-        onClick={async () => {
-          try {
-            await ensureLoggedIn();
-            setShowModal(true);
-          } catch (err) {
-            console.error(err);
-          }
-        }}
-        style={{ color: 'white' }}
-        id="open-modal-btn"
-        data-cy="upload-modal-nav"
-      >
-        Upload
-      </Button>
+      {!isMobile && !btn ? (
+        <Button
+          type="ghost"
+          onClick={async () => {
+            try {
+              await ensureLoggedIn();
+              setIsOpenParent ? setIsOpenParent(true) : setShowModal(true);
+            } catch (err) {
+              console.error(err);
+            }
+          }}
+          style={{ color: 'white' }}
+          id="open-modal-btn"
+          data-cy="upload-modal-nav"
+        >
+          Upload
+        </Button>
+      ) : (
+        <>{btn}</>
+      )}
       <Modal
         title="Upload Your Beat"
-        open={showModal}
+        open={showModal || isOpenParent}
         onCancel={handleCancel}
         footer={null}
         className={styles.modal}
+        centered
         data-cy="modal"
       >
         <Spin
@@ -234,7 +250,7 @@ export default function UploadBeatModal() {
           indicator={<LoadingOutlined />}
           data-cy="spin"
         >
-          <Form style={{ margin: '2rem 2rem', width: '35vw' }}>
+          <Form className={styles.form}>
             <Form.Item>
               <Input
                 placeholder="Title"
@@ -269,7 +285,7 @@ export default function UploadBeatModal() {
             </Form.Item>
             <Form.Item required>
               <Select placeholder="Key" options={possibleKeyOptions} onChange={handleKeyChange} />
-              <Form.Item>
+              <Form.Item style={{ justifyContent: 'center' }}>
                 <Radio.Group
                   onChange={(e) => {
                     handleMajorMinorChange(e);
@@ -286,8 +302,8 @@ export default function UploadBeatModal() {
                 </Radio.Group>
               </Form.Item>
             </Form.Item>
-            <Row>
-              <Col>
+            <Row className={styles['upload-btns-row']} justify={isMobile ? 'center' : 'start'}>
+              <Col className={styles['upload-btns-col']} span={12}>
                 <Form.Item>
                   <UploadButton
                     label="Artwork Upload"
@@ -295,9 +311,9 @@ export default function UploadBeatModal() {
                     uploadStateSetter={setArtwork}
                     sideIcon={<PictureOutlined />}
                   />
-                  {artwork ? <CheckCircleOutlined style={{ marginLeft: '1rem', fontSize: '1rem' }} /> : null}
+                  {/* {artwork ? <CheckCircleOutlined style={{ marginLeft: '1rem', fontSize: '1rem' }} /> : null} */}
                 </Form.Item>
-                <Form.Item>
+                <Form.Item style={{ width: '100%' }}>
                   <UploadButton
                     label="Beat Upload"
                     allowedFileType="audio/*"
@@ -305,7 +321,7 @@ export default function UploadBeatModal() {
                     sideIcon={<SoundOutlined />}
                     data-cy="beat-upload-beat-input"
                   />
-                  {audio ? <CheckCircleOutlined style={{ marginLeft: '1rem', fontSize: '1rem' }} /> : null}
+                  {/* {audio ? <CheckCircleOutlined style={{ marginLeft: '1rem', fontSize: '1rem' }} /> : null} */}
                 </Form.Item>
                 <Form.Item>
                   <UploadButton
@@ -318,7 +334,7 @@ export default function UploadBeatModal() {
                   />
                 </Form.Item>
               </Col>
-              <Col style={{ marginLeft: '12vw' }}>
+              <Col span={12}>
                 <List
                   dataSource={stems.map((stemFile) => stemFile.name)}
                   bordered
@@ -327,10 +343,20 @@ export default function UploadBeatModal() {
                   renderItem={(item, index) => (
                     <List.Item style={{ width: '25vh' }} key={index}>
                       {item}
-                      <DeleteOutlined style={{ marginLeft: '2vw' }} />
+                      <DeleteOutlined
+                        style={{ marginLeft: '2vw' }}
+                        onClick={() => {
+                          setStems(stems.filter((stem) => stem.name != item));
+                        }}
+                      />
                     </List.Item>
                   )}
-                  style={{ maxHeight: '10vh' }}
+                  style={{
+                    maxHeight: '20vh',
+                    minHeight: '20vh',
+                    overflowY: 'scroll',
+                    marginLeft: isMobile ? '2vw' : undefined,
+                  }}
                 />
                 <ul>
                   {stemFileNames.map((stemName) => (
@@ -368,7 +394,7 @@ export default function UploadBeatModal() {
           <>
             <Button
               onClick={() => {
-                setShowModal(false);
+                setIsOpenParent ? setIsOpenParent(false) : setShowModal(false);
               }}
               disabled={isUploading}
             >
