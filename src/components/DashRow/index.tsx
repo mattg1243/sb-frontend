@@ -224,7 +224,7 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
               </div>
               {beat.hasStems ? (
                 <>
-                  {isMobile ? null : <div style={{ paddingLeft: '1vw', paddingRight: '1vw' }}>|</div>}
+                  <div style={{ paddingLeft: '1vw', paddingRight: '1vw' }}>|</div>
                   <div>
                     Stems: <CheckOutlined />
                   </div>
