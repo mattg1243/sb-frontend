@@ -1,5 +1,5 @@
 import { Button } from 'antd';
-import React, { Dispatch, SetStateAction, useRef } from 'react';
+import React, { Dispatch, SetStateAction, useRef, useState } from 'react';
 
 interface IUploadProps {
   label: string;
@@ -22,6 +22,8 @@ interface IMultiUploadButtonProps extends IUploadProps {
 type Props = ISingleUploadButtonProps & IMultiUploadButtonProps;
 
 export default function UploadButton(props: Props) {
+  const [hasFile, setHasFile] = useState<boolean>(false);
+
   const hiddenFileInput = useRef<HTMLInputElement>(null);
 
   const handleClick = () => {
@@ -32,7 +34,12 @@ export default function UploadButton(props: Props) {
 
   return (
     <>
-      <Button onClick={handleClick} icon={props.sideIcon} disabled={props.disabled}>
+      <Button
+        onClick={handleClick}
+        icon={props.sideIcon}
+        disabled={props.disabled}
+        style={{ border: hasFile ? '2px solid green' : undefined }}
+      >
         {props.label}
       </Button>
       <input
@@ -48,6 +55,7 @@ export default function UploadButton(props: Props) {
         onChange={(e) => {
           console.log(props.multiple);
           if (e.target.files) {
+            setHasFile(true);
             if (props.uploadStateSetter) {
               props.uploadStateSetter(e.target.files[0]);
             } else if (props.multiple && props.uploadMultiStateSetter && props.currentState) {
@@ -59,6 +67,7 @@ export default function UploadButton(props: Props) {
               );
             }
           } else {
+            setHasFile(false);
             console.warn('No files');
           }
         }}
