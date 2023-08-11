@@ -44,12 +44,12 @@ export default function Subscription() {
                 checkoutSubscription('basic');
               }}
             >
-              $19.99/month
+              $24.99/month
             </Button>
           </div>
           <div className={styles.subRows}>
             <h2 className={styles.Text}>Standard</h2>
-            <h4 className={styles.subText}>7 credits per month</h4>
+            <h4 className={styles.subText}>5 credits per month</h4>
             <Button
               className={styles.buttons}
               onClick={() => {
@@ -61,14 +61,14 @@ export default function Subscription() {
           </div>
           <div className={styles.subRows}>
             <h2 className={styles.Text}>Premium</h2>
-            <h4 className={styles.subText}>12 credits per month</h4>
+            <h4 className={styles.subText}>9 credits per month</h4>
             <Button
               className={styles.buttons}
               onClick={() => {
                 checkoutSubscription('prem');
               }}
             >
-              $59.99/month
+              $64.99/month
             </Button>
           </div>
         </Row>

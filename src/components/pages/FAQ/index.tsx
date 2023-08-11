@@ -59,10 +59,10 @@ export default function FAQ() {
           <strong>Basic subscription: </strong> users are entitled to 3 credits per month.
         </Paragraph>
         <Paragraph className={styles.yikes}>
-          <strong>Standard subscription: </strong> users are entitled to 7 credits per month.
+          <strong>Standard subscription: </strong> users are entitled to 5 credits per month.
         </Paragraph>
         <Paragraph className={styles.yikes}>
-          <strong>Premium subscription: </strong> users are entitled to 12 credits per month.
+          <strong>Premium subscription: </strong> users are entitled to 9 credits per month.
         </Paragraph>
         <img src={balloonLogo} alt="Balloon Logo" className={styles.logo} />
       </Typography>

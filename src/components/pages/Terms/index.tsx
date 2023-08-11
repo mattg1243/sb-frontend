@@ -144,14 +144,14 @@ export default function Terms() {
           <strong>Standard.</strong>
         </Paragraph>
         <Paragraph className={styles.text}>
-          As a Standard subscriber, you will have the ability to download 7 beats per month under an unlimited license
+          As a Standard subscriber, you will have the ability to download 5 beats per month under an unlimited license
           corresponding to your billing cycle.
         </Paragraph>
         <Paragraph className={styles.subSection}>
           <strong>Premium.</strong>
         </Paragraph>
         <Paragraph className={styles.text}>
-          As a Premium subscriber, you will have the ability to download 12 beats per month under an unlimited license
+          As a Premium subscriber, you will have the ability to download 9 beats per month under an unlimited license
           corresponding to your billing cycle.
         </Paragraph>
         <Paragraph className={styles.subSection}>

@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { Modal, Divider, Button, Tooltip } from 'antd';
 import { useBottomScrollListener } from 'react-bottom-scroll-listener';
-import termsOfServiceHTML from '../documents/termsOfService';
 import Terms from './pages/Terms';
 
 export default function TermsOfService(props: { setAgreedToTerms: React.Dispatch<React.SetStateAction<boolean>> }) {
