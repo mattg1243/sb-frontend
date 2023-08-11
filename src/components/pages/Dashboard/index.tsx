@@ -168,6 +168,7 @@ export default function Dashboard() {
             justifyContent: 'center',
             alignItems: 'center',
             marginRight: isMobile ? '0' : '-20vw',
+            overflowX: 'hidden',
           }}
           scrollThreshold={0.8}
           loader={<h4 style={{ marginLeft: isMobile ? '0' : '-26vw' }}>Loading beats...</h4>}
