@@ -63,6 +63,14 @@ export default function MobileNav(props: IMobileNavProps) {
       ),
     },
     {
+      key: 'account',
+      label: (
+        <Button type="ghost" href={`/app/account`} data-cy="mobile-account-menu-opt">
+          Account
+        </Button>
+      ),
+    },
+    {
       key: 'logout',
       label: (
         <Button
