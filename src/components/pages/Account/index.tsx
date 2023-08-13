@@ -3,7 +3,6 @@ import { useState, useEffect } from 'react';
 import { Row, Avatar, Button, Col, Spin } from 'antd';
 import styles from './Account.module.css';
 import { Divider } from 'antd';
-import { FaStripe } from 'react-icons/fa';
 import DashRow from '../../DashRow';
 // import { useState } from 'react';
 import axios from 'axios';
@@ -15,6 +14,7 @@ import {
 } from '../../../utils/localStorageParser';
 import useGetBeats, { IUseGetBeatsOptions } from '../../../hooks/useGetBeats';
 import { useNavigate } from 'react-router-dom';
+import { BarChart, XAxis, YAxis, Bar, Tooltip } from 'recharts';
 
 export default function AccountPage() {
   // TODO: create a hook so that the trackPlaying state and playbackButton
@@ -71,10 +71,22 @@ export default function AccountPage() {
     }
   };
 
+  // credit chart config
+  const currentMonth = new Date().getMonth();
+  const months = Array.from({ length: 12 }, (item, i) => {
+    return new Date(0, i).toLocaleString('en-US', { month: 'long' });
+  });
+
+  months.slice(currentMonth - 6).concat(months.slice(0, currentMonth));
+
+  const creditData = months.map((month) => {
+    return { name: month, amount: Math.floor(Math.random() * 10) };
+  });
+
   return (
     <>
       <h1 className={`${styles.heading} heading`}>My Account</h1>
-      <div style={{ width: '75%', marginBottom: '20px' }}>
+      <div style={{ width: '75%', marginBottom: '20px', marginTop: '10vh' }}>
         {/* <p>Credits: {creditsBalance}</p>
         <Button
           onClick={async () => {
@@ -86,6 +98,21 @@ export default function AccountPage() {
         <Divider className={`${styles.divider} divider`}>
           <h2>Credits</h2>
         </Divider>
+        <Row justify="center" style={{ width: '100%' }}>
+          <BarChart
+            width={900}
+            height={250}
+            data={creditData.slice(-6)}
+            margin={{ top: 20, bottom: 20 }}
+            title="Acquired Credits"
+            style={{ justifySelf: 'center' }}
+          >
+            <XAxis dataKey="name" />
+            <YAxis />
+            <Tooltip />
+            <Bar dataKey="amount" fill="black" style={{ boxShadow: '6px 6px black' }} />
+          </BarChart>
+        </Row>
         <div
           style={{
             display: 'flex',
@@ -94,14 +121,20 @@ export default function AccountPage() {
             alignItems: 'center',
           }}
         >
-          <div>
+          <h3>Acquired</h3>
+        </div>
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'space-evenly',
+            alignItems: 'center',
+          }}
+        >
+          {/* <div>
             <p style={{ fontSize: '2vh' }}>{creditsBalance}</p>
             <h3>Balance</h3>
-          </div>
-          <div>
-            <p style={{ fontSize: '2vh' }}>9</p>
-            <h3>Acquired</h3>
-          </div>
+          </div> */}
         </div>
         <div className="chartcont">
           {/* <Bar
