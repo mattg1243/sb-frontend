@@ -8,6 +8,8 @@ import axios, { AxiosResponse } from 'axios';
 import CustomAlert from '../CustomAlert/index';
 import { AlertObj } from '../../types';
 import { ensureLoggedIn } from '../../utils/auth';
+import { getUserSubTierFromLocalStorage } from '../../utils/localStorageParser';
+import { useNavigate } from 'react-router-dom';
 
 interface IBeatDownloadModal {
   beatId: string;
@@ -33,6 +35,9 @@ export default function BeatDownloadModal(props: IBeatDownloadModal) {
   let modalTitle = 'Download & License Beat';
   let modalTxt = 'Are you sure you would like download and license this beat for 1 credit?';
   let btnTxt = 'Download & License';
+
+  const userSubTier = getUserSubTierFromLocalStorage();
+  const navigate = useNavigate();
 
   if (!license) {
     modalTitle = 'Download Beat';
@@ -130,8 +135,12 @@ export default function BeatDownloadModal(props: IBeatDownloadModal) {
       type="ghost"
       onClick={async () => {
         try {
-          await ensureLoggedIn();
-          setOpen(true);
+          if (userSubTier) {
+            await ensureLoggedIn();
+            setOpen(true);
+          } else {
+            navigate('/subscriptions');
+          }
         } catch (err) {
           console.error(err);
         }
@@ -140,13 +149,15 @@ export default function BeatDownloadModal(props: IBeatDownloadModal) {
       data-cy="download-modal-btn"
     />
   );
-  const wrappedBtn = tooltip ? (
-    <Tooltip title="Download & License" placement="top">
-      {btn}
-    </Tooltip>
-  ) : (
-    <>{btn}</>
-  );
+  const tooltipTxt = userSubTier ? 'Download & License' : 'You must have a subscription to download';
+  const wrappedBtn =
+    tooltip || !userSubTier ? (
+      <Tooltip title={tooltipTxt} placement="top">
+        {btn}
+      </Tooltip>
+    ) : (
+      <>{btn}</>
+    );
 
   return (
     <>
