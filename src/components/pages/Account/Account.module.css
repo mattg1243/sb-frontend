@@ -1,3 +1,39 @@
+.btn {
+  border: solid 1px black;
+  border-radius: 8px;
+  height: clamp(20px, 5vh, 36px);
+  margin: 10px;
+  box-shadow: 4px 2px black;
+  font-size: clamp(8px, 2vh, 18px);
+}
+
+.container {
+  margin-bottom: 20px;
+  margin-top: 10vh;
+  width: 75%;
+}
+
+.following-avatar {
+  background-color: rgb(0, 0, 0);
+  box-shadow: 4px 2px black;
+  cursor: pointer;
+}
+
+.useravatar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(0, 0, 0);
+  box-shadow: 4px 2px black;
+  width: clamp(12px, 10vw, 200px);
+  height: clamp(12px, 10vw, 200px);
+  cursor: pointer;
+}
+
+.artist-name {
+  word-break: break-word;
+}
+
 @media (min-width: 480px) {
   .Content {
     display: flex;
@@ -40,6 +76,11 @@
     width: clamp(20px, 10vw, 300px);
     height: clamp(20px, 10vw, 300px);
   }
+
+  .artist-name {
+    max-width: 200px;
+    font-size: 16px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -60,6 +101,16 @@
     height: 10vh;
   }
 
+  .container {
+    width: 100%;
+    margin-top: 0;
+  }
+
+  .artist-name {
+    max-width: 90px;
+    font-size: 3vw;
+  }
+
   .divider {
     color: black;
     width: 10vw;
@@ -76,28 +127,7 @@
   }
 
   .following-avatar {
-    width: clamp(20px, 10vw, 300px);
-    height: clamp(20px, 10vw, 300px);
-    margin-bottom: 20px;
+    width: clamp(12px, 20vw, 200px);
+    height: clamp(12px, 20vw, 200px);
   }
-}
-
-.btn {
-  border: solid 1px black;
-  border-radius: 8px;
-  height: clamp(20px, 5vh, 36px);
-  margin: 10px;
-  box-shadow: 4px 2px black;
-  font-size: clamp(8px, 2vh, 18px);
-}
-
-.useravatar {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: rgb(0, 0, 0);
-  box-shadow: 4px 2px black;
-  width: clamp(12px, 10vw, 200px);
-  height: clamp(12px, 10vw, 200px);
-  cursor: pointer;
 }

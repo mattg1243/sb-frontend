@@ -14,7 +14,7 @@ import {
 } from '../../../utils/localStorageParser';
 import useGetBeats, { IUseGetBeatsOptions } from '../../../hooks/useGetBeats';
 import { useNavigate } from 'react-router-dom';
-import { BarChart, XAxis, YAxis, Bar, Tooltip } from 'recharts';
+import { BarChart, XAxis, YAxis, Bar, Tooltip, ResponsiveContainer } from 'recharts';
 
 export default function AccountPage() {
   // TODO: create a hook so that the trackPlaying state and playbackButton
@@ -27,6 +27,8 @@ export default function AccountPage() {
   const customerId = getStripeCustIdFromLocalStorage();
   const userId = getUserIdFromLocalStorage();
   const subTier = getUserSubTierFromLocalStorage();
+
+  const isMobile = window.innerWidth < 480;
 
   const navigate = useNavigate();
 
@@ -77,16 +79,16 @@ export default function AccountPage() {
     return new Date(0, i).toLocaleString('en-US', { month: 'long' });
   });
 
-  months.slice(currentMonth - 6).concat(months.slice(0, currentMonth));
+  const last6Months = months.slice(currentMonth - 6).concat(months.slice(0, currentMonth + 1));
 
-  const creditData = months.map((month) => {
-    return { name: month, amount: Math.floor(Math.random() * 10) };
+  const creditData = last6Months.map((month) => {
+    return { name: month, amount: 0 /*Math.floor(Math.random() * 10)*/ };
   });
 
   return (
     <>
       <h1 className={`${styles.heading} heading`}>My Account</h1>
-      <div style={{ width: '75%', marginBottom: '20px', marginTop: '10vh' }}>
+      <div className={styles.container}>
         {/* <p>Credits: {creditsBalance}</p>
         <Button
           onClick={async () => {
@@ -98,21 +100,14 @@ export default function AccountPage() {
         <Divider className={`${styles.divider} divider`}>
           <h2>Credits</h2>
         </Divider>
-        <Row justify="center" style={{ width: '100%' }}>
-          <BarChart
-            width={900}
-            height={250}
-            data={creditData.slice(-6)}
-            margin={{ top: 20, bottom: 20 }}
-            title="Acquired Credits"
-            style={{ justifySelf: 'center' }}
-          >
+        <ResponsiveContainer width={isMobile ? '90%' : '100%'} height="20%">
+          <BarChart data={creditData.slice(-6)} margin={{ top: 20, bottom: 20 }}>
             <XAxis dataKey="name" />
             <YAxis />
             <Tooltip />
-            <Bar dataKey="amount" fill="black" style={{ boxShadow: '6px 6px black' }} />
+            <Bar dataKey="amount" fill="black" barSize={isMobile ? 20 : 40} />
           </BarChart>
-        </Row>
+        </ResponsiveContainer>
         <div
           style={{
             display: 'flex',
@@ -177,36 +172,36 @@ export default function AccountPage() {
           <h2>Following</h2>
         </Divider>
         <div className={`${styles.following} following`}>
-          <Row style={{ justifyContent: 'space-evenly' }}>
-            <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'center' }}>
+          <Row justify="space-evenly">
+            <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'center', alignItems: 'center' }}>
               <Avatar
                 src="https://d3fulr0i8qqtgb.cloudfront.net/images/f8fbe7320ae08929cc577e7ff18e15ee"
-                className={styles.useravatar}
+                className={styles['following-avatar']}
                 onClick={() => {
                   navigate('/app/user/?id=127a79a2-bcc9-4e9e-8e46-6284f57e7420');
                 }}
               />
-              <p>Matt G</p>
+              <p className={styles['artist-name']}>Matt G</p>
             </div>
-            <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'center' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'center', alignItems: 'center' }}>
               <Avatar
                 src="https://d3fulr0i8qqtgb.cloudfront.net/images/4c1fd8d0142d1f7133adda163c5a6689"
-                className={styles.useravatar}
+                className={styles['following-avatar']}
                 onClick={() => {
                   navigate('/app/user/?id=c690083b-4597-478a-9e15-68c61789807c');
                 }}
               />
-              <p>Montana Brown</p>
+              <p className={styles['artist-name']}>Montana Brown</p>
             </div>
-            <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'center' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'center', alignItems: 'center' }}>
               <Avatar
                 src="https://d3fulr0i8qqtgb.cloudfront.net/images/8b46e8da307f8904904a63c3bc9a22c7"
-                className={styles.useravatar}
+                className={styles['following-avatar']}
                 onClick={() => {
                   navigate('/app/user/?id=7ab81fa8-c40d-42ee-b3f5-01765617a2a2');
                 }}
               />
-              <p>Dak</p>
+              <p className={styles['artist-name']}>Dak</p>
             </div>
           </Row>
         </div>
@@ -219,7 +214,9 @@ export default function AccountPage() {
             flexDirection: 'column',
             justifyContent: 'center',
             alignItems: 'center',
+            textAlign: 'center',
             marginBottom: '5vh',
+            width: '100%',
           }}
         >
           <Col>

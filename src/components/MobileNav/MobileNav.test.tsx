@@ -59,11 +59,12 @@ describe('MobileNav', () => {
       cy.getBySel('home-icon').should('have.css', 'opacity', '0.5');
       cy.getBySel('search-icon').should('have.css', 'opacity', '0.5');
     });
-    it('contains profile nav and logout btns', () => {
+    it('contains profile nav, account and logout btns', () => {
       // contains profile page nav btn
       cy.intercept('GET', '/app/user/?id=*', { statusCode: 200 }).as('profileNavReq');
       cy.getBySel('profile-icon').click();
       cy.getBySel('mobile-logout-menu-opt');
+      cy.getBySel('mobile-account-menu-opt');
       cy.getBySel('mobile-profile-menu-opt').click();
       cy.wait('@profileNavReq');
     });
