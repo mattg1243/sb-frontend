@@ -5,7 +5,7 @@ const devSocketUrl = 'ws://localhost:4242';
 let gatewayUrl: string;
 let socketUrl: string;
 
-process.env.NODE_ENV === 'production' ? (socketUrl = 'https://courier.sweatshopbeats.com') : (socketUrl = devSocketUrl);
+process.env.NODE_ENV === 'production' ? (socketUrl = 'wss://courier.sweatshopbeats.com') : (socketUrl = devSocketUrl);
 export { socketUrl };
 
 process.env.NODE_ENV === 'production' ? (gatewayUrl = prodGatewayUrl) : (gatewayUrl = devGatewayUrl);
