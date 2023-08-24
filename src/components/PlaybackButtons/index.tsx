@@ -34,6 +34,8 @@ export default function PlaybackButtons(props: IPlyabackButtonsProps) {
   const [secondsPlayed, setSecondsPlayed] = useState<number>(0);
   const [minutesPlayed, setMinutesPlayed] = useState<number>(0);
 
+  let countedStream = false;
+
   let beatPlaying: Beat | null;
   const currentBeatId = new URLSearchParams().get('id');
   // get beatPlaying from redux store
@@ -115,11 +117,16 @@ export default function PlaybackButtons(props: IPlyabackButtonsProps) {
       audio.current.ontimeupdate = handleTimeUpdate;
       audio.current.onplaying = () => {
         setIsPlaying(true);
-        streamTimeout = setTimeout(() => {
-          addStreamReq(beatPlaying?._id as string)
-            .then((res) => console.log(res))
-            .catch((err) => console.error(err));
-        }, 20000);
+        if (!countedStream) {
+          streamTimeout = setTimeout(() => {
+            addStreamReq(beatPlaying?._id as string)
+              .then((res) => {
+                console.log(res);
+                countedStream = true;
+              })
+              .catch((err) => console.error(err));
+          }, 1);
+        }
       };
       audio.current.onpause = () => {
         setIsPlaying(false);
