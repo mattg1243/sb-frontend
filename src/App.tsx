@@ -26,23 +26,23 @@ import LicensedBeatsPage from './components/pages/LicensedBeats';
 import BeatPage from './components/pages/Beat';
 
 function App() {
-  const userId = getUserIdFromLocalStorage();
+  // const userId = getUserIdFromLocalStorage();
   // websocket connection
-  const { sendMessage, lastMessage, readyState } = useWebSocket(socketUrl, {
-    onOpen: () => {
-      console.log('Websocket communication established!');
-      if (userId) {
-        sendMessage(userId as WebSocketMessage);
-      }
-    },
-    onClose: () => {
-      console.log('Websocket connection closed.');
-    },
-    onMessage: (event) => {
-      console.log(event);
-      // processMessages(event);
-    },
-  });
+  // const { sendMessage, lastMessage, readyState } = useWebSocket(socketUrl, {
+  //   onOpen: () => {
+  //     console.log('Websocket communication established!');
+  //     if (userId) {
+  //       sendMessage(userId as WebSocketMessage);
+  //     }
+  //   },
+  //   onClose: () => {
+  //     console.log('Websocket connection closed.');
+  //   },
+  //   onMessage: (event) => {
+  //     console.log(event);
+  //     // processMessages(event);
+  //   },
+  // });
 
   return (
     <div className="App">
