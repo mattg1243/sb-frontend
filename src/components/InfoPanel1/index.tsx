@@ -11,7 +11,7 @@ export default function InfoPanel1() {
         <h1 className={styles.header1}>Stop spending $300 to license a single beat.</h1>
         {isMobile ? null : (
           <p className={styles.paragraph1}>
-            For as low as $19.99/month, you can license and download multiple beats from professional producers.
+            For as low as $24.99/month, you can license and download multiple beats from professional producers.
           </p>
         )}
       </Col>
@@ -21,7 +21,7 @@ export default function InfoPanel1() {
       {isMobile ? (
         <Row style={{ marginTop: '-10vh' }}>
           <p className={styles.paragraph1}>
-            For as low as $19.99/month, you can license and download multiple beats from professional producers.
+            For as low as $24.99/month, you can license and download multiple beats from professional producers.
           </p>
         </Row>
       ) : null}
