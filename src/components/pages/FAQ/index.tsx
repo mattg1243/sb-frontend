@@ -23,8 +23,8 @@ export default function FAQ() {
           <strong>Subscriptions, Payouts & Payments</strong>
         </h3>
         <Paragraph>
-          *We use Stripe to handle our subscription payments and payouts to users. You are required to create an account
-          with Stripe to receive payouts.*
+          *We use Stripe & PayPal to handle our subscription payments and payouts to users. You are required to create
+          an account with Stripe or PayPal to receive payouts.*
         </Paragraph>
         <Paragraph className={styles.yikes}>
           <strong>Payments, subscriptions: </strong>
@@ -39,9 +39,14 @@ export default function FAQ() {
           canceled.
         </Paragraph>
         <Paragraph className={styles.yikes}>
+          <strong>Cancelling your subscription: </strong>
+          To cancel your subscription, go to the "Account" page, click on manage subscription under the settings panel,
+          and click "Cancel subscription."
+        </Paragraph>
+        <Paragraph className={styles.yikes}>
           <strong>Payouts: </strong>
-          Payouts are made the first Tuesday of each month between the hours of 9AM-5PM Pacific Time, unless the first
-          Tuesday of a month lands on a federal holiday, or if other extenuating circumstances out of our control
+          Payouts are initiated on the first Tuesday of each month between the hours of 9AM-5PM Pacific Time, unless the
+          first Tuesday of a month lands on a federal holiday, or if other extenuating circumstances out of our control
           prohibit us from making a payment on the first Tuesday of a month, in which case payouts will be made the
           following day or as soon as possible between the hours of 9AM-5PM Pacific Time Monday-Friday.
         </Paragraph>
@@ -49,11 +54,11 @@ export default function FAQ() {
           Producer revenue is determined using a formula to calculate the average value of a credit at the end of the
           month and multiplied by the total amount of downloads a producer receives on all beats uploaded by producer in
           the period of one month. The total amount of revenue by the end of the month is then paid out to the producer
-          in full through Stripe.
+          in full through Stripe or PayPal.
         </Paragraph>
         <Paragraph className={styles.yikes}>
           <strong>Subscription tiers, credits: </strong> 1 credit grants the user the right to download and license 1
-          beat under an unlimited license.
+          beat of their choice under a standard non-exclusive unlimited license.
         </Paragraph>
         <Paragraph className={styles.yikes}>
           <strong>Basic subscription: </strong> users are entitled to 3 credits per month.
@@ -63,6 +68,40 @@ export default function FAQ() {
         </Paragraph>
         <Paragraph className={styles.yikes}>
           <strong>Premium subscription: </strong> users are entitled to 9 credits per month.
+        </Paragraph>
+        <h3>
+          <strong>How long does a license last?</strong>
+        </h3>
+        <Paragraph className={styles.yikes}>
+          Once you download a beat, it's yours forever regardless of whether or not you're subscribed. If a producer
+          sells the beat you licensed exclusively after you licensed yours, you are "grandfathered" in, meaning your
+          license does not suddenly expire.
+        </Paragraph>
+        <h3>
+          <strong>What is a non-exclusive Unlimited License?</strong>
+        </h3>
+        <Paragraph>
+          A non-exclusive license means the producer can re-sell the same license as many times as they want to other
+          artists. You do not have any exclusive rights to the intellectual property you are licensing.
+        </Paragraph>
+        <Paragraph className={styles.yikes}>An unlimited license gives you the following rights:</Paragraph>
+        <Paragraph className={styles.yikes}>
+          <strong>- Use the beat for music recording</strong>
+        </Paragraph>
+        <Paragraph className={styles.yikes}>
+          <strong>- Distribute unlimited copies of your song</strong>
+        </Paragraph>
+        <Paragraph className={styles.yikes}>
+          <strong>- Unlimited audio streams of your song</strong>
+        </Paragraph>
+        <Paragraph className={styles.yikes}>
+          <strong>- Unlimited music videos for your song</strong>
+        </Paragraph>
+        <Paragraph className={styles.yikes}>
+          <strong>- Radio broadcast rights for an unlimited amount of stations</strong>
+        </Paragraph>
+        <Paragraph className={styles.yikes}>
+          <strong>- For-profit live performances of your song</strong>
         </Paragraph>
         <img src={balloonLogo} alt="Balloon Logo" className={styles.logo} />
       </Typography>
