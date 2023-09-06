@@ -8,7 +8,7 @@ import axios, { AxiosResponse } from 'axios';
 import CustomAlert from '../CustomAlert/index';
 import { AlertObj } from '../../types';
 import { ensureLoggedIn } from '../../utils/auth';
-import { getUserSubTierFromLocalStorage } from '../../utils/localStorageParser';
+import { getUserIdFromLocalStorage, getUserSubTierFromLocalStorage } from '../../utils/localStorageParser';
 import { useNavigate } from 'react-router-dom';
 
 interface IBeatDownloadModal {
@@ -37,6 +37,7 @@ export default function BeatDownloadModal(props: IBeatDownloadModal) {
   let btnTxt = 'Download & License';
 
   const userSubTier = getUserSubTierFromLocalStorage();
+  const userId = getUserIdFromLocalStorage();
   const navigate = useNavigate();
 
   if (!license) {
@@ -135,13 +136,19 @@ export default function BeatDownloadModal(props: IBeatDownloadModal) {
       type="ghost"
       onClick={async () => {
         try {
+          await axios.get(`${gatewayUrl}/auth?user=${userId}`, { withCredentials: true });
           if (userSubTier) {
-            await ensureLoggedIn();
             setOpen(true);
           } else {
             navigate('/subscriptions');
           }
         } catch (err) {
+          if (err instanceof axios.AxiosError) {
+            console.error(err);
+            if (err.response?.status === 401) {
+              window.location.href = '/login?goBack=true';
+            }
+          }
           console.error(err);
         }
       }}

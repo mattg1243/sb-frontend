@@ -6,7 +6,6 @@ export const ensureLoggedIn = async () => {
   const userId = getUserIdFromLocalStorage();
   if (!userId) {
     window.location.href = '/login?goBack=true';
-    return;
   }
   try {
     await axios.get(`${gatewayUrl}/auth?user=${userId}`, { withCredentials: true });
