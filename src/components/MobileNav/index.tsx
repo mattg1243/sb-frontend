@@ -73,8 +73,16 @@ export default function MobileNav(props: IMobileNavProps) {
     {
       key: 'subscribe',
       label: (
-        <Button type="ghost" href={`/subscriptions`} data-cy="mobile-account-menu-opt">
+        <Button type="ghost" href={`/subscriptions`} data-cy="mobile-subscribe-menu-opt">
           Subscribe
+        </Button>
+      ),
+    },
+    {
+      key: 'faq',
+      label: (
+        <Button type="ghost" href={`/FAQ`} data-cy="mobile-faq-menu-opt">
+          FAQ
         </Button>
       ),
     },

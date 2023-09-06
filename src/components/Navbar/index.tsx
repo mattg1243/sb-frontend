@@ -232,6 +232,11 @@ export default function Navbar() {
             Subscribe
           </Button>
         </Menu.Item>
+        <Menu.Item>
+          <Button type="ghost" onClick={() => navigate('/FAQ')} style={{ color: 'white' }}>
+            FAQ
+          </Button>
+        </Menu.Item>
         <Menu.Item key="profile" style={{ marginLeft: 'auto', padding: '0 2vw' }} className={styles['menu-item']}>
           <Space size={62}>
             <Input
