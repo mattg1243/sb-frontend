@@ -37,7 +37,7 @@ export default function Subscription() {
         <Row className={styles.subTiers}>
           <div className={styles.subRows}>
             <h2 className={styles.Text}>Basic</h2>
-            <h4 className={styles.subText}>3 credits per month</h4>
+            <h4 className={styles.subText3}>3 credits per month</h4>
             <Button
               className={styles.buttons}
               onClick={() => {
@@ -50,6 +50,7 @@ export default function Subscription() {
           <div className={styles.subRows}>
             <h2 className={styles.Text}>Standard</h2>
             <h4 className={styles.subText}>5 credits per month</h4>
+            <h4 className={styles.subText2}>1 credit = 1 beat of your choice</h4>
             <Button
               className={styles.buttons}
               onClick={() => {
@@ -61,7 +62,7 @@ export default function Subscription() {
           </div>
           <div className={styles.subRows}>
             <h2 className={styles.Text}>Premium</h2>
-            <h4 className={styles.subText}>9 credits per month</h4>
+            <h4 className={styles.subText3}>9 credits per month</h4>
             <Button
               className={styles.buttons}
               onClick={() => {
