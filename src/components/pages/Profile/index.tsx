@@ -221,10 +221,10 @@ export default function Profile() {
               </Col>
               <Row className={styles.followers} gutter={isMobile ? 12 : 96}>
                 <Col span={10}>
-                  <Statistic title="Followers" value={followers ? followers.length : '?'} />
+                  <Statistic title="Followers" value={followers ? followers.length : '0'} />
                 </Col>
                 <Col span={10}>
-                  <Statistic title="Following" value={following ? following.length : '?'} />
+                  <Statistic title="Following" value={following ? following.length : '0'} />
                 </Col>
               </Row>
             </>
