@@ -149,6 +149,7 @@ export default function BeatPage(props?: IBeatPageProps) {
           width: isMobile ? '100%' : '50%',
           marginTop: '11vh',
           textAlign: 'center',
+          justifyContent: 'center',
         }}
         cy-data="beat-page-cont"
       >
@@ -166,12 +167,20 @@ export default function BeatPage(props?: IBeatPageProps) {
                 currentTarget.onerror = null; // prevents looping
                 currentTarget.src = artworkLoading;
               }}
-              width={isMobile ? 250 : 400}
-              height={isMobile ? 250 : 400}
+              style={{ width: isMobile ? 250 : '37vh', height: isMobile ? 250 : '37vh' }}
               className={styles.artwork}
             />
             <h1
-              style={{ marginTop: '3vh', maxWidth: isMobile ? '90vw' : '500px', marginLeft: isMobile ? '5vw' : '12vw' }}
+              style={{
+                marginTop: '3vh',
+                maxWidth: isMobile ? '90vw' : '46vh',
+                maxHeight: '5vh',
+                marginLeft: isMobile ? '5vw' : '12vw',
+                fontSize: '1.5vw',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
+              }}
               data-cy="beat-page-title"
             >
               {beat.title}
