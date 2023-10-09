@@ -30,6 +30,7 @@ import UserRow from '../../UserRow';
 import SearchBeatFilter, { SearchBeatFilterOptions } from '../../SearchBeatFilter';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import gatewayUrl from '../../../config/routing';
+import SubRefModal from '../../SubRefModal';
 
 export default function Dashboard() {
   const [currentAlgo, setCurrentAlgo] = useState<RecAlgos>('Recommended');
@@ -108,6 +109,7 @@ export default function Dashboard() {
 
   return (
     <div data-testid="dashboard" style={{ width: '100vw' }}>
+      <SubRefModal />
       <div>
         <h2 className={styles['for-you-text']}>{isSearching ? 'Search results' : 'For you'}</h2>
         {isSearching ? (
