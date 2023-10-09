@@ -204,10 +204,6 @@
     color: white;
     margin-bottom: 5vh;
   }
-
-  .skip {
-    margin-top: 1vh;
-  }
 }
 
 @media (max-width: 1023px) {

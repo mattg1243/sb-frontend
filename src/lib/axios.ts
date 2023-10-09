@@ -90,6 +90,13 @@ export const getFollowingReq = async (userId: string) => {
   return await axios.get(`${gatewayUrl}/user/following?user=${userId}`);
 };
 
+export const getSubRefCodeReq = async () => {
+  return await axios.get(`${gatewayUrl}/user/sub-ref-code`, { withCredentials: true });
+};
+
+export const setSubReferrerReq = async (refCode: string) => {
+  return await axios.post(`${gatewayUrl}/user/sub-ref-code`, { refCode }, { withCredentials: true });
+};
 // beats
 export const uploadBeatReq = async (data: FormData, progressSetter: (p: number) => void): Promise<AxiosResponse> => {
   return await axios.post(`${gatewayUrl}/beats/upload`, data, {
