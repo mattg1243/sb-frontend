@@ -1,6 +1,6 @@
 import { Content } from 'antd/lib/layout/layout';
 import { useState, useEffect } from 'react';
-import { Row, Avatar, Button, Col, Spin } from 'antd';
+import { Row, Avatar, Button, Col, Spin, Tooltip, message } from 'antd';
 import styles from './Account.module.css';
 import { Divider } from 'antd';
 import DashRow from '../../DashRow';
@@ -14,7 +14,8 @@ import {
 } from '../../../utils/localStorageParser';
 import useGetBeats, { IUseGetBeatsOptions } from '../../../hooks/useGetBeats';
 import { useNavigate } from 'react-router-dom';
-import { BarChart, XAxis, YAxis, Bar, Tooltip, ResponsiveContainer } from 'recharts';
+import { BarChart, XAxis, YAxis, Bar, ResponsiveContainer } from 'recharts';
+import { getSubRefCodeReq } from '../../../lib/axios';
 
 export default function AccountPage() {
   // TODO: create a hook so that the trackPlaying state and playbackButton
@@ -23,6 +24,13 @@ export default function AccountPage() {
   const [creditsBalance, setCreditsBalance] = useState<number>();
   const [subBtnLoading, setSubBtnLoading] = useState<boolean>(false);
   const [connectBtnLoading, setConnectBtnLoading] = useState<boolean>(false);
+  const [referralCode, setReferralCode] = useState<string>();
+  // message API
+  const [messageApi, contextHolder] = message.useMessage();
+
+  const promoCopiedMsg = () => {
+    messageApi.success('Promo code copied!');
+  };
 
   const customerId = getStripeCustIdFromLocalStorage();
   const userId = getUserIdFromLocalStorage();
@@ -36,6 +44,10 @@ export default function AccountPage() {
     axios.get(`${gatewayUrl}/user/credits-balance`, { withCredentials: true }).then((res) => {
       setCreditsBalance(res.data.creditBalance);
     });
+  }, []);
+
+  useEffect(() => {
+    getSubRefCodeReq().then((res) => setReferralCode(res.data as string));
   }, []);
 
   const getBeatOptions: IUseGetBeatsOptions = {
@@ -87,6 +99,7 @@ export default function AccountPage() {
 
   return (
     <>
+      {contextHolder}
       <h1 className={`${styles.heading} heading`}>My Account</h1>
       <div className={styles.container}>
         {/* <p>Credits: {creditsBalance}</p>
@@ -259,6 +272,26 @@ export default function AccountPage() {
             </Button>
           </Col>
         </div>
+        <Divider>
+          <h2>Referral Code</h2>
+        </Divider>
+        <Col style={{ textAlign: 'center' }}>
+          {referralCode ? (
+            <Tooltip title="Click to copy">
+              <div
+                style={{ fontSize: '1.7vh' }}
+                onClick={() => {
+                  navigator.clipboard.writeText(referralCode);
+                  promoCopiedMsg();
+                }}
+              >
+                {referralCode}
+              </div>
+            </Tooltip>
+          ) : (
+            <Spin />
+          )}
+        </Col>
       </div>
     </>
   );
