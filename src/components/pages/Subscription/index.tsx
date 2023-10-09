@@ -73,6 +73,11 @@ export default function Subscription() {
             </Button>
           </div>
         </Row>
+        {window.innerWidth < 480 ? null : (
+          <p style={{ fontSize: 'max(12px, 1vw)', padding: '1.25vh' }}>
+            If you have a referral code, you may enter it after your purchase is successful
+          </p>
+        )}
         <a className={styles.skip} href="javascript:history.back()">
           Skip for now
         </a>
