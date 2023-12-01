@@ -3,8 +3,6 @@ import { Row, Image, Divider, Statistic, Spin, Tooltip } from 'antd';
 import { HeartFilled, HeartOutlined } from '@ant-design/icons';
 import { GiTreeBranch } from 'react-icons/gi';
 import { FiShare } from 'react-icons/fi';
-import playIcon from '../../../assets/play_black.png';
-import pauseIcon from '../../../assets/pause_black.png';
 import type { Beat } from '../../../types';
 import styles from './BeatPage.module.css';
 import { cdnHostname } from '../../../config/routing';
@@ -176,7 +174,7 @@ export default function BeatPage(props?: IBeatPageProps) {
                 maxWidth: isMobile ? '90vw' : '46vh',
                 maxHeight: '5vh',
                 marginLeft: isMobile ? '5vw' : '12vw',
-                fontSize: '1.5vw',
+                fontSize: isMobile ? '5vw' : '1.5vw',
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
                 whiteSpace: 'nowrap',
