@@ -227,7 +227,7 @@ export default function BeatPage(props?: IBeatPageProps) {
               </div>
             </Row>
             <Divider />
-            <Row style={{ justifyContent: 'space-evenly', marginTop: '4vh' }}>
+            <Row className={styles.bottomRow} style={{ justifyContent: 'space-evenly', marginTop: '4vh' }}>
               <div>
                 <Tooltip title="Copy share link">
                   <FiShare

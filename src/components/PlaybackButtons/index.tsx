@@ -191,7 +191,7 @@ export default function PlaybackButtons(props: IPlyabackButtonsProps) {
         background: 'black',
         alignContent: 'center',
         width: '100vw',
-        height: '9vh',
+        height: '7vh',
         bottom: '0',
         position: 'fixed',
         color: 'white',
