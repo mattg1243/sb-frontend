@@ -168,23 +168,11 @@ export default function BeatPage(props?: IBeatPageProps) {
               style={{ width: isMobile ? 250 : '37vh', height: isMobile ? 250 : '37vh' }}
               className={styles.artwork}
             />
-            <h1
-              style={{
-                marginTop: '3vh',
-                maxWidth: isMobile ? '90vw' : '46vh',
-                maxHeight: '5vh',
-                marginLeft: isMobile ? '5vw' : '12vw',
-                fontSize: isMobile ? '5vw' : '1.5vw',
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-                whiteSpace: 'nowrap',
-              }}
-              data-cy="beat-page-title"
-            >
+            <h1 className={styles['beat-title']} data-cy="beat-page-title">
               {beat.title}
             </h1>
             <h3 data-cy="beat-page-artist">
-              <a style={{ color: 'black' }} href={`/app/user/?id=${beat.artistId}`}>
+              <a className={styles['beat-artist']} href={`/app/user/?id=${beat.artistId}`}>
                 {beat.artistName}
               </a>
             </h3>
