@@ -16,6 +16,7 @@ import useGetBeats, { IUseGetBeatsOptions } from '../../../hooks/useGetBeats';
 import { useNavigate } from 'react-router-dom';
 import { BarChart, XAxis, YAxis, Bar, ResponsiveContainer } from 'recharts';
 import { getSubRefCodeReq } from '../../../lib/axios';
+import PayPalConnectBtn from './PayPalConnectBtn';
 
 export default function AccountPage() {
   // TODO: create a hook so that the trackPlaying state and playbackButton
@@ -41,13 +42,15 @@ export default function AccountPage() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios.get(`${gatewayUrl}/user/credits-balance`, { withCredentials: true }).then((res) => {
-      setCreditsBalance(res.data.creditBalance);
-    });
-  }, []);
-
-  useEffect(() => {
-    getSubRefCodeReq().then((res) => setReferralCode(res.data as string));
+    axios
+      .get(`${gatewayUrl}/user/credits-balance`, { withCredentials: true })
+      .then((res) => {
+        setCreditsBalance(res.data.creditBalance);
+      })
+      .catch((err) => console.error(err));
+    getSubRefCodeReq()
+      .then((res) => setReferralCode(res.data as string))
+      .catch((err) => console.error(err));
   }, []);
 
   const getBeatOptions: IUseGetBeatsOptions = {
@@ -233,43 +236,50 @@ export default function AccountPage() {
           }}
         >
           <Col>
-            <Button
-              onClick={async () => {
-                setSubBtnLoading(true);
-                if (subTier) {
-                  try {
-                    await openStripePortal();
-                  } catch (err) {
-                    console.error(err);
+            <Row>
+              <Button
+                onClick={async () => {
+                  setSubBtnLoading(true);
+                  if (subTier) {
+                    try {
+                      await openStripePortal();
+                    } catch (err) {
+                      console.error(err);
+                    }
+                  } else {
+                    navigate('/subscriptions');
                   }
-                } else {
-                  navigate('/subscriptions');
-                }
-                setSubBtnLoading(false);
-              }}
-              className={styles.btn}
-              loading={subBtnLoading}
-            >
-              {subTier ? 'Manage Subscription' : 'Purchase Subscription'}
-            </Button>
+                  setSubBtnLoading(false);
+                }}
+                className={styles.btn}
+                loading={subBtnLoading}
+              >
+                {subTier ? 'Manage Subscription' : 'Purchase Subscription'}
+              </Button>
+            </Row>
             {/* this button needs to be its own component that checks wether or not a user 
         already set up their stripe conneced and behaves accordingly */}
-            <Button
-              onClick={async () => {
-                setConnectBtnLoading(true);
-                try {
-                  await createStripeConnectAcct();
-                } catch (err) {
-                  console.error(err);
-                } finally {
-                  setConnectBtnLoading(false);
-                }
-              }}
-              className={styles.btn}
-              loading={connectBtnLoading}
-            >
-              Connect Stripe Payout
-            </Button>
+            <Row>
+              <Button
+                onClick={async () => {
+                  setConnectBtnLoading(true);
+                  try {
+                    await createStripeConnectAcct();
+                  } catch (err) {
+                    console.error(err);
+                  } finally {
+                    setConnectBtnLoading(false);
+                  }
+                }}
+                className={styles.btn}
+                loading={connectBtnLoading}
+              >
+                Connect Stripe Payout
+              </Button>
+            </Row>
+            <Row>
+              <PayPalConnectBtn />
+            </Row>
           </Col>
         </div>
         <Divider>

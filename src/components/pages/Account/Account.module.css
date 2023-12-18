@@ -5,6 +5,7 @@
   margin: 10px;
   box-shadow: 4px 2px black;
   font-size: clamp(8px, 2vh, 18px);
+  width: clamp(250px, 20vw, 350px);
 }
 
 .container {
