@@ -21,6 +21,7 @@
   position: fixed;
   margin-left: 2vw;
   margin-top: clamp(70px, 9vh, 150px);
+  margin-top: clamp(70px, 9vh, 150px);
 }
 
 .exit-search-btn {

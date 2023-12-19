@@ -3,11 +3,13 @@
   border-radius: 8px;
   height: 36px;
   margin: 10px;
+  position: absolute;
   margin-left: 3vw;
+  top: max(10vh);
   box-shadow: 5px 5px rgb(232, 162, 21);
   background-color: black;
   color: rgb(240, 240, 240);
   font-size: 18px;
   position: fixed;
-  top: 13vh;
+  top: clamp(100px, 12vh, 400px);
 }
