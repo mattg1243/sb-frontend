@@ -3,14 +3,16 @@ import styles from './FAQ.module.css';
 import balloonLogo from '../../../assets/orangelogo.png';
 import Navbar from '../../Navbar';
 import sections from './sections.data';
-
+import HideIcon from '../../../assets/hide.png';
+import ShowIcon from '../../../assets/view.png';
+import { useEffect, useState } from 'react';
 type Props = {
   children: React.ReactNode;
 };
 
-type SectionProps = {
+type SectionProps = Props & {
   header: string;
-  children: React.ReactNode;
+  number: number;
 };
 
 //Component that harbors the main part of the webpage, excluding the navbar.
@@ -19,21 +21,65 @@ function Viewport({ children }: Props) {
 }
 
 //An individual FAQ section
-function Section({ header, children }: SectionProps) {
+function Section({ header, children, number }: SectionProps) {
+  const [_toggle_status, _set_toggle] = useState(true);
+  const [_div_height, _set_div_height] = useState('');
+
+  function transition_effect(open_status: boolean) {
+    if (open_status) {
+      return {
+        maxHeight: _div_height,
+        opacity: 1,
+      };
+    } else {
+      return {
+        maxHeight: '0vh',
+        opacity: 0,
+      };
+    }
+  }
+  useEffect(() => {
+    //Grab the section body paragraph, i.e. section body content
+    const current_section_body_para: any = document.querySelector(`#section_body_${number} > p`);
+    //Get its margin information and calculate total height of content
+    const current_style = window.getComputedStyle(current_section_body_para);
+    //set the section body max-height to the computer total height of content
+    _set_div_height(current_section_body_para.offsetHeight + 2 * parseInt(current_style.marginTop));
+  }, []);
+
   return (
     <>
-      <details className={styles.section_container}>
-        <div className={styles.section_body}>{children}</div>
-        <summary className={styles.section_header}>{header}</summary>
-      </details>
+      <div
+        id={`section_${number}`}
+        className={styles.section_container}
+        onClick={(event) => {
+          _set_toggle(!_toggle_status);
+        }}
+      >
+        <div className={styles.section_header}>
+          <img
+            alt={_toggle_status ? 'toggle_on' : 'toggle_off'}
+            className={styles.section_header_toggle}
+            src={_toggle_status ? ShowIcon : HideIcon}
+          />
+          {header}
+        </div>
+        <div id={`section_body_${number}`} className={styles.section_body} style={transition_effect(_toggle_status)}>
+          {children}
+        </div>
+      </div>
     </>
   );
 }
 
 //The body of the FAQ component. It contains all the FAQ sections.
 function FAQBody() {
-  const FAQSections = sections.map(({ header, content }) => {
-    return <Section header={header}>{content}</Section>;
+  const FAQSections = sections.map(({ header, content }, i) => {
+    return (
+      <Section key={i + '_section'} header={header} number={i}>
+        {content}
+      </Section>
+    );
   });
   return <div className={styles.faq_container}>{FAQSections}</div>;
 }
