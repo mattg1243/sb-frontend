@@ -277,9 +277,9 @@ export default function AccountPage() {
                 Connect Stripe Payout
               </Button>
             </Row>
-            <Row>
+            {/* <Row>
               <PayPalConnectBtn />
-            </Row>
+            </Row> */}
           </Col>
         </div>
         <Divider>
