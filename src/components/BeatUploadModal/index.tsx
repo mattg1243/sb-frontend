@@ -14,16 +14,11 @@ import {
   Row,
   Col,
 } from 'antd';
-import {
-  CheckCircleOutlined,
-  PictureOutlined,
-  SoundOutlined,
-  LoadingOutlined,
-  DeleteOutlined,
-} from '@ant-design/icons';
+import { PictureOutlined, SoundOutlined, LoadingOutlined, DeleteOutlined } from '@ant-design/icons';
 import axios, { AxiosResponse } from 'axios';
+import Resizer from 'react-image-file-resizer';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import { getSignedUploadUrlReq, uploadBeatReq } from '../../lib/axios';
+import { getSignedUploadUrlReq } from '../../lib/axios';
 import { genreOptions } from '../../utils/genreTags';
 import UploadButton from '../UploadButton';
 import styles from './BeatUploadModal.module.css';
@@ -65,8 +60,9 @@ export default function UploadBeatModal(props: IBeatUploadModalProps) {
   const [key, setKey] = useState<string>();
   const [flatOrSharp, setFlatOrSharp] = useState<'♭' | '♯' | ''>('');
   const [majorOrMinor, setMajorOrMinor] = useState<'major' | 'minor'>('major');
-  const [artwork, setArtwork] = useState<File>();
-  const [audio, setAudio] = useState<File>();
+  const [artwork, setArtwork] = useState<Blob>();
+  const [artworkTn, setArtworkTn] = useState<Blob>();
+  const [audio, setAudio] = useState<File | Blob>();
   const [stems, setStems] = useState<File[]>([]);
 
   const stemFileNames: Array<string> = [];
@@ -93,7 +89,6 @@ export default function UploadBeatModal(props: IBeatUploadModalProps) {
         setIsUploading(true);
         // first get a url for the beat file since there will be always be one
         const beatUploadUrl = await getSignedUploadUrlReq('beat');
-        console.log('Response from beatUploadUrl:\n', beatUploadUrl);
         const { url, s3Key } = beatUploadUrl.data;
         const signedUrlFormData = new FormData();
         signedUrlFormData.append('beat', audio as Blob);
@@ -122,17 +117,30 @@ export default function UploadBeatModal(props: IBeatUploadModalProps) {
         }
         const hasStems = stems.length > 0;
         const stemFields: Array<Stem> = [];
-
+        // if artwork is provided, scale it and upload 2 sizes
+        if (artwork) {
+          const resizeArtworkPromise = resizeImage(artwork, 600);
+          const resizeArtworkThPromise = resizeImage(artwork, 150);
+          const [artworkFull, artworkTn] = await Promise.all([resizeArtworkPromise, resizeArtworkThPromise]);
+          // convert base64 to blob
+          const artworkFullBlobProm = fetch(artworkFull);
+          const artworkTnBlobProm = fetch(artworkTn);
+          const [fullBlob, tnBlob] = await Promise.all([artworkFullBlobProm, artworkTnBlobProm]);
+          console.log('artowrkFull from resize function: \n', typeof fullBlob);
+          setArtwork(await fullBlob.blob());
+          setArtworkTn(await tnBlob.blob());
+        }
         const beatFormData = new FormData();
         beatFormData.append('title', title);
         beatFormData.append('genreTags', JSON.stringify(genreTags));
         beatFormData.append('tempo', tempo as string);
         beatFormData.append('artwork', artwork as Blob);
+        beatFormData.append('artworkTn', artworkTn as Blob);
         beatFormData.append('key', key as string);
         beatFormData.append('majorOrMinor', majorOrMinor as string);
         beatFormData.append('s3Key', s3Key);
         beatFormData.append('s3StreamKey', streamKey);
-        beatFormData.append('fileName', audio?.name as string);
+        beatFormData.append('fileName', (audio as File).name as string);
         beatFormData.append('hasStems', hasStems ? 'true' : 'false');
         // need to add user.id, user.artistName
         beatFormData.append('userId', userId as string);
@@ -182,6 +190,12 @@ export default function UploadBeatModal(props: IBeatUploadModalProps) {
       setAlert({ type: 'error', message: 'Missing a required field' });
       console.log('Missing required field');
     }
+  };
+
+  const resizeImage = (image: Blob, hw: number): Promise<string> => {
+    return new Promise((resolve) => {
+      Resizer.imageFileResizer(image, hw, hw, 'PNG', 100, 0, (uri) => resolve(uri as string), 'base64');
+    });
   };
 
   const handleGenreTagsChange = (val: any) => {
