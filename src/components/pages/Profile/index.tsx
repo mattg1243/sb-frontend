@@ -33,7 +33,7 @@ export default function Profile() {
   const [userInfo, setUserInfo] = useState<User | null>();
   const [followers, setFollowers] = useState<Array<string>>();
   const [following, setFollowing] = useState<Array<string>>();
-  const [newAvatar, setNewAvatar] = useState<File>();
+  const [newAvatar, setNewAvatar] = useState<File | Blob>();
   const [newAvatarModalOpen, setNewAvatarModalOpen] = useState<boolean>(false);
   const [isSearching, setIsSearching] = useState<boolean>(false);
   const [alert, setAlert] = useState<AlertObj>();

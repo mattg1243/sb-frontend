@@ -9,7 +9,7 @@ interface IUploadProps {
 }
 
 interface ISingleUploadButtonProps extends IUploadProps {
-  uploadStateSetter?: Dispatch<SetStateAction<File | undefined>>;
+  uploadStateSetter?: Dispatch<SetStateAction<Blob | File | undefined>>;
 }
 
 interface IMultiUploadButtonProps extends IUploadProps {
