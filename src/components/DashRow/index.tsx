@@ -155,6 +155,9 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
     }
   };
 
+  const artworkFallbacks = [`${cdnHostname}/${beat.artworkKey}`, artworkLoading];
+  let fallbackIndex = 0;
+
   return (
     <>
       <Row className={styles['row-container']}>
@@ -167,7 +170,7 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
         )}
         <Row style={{ alignItems: 'center', marginRight: 'auto', paddingLeft: '1vw' }}>
           <Image
-            src={`${cdnHostname}/${beat.artworkKey}`}
+            src={`${cdnHostname}/${beat.artworkKey}_tn` || `${cdnHostname}/${beat.artworkKey}`}
             alt="album artwork"
             preview={{
               mask: <Image src={isPlaying ? pauseIcon : playIcon} preview={false} />,
@@ -175,8 +178,9 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
             }}
             placeholder={<Image src={artworkLoading} width={isMobile ? 75 : 125} height={isMobile ? 75 : 125} />}
             onError={({ currentTarget }) => {
-              currentTarget.onerror = null; // prevents looping
-              currentTarget.src = artworkLoading;
+              const next = artworkFallbacks[fallbackIndex];
+              currentTarget.src = next;
+              fallbackIndex++;
             }}
             width={isMobile ? 75 : 125}
             height={isMobile ? 75 : 125}
