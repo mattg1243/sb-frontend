@@ -3,7 +3,7 @@ import { User } from '../../types';
 import { getUserIdFromLocalStorage } from '../../utils/localStorageParser';
 import axios from 'axios';
 import styles from './UserRow.module.css';
-import gatewayUrl, { cdnHostname } from '../../config/routing';
+import gatewayUrl, { imgCdnHostName } from '../../config/routing';
 import { Avatar, Row, Statistic } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import FollowButton from '../FollowButton';
@@ -38,7 +38,7 @@ export default function UserRow(props: IUserRowProps) {
       <Row className={styles['row-container']} style={{ paddingLeft: '6rem' }}>
         <Row style={{ alignItems: 'center', marginRight: 'auto', paddingLeft: '1vw' }}>
           <Avatar
-            src={`${cdnHostname}/${user.avatar}`}
+            src={`${imgCdnHostName}/${user.avatar}`}
             size={isMobile ? 75 : 125}
             onClick={() => {
               navigate(`/app/user?id=${user._id}`);

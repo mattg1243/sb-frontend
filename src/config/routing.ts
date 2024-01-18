@@ -12,4 +12,5 @@ process.env.NODE_ENV === 'production' ? (gatewayUrl = prodGatewayUrl) : (gateway
 
 export default gatewayUrl;
 
-export const cdnHostname = 'https://d26jfcz7xwkbig.cloudfront.net';
+export const imgCdnHostName = 'https://d26jfcz7xwkbig.cloudfront.net';
+export const beatCdnHostName = 'https://d3fulr0i8qqtgb.cloudfront.net';

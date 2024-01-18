@@ -4,7 +4,7 @@ import { Avatar, Row, Space, Col, Button, Modal, Image, Progress, Statistic, Div
 import { UserOutlined, CheckCircleOutlined } from '@ant-design/icons';
 import DashRow from '../../DashRow';
 import useGetBeats, { IUseGetBeatsOptions } from '../../../hooks/useGetBeats';
-import { cdnHostname } from '../../../config/routing';
+import { imgCdnHostName } from '../../../config/routing';
 import { getUserIdFromLocalStorage } from '../../../utils/localStorageParser';
 import LoadingPage from '../Loading';
 import { User } from '../../../types/user';
@@ -116,7 +116,7 @@ export default function Profile() {
               <>
                 <div className={styles.container}>
                   <Avatar
-                    src={`${cdnHostname}/${userInfo.avatar}`}
+                    src={`${imgCdnHostName}/${userInfo.avatar}`}
                     onClick={() => {
                       setNewAvatarModalOpen(true);
                     }}
@@ -177,7 +177,7 @@ export default function Profile() {
                 <Avatar
                   src={
                     <Image
-                      src={`${cdnHostname}/${userInfo.avatar}`}
+                      src={`${imgCdnHostName}/${userInfo.avatar}`}
                       onError={({ currentTarget }) => {
                         currentTarget.onerror = null; // prevents looping
                         currentTarget.src = defaultAvatar;

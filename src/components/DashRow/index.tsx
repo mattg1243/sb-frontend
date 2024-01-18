@@ -1,7 +1,7 @@
 import { Image, Row, Statistic } from 'antd';
 import BeatEditModal from '../BeatEditModal';
 import { Beat } from '../../types/beat';
-import { cdnHostname } from '../../config/routing';
+import { imgCdnHostName } from '../../config/routing';
 import artworkLoading from '../../assets/artwork_loading.jpg';
 import { useState, useEffect } from 'react';
 import playIcon from '../../assets/play_black.png';
@@ -98,7 +98,7 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
     navigator.mediaSession.metadata = new MediaMetadata({
       title: beat.title,
       artist: beat.artistName,
-      artwork: [{ src: `${cdnHostname}/${beat.artworkKey}` }],
+      artwork: [{ src: `${imgCdnHostName}/${beat.artworkKey}` }],
     });
   };
   /**
@@ -155,7 +155,7 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
     }
   };
 
-  const artworkFallbacks = [`${cdnHostname}/${beat.artworkKey}`, artworkLoading];
+  const artworkFallbacks = [`${imgCdnHostName}/${beat.artworkKey}`, artworkLoading];
   let fallbackIndex = 0;
 
   const imgSize = isMobile ? 75 : 125;
@@ -173,7 +173,8 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
         <Row style={{ alignItems: 'center', marginRight: 'auto', paddingLeft: '1vw' }}>
           <Image
             src={
-              `${cdnHostname}/fit-in/${imgSize}x${imgSize}/${beat.artworkKey}` || `${cdnHostname}/${beat.artworkKey}`
+              `${imgCdnHostName}/fit-in/${imgSize}x${imgSize}/${beat.artworkKey}` ||
+              `${imgCdnHostName}/${beat.artworkKey}`
             }
             alt="album artwork"
             preview={{

@@ -5,7 +5,7 @@ import { GiTreeBranch } from 'react-icons/gi';
 import { FiShare } from 'react-icons/fi';
 import type { Beat } from '../../../types';
 import styles from './BeatPage.module.css';
-import { cdnHostname } from '../../../config/routing';
+import { beatCdnHostName, imgCdnHostName } from '../../../config/routing';
 import artworkLoading from '../../../assets/artwork_loading.jpg';
 import { PlayCircleOutlined } from '@ant-design/icons';
 import { getBeatReq, getUserLikesBeatReq, likeBeatReq, unlikeBeatReq } from '../../../lib/axios';
@@ -76,7 +76,7 @@ export default function BeatPage(props?: IBeatPageProps) {
       navigator.mediaSession.metadata = new MediaMetadata({
         title: beat.title,
         artist: beat.artistName,
-        artwork: [{ src: `${cdnHostname}/${beat.artworkKey}` }],
+        artwork: [{ src: `${imgCdnHostName}/${beat.artworkKey}` }],
       });
     }
   };
@@ -156,7 +156,7 @@ export default function BeatPage(props?: IBeatPageProps) {
         {beat && !isLoading ? (
           <>
             <img
-              src={`${cdnHostname}/fit-in/${imgSize}x${imgSize}/${beat.artworkKey}`}
+              src={`${imgCdnHostName}/fit-in/${imgSize}x${imgSize}/${beat.artworkKey}`}
               alt="album artwork"
               // onClick={() => {
               //   isPlaying ? pauseBeat() : playBeat();
@@ -243,14 +243,14 @@ export default function BeatPage(props?: IBeatPageProps) {
             </Row>
             {isMobile ? (
               <audio preload="metadata" style={{ display: 'none' }} id={`audio-player-${beat.audioStreamKey}`}>
-                <source src={`${cdnHostname}/${beat.audioStreamKey}`} type="audio/mpeg" />
+                <source src={`${beatCdnHostName}/${beat.audioStreamKey}`} type="audio/mpeg" />
               </audio>
             ) : (
               <audio
                 preload="metadata"
                 style={{ display: 'none' }}
                 id={`audio-player-${beat.audioStreamKey}`}
-                src={`${cdnHostname}/${beat.audioStreamKey}`}
+                src={`${beatCdnHostName}/${beat.audioStreamKey}`}
               />
             )}
           </>

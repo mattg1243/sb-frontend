@@ -8,7 +8,7 @@ import logo from '../../assets/orangelogo.png';
 import { getUserIdFromLocalStorage } from '../../utils/localStorageParser';
 import { logoutUserReq, getUserAvatarReq } from '../../lib/axios';
 import axios from 'axios';
-import gatewayUrl, { cdnHostname } from '../../config/routing';
+import gatewayUrl, { imgCdnHostName } from '../../config/routing';
 import styles from './Navbar.module.css';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -285,7 +285,7 @@ export default function Navbar() {
               >
                 <Avatar
                   size={48}
-                  src={avatarUrl ? `${cdnHostname}/${avatarUrl}` : undefined}
+                  src={avatarUrl ? `${imgCdnHostName}/${avatarUrl}` : undefined}
                   style={{ border: 'solid 3px', borderColor: 'var(--primary)', backgroundColor: 'black' }}
                   icon={avatarUrl ? undefined : <UserOutlined style={{ color: 'white', fontSize: '2vh' }} />}
                   className="avatar"
