@@ -15,6 +15,7 @@ import { notification } from '../../../reducers/notificationReducer';
 import { playback } from '../../../reducers/playbackReducer';
 import BeatDownloadModal from '../../BeatDownloadModal';
 import { ensureLoggedIn } from '../../../utils/auth';
+import loadingGif from '../../../assets/loading.gif';
 
 interface IBeatPageProps {
   testBeat?: Beat;
@@ -27,6 +28,7 @@ export default function BeatPage(props?: IBeatPageProps) {
   const userId = getUserIdFromLocalStorage();
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [imgIsLoading, setImgIsLoading] = useState<boolean>(true);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [liked, setLiked] = useState<boolean>();
   const [beat, setBeat] = useState<Beat>();
@@ -153,9 +155,9 @@ export default function BeatPage(props?: IBeatPageProps) {
         }}
         cy-data="beat-page-cont"
       >
-        {beat && !isLoading ? (
+        {beat ? (
           <>
-            <img
+            <Image
               src={`${imgCdnHostName}/fit-in/${imgSize}x${imgSize}/${beat.artworkKey}`}
               alt="album artwork"
               // onClick={() => {
@@ -167,7 +169,11 @@ export default function BeatPage(props?: IBeatPageProps) {
                 currentTarget.onerror = null; // prevents looping
                 currentTarget.src = artworkLoading;
               }}
-              style={{ width: isMobile ? 250 : '37vh', height: isMobile ? 250 : '37vh' }}
+              placeholder={<Spin style={{ marginTop: '50%' }} />}
+              style={{
+                width: isMobile ? 250 : '37vh',
+                height: isMobile ? 250 : '37vh',
+              }}
               className={styles.artwork}
             />
             <h1 className={styles['beat-title']} data-cy="beat-page-title">
@@ -255,8 +261,8 @@ export default function BeatPage(props?: IBeatPageProps) {
             )}
           </>
         ) : null}
-        {!beat && !isLoading ? <h1 style={{ marginTop: '25vh' }}>No beat found :(</h1> : null}
         {isLoading ? <Spin style={{ marginTop: '25vh' }} /> : null}
+        {!beat && !isLoading ? <h1 style={{ marginTop: '25vh' }}>No beat found :(</h1> : null}
       </div>
       {/* <Row className={styles['beat-info-row']}>
         <Space direction="horizontal" className={styles['beat-info-space']}>
