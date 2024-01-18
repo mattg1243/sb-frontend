@@ -139,6 +139,8 @@ export default function BeatPage(props?: IBeatPageProps) {
     }
   };
 
+  const imgSize = isMobile ? 250 : 600;
+
   return (
     <>
       <div
@@ -154,7 +156,7 @@ export default function BeatPage(props?: IBeatPageProps) {
         {beat && !isLoading ? (
           <>
             <img
-              src={`${cdnHostname}/${beat.artworkKey}`}
+              src={`${cdnHostname}/fit-in/${imgSize}x${imgSize}/${beat.artworkKey}`}
               alt="album artwork"
               // onClick={() => {
               //   isPlaying ? pauseBeat() : playBeat();

@@ -1,11 +1,13 @@
 import { Button } from 'antd';
 import React, { Dispatch, SetStateAction, useRef, useState } from 'react';
+import { AlertObj } from '../types';
 
 interface IUploadProps {
   label: string;
   allowedFileType: 'audio/*' | 'image/*';
   sideIcon?: React.ReactNode;
   disabled?: boolean;
+  alertSetter: Dispatch<SetStateAction<AlertObj | undefined>>;
 }
 
 interface ISingleUploadButtonProps extends IUploadProps {
@@ -53,9 +55,15 @@ export default function UploadButton(props: Props) {
         ref={hiddenFileInput}
         multiple={props.multiple}
         onChange={(e) => {
-          console.log(props.multiple);
+          // check image size
           if (e.target.files) {
             setHasFile(true);
+            if (props.allowedFileType === 'image/*' && (e.target.files[0].size / 1024 / 1024).toFixed(4)) {
+              props.alertSetter({ type: 'error', message: 'The artwork you provided is too large (max size 4mb)' });
+              e.target.files = null;
+              setHasFile(false);
+              return;
+            }
             if (props.uploadStateSetter) {
               props.uploadStateSetter(e.target.files[0]);
             } else if (props.multiple && props.uploadMultiStateSetter && props.currentState) {

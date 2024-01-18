@@ -16,7 +16,6 @@ import {
 } from 'antd';
 import { PictureOutlined, SoundOutlined, LoadingOutlined, DeleteOutlined } from '@ant-design/icons';
 import axios, { AxiosResponse } from 'axios';
-import Resizer from 'react-image-file-resizer';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { getSignedUploadUrlReq } from '../../lib/axios';
 import { genreOptions } from '../../utils/genreTags';
@@ -26,7 +25,7 @@ import gatewayUrl from '../../config/routing';
 import { getUserArtistNameFromLocalStorage, getUserIdFromLocalStorage } from '../../utils/localStorageParser';
 import { useDispatch } from 'react-redux';
 import { notification } from '../../reducers/notificationReducer';
-import { Keys } from '../../types';
+import { AlertObj, Keys } from '../../types';
 import { ensureLoggedIn } from '../../utils/auth';
 
 export const possibleKeyOptions = Keys.map((key) => ({ value: key, label: key }));
@@ -49,7 +48,7 @@ export default function UploadBeatModal(props: IBeatUploadModalProps) {
   const { btn, isOpenParent, setIsOpenParent } = props;
 
   const [showModal, setShowModal] = useState<boolean>(isOpenParent ? isOpenParent : false);
-  const [alert, setAlert] = useState<{ message: string; type: 'error' | 'success' }>();
+  const [alert, setAlert] = useState<AlertObj>();
   const [isUploading, setIsUploading] = useState<boolean>(false);
   const [uploadProgress, setUploadProgress] = useState<number>(0);
   const [stemUploadProgress, setStemUploadProgress] = useState<number>(0);
@@ -58,10 +57,8 @@ export default function UploadBeatModal(props: IBeatUploadModalProps) {
   const [genreTags, setGenreTags] = useState<Array<string>>();
   const [tempo, setTempo] = useState<string>();
   const [key, setKey] = useState<string>();
-  const [flatOrSharp, setFlatOrSharp] = useState<'♭' | '♯' | ''>('');
   const [majorOrMinor, setMajorOrMinor] = useState<'major' | 'minor'>('major');
   const [artwork, setArtwork] = useState<Blob>();
-  const [artworkTn, setArtworkTn] = useState<Blob>();
   const [audio, setAudio] = useState<File | Blob>();
   const [stems, setStems] = useState<File[]>([]);
 
@@ -117,25 +114,12 @@ export default function UploadBeatModal(props: IBeatUploadModalProps) {
         }
         const hasStems = stems.length > 0;
         const stemFields: Array<Stem> = [];
-        // if artwork is provided, scale it and upload 2 sizes
-        if (artwork) {
-          const resizeArtworkPromise = resizeImage(artwork, 600);
-          const resizeArtworkThPromise = resizeImage(artwork, 150);
-          const [artworkFull, artworkTn] = await Promise.all([resizeArtworkPromise, resizeArtworkThPromise]);
-          // convert base64 to blob
-          const artworkFullBlobProm = fetch(artworkFull);
-          const artworkTnBlobProm = fetch(artworkTn);
-          const [fullBlob, tnBlob] = await Promise.all([artworkFullBlobProm, artworkTnBlobProm]);
-          console.log('artowrkFull from resize function: \n', typeof fullBlob);
-          setArtwork(await fullBlob.blob());
-          setArtworkTn(await tnBlob.blob());
-        }
         const beatFormData = new FormData();
+
         beatFormData.append('title', title);
         beatFormData.append('genreTags', JSON.stringify(genreTags));
         beatFormData.append('tempo', tempo as string);
         beatFormData.append('artwork', artwork as Blob);
-        beatFormData.append('artworkTn', artworkTn as Blob);
         beatFormData.append('key', key as string);
         beatFormData.append('majorOrMinor', majorOrMinor as string);
         beatFormData.append('s3Key', s3Key);
@@ -192,12 +176,6 @@ export default function UploadBeatModal(props: IBeatUploadModalProps) {
     }
   };
 
-  const resizeImage = (image: Blob, hw: number): Promise<string> => {
-    return new Promise((resolve) => {
-      Resizer.imageFileResizer(image, hw, hw, 'PNG', 100, 0, (uri) => resolve(uri as string), 'base64');
-    });
-  };
-
   const handleGenreTagsChange = (val: any) => {
     setGenreTags(val);
   };
@@ -224,7 +202,7 @@ export default function UploadBeatModal(props: IBeatUploadModalProps) {
       }
     }
   });
-
+  // check if artwork file is too large
   return (
     <>
       {!isMobile && !btn ? (
@@ -333,6 +311,7 @@ export default function UploadBeatModal(props: IBeatUploadModalProps) {
                     allowedFileType="image/*"
                     uploadStateSetter={setArtwork}
                     sideIcon={<PictureOutlined />}
+                    alertSetter={setAlert}
                   />
                   {/* {artwork ? <CheckCircleOutlined style={{ marginLeft: '1rem', fontSize: '1rem' }} /> : null} */}
                 </Form.Item>
@@ -342,6 +321,7 @@ export default function UploadBeatModal(props: IBeatUploadModalProps) {
                     allowedFileType="audio/*"
                     uploadStateSetter={setAudio}
                     sideIcon={<SoundOutlined />}
+                    alertSetter={setAlert}
                     data-cy="beat-upload-beat-input"
                   />
                   {/* {audio ? <CheckCircleOutlined style={{ marginLeft: '1rem', fontSize: '1rem' }} /> : null} */}
@@ -353,6 +333,7 @@ export default function UploadBeatModal(props: IBeatUploadModalProps) {
                     uploadMultiStateSetter={setStems}
                     currentState={stems}
                     multiple={true}
+                    alertSetter={setAlert}
                     data-cy="beat-upload-stem-input"
                   />
                 </Form.Item>
