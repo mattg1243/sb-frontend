@@ -4,15 +4,15 @@ import styles from './CustomAlert.module.css';
 
 export default function CustomAlert(props: AlertObj) {
   // destructure props
-  const { status, message } = props;
+  const { type, message } = props;
 
-  if (status === 'none') {
+  if (!type) {
     return <></>;
   } else {
     return (
       <Alert
         message={message}
-        type={status}
+        type={type}
         showIcon
         closable={true}
         className={styles['custom-alert']}

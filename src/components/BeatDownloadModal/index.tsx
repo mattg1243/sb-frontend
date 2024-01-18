@@ -1,13 +1,12 @@
 import { DownloadOutlined, PlusOutlined } from '@ant-design/icons';
 import JSZip from 'jszip';
 import { Button, Modal, Progress, Spin, Tooltip } from 'antd';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import styles from './BeatDownloadModal.module.css';
 import gatewayUrl from '../../config/routing';
 import axios, { AxiosResponse } from 'axios';
 import CustomAlert from '../CustomAlert/index';
 import { AlertObj } from '../../types';
-import { ensureLoggedIn } from '../../utils/auth';
 import { getUserIdFromLocalStorage, getUserSubTierFromLocalStorage } from '../../utils/localStorageParser';
 import { useNavigate } from 'react-router-dom';
 
@@ -121,7 +120,7 @@ export default function BeatDownloadModal(props: IBeatDownloadModal) {
       setOpen(false);
     } catch (err) {
       console.error(err);
-      setErrMsg({ message: 'Insufficient credits', status: 'error' });
+      setErrMsg({ message: 'Insufficient credits', type: 'error' });
     } finally {
       setBeatDownloading(false);
       setBeatDownloadProgress(0);
@@ -200,7 +199,7 @@ export default function BeatDownloadModal(props: IBeatDownloadModal) {
           </h3>
           {errorMsg ? (
             <>
-              <CustomAlert message={errorMsg.message} status={errorMsg.status} />
+              <CustomAlert message={errorMsg.message} type={errorMsg.type} />
             </>
           ) : (
             <p style={{ padding: '.5vw' }}>{modalTxt}</p>

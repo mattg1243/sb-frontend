@@ -1,1 +1,1 @@
-export type AlertObj = { status: 'success' | 'error' | 'warning' | 'none'; message: string };
+export type AlertObj = { type: 'success' | 'error' | 'warning' | 'info' | undefined; message: string };

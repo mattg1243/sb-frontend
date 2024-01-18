@@ -8,7 +8,7 @@ import { Axios, AxiosError } from 'axios';
 export default function SubRefModal() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [refCode, setRefCode] = useState<string>();
-  const [alert, setAlert] = useState<AlertObj>({ status: 'none', message: '' });
+  const [alert, setAlert] = useState<AlertObj>();
 
   useEffect(() => {
     const subSucess = new URLSearchParams(window.location.search).get('sub-success');
@@ -21,13 +21,13 @@ export default function SubRefModal() {
   const submitRefCode = async () => {
     try {
       await setSubReferrerReq(refCode as string);
-      setAlert({ status: 'success', message: 'Referral code saved' });
+      setAlert({ type: 'success', message: 'Referral code saved' });
       setTimeout(() => {
         setIsOpen(false);
       }, 3000);
     } catch (err: any) {
       if (err instanceof AxiosError) {
-        setAlert({ status: 'error', message: err.response?.data.message });
+        setAlert({ type: 'error', message: err.response?.data.message });
       }
       console.error(err);
     }
@@ -64,7 +64,7 @@ export default function SubRefModal() {
           }}
         />
         <div style={{ padding: '.5vw', width: '90%', textAlign: 'center', alignItems: 'center' }}>
-          <CustomAlert {...alert} />
+          <CustomAlert type={alert?.type} message={alert?.message as string} />
         </div>
       </Modal>
     </>

@@ -28,10 +28,9 @@ export default function Register(): JSX.Element {
   const [buttonColor, setButtonColor] = useState<'#D3D3D3' | 'black'>('#D3D3D3');
   const [agreedToTerms, setAgreedToTerms] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [alert, setAlert] = useState<AlertObj>({ status: 'none', message: '' });
+  const [alert, setAlert] = useState<AlertObj>();
 
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   const sendRegisterRequest = async () => {
     if (password === passwordConfirm && agreedToTerms && email !== undefined && artistName !== undefined) {
@@ -48,14 +47,14 @@ export default function Register(): JSX.Element {
         }
       } catch (err: any) {
         console.log('message from server: ', err.response.data.message);
-        setAlert({ status: 'error', message: err.response.data.message });
+        setAlert({ type: 'error', message: err.response.data.message });
         setIsLoading(false);
         console.error(err);
       }
     } else {
       // passwords dont match, display error
       setAlert({
-        status: 'error',
+        type: 'error',
         message: 'Please fill out required fields and make sure you have reentered your passwords correctly.',
       });
     }
@@ -196,7 +195,7 @@ export default function Register(): JSX.Element {
                   </Button>
                 </Space>
               )}
-              <CustomAlert status={alert.status} message={alert.message} />
+              <CustomAlert type={alert?.type} message={alert?.message as string} />
               <h3 className={styles.alreadyAccount}>
                 Already have an account? <a href="/login">Login</a>
               </h3>

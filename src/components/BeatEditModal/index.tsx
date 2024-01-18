@@ -72,7 +72,7 @@ export default function BeatEditModal(props: IEditBeatModalProps) {
       console.log(response.data);
     } catch (err) {
       console.error(err);
-      setAlert({ status: 'error', message: 'There was an error updating your beat' });
+      setAlert({ type: 'error', message: 'There was an error updating your beat' });
     } finally {
       setIsLoading(false);
     }
@@ -191,13 +191,14 @@ export default function BeatEditModal(props: IEditBeatModalProps) {
                     allowedFileType="image/*"
                     uploadStateSetter={setArtwork}
                     sideIcon={<PictureOutlined />}
+                    alertSetter={setAlert}
                   />
                   {artwork ? <CheckCircleOutlined style={{ marginLeft: '1rem', fontSize: '1rem' }} /> : null}
                 </Form.Item>
               </>
             )}
           </Form>
-          {alert ? <CustomAlert message={alert.message} status={alert.status} /> : null}
+          {alert ? <CustomAlert message={alert.message} type={alert.type} /> : null}
         </Spin>
         <Divider />
         <Button

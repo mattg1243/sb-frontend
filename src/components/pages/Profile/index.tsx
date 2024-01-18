@@ -81,14 +81,14 @@ export default function Profile() {
         window.location.reload();
       } else {
         setAlert({
-          status: 'error',
+          type: 'error',
           message: updateAvatarRes.data.message || 'Error occured while updating your profile picture.',
         });
       }
       setUpdateIsLoading(false);
     } else {
       console.log('No new avatar attached.');
-      setAlert({ status: 'warning', message: 'No new profile picture attached' });
+      setAlert({ type: 'warning', message: 'No new profile picture attached' });
     }
   };
 
@@ -163,10 +163,11 @@ export default function Profile() {
                       disabled={updateIsLoading}
                       sideIcon={<UserOutlined />}
                       uploadStateSetter={setNewAvatar}
+                      alertSetter={setAlert}
                     />
                     {newAvatar ? <CheckCircleOutlined style={{ margin: '0 1rem', fontSize: '1rem' }} /> : null}
                     {updateIsLoading ? <Progress percent={uploadProgress as number} /> : null}
-                    {alert ? <CustomAlert message={alert.message} status={alert.status} /> : null}
+                    {alert ? <CustomAlert message={alert.message} type={alert.type} /> : null}
                   </div>
                 </Modal>
                 {isMobile ? null : <UserEditModal user={userInfo} setUserInfo={setUserInfo} />}

@@ -19,7 +19,7 @@ export default function Login(): JSX.Element {
   const [resetPasswordModalOpen, setResetPasswordModalOpen] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [checkingAuth, setCheckingAuth] = useState<boolean>(false);
-  const [alert, setAlert] = useState<AlertObj>({ status: 'none', message: '' });
+  const [alert, setAlert] = useState<AlertObj>();
 
   const navigate = useNavigate();
 
@@ -39,17 +39,17 @@ export default function Login(): JSX.Element {
           navigate('/app/dash');
         }
       } else {
-        setAlert({ status: 'success', message: 'User successfully logged in' });
+        setAlert({ type: 'success', message: 'User successfully logged in' });
       }
     } catch (err: any) {
       console.error(err);
       if (err.response.status === 401) {
-        setAlert({ status: 'error', message: 'Invalid login credentials' });
+        setAlert({ type: 'error', message: 'Invalid login credentials' });
       } else if (err.response.status === 403) {
         localStorage.setItem('sb-user', JSON.stringify(err.response.data.user));
         navigate('/verify-email');
       } else {
-        setAlert({ status: 'error', message: 'An error occured while logging again. Please try again.' });
+        setAlert({ type: 'error', message: 'An error occured while logging again. Please try again.' });
       }
     } finally {
       setIsLoading(false);
@@ -161,9 +161,9 @@ export default function Login(): JSX.Element {
                   Login
                 </Button>
               )}
-              <CustomAlert status={alert.status} message={alert.message} />
+              <CustomAlert type={alert?.type} message={alert?.message as string} />
               {goBack == 'true' ? (
-                <CustomAlert status="warning" message="You must be logged in to access that feature" />
+                <CustomAlert type="warning" message="You must be logged in to access that feature" />
               ) : null}
               <h3 className={styles.noAccount} style={{ marginTop: '1vh' }}>
                 Dont have an account? <a href="/register">Sign Up</a>

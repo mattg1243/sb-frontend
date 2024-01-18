@@ -37,7 +37,7 @@ export default function LoadingPage() {
         {timedOut ? (
           <CustomAlert
             message="This page is taking a lot longer than it should to load. Please try again or contact support."
-            status="error"
+            type="error"
           />
         ) : null}
       </Content>

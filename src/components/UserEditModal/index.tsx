@@ -43,9 +43,9 @@ export default function UserEditModal(props: IUserEditModal) {
       }
     } catch (err) {
       if (err instanceof AxiosError && err.response?.data.message) {
-        setAlert({ status: 'error', message: err.response.data.message });
+        setAlert({ type: 'error', message: err.response.data.message });
       } else {
-        setAlert({ status: 'error', message: 'There was an error updating your user profile' });
+        setAlert({ type: 'error', message: 'There was an error updating your user profile' });
       }
       console.error(err);
     } finally {
@@ -129,7 +129,7 @@ export default function UserEditModal(props: IUserEditModal) {
                 }}
               />
             </Form.Item>
-            {alert ? <CustomAlert status={alert.status} message={alert.message} /> : null}
+            {alert ? <CustomAlert type={alert.type} message={alert.message} /> : null}
           </Form>
         </Spin>
       </Modal>
