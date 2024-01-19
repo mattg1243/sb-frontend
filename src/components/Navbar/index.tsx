@@ -285,7 +285,7 @@ export default function Navbar() {
               >
                 <Avatar
                   size={48}
-                  src={avatarUrl ? `${imgCdnHostName}/${avatarUrl}` : undefined}
+                  src={avatarUrl ? `${imgCdnHostName}/fit-in/125x125/${avatarUrl}` : undefined}
                   style={{ border: 'solid 3px', borderColor: 'var(--primary)', backgroundColor: 'black' }}
                   icon={avatarUrl ? undefined : <UserOutlined style={{ color: 'white', fontSize: '2vh' }} />}
                   className="avatar"

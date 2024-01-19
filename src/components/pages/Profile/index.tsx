@@ -116,7 +116,7 @@ export default function Profile() {
               <>
                 <div className={styles.container}>
                   <Avatar
-                    src={`${imgCdnHostName}/${userInfo.avatar}`}
+                    src={`${imgCdnHostName}/fit-in/400x400/${userInfo.avatar}`}
                     onClick={() => {
                       setNewAvatarModalOpen(true);
                     }}
@@ -177,7 +177,7 @@ export default function Profile() {
                 <Avatar
                   src={
                     <Image
-                      src={`${imgCdnHostName}/${userInfo.avatar}`}
+                      src={`${imgCdnHostName}/fit-in/400x400/${userInfo.avatar}`}
                       onError={({ currentTarget }) => {
                         currentTarget.onerror = null; // prevents looping
                         currentTarget.src = defaultAvatar;

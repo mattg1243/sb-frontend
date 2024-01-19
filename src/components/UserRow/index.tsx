@@ -38,7 +38,7 @@ export default function UserRow(props: IUserRowProps) {
       <Row className={styles['row-container']} style={{ paddingLeft: '6rem' }}>
         <Row style={{ alignItems: 'center', marginRight: 'auto', paddingLeft: '1vw' }}>
           <Avatar
-            src={`${imgCdnHostName}/${user.avatar}`}
+            src={`${imgCdnHostName}/fit-in/125x125/${user.avatar}`}
             size={isMobile ? 75 : 125}
             onClick={() => {
               navigate(`/app/user?id=${user._id}`);
