@@ -172,10 +172,7 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
         )}
         <Row style={{ alignItems: 'center', marginRight: 'auto', paddingLeft: '1vw' }}>
           <Image
-            src={
-              `${imgCdnHostName}/fit-in/${imgSize}x${imgSize}/${beat.artworkKey}` ||
-              `${imgCdnHostName}/${beat.artworkKey}`
-            }
+            src={`${imgCdnHostName}/fit-in/125x125/${beat.artworkKey}` || `${imgCdnHostName}/${beat.artworkKey}`}
             alt="album artwork"
             preview={{
               mask: <Image src={isPlaying ? pauseIcon : playIcon} preview={false} />,
