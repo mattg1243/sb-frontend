@@ -58,7 +58,8 @@ export default function UploadButton(props: Props) {
           // check image size
           if (e.target.files) {
             setHasFile(true);
-            if (props.allowedFileType === 'image/*' && (e.target.files[0].size / 1024 / 1024).toFixed(4)) {
+            console.log('file size (mb): ', e.target.files[0].size / 1024 / 1024);
+            if (props.allowedFileType === 'image/*' && e.target.files[0].size / 1024 / 1024 > 4) {
               props.alertSetter({ type: 'error', message: 'The artwork you provided is too large (max size 4mb)' });
               e.target.files = null;
               setHasFile(false);
