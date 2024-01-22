@@ -5,6 +5,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
 import { store } from './store';
+import { Helmet, HelmetProvider } from 'react-helmet-async';
 
 // extend window object to include Cypress / Redux store for testing
 declare global {
@@ -17,9 +18,18 @@ declare global {
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
   <React.StrictMode>
-    <Provider store={store}>
-      <App />
-    </Provider>
+    <HelmetProvider>
+      <Helmet>
+        <title>Sweatshop Beats</title>
+        <meta
+          name="description"
+          content="The first beat subscription website, the world's catalog of beats at your fingertips for as little as $34.99/month"
+        />
+      </Helmet>
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </HelmetProvider>
   </React.StrictMode>
 );
 
