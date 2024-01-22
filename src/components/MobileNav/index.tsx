@@ -18,6 +18,7 @@ import { beats } from '../../reducers/searchReducer';
 import { RootState } from '../../store';
 import gatewayUrl from '../../config/routing';
 import UploadBeatModal from '../BeatUploadModal';
+import { useOutsideClick } from '../../hooks/useOutsideClick';
 
 const onProfilePage = window.location.pathname == '/app/user';
 
@@ -102,6 +103,9 @@ export default function MobileNav(props: IMobileNavProps) {
       ),
     },
   ];
+
+  const searchDivRef = useRef(null);
+  useOutsideClick(searchDivRef, setSearchOpen);
 
   useEffect(() => {
     if (currentSelection === 'Search') {
@@ -236,40 +240,42 @@ export default function MobileNav(props: IMobileNavProps) {
       </Row>
       <Row style={{ position: 'absolute', width: '100vw' }} justify="center">
         <Col span={18}>
-          <Input
-            type="search"
-            placeholder="Search"
-            onChange={(e) => {
-              dispatch(searchQuery(e.target.value));
-            }}
-            onKeyPress={(e) => {
-              if (e.key === 'Enter') {
-                setSearchOpen(false);
-              }
-            }}
-            prefix={
-              <CloseOutlined
-                onClick={() => {
+          <div ref={searchDivRef}>
+            <Input
+              type="search"
+              placeholder="Search"
+              onChange={(e) => {
+                dispatch(searchQuery(e.target.value));
+              }}
+              onKeyPress={(e) => {
+                if (e.key === 'Enter') {
                   setSearchOpen(false);
-                }}
-                data-cy="mobile-search-bar-close"
-              />
-            }
-            suffix={<SearchOutlined />}
-            autoFocus
-            value={searchQueryState as string}
-            style={{
-              top: '20vh',
-              boxShadow: '0 0 0 max(100vh, 100vw) rgba(0, 0, 0, .3)',
-              borderRadius: '40px',
-              height: '5vh',
-              outlineColor: 'var(--primary)',
-              fontSize: '17px',
-            }}
-            className={searchOpen ? styles['search-bar-visible'] : styles['search-bar-hidden']}
-            ref={inputRef}
-            data-cy="mobile-search-bar"
-          />
+                }
+              }}
+              prefix={
+                <CloseOutlined
+                  onClick={() => {
+                    setSearchOpen(false);
+                  }}
+                  data-cy="mobile-search-bar-close"
+                />
+              }
+              suffix={<SearchOutlined />}
+              autoFocus
+              value={searchQueryState as string}
+              style={{
+                top: '20vh',
+                boxShadow: '0 0 0 max(100vh, 100vw) rgba(0, 0, 0, .3)',
+                borderRadius: '40px',
+                height: '5vh',
+                outlineColor: 'var(--primary)',
+                fontSize: '17px',
+              }}
+              className={searchOpen ? styles['search-bar-visible'] : styles['search-bar-hidden']}
+              ref={inputRef}
+              data-cy="mobile-search-bar"
+            />
+          </div>
         </Col>
       </Row>
       <UploadBeatModal />

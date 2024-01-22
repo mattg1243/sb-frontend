@@ -163,7 +163,7 @@ export default function Navbar() {
         let beatSearchUrl = `${gatewayUrl}/beats/search?search=${e.target.value}`;
         const userSearchUrl = `${gatewayUrl}/user/search?search=${e.target.value}`;
         if (onProfilePage) {
-          beatSearchUrl += `&artist=${currentUserId}`;
+          navigate('/app/dash');
         }
         if (searchBeatFiltersState) {
           if (searchBeatFiltersState.genre) {
