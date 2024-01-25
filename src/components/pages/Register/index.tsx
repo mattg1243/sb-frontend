@@ -1,4 +1,4 @@
-import { Button, Form, Input, Layout, Checkbox, Spin, Switch, Space, Tooltip, DatePicker, Col } from 'antd';
+import { Button, Form, Input, Layout, Spin, Space, Col } from 'antd';
 import { Input as ChakraInput, ChakraProvider } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
@@ -10,10 +10,7 @@ import CustomAlert from '../../CustomAlert';
 import gatewayUrl from '../../../config/routing';
 import TermsOfService from '../../TermsOfService';
 import styles from './Register.module.css';
-import { CheckCircleOutlined, InfoCircleOutlined } from '@ant-design/icons';
-import { useDispatch } from 'react-redux';
-import { notification } from '../../../reducers/notificationReducer';
-import { loginUserReq } from '../../../lib/axios';
+import { CheckCircleOutlined } from '@ant-design/icons';
 
 const emailRe = /^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/;
 const isMobile = window.innerWidth < 480;
@@ -164,8 +161,7 @@ export default function Register(): JSX.Element {
                   }}
                 />
               </Col>
-              <p>Date of Birth</p>
-              {window.innerWidth > 480 ? null : 'Date of Birth'}
+              {window.innerWidth > 480 ? <p>Date of Birth</p> : 'Date of Birth'}
             </Form.Item>
 
             <Form.Item name="terms and conditions" className={styles['small-text']}>
