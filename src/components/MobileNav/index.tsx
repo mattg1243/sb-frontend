@@ -29,6 +29,7 @@ interface IMobileNavProps {
 export default function MobileNav(props: IMobileNavProps) {
   const [currentSelection, setCurrentSelection] = useState<'Home' | 'Search' | 'Upload' | 'Profile'>('Home');
   const [searchOpen, setSearchOpen] = useState<boolean>(false);
+  const [searchQuery, setSearchQuery] = useState<string>();
   const [userMenuOpen, setUserMenuOpen] = useState<boolean>(false);
   const [uploadModalOpen, setUploadModalOpen] = useState<boolean>(false);
 
@@ -36,11 +37,6 @@ export default function MobileNav(props: IMobileNavProps) {
   const userId = getUserIdFromLocalStorage();
   const inputRef = useRef<InputRef>(null);
   const currentUserId = props.testUserId || getUserIdFromLocalStorage();
-
-  const dispatch = useDispatch();
-
-  const searchQueryState = useSelector<RootState, string | null>((state) => selectSearchQuery(state));
-  const isSearching = useSelector<RootState, boolean>((state) => selectIsSearching(state));
 
   const logoutUser = async () => {
     try {
@@ -121,30 +117,6 @@ export default function MobileNav(props: IMobileNavProps) {
     }
   }, [searchOpen]);
 
-  useEffect(() => {
-    let searchUrl = `${gatewayUrl}/beats/search?`;
-    if (searchQueryState) {
-      dispatch(searching(true));
-      if (!searchUrl.endsWith('?')) {
-        searchUrl += '&';
-      }
-      searchUrl += `search=${searchQueryState}`;
-      if (onProfilePage) {
-        searchUrl += `&artist=${userId}`;
-      }
-      axios
-        .get(searchUrl)
-        .then((res) => {
-          dispatch(beats(res.data.beats));
-        })
-        .then(() => {
-          dispatch(searchIsLoading(false));
-        });
-    } else {
-      dispatch(searching(false));
-    }
-  }, [searchQueryState]);
-
   return (
     <>
       <Row className={styles.container} justify="space-around">
@@ -153,9 +125,6 @@ export default function MobileNav(props: IMobileNavProps) {
             onClick={() => {
               navigate('/app/dash');
               setCurrentSelection('Home');
-              if (isSearching) {
-                dispatch(searching(false));
-              }
             }}
             type="ghost"
             className={styles.btn}
@@ -245,11 +214,12 @@ export default function MobileNav(props: IMobileNavProps) {
               type="search"
               placeholder="Search"
               onChange={(e) => {
-                dispatch(searchQuery(e.target.value));
+                setSearchQuery(e.target.value);
               }}
               onKeyPress={(e) => {
                 if (e.key === 'Enter') {
                   setSearchOpen(false);
+                  navigate(`/app/search?query=${searchQuery}`);
                 }
               }}
               prefix={
@@ -262,7 +232,7 @@ export default function MobileNav(props: IMobileNavProps) {
               }
               suffix={<SearchOutlined />}
               autoFocus
-              value={searchQueryState as string}
+              value={searchQuery as string}
               style={{
                 top: '20vh',
                 boxShadow: '0 0 0 max(100vh, 100vw) rgba(0, 0, 0, .3)',

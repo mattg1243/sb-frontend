@@ -23,6 +23,10 @@ export const getUserReq = async (userId: string) => {
   return await axios.get(`${gatewayUrl}/user/?id=${userId}`, { withCredentials: true });
 };
 
+export const searchUserReq = async (query: string) => {
+  return await axios.get(`${gatewayUrl}/user/search?search=${query}`);
+};
+
 export const getUserAvatarReq = async (userId: string) => {
   return await axios.get(`${gatewayUrl}/user/avatar?id=${userId}`);
 };
@@ -125,6 +129,23 @@ export const getAllBeatsReq = async (page?: { skip: number; take: number }) => {
     requestUrl = requestUrl + `?skip=${page.skip}` + `&take=${page.take}`;
   }
   return await axios.get(requestUrl, { withCredentials: true });
+};
+
+export const searchBeatsReq = async (query: string, skip?: number, take?: number, genre?: string, key?: string) => {
+  let beatSearchUrl = `${gatewayUrl}/beats/search?search=${query}`;
+  if (genre) {
+    beatSearchUrl += `&genre=${genre}`;
+  }
+  if (key) {
+    beatSearchUrl += `&key=${key}`;
+  }
+  if (skip) {
+    beatSearchUrl += `&skip=${skip}`;
+  }
+  if (take) {
+    beatSearchUrl += `&take=${take}`;
+  }
+  return await axios.get(beatSearchUrl);
 };
 
 export const getAllBeatsByUserReq = async (userId: string) => {

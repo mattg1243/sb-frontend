@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { ConfigProvider } from 'antd';
-import useWebSocket from 'react-use-websocket';
-import { socketUrl } from './config/routing';
+// import { ConfigProvider } from 'antd';
+// import useWebSocket from 'react-use-websocket';
+// import { socketUrl } from './config/routing';
 import Register from './components/pages/Register';
 import Login from './components/pages/Login';
 import Splash from './components/pages/Splash';
@@ -20,10 +20,11 @@ import Subscription from './components/pages/Subscription';
 import UnderConstruction from './components/pages/UnderConstruction';
 import ResetPasswordPage from './components/pages/ResetPassword';
 import FAQ from './components/pages/FAQ';
-import { WebSocketMessage } from 'react-use-websocket/dist/lib/types';
-import { getUserIdFromLocalStorage } from './utils/localStorageParser';
+// import { WebSocketMessage } from 'react-use-websocket/dist/lib/types';
+// import { getUserIdFromLocalStorage } from './utils/localStorageParser';
 import LicensedBeatsPage from './components/pages/LicensedBeats';
 import BeatPage from './components/pages/Beat';
+import SearchPage from './components/pages/Search';
 
 function App() {
   // const userId = getUserIdFromLocalStorage();
@@ -68,6 +69,7 @@ function App() {
             <Route path="beat" element={<BeatPage />} />
             {/* protected routes */}
             <Route path="dash" element={<Dashboard />} index />
+            <Route path="search" element={<SearchPage />} />
             <Route path="loading" element={<LoadingPage />} />
             <Route path="account" element={<AccountPage />} />
             <Route path="licensed-beats" element={<LicensedBeatsPage />} />
