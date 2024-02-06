@@ -24,6 +24,7 @@ import {
 } from '../../reducers/searchReducer';
 import { RootState } from '../../store';
 import { ensureLoggedIn } from '../../utils/auth';
+import SearchInput from './SearchInput';
 
 export default function Navbar() {
   const [avatarUrl, setAvatarUrl] = useState();
@@ -115,78 +116,6 @@ export default function Navbar() {
     }
   }, [currentUserId]);
 
-  useEffect(() => {
-    let searchUrl = `${gatewayUrl}/beats/search?`;
-    if (searchQueryState) {
-      if (!searchUrl.endsWith('?')) {
-        searchUrl += '&';
-      }
-      searchUrl += `search=${searchQueryState}`;
-    }
-    if (searchBeatFiltersState) {
-      dispatch(searching(true));
-      dispatch(searchIsLoading(true));
-      if (searchBeatFiltersState.genre) {
-        if (!searchUrl.endsWith('?')) {
-          searchUrl += '&';
-        }
-        searchUrl += `genre=${searchBeatFiltersState.genre}`;
-      }
-      if (searchBeatFiltersState.key) {
-        if (!searchUrl.endsWith('?')) {
-          searchUrl += '&';
-        }
-        searchUrl += `key=${searchBeatFiltersState.key}`;
-      }
-      axios
-        .get(searchUrl)
-        .then((res) => {
-          dispatch(beats(res.data.beats));
-        })
-        .then(() => {
-          dispatch(searchIsLoading(false));
-        });
-    }
-  }, [searchBeatFiltersState, searchQueryState]);
-
-  const handleSearchChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.value === '') {
-      dispatch(searching(false));
-      dispatch(searchQuery(null));
-      dispatch(searchFilters(null));
-      dispatch(users(null));
-      dispatch(beats(null));
-    } else {
-      try {
-        dispatch(searching(true));
-        dispatch(searchQuery(e.target.value));
-        let beatSearchUrl = `${gatewayUrl}/beats/search?search=${e.target.value}`;
-        const userSearchUrl = `${gatewayUrl}/user/search?search=${e.target.value}`;
-        if (onProfilePage) {
-          navigate('/app/dash');
-        }
-        if (searchBeatFiltersState) {
-          if (searchBeatFiltersState.genre) {
-            beatSearchUrl += `&genre=${searchBeatFiltersState.genre}`;
-          }
-          if (searchBeatFiltersState.key) {
-            beatSearchUrl += `&key=${searchBeatFiltersState.key}`;
-          }
-        }
-        dispatch(searchIsLoading(true));
-        const beatSearchResPromise = axios.get(beatSearchUrl);
-        const userSearchResPromise = axios.get(userSearchUrl);
-        const [beatSearchRes, userSearchRes] = await Promise.all([beatSearchResPromise, userSearchResPromise]);
-        dispatch(beats(beatSearchRes.data.beats));
-        dispatch(users(userSearchRes.data.users));
-        dispatch(searchIsLoading(false));
-        console.log(beatSearchRes.data);
-      } catch (err) {
-        console.error(err);
-      }
-    }
-  };
-
   return (
     <Header
       style={{
@@ -239,24 +168,7 @@ export default function Navbar() {
         </Menu.Item>
         <Menu.Item key="profile" style={{ marginLeft: 'auto', padding: '0 2vw' }} className={styles['menu-item']}>
           <Space size={62}>
-            <Input
-              type="text"
-              style={{
-                borderRadius: '40px',
-                width: window.location.pathname == '/' ? '20vw' : '14vw',
-              }}
-              placeholder="Search"
-              suffix={<SearchOutlined />}
-              onChange={(e) => {
-                handleSearchChange(e);
-              }}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' && window.location.pathname === '/') {
-                  navigate('/app/dash');
-                }
-              }}
-              value={searchQueryState as string}
-            />
+            <SearchInput />
             {window.location.pathname !== '/' ? (
               <Dropdown
                 menu={{
