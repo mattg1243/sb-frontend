@@ -1,12 +1,12 @@
 import { Image, Row, Statistic } from 'antd';
 import BeatEditModal from '../BeatEditModal';
 import { Beat } from '../../types/beat';
-import { imgCdnHostName } from '../../config/routing';
+import { beatCdnHostName as cdnHostname, imgCdnHostName } from '../../config/routing';
 import artworkLoading from '../../assets/artwork_loading.jpg';
 import { useState, useEffect } from 'react';
 import playIcon from '../../assets/play_black.png';
 import pauseIcon from '../../assets/pause_black.png';
-import { CheckOutlined, DownloadOutlined, HeartFilled, HeartOutlined, PlayCircleOutlined } from '@ant-design/icons';
+import { CheckOutlined, HeartFilled, HeartOutlined, PlayCircleOutlined } from '@ant-design/icons';
 import styles from './DashRow.module.css';
 import BeatDownloadModal from '../BeatDownloadModal';
 import { useDispatch, useSelector } from 'react-redux';
@@ -64,15 +64,17 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
     }
   }, [isPlaying]);
 
-  // useEffect(() => {
-  //   return () => {
-  //     const audio = document.getElementById(`audio-player-${beat.audioKey}`) as HTMLAudioElement;
-  //     audio.pause();
-  //     audio.currentTime = 0;
-  //     setIsPlaying(false);
-  //     dispatch(playback(null));
-  //   };
-  // }, []);
+  useEffect(() => {
+    return () => {
+      // dispatch(playback(null));
+      setIsPlaying(false);
+      const audio = document.getElementById(`audio-player-${beat.audioKey}`) as HTMLAudioElement;
+      if (audio) {
+        audio.pause();
+        audio.currentTime = 0;
+      }
+    };
+  }, []);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -104,26 +106,23 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
   /**
    * This function handles beat playback for mobile and passes through the provided
    * function from the props if on desktop.
-   * @param e - MouseEvent
    */
   const playBeat = () => {
-    navigate(`/app/beat?id=${beat._id}`);
-    // setPlaybackIsLoading(true);
-    // dispatch(playback(beat));
-    // if (!isMobile) {
-    //   // select the corresponding hidden audio tag form the DOM
-    //   const audio = document.getElementById(`audio-player-${beat.audioKey}`) as HTMLAudioElement;
-    //   if (isPlaying) {
-    //     setIsPlaying(false);
-    //     audio.pause();
-    //   } else if (!isPlaying) {
-    //     audio.play();
-    //     setIsPlaying(true);
-    //   }
-    //   setPlaybackIsLoading(false);
-    // } else {
-    //   onClick(e);
-    // }
+    // navigate(`/app/beat?id=${beat._id}`);
+    setPlaybackIsLoading(true);
+    dispatch(playback(beat));
+    if (!isMobile) {
+      // select the corresponding hidden audio tag form the DOM
+      const audio = document.getElementById(`audio-player-${beat.audioKey}`) as HTMLAudioElement;
+      if (isPlaying) {
+        setIsPlaying(false);
+        audio.pause();
+      } else if (!isPlaying) {
+        audio.play();
+        setIsPlaying(true);
+      }
+      setPlaybackIsLoading(false);
+    }
   };
 
   const likeBeat = async () => {
@@ -190,7 +189,7 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
             //   playBeat(e);
             // }}
             onClick={() => {
-              playBeat();
+              isMobile ? navigate(`/app/beat?id=${beat._id}`) : playBeat();
             }}
             className={styles.artwork}
             data-cy="beat-artwork"
@@ -264,13 +263,10 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
             <Statistic value={likesCount} valueStyle={{ display: 'none' }} />
           </div>
         ) : null}
-        {isPlaying ? <BsVolumeUp style={{ fontSize: '3vh', marginRight: '7vw' }} /> : null}
       </Row>
-      {/* {!isMobile ? (
-        <audio preload="auto" style={{ display: 'none' }} id={`audio-player-${beat.audioKey}`}>
-          <source src={`${cdnHostname}/${beat.audioKey}`} type="audio/mpeg" />
-        </audio>
-      ) : null} */}
+      <audio preload="auto" style={{ display: 'none' }} id={`audio-player-${beat.audioKey}`}>
+        <source src={`${cdnHostname}/${beat.audioKey}`} type="audio/mpeg" />
+      </audio>
     </>
   );
 }

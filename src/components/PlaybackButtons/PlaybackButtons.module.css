@@ -33,13 +33,14 @@ input[type='range']::-webkit-slider-thumb {
 }
 
 .playbackbutton {
-  position: fixed;
+  position: absolute;
   background: transparent;
   border: none !important;
-  bottom: 5vh;
+  top: 90vh;
   left: 5vw;
   margin: 2rem;
   font-size: 2rem;
+  z-index: 1000;
 }
 
 .playbackbtn-bar {

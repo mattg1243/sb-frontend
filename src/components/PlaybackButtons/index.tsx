@@ -1,7 +1,7 @@
+import React from 'react';
 import { Tooltip, Spin, Row, Col } from 'antd';
 import { CaretRightOutlined, PauseOutlined, LoadingOutlined } from '@ant-design/icons';
 import { useState, useRef, useEffect } from 'react';
-import { isSafari } from 'react-device-detect';
 import styles from './PlaybackButtons.module.css';
 import { useDispatch, useSelector } from 'react-redux';
 import type { Beat } from '../../types';
@@ -26,11 +26,10 @@ const strPadLeft = (string: string, pad: string, length: number) => {
 const isMobile = window.innerWidth < 480;
 
 export default function PlaybackButtons(props: IPlyabackButtonsProps) {
-  const [isPlaying, setIsPlaying] = useState<boolean>(isMobile ? false : true);
+  const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [currentTime, setCurrentTime] = useState<number>(0);
   const [duration, setDuration] = useState<string>();
-  const [volume, setVolume] = useState<number>(100);
   const [secondsPlayed, setSecondsPlayed] = useState<number>(0);
   const [minutesPlayed, setMinutesPlayed] = useState<number>(0);
 
@@ -57,6 +56,8 @@ export default function PlaybackButtons(props: IPlyabackButtonsProps) {
 
   const audio = useRef<HTMLAudioElement>();
   let streamTimeout: NodeJS.Timeout;
+
+  const onBeatPage = window.location.pathname === '/app/beat' ? true : false;
 
   const play = async () => {
     if (!audio.current) {
@@ -106,45 +107,52 @@ export default function PlaybackButtons(props: IPlyabackButtonsProps) {
   useEffect(() => {
     if (beatPlaying && currentBeatId !== beatPlaying._id) {
       setIsLoading(true);
-      audio.current = document.getElementById(`audio-player-${beatPlaying.audioStreamKey}`) as HTMLAudioElement;
+      stopAllAudio();
+      audio.current = document.getElementById(`audio-player-${beatPlaying.audioKey}`) as HTMLAudioElement;
       setCurrentTime(0);
       setIsLoading(false);
-      audio.current.onloadedmetadata = () => {
-        const minutes = Math.floor((audio.current?.duration as number) / 60);
-        const seconds = Math.floor((audio.current?.duration as number) - minutes * 60);
-        setDuration(`${minutes}:${strPadLeft(seconds.toString(), '0', 2)}`);
-      };
-      audio.current.ontimeupdate = handleTimeUpdate;
-      audio.current.onplaying = () => {
-        setIsPlaying(true);
-        if (!countedStream) {
-          streamTimeout = setTimeout(() => {
-            addStreamReq(beatPlaying?._id as string)
-              .then((res) => {
-                console.log(res);
-                countedStream = true;
-              })
-              .catch((err) => console.error(err));
-          }, 1);
+      if (!audio.current) {
+        console.log('there was an error getting the audio element');
+      } else {
+        audio.current.onloadedmetadata = () => {
+          const minutes = Math.floor((audio.current?.duration as number) / 60);
+          const seconds = Math.floor((audio.current?.duration as number) - minutes * 60);
+          setDuration(`${minutes}:${strPadLeft(seconds.toString(), '0', 2)}`);
+        };
+        audio.current.ontimeupdate = handleTimeUpdate;
+        audio.current.onplaying = () => {
+          setIsPlaying(true);
+          if (!countedStream) {
+            streamTimeout = setTimeout(() => {
+              addStreamReq(beatPlaying?._id as string)
+                .then((res) => {
+                  console.log(res);
+                  countedStream = true;
+                })
+                .catch((err) => console.error(err));
+            }, 1);
+          }
+        };
+        audio.current.onpause = () => {
+          setIsPlaying(false);
+          clearTimeout(streamTimeout);
+        };
+        audio.current.onplay = () => {
+          setIsPlaying(true);
+        };
+        audio.current.onerror = () => {
+          console.log('error loading audio file');
+          stopAllAudio();
+        };
+        audio.current.onended = () => {
+          setIsPlaying(false);
+          setCurrentTime(0);
+          audio.current?.pause();
+        };
+
+        if (!isMobile && !onBeatPage) {
+          audio.current.play();
         }
-      };
-      audio.current.onpause = () => {
-        setIsPlaying(false);
-        clearTimeout(streamTimeout);
-      };
-      audio.current.onplay = () => {
-        setIsPlaying(true);
-      };
-      audio.current.onerror = () => {
-        console.log('error loading audio file');
-      };
-      audio.current.onended = () => {
-        setIsPlaying(false);
-        setCurrentTime(0);
-        audio.current?.pause();
-      };
-      if (!isMobile) {
-        audio.current.play();
       }
       // wait 20seconds before registering as stream
     }
@@ -159,7 +167,7 @@ export default function PlaybackButtons(props: IPlyabackButtonsProps) {
         dispatch(playback(null));
         clearTimeout(streamTimeout);
         setCurrentTime(0);
-        audio.current.pause();
+        stopAllAudio();
       }
     };
   }, []);
@@ -170,7 +178,17 @@ export default function PlaybackButtons(props: IPlyabackButtonsProps) {
       {isLoading ? (
         <Spin indicator={<LoadingOutlined style={{ backgroundColor: 'black' }} />} />
       ) : (
-        <Tooltip title={`${trackTitle} - ${trackArtist}`} placement="topLeft" id="playback-info">
+        <Tooltip
+          title={
+            <a
+              href={`/app/beat?id=${beatPlaying?._id}`}
+              style={{ color: 'white' }}
+            >{`${trackTitle} - ${trackArtist}`}</a>
+          }
+          placement="topLeft"
+          id="playback-info"
+          style={{ position: 'relative' }}
+        >
           <button
             onClick={isPlaying ? pause : play}
             className={styles.playbackbutton}
@@ -233,8 +251,9 @@ export default function PlaybackButtons(props: IPlyabackButtonsProps) {
   );
 
   // determine which type to render
-  const onBeatPage = window.location.pathname === '/app/beat' ? true : false;
   const toRender = onBeatPage ? playbackBar : playbackBtn;
 
-  return onBeatPage && beatPlaying ? toRender : null;
+  return beatPlaying || onBeatPage ? toRender : null;
 }
+
+// export default React.memo(PlaybackButtons);

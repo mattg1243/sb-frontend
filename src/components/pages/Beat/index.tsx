@@ -16,6 +16,7 @@ import { playback } from '../../../reducers/playbackReducer';
 import BeatDownloadModal from '../../BeatDownloadModal';
 import { ensureLoggedIn } from '../../../utils/auth';
 import loadingGif from '../../../assets/loading.gif';
+import PlaybackButtons from '../../PlaybackButtons';
 
 interface IBeatPageProps {
   testBeat?: Beat;
@@ -28,14 +29,10 @@ export default function BeatPage(props?: IBeatPageProps) {
   const userId = getUserIdFromLocalStorage();
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [imgIsLoading, setImgIsLoading] = useState<boolean>(true);
-  const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [liked, setLiked] = useState<boolean>();
   const [beat, setBeat] = useState<Beat>();
   const [likesCount, setLikesCount] = useState<number>();
   const [streamsCount, setStreamsCount] = useState<number>();
-
-  const audio = document.getElementById(`audio-player-${beat?.audioStreamKey}`) as HTMLAudioElement;
 
   useEffect(() => {
     getBeatReq(beatId as string)
@@ -60,7 +57,6 @@ export default function BeatPage(props?: IBeatPageProps) {
 
   useEffect(() => {
     dispatch(playback(beat || null));
-    setIsPlaying(true);
   });
 
   // check if testing
@@ -69,45 +65,6 @@ export default function BeatPage(props?: IBeatPageProps) {
       setBeat(props.testBeat);
     }
   });
-
-  /**
-   * Sets the MediaSession metadata for display on mobile devices.
-   */
-  const setAudioMetadata = () => {
-    if (beat) {
-      navigator.mediaSession.metadata = new MediaMetadata({
-        title: beat.title,
-        artist: beat.artistName,
-        artwork: [{ src: `${imgCdnHostName}/${beat.artworkKey}` }],
-      });
-    }
-  };
-
-  const stopAllAudio = () => {
-    document.querySelectorAll('audio').forEach((el) => {
-      el.pause();
-      el.currentTime = 0;
-    });
-  };
-
-  /**
-   * This function handles beat playback for mobile and passes through the provided
-   * function from the props if on desktop.
-   * @param e - MouseEvent
-   */
-  const playBeat = () => {
-    if (beat && !isPlaying) {
-      setIsPlaying(true);
-      dispatch(playback(beat));
-    }
-  };
-
-  const pauseBeat = () => {
-    if (beat && isPlaying) {
-      setIsPlaying(false);
-      audio.pause();
-    }
-  };
 
   const likeBeat = async () => {
     if (beat && typeof likesCount == 'number') {
@@ -248,14 +205,14 @@ export default function BeatPage(props?: IBeatPageProps) {
               </div>
             </Row>
             {isMobile ? (
-              <audio preload="metadata" style={{ display: 'none' }} id={`audio-player-${beat.audioStreamKey}`}>
+              <audio preload="metadata" style={{ display: 'none' }} id={`audio-player-${beat.audioKey}`}>
                 <source src={`${beatCdnHostName}/${beat.audioStreamKey}`} type="audio/mpeg" />
               </audio>
             ) : (
               <audio
                 preload="metadata"
                 style={{ display: 'none' }}
-                id={`audio-player-${beat.audioStreamKey}`}
+                id={`audio-player-${beat.audioKey}`}
                 src={`${beatCdnHostName}/${beat.audioStreamKey}`}
               />
             )}
@@ -264,6 +221,7 @@ export default function BeatPage(props?: IBeatPageProps) {
         {isLoading ? <Spin style={{ marginTop: '25vh' }} /> : null}
         {!beat && !isLoading ? <h1 style={{ marginTop: '25vh' }}>No beat found :(</h1> : null}
       </div>
+      <PlaybackButtons />
       {/* <Row className={styles['beat-info-row']}>
         <Space direction="horizontal" className={styles['beat-info-space']}>
           <Space direction="vertical">
