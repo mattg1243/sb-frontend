@@ -55,7 +55,7 @@ export default function BeatScroll(props: IBeatScrollProps) {
     return () => {
       dispatch(playback(null));
     };
-  });
+  }, []);
 
   // // return user to the correct spot in the page on back navigation
   // const infiniteScrollRef = useRef<HTMLDivElement>(null);
