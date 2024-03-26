@@ -118,6 +118,9 @@ export default function PlaybackButtons(props: IPlyabackButtonsProps) {
           const seconds = Math.floor((audio.current?.duration as number) - minutes * 60);
           setDuration(`${minutes}:${strPadLeft(seconds.toString(), '0', 2)}`);
         };
+        audio.current.onloadeddata = () => {
+          setIsLoading(false);
+        };
         audio.current.ontimeupdate = handleTimeUpdate;
         audio.current.onplaying = () => {
           setIsPlaying(true);
@@ -223,8 +226,13 @@ export default function PlaybackButtons(props: IPlyabackButtonsProps) {
           className={styles['playbackbtn-bar']}
           data-cy="playback-btn"
         >
-          {isLoading ? <Spin indicator={<LoadingOutlined />} /> : null}
-          {isPlaying ? <PauseOutlined data-cy="pause-icon" /> : <CaretRightOutlined data-cy="play-icon" />}
+          {isLoading ? (
+            <LoadingOutlined />
+          ) : isPlaying ? (
+            <PauseOutlined data-cy="pause-icon" />
+          ) : (
+            <CaretRightOutlined data-cy="play-icon" />
+          )}
         </button>
       </Col>
       <Col span={isMobile ? 18 : 12} offset={isMobile ? 2 : 0}>
