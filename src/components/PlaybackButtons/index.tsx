@@ -110,7 +110,6 @@ export default function PlaybackButtons(props: IPlyabackButtonsProps) {
       stopAllAudio();
       audio.current = document.getElementById(`audio-player-${beatPlaying.audioKey}`) as HTMLAudioElement;
       setCurrentTime(0);
-      setIsLoading(false);
       if (!audio.current) {
         console.log('there was an error getting the audio element');
       } else {
@@ -139,6 +138,7 @@ export default function PlaybackButtons(props: IPlyabackButtonsProps) {
         };
         audio.current.onplay = () => {
           setIsPlaying(true);
+          setIsLoading(false);
         };
         audio.current.onerror = () => {
           console.log('error loading audio file');
@@ -175,30 +175,30 @@ export default function PlaybackButtons(props: IPlyabackButtonsProps) {
   // playback button for all pages except beat page
   const playbackBtn = (
     <>
-      {isLoading ? (
-        <Spin indicator={<LoadingOutlined style={{ backgroundColor: 'black' }} />} />
-      ) : (
-        <Tooltip
-          title={
-            <a
-              href={`/app/beat?id=${beatPlaying?._id}`}
-              style={{ color: 'white' }}
-            >{`${trackTitle} - ${trackArtist}`}</a>
-          }
-          placement="topLeft"
-          id="playback-info"
-          style={{ position: 'relative' }}
+      <Tooltip
+        title={
+          <a href={`/app/beat?id=${beatPlaying?._id}`} style={{ color: 'white' }}>{`${trackTitle} - ${trackArtist}`}</a>
+        }
+        placement="topLeft"
+        id="playback-info"
+        style={{ position: 'relative' }}
+      >
+        <button
+          onClick={isPlaying ? pause : play}
+          className={styles.playbackbutton}
+          style={{ animationDuration: '0s !important' }}
+          data-cy="playback-btn"
+          disabled={isLoading}
         >
-          <button
-            onClick={isPlaying ? pause : play}
-            className={styles.playbackbutton}
-            style={{ animationDuration: '0s !important' }}
-            data-cy="playback-btn"
-          >
-            {isPlaying ? <PauseOutlined data-cy="pause-icon" /> : <CaretRightOutlined data-cy="play-icon" />}
-          </button>
-        </Tooltip>
-      )}
+          {isLoading ? (
+            <LoadingOutlined />
+          ) : isPlaying ? (
+            <PauseOutlined data-cy="pause-icon" />
+          ) : (
+            <CaretRightOutlined data-cy="play-icon" />
+          )}
+        </button>
+      </Tooltip>
     </>
   );
 
