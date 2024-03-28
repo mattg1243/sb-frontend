@@ -21,7 +21,7 @@
     "axios": "^1.1.3",
     "cloc": "^2.10.0",
     "dayjs": "^1.11.9",
-    "express": "^4.18.2",
+    "express": "^4.19.2",
     "framer-motion": "^7.10.2",
     "jszip": "^3.10.1",
     "match-sorter": "^6.3.1",
