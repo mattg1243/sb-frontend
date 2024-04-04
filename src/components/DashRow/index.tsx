@@ -1,11 +1,8 @@
-import { Image, Row, Statistic } from 'antd';
+import { Row, Statistic } from 'antd';
 import BeatEditModal from '../BeatEditModal';
 import { Beat } from '../../types/beat';
-import { beatCdnHostName as cdnHostname, imgCdnHostName } from '../../config/routing';
-import artworkLoading from '../../assets/artwork_loading.jpg';
+import { beatCdnHostName as cdnHostname } from '../../config/routing';
 import { useState, useEffect } from 'react';
-import playIcon from '../../assets/play_black.png';
-import pauseIcon from '../../assets/pause_black.png';
 import { CheckOutlined, HeartFilled, HeartOutlined, PlayCircleOutlined } from '@ant-design/icons';
 import styles from './DashRow.module.css';
 import BeatDownloadModal from '../BeatDownloadModal';
@@ -14,8 +11,8 @@ import { playback } from '../../reducers/playbackReducer';
 import { addStreamReq, getUserLikesBeatReq, likeBeatReq, unlikeBeatReq } from '../../lib/axios';
 import { getUserIdFromLocalStorage } from '../../utils/localStorageParser';
 import { useNavigate } from 'react-router-dom';
-import { BsVolumeUp } from 'react-icons/bs';
 import { ensureLoggedIn } from '../../utils/auth';
+import Artwork from './Artwork';
 
 interface IBeatRowProps {
   beat: Beat;
@@ -43,6 +40,16 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
   const [likesCount, setLikesCount] = useState<number>(beat.likesCount);
   const [streamsCount, setStreamsCount] = useState<string>(beat.streamsCount.toLocaleString());
   const [downloadCount, setDownloadCount] = useState<string>();
+
+  const beatPlayingFromState = useSelector<{ playback: { trackPlaying: Beat | null } }, Beat | null>(
+    (state) => state.playback.trackPlaying
+  );
+
+  useEffect(() => {
+    if (beatPlayingFromState?._id !== beat._id) {
+      setIsPlaying(false);
+    }
+  }, [beatPlayingFromState]);
 
   useEffect(() => {
     getUserLikesBeatReq(beat._id)
@@ -78,51 +85,26 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  // TODO figure out why this has to be typed everytime its used
-  const beatPlaying = useSelector<{ playback: { trackPlaying: Beat | null } }, Beat | null>(
-    (state) => state.playback.trackPlaying
-  );
 
-  const displayFlatOrSharp = (flatOrSharpStr: 'flat' | 'sharp' | '') => {
-    if (flatOrSharpStr === '') {
-      return flatOrSharpStr;
-    } else if (flatOrSharpStr === 'sharp') {
-      return '#';
-    } else {
-      return '♭';
-    }
-  };
-
-  /**
-   * Sets the MediaSession metadata for display on mobile devices.
-   */
-  const setAudioMetadata = () => {
-    navigator.mediaSession.metadata = new MediaMetadata({
-      title: beat.title,
-      artist: beat.artistName,
-      artwork: [{ src: `${imgCdnHostName}/${beat.artworkKey}` }],
-    });
-  };
   /**
    * This function handles beat playback for mobile and passes through the provided
    * function from the props if on desktop.
    */
-  const playBeat = () => {
+  const playBeat = async () => {
     // navigate(`/app/beat?id=${beat._id}`);
     setPlaybackIsLoading(true);
     dispatch(playback(beat));
-    if (!isMobile) {
-      // select the corresponding hidden audio tag form the DOM
-      const audio = document.getElementById(`audio-player-${beat.audioKey}`) as HTMLAudioElement;
-      if (isPlaying) {
-        setIsPlaying(false);
-        audio.pause();
-      } else if (!isPlaying) {
-        audio.play();
-        setIsPlaying(true);
-      }
-      setPlaybackIsLoading(false);
+    // select the corresponding hidden audio tag form the DOM
+    const audio = document.getElementById(`audio-player-${beat.audioKey}`) as HTMLAudioElement;
+    if (isPlaying) {
+      setIsPlaying(false);
+      if (!isMobile) audio.pause();
+    } else if (!isPlaying) {
+      setPlaybackIsLoading(true);
+      if (!isMobile) await audio.play();
+      setIsPlaying(true);
     }
+    setPlaybackIsLoading(false);
   };
 
   const likeBeat = async () => {
@@ -154,14 +136,9 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
     }
   };
 
-  const artworkFallbacks = [`${imgCdnHostName}/${beat.artworkKey}`, artworkLoading];
-  let fallbackIndex = 0;
-
-  const imgSize = isMobile ? 75 : 125;
-
   return (
     <>
-      <Row className={styles['row-container']}>
+      <Row className={styles['row-container']} id={`dashrow-${beat._id}`}>
         {isMobile ? null : buttonType === 'edit' ? (
           <BeatEditModal beat={beat} />
         ) : buttonType === 'download' ? (
@@ -170,29 +147,12 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
           <BeatDownloadModal beatId={beat._id} title={beat.title} artistName={beat.artistName} license={true} />
         )}
         <Row style={{ alignItems: 'center', marginRight: 'auto', paddingLeft: '1vw' }}>
-          <Image
-            src={`${imgCdnHostName}/fit-in/125x125/${beat.artworkKey}` || `${imgCdnHostName}/${beat.artworkKey}`}
-            alt="album artwork"
-            preview={{
-              mask: <Image src={isPlaying ? pauseIcon : playIcon} preview={false} />,
-              visible: false,
-            }}
-            placeholder={<Image src={artworkLoading} width={imgSize} height={imgSize} />}
-            onError={({ currentTarget }) => {
-              const next = artworkFallbacks[fallbackIndex];
-              currentTarget.src = next;
-              fallbackIndex++;
-            }}
-            width={imgSize}
-            height={imgSize}
-            // onClick={(e) => {
-            //   playBeat(e);
-            // }}
-            onClick={() => {
-              isMobile ? navigate(`/app/beat?id=${beat._id}`) : playBeat();
-            }}
-            className={styles.artwork}
-            data-cy="beat-artwork"
+          <Artwork
+            beatId={beat._id}
+            artworkKey={beat.artworkKey as string}
+            isPlaying={isPlaying}
+            isLoading={playbackLoading}
+            onClick={playBeat}
           />
           <div className={styles['text-container']}>
             <h3
