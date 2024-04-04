@@ -150,10 +150,11 @@ export default function PlaybackButtons(props: IPlyabackButtonsProps) {
         audio.current.onended = () => {
           setIsPlaying(false);
           setCurrentTime(0);
+          dispatch(playback(null));
           audio.current?.pause();
         };
 
-        if (!isMobile && !onBeatPage) {
+        if (!onBeatPage) {
           audio.current.play();
         }
       }
