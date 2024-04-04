@@ -1,8 +1,9 @@
 import InfiniteScroll from 'react-infinite-scroll-component';
 import DashRow from '../DashRow';
+import { UpOutlined, DownOutlined, DownloadOutlined } from '@ant-design/icons';
 import { playback } from '../../reducers/playbackReducer';
 import useGetBeats, { IUseGetBeatsOptions } from '../../hooks/useGetBeats';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import gatewayUrl from '../../config/routing';
@@ -20,6 +21,7 @@ export default function BeatScroll(props: IBeatScrollProps) {
 
   const [pageNum, setPageNum] = useState<number>(1);
   const [moreBeatsToLoad, setMoreBeatsToLoad] = useState<boolean>(true);
+  const [scrollBtnUp, setScrollBtnUp] = useState<boolean>(true);
 
   const dispatch = useDispatch();
 
@@ -51,13 +53,35 @@ export default function BeatScroll(props: IBeatScrollProps) {
     }
   };
 
+  const beatPlayingFromState = useSelector<{ playback: { trackPlaying: Beat | null } }, Beat | null>(
+    (state) => state.playback.trackPlaying
+  );
+
   useEffect(() => {
     return () => {
       dispatch(playback(null));
     };
   }, []);
 
-  // // return user to the correct spot in the page on back navigation
+  const playingBeatDashRow = document.getElementById(`dashrow-${beatPlayingFromState?._id}`);
+
+  const handleScroll = () => {
+    if (playingBeatDashRow) {
+      const targetPos = playingBeatDashRow?.getBoundingClientRect().top;
+      setScrollBtnUp(targetPos < window.innerHeight / 2);
+    }
+  };
+
+  const scrollDiv = document.getElementsByClassName('scroll-div');
+  scrollDiv?.item(0)?.addEventListener('scroll', handleScroll);
+
+  const scrollToPlayingBeat = () => {
+    if (beatPlayingFromState) {
+      playingBeatDashRow?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  };
+
+  // return user to the correct spot in the page on back navigation
   // const infiniteScrollRef = useRef<HTMLDivElement>(null);
   // let initialScrollPos = 0;
 
@@ -84,8 +108,29 @@ export default function BeatScroll(props: IBeatScrollProps) {
         overflow: 'auto',
         overflowX: 'hidden',
       }}
-      id="scroll-div"
     >
+      {beatPlayingFromState && isMobile ? (
+        <button
+          style={{
+            position: 'fixed',
+            fontSize: '1.5rem',
+            margin: '2rem',
+            top: '80vh',
+            right: '1vw',
+            borderRadius: '100%',
+            background: 'black',
+            color: 'white',
+            height: '5vh',
+            width: '5vh',
+            zIndex: 1000,
+            border: 'solid black 2px !important',
+            animationDuration: '0s !important',
+          }}
+          onClick={() => scrollToPlayingBeat()}
+        >
+          {scrollBtnUp ? <UpOutlined /> : <DownOutlined />}
+        </button>
+      ) : null}
       <InfiniteScroll
         dataLength={beats?.length || 8}
         next={fetchMoreBeats}
@@ -101,7 +146,7 @@ export default function BeatScroll(props: IBeatScrollProps) {
         scrollThreshold={0.8}
         loader={<h4 style={{ marginLeft: isMobile ? '0' : '-26vw' }}>Loading beats...</h4>}
         endMessage={<p style={{ marginLeft: isMobile ? '0' : '-26vw' }}>You've seen all the beats!</p>}
-        className={styles['beats-container']}
+        className={`${styles['beats-container']} scroll-div`}
         data-cy="beats-container"
       >
         {beats
