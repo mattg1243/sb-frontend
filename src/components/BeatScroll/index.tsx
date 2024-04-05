@@ -110,24 +110,7 @@ export default function BeatScroll(props: IBeatScrollProps) {
       }}
     >
       {beatPlayingFromState && isMobile ? (
-        <button
-          style={{
-            position: 'fixed',
-            fontSize: '1.5rem',
-            margin: '2rem',
-            top: '80vh',
-            right: '1vw',
-            borderRadius: '100%',
-            background: 'black',
-            color: 'white',
-            height: '5vh',
-            width: '5vh',
-            zIndex: 1000,
-            border: 'solid black 2px !important',
-            animationDuration: '0s !important',
-          }}
-          onClick={() => scrollToPlayingBeat()}
-        >
+        <button className={styles['scroll-btn']} onClick={() => scrollToPlayingBeat()}>
           {scrollBtnUp ? <UpOutlined /> : <DownOutlined />}
         </button>
       ) : null}

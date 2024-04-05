@@ -30,10 +30,40 @@
     padding-left: 2vw;
     padding-bottom: 10vh;
     width: 100vw;
+    height: 100vh;
     overflow-x: hidden;
   }
 
   .beats-container > * {
     margin: 15px 0;
+  }
+
+  .scroll-btn {
+    position: fixed;
+    margin-right: 2rem;
+    top: 80vh;
+    right: 1vw;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    color: white;
+    background-color: #000;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    overflow: hidden !important;
+    box-shadow: none !important;
+    z-index: 1;
+    font-size: 24px;
+  }
+
+  .scroll-btn:hover {
+    background-color: #333;
+  }
+
+  .scroll-btn:active {
+    transform: scale(0.9);
+    background-color: #555;
   }
 }

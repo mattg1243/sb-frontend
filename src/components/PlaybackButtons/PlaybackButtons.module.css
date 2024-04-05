@@ -32,17 +32,6 @@ input[type='range']::-webkit-slider-thumb {
   border-radius: 100%;
 }
 
-.playbackbutton {
-  position: absolute;
-  background: transparent;
-  border: none !important;
-  top: 90vh;
-  left: 5vw;
-  margin: 2rem;
-  font-size: 2rem;
-  z-index: 1000;
-}
-
 .playbackbtn-bar {
   background: transparent;
   border: none !important;
@@ -73,14 +62,46 @@ input[type='range']::-webkit-slider-thumb {
   align-self: center;
 }
 
+@media (min-width: 1024px) {
+  .playbackbutton {
+    position: absolute;
+    background: transparent;
+    border: none !important;
+    top: 90vh;
+    left: 5vw;
+    margin-left: 2rem;
+    font-size: 2rem;
+    z-index: 1;
+  }
+}
+
 @media (max-width: 480px) {
   .playbackbutton {
     position: fixed;
-    border: solid black 2px !important;
-    border-radius: 100%;
-    background: black;
-    color: white;
+    font-size: 2rem;
+    margin-left: 2rem;
     top: 80vh;
     left: 1vw;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    color: white;
+    background-color: #000;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    overflow: hidden !important;
+    box-shadow: none !important;
+    z-index: 1;
+  }
+
+  .playbackbutton:hover {
+    background-color: #333;
+  }
+
+  .playbackbutton:active {
+    transform: scale(0.9);
+    background-color: #555;
   }
 }

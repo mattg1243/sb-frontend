@@ -6,7 +6,7 @@ import styles from './PlaybackButtons.module.css';
 import { useDispatch, useSelector } from 'react-redux';
 import type { Beat } from '../../types';
 import { addStreamReq } from '../../lib/axios';
-import { playback } from '../../reducers/playbackReducer';
+import { playback, playPause } from '../../reducers/playbackReducer';
 
 interface IPlyabackButtonsProps {
   testBeatPlaying?: Beat;
@@ -107,6 +107,7 @@ export default function PlaybackButtons(props: IPlyabackButtonsProps) {
   useEffect(() => {
     if (beatPlaying && currentBeatId !== beatPlaying._id) {
       setIsLoading(true);
+      dispatch(playPause('loading'));
       stopAllAudio();
       audio.current = document.getElementById(`audio-player-${beatPlaying.audioKey}`) as HTMLAudioElement;
       setCurrentTime(0);
@@ -119,11 +120,13 @@ export default function PlaybackButtons(props: IPlyabackButtonsProps) {
           setDuration(`${minutes}:${strPadLeft(seconds.toString(), '0', 2)}`);
         };
         audio.current.onloadeddata = () => {
+          dispatch(playPause('playing'));
           setIsLoading(false);
         };
         audio.current.ontimeupdate = handleTimeUpdate;
         audio.current.onplaying = () => {
           setIsPlaying(true);
+          dispatch(playPause('playing'));
           if (!countedStream) {
             streamTimeout = setTimeout(() => {
               addStreamReq(beatPlaying?._id as string)
@@ -137,18 +140,22 @@ export default function PlaybackButtons(props: IPlyabackButtonsProps) {
         };
         audio.current.onpause = () => {
           setIsPlaying(false);
+          dispatch(playPause('paused'));
           clearTimeout(streamTimeout);
         };
         audio.current.onplay = () => {
           setIsPlaying(true);
+          dispatch(playPause('playing'));
           setIsLoading(false);
         };
         audio.current.onerror = () => {
           console.log('error loading audio file');
+          dispatch(playPause(null));
           stopAllAudio();
         };
         audio.current.onended = () => {
           setIsPlaying(false);
+          dispatch(playPause(null));
           setCurrentTime(0);
           dispatch(playback(null));
           audio.current?.pause();
