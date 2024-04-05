@@ -7,7 +7,6 @@ import styles from './DashRow.module.css';
 import artworkLoading from '../../assets/artwork_loading.jpg';
 import playIcon from '../../assets/play_black.png';
 import pauseIcon from '../../assets/pause_black.png';
-import { useEffect } from 'react';
 
 interface IArtworkProps {
   beatId: string;
@@ -67,7 +66,7 @@ export default function Artwork(props: IArtworkProps) {
         className={styles.artwork}
         data-cy="beat-artwork"
       />
-      {isLoading ? <LoadingOutlined /> : false}
+      {isLoading ? <LoadingOutlined className={styles['playing-animation']} /> : null}
       {isPlaying && beatPlayingFromState?._id == beatId ? (
         <div className={styles['playing-animation']}>
           {/* Your overlay content here. This could be another React component or any JSX. */}

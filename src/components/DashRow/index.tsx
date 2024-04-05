@@ -45,11 +45,30 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
     (state) => state.playback.trackPlaying
   );
 
+  const beatPlayPauseStatus = useSelector<
+    { playPause: { status: 'playing' | 'loading' | 'paused' | null } },
+    'playing' | 'loading' | 'paused' | null
+  >((state) => state.playPause.status);
+
   useEffect(() => {
     if (beatPlayingFromState?._id !== beat._id) {
       setIsPlaying(false);
+    } else {
+      switch (beatPlayPauseStatus) {
+        case 'loading':
+          setPlaybackIsLoading(true);
+          break;
+        case 'paused':
+          setIsPlaying(false);
+          break;
+        case 'playing':
+          setIsPlaying(true);
+          break;
+        default:
+          break;
+      }
     }
-  }, [beatPlayingFromState]);
+  }, [beatPlayingFromState, beatPlayPauseStatus]);
 
   useEffect(() => {
     getUserLikesBeatReq(beat._id)
