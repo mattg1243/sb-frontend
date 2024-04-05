@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
-import playbackReducer from './reducers/playbackReducer';
+import { playbackReducer, playPauseReducer } from './reducers/playbackReducer';
 import searchReducer from './reducers/searchReducer';
 import notificationReducer from './reducers/notificationReducer';
 import userReducer from './reducers/userReducer';
@@ -7,6 +7,7 @@ import userReducer from './reducers/userReducer';
 export const store = configureStore({
   reducer: {
     playback: playbackReducer,
+    playPause: playPauseReducer,
     search: searchReducer,
     notification: notificationReducer,
     user: userReducer,
