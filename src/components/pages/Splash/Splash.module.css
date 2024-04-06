@@ -113,7 +113,7 @@
     z-index: 0;
     left: -2.7vw; /*center text over image horizontally*/
     right: 0vw;
-    top: 30vh; /*center text over image vertically*/
+    top: 40vh; /*center text over image vertically*/
     text-align: center;
     width: 100%;
   }
@@ -217,6 +217,7 @@
 @media (max-width: 480px) {
   .layout {
     width: 100vw;
+    padding: 0vh 0vw 0vw 0vw;
   }
 
   .content {
@@ -228,10 +229,10 @@
   }
 
   .logo {
-    width: 100vw;
+    width: 70vw;
     position: absolute;
-    top: 10vh;
-    left: -40vw;
+    top: 7vh;
+    left: 7vw;
   }
 
   .title {
@@ -250,27 +251,27 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 100%;
     width: 100vw;
     max-width: 480px;
+    height: 100vh;
+    margin: 50vh 0 5vh 0;
   }
 
   .container {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    margin-top: -6vh;
+    position: absolute;
+    text-align: center;
     width: 100vw;
-    height: 100vh;
   }
 
   .orangetext {
-    display: flex;
-    flex-direction: column;
+    position: absolute; /*necessary to make text overlap with image*/
+    margin: 0 auto;
+    z-index: 0;
+    right: 0vw;
+    top: 30vh; /*center text over image vertically*/
     text-align: center;
-    align-items: center;
     width: 100%;
+    height: 100%;
   }
 
   .buttonspace {
