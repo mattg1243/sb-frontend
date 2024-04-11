@@ -1,12 +1,12 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../store';
-import type { Beat } from '../types';
+import type { Beat, BeatPlayPauseStatus } from '../types';
 
 interface PlaybackState {
   trackPlaying: Beat | null;
 }
 
-type PlayPauseStatus = 'playing' | 'loading' | 'paused' | null;
+type PlayPauseStatus = BeatPlayPauseStatus | null;
 interface PlayPauseState {
   status: PlayPauseStatus;
 }

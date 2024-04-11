@@ -42,3 +42,5 @@ export const Keys = [
 ] as const;
 
 export type Key = (typeof Keys)[number];
+
+export type BeatPlayPauseStatus = 'loading' | 'playing' | 'paused';
