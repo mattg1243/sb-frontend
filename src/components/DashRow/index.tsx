@@ -1,6 +1,6 @@
 import { Row, Statistic } from 'antd';
 import BeatEditModal from '../BeatEditModal';
-import { Beat } from '../../types/beat';
+import { Beat, BeatPlayPauseStatus } from '../../types/beat';
 import { beatCdnHostName as cdnHostname } from '../../config/routing';
 import { useState, useEffect } from 'react';
 import { CheckOutlined, HeartFilled, HeartOutlined, PlayCircleOutlined } from '@ant-design/icons';
@@ -34,8 +34,7 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
   const userId = getUserIdFromLocalStorage();
 
   const [artistNameColor, setArtistNameColor] = useState<'black' | 'blue'>('black');
-  const [isPlaying, setIsPlaying] = useState<boolean>(false);
-  const [playbackLoading, setPlaybackIsLoading] = useState<boolean>(false);
+  const [playPauseStatus, setPlayPauseStatus] = useState<BeatPlayPauseStatus | null>();
   const [liked, setLiked] = useState<boolean>();
   const [likesCount, setLikesCount] = useState<number>(beat.likesCount);
   const [streamsCount, setStreamsCount] = useState<string>(beat.streamsCount.toLocaleString());
@@ -52,21 +51,9 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
 
   useEffect(() => {
     if (beatPlayingFromState?._id !== beat._id) {
-      setIsPlaying(false);
+      setPlayPauseStatus(undefined);
     } else {
-      switch (beatPlayPauseStatus) {
-        case 'loading':
-          setPlaybackIsLoading(true);
-          break;
-        case 'paused':
-          setIsPlaying(false);
-          break;
-        case 'playing':
-          setIsPlaying(true);
-          break;
-        default:
-          break;
-      }
+      setPlayPauseStatus(beatPlayPauseStatus);
     }
   }, [beatPlayingFromState, beatPlayPauseStatus]);
 
@@ -80,7 +67,7 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
   }, []);
   // useEffect to track beat streaming on mobile
   useEffect(() => {
-    if (isMobile && isPlaying) {
+    if (isMobile && playPauseStatus === 'playing') {
       setTimeout(() => {
         addStreamReq(beat._id)
           .then((res) => console.log(res))
@@ -88,12 +75,12 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
           .catch((err) => console.error(err));
       }, 20000);
     }
-  }, [isPlaying]);
+  }, [beatPlayPauseStatus]);
 
   useEffect(() => {
     return () => {
       // dispatch(playback(null));
-      setIsPlaying(false);
+      setPlayPauseStatus(null);
       const audio = document.getElementById(`audio-player-${beat.audioKey}`) as HTMLAudioElement;
       if (audio) {
         audio.pause();
@@ -111,19 +98,18 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
    */
   const playBeat = async () => {
     // navigate(`/app/beat?id=${beat._id}`);
-    setPlaybackIsLoading(true);
+    setPlayPauseStatus('loading');
     dispatch(playback(beat));
     // select the corresponding hidden audio tag form the DOM
     const audio = document.getElementById(`audio-player-${beat.audioKey}`) as HTMLAudioElement;
-    if (isPlaying) {
-      setIsPlaying(false);
-      if (!isMobile) audio.pause();
-    } else if (!isPlaying) {
-      setPlaybackIsLoading(true);
-      if (!isMobile) await audio.play();
-      setIsPlaying(true);
+    if (playPauseStatus === 'playing') {
+      setPlayPauseStatus('paused');
+      audio.pause();
+    } else if (beatPlayPauseStatus !== 'playing') {
+      setPlayPauseStatus('loading');
+      await audio.play();
+      setPlayPauseStatus('playing');
     }
-    setPlaybackIsLoading(false);
   };
 
   const likeBeat = async () => {
@@ -169,8 +155,7 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
           <Artwork
             beatId={beat._id}
             artworkKey={beat.artworkKey as string}
-            isPlaying={isPlaying}
-            isLoading={playbackLoading}
+            playPauseStatus={beatPlayPauseStatus}
             onClick={playBeat}
           />
           <div className={styles['text-container']}>
