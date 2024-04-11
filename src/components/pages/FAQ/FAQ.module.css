@@ -15,9 +15,11 @@
   width: 60vw;
 }
 .viewport {
-  margin-top: 69px;
+  margin-top: 30vh;
   display: flex;
   flex-direction: column;
+  width: 100vw;
+  height: 100vh;
   align-items: center;
   padding-top: 2rem;
 }
@@ -67,6 +69,10 @@
 }
 
 @media (max-width: 1024px) {
+  .viewport {
+    margin-top: 10vh;
+  }
+
   .faq_container {
     width: 90vw;
   }
