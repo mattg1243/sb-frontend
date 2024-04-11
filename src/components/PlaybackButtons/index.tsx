@@ -184,7 +184,7 @@ export default function PlaybackButtons(props: IPlyabackButtonsProps) {
   }, []);
 
   // playback button for all pages except beat page
-  const playbackBtn = (
+  const playbackBtn = !isMobile ? (
     <>
       <Tooltip
         title={
@@ -211,7 +211,7 @@ export default function PlaybackButtons(props: IPlyabackButtonsProps) {
         </button>
       </Tooltip>
     </>
-  );
+  ) : null;
 
   // playback bar for beat page
   const playbackBar = (
