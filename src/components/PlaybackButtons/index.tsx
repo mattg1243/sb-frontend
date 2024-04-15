@@ -118,6 +118,7 @@ export default function PlaybackButtons(props: IPlyabackButtonsProps) {
           const minutes = Math.floor((audio.current?.duration as number) / 60);
           const seconds = Math.floor((audio.current?.duration as number) - minutes * 60);
           setDuration(`${minutes}:${strPadLeft(seconds.toString(), '0', 2)}`);
+          setIsLoading(false);
         };
         audio.current.onloadeddata = () => {
           dispatch(playPause('playing'));

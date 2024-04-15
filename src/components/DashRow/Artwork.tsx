@@ -11,7 +11,7 @@ import pauseIcon from '../../assets/pause_black.png';
 interface IArtworkProps {
   beatId: string;
   artworkKey: string;
-  playPauseStatus: BeatPlayPauseStatus | null;
+  playPauseStatus: BeatPlayPauseStatus | null | undefined;
   onClick: () => void;
 }
 

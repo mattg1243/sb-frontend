@@ -2,12 +2,13 @@ import { Row, Statistic } from 'antd';
 import BeatEditModal from '../BeatEditModal';
 import { Beat, BeatPlayPauseStatus } from '../../types/beat';
 import { beatCdnHostName as cdnHostname } from '../../config/routing';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { CheckOutlined, HeartFilled, HeartOutlined, PlayCircleOutlined } from '@ant-design/icons';
 import styles from './DashRow.module.css';
 import BeatDownloadModal from '../BeatDownloadModal';
 import { useDispatch, useSelector } from 'react-redux';
 import { playback } from '../../reducers/playbackReducer';
+import { playPause } from '../../reducers/playbackReducer';
 import { addStreamReq, getUserLikesBeatReq, likeBeatReq, unlikeBeatReq } from '../../lib/axios';
 import { getUserIdFromLocalStorage } from '../../utils/localStorageParser';
 import { useNavigate } from 'react-router-dom';
@@ -49,6 +50,8 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
     'playing' | 'loading' | 'paused' | null
   >((state) => state.playPause.status);
 
+  const audioRef = useRef<HTMLAudioElement>(null);
+
   useEffect(() => {
     if (beatPlayingFromState?._id !== beat._id) {
       setPlayPauseStatus(undefined);
@@ -79,12 +82,16 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
 
   useEffect(() => {
     return () => {
-      // dispatch(playback(null));
-      setPlayPauseStatus(null);
-      const audio = document.getElementById(`audio-player-${beat.audioKey}`) as HTMLAudioElement;
-      if (audio) {
-        audio.pause();
-        audio.currentTime = 0;
+      const isMounted = audioRef.current !== null;
+      if (!isMounted) {
+        setPlayPauseStatus(null);
+        const audio = document.getElementById(`audio-player-${beat.audioKey}`) as HTMLAudioElement;
+        if (audio) {
+          audio.pause();
+          audio.currentTime = 0;
+        }
+        dispatch(playback(null));
+        dispatch(playPause(null));
       }
     };
   }, []);
@@ -97,18 +104,27 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
    * function from the props if on desktop.
    */
   const playBeat = async () => {
-    // navigate(`/app/beat?id=${beat._id}`);
-    setPlayPauseStatus('loading');
-    dispatch(playback(beat));
     // select the corresponding hidden audio tag form the DOM
     const audio = document.getElementById(`audio-player-${beat.audioKey}`) as HTMLAudioElement;
-    if (playPauseStatus === 'playing') {
-      setPlayPauseStatus('paused');
-      audio.pause();
-    } else if (beatPlayPauseStatus !== 'playing') {
+    // if playing a new beat
+    if (beatPlayingFromState?._id !== beat._id) {
+      dispatch(playback(beat));
       setPlayPauseStatus('loading');
       await audio.play();
       setPlayPauseStatus('playing');
+    } else {
+      // if clicked is already playing
+      if (playPauseStatus === 'playing') {
+        dispatch(playPause('paused'));
+        setPlayPauseStatus('paused');
+        audio.pause();
+      }
+      // if beat click is currently paused
+      else if (beatPlayPauseStatus === 'paused') {
+        await audio.play();
+        dispatch(playPause('playing'));
+        setPlayPauseStatus('playing');
+      }
     }
   };
 
@@ -155,7 +171,7 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
           <Artwork
             beatId={beat._id}
             artworkKey={beat.artworkKey as string}
-            playPauseStatus={beatPlayPauseStatus}
+            playPauseStatus={playPauseStatus}
             onClick={playBeat}
           />
           <div className={styles['text-container']}>
@@ -228,7 +244,7 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
           </div>
         ) : null}
       </Row>
-      <audio preload="auto" style={{ display: 'none' }} id={`audio-player-${beat.audioKey}`}>
+      <audio ref={audioRef} preload="auto" style={{ display: 'none' }} id={`audio-player-${beat.audioKey}`}>
         <source src={`${cdnHostname}/${beat.audioKey}`} type="audio/mpeg" />
       </audio>
     </>
