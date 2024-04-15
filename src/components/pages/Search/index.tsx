@@ -10,6 +10,7 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import { useDispatch } from 'react-redux';
 import DashRow from '../../DashRow';
 import { Spin } from 'antd';
+import PlaybackButtons from '../../PlaybackButtons';
 
 export default function SearchPage() {
   const [loading, setLoading] = useState<boolean>();
@@ -53,47 +54,45 @@ export default function SearchPage() {
   };
 
   return (
-    <div style={{ width: '100vw' }}>
+    <div className={styles.container}>
       <div>
         <h2 className={styles['search-results-text']}>Search Results</h2>
       </div>
-      <div className={styles['scroll-div']}>
-        <InfiniteScroll
-          dataLength={results.length || 8}
-          hasMore={moreResults}
-          next={fetchMoreBeats}
-          height="100vh"
-          style={{
-            paddingBottom: '5vh',
-            justifyContent: 'center',
-            alignItems: 'center',
-            marginRight: isMobile ? '0' : '-20vw',
-            overflowX: 'hidden',
-          }}
-          scrollThreshold={0.8}
-          loader={<h4 style={{ marginLeft: isMobile ? '0' : '-26vw' }}>Loading beats...</h4>}
-          endMessage={<p style={{ marginLeft: isMobile ? '0' : '-26vw' }}>You've seen all the search results</p>}
-          className={styles['beats-container']}
-          data-cy="beats-container"
-        >
-          <Spin spinning={loading}>
-            {results
-              ? results.map((beat) => {
-                  return (
-                    <DashRow
-                      beat={beat}
-                      onClick={() => {
-                        dispatch(playback(beat));
-                      }}
-                      buttonType="license"
-                      key={beat._id}
-                    />
-                  );
-                })
-              : null}
-          </Spin>
-        </InfiniteScroll>
-      </div>
+      <PlaybackButtons />
+      <InfiniteScroll
+        dataLength={results.length || 8}
+        hasMore={moreResults}
+        next={fetchMoreBeats}
+        height="100vh"
+        style={{
+          paddingBottom: '5vh',
+          justifyContent: 'center',
+          alignItems: 'center',
+          overflowX: 'hidden',
+        }}
+        scrollThreshold={0.8}
+        loader={<h4 style={{ marginLeft: isMobile ? '0' : '-26vw' }}>Loading beats...</h4>}
+        endMessage={<p style={{ marginLeft: isMobile ? '0' : '-26vw' }}>You've seen all the search results</p>}
+        className={`${styles['beats-container']}`}
+        data-cy="beats-container"
+      >
+        <Spin spinning={loading}>
+          {results
+            ? results.map((beat) => {
+                return (
+                  <DashRow
+                    beat={beat}
+                    onClick={() => {
+                      dispatch(playback(beat));
+                    }}
+                    buttonType="license"
+                    key={beat._id}
+                  />
+                );
+              })
+            : null}
+        </Spin>
+      </InfiniteScroll>
     </div>
   );
 }

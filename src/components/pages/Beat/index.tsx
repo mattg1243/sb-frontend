@@ -13,6 +13,7 @@ import { getUserIdFromLocalStorage } from '../../../utils/localStorageParser';
 import { useDispatch } from 'react-redux';
 import { notification } from '../../../reducers/notificationReducer';
 import { playback } from '../../../reducers/playbackReducer';
+import { playPause } from '../../../reducers/playbackReducer';
 import BeatDownloadModal from '../../BeatDownloadModal';
 import { ensureLoggedIn } from '../../../utils/auth';
 import loadingGif from '../../../assets/loading.gif';
@@ -83,6 +84,13 @@ export default function BeatPage(props?: IBeatPageProps) {
     }
   };
 
+  useEffect(() => {
+    return () => {
+      dispatch(playPause(null));
+      dispatch(playback(null));
+    };
+  }, []);
+
   const unlikeBeat = async () => {
     setLiked(false);
     if (beat && likesCount) {
@@ -126,6 +134,7 @@ export default function BeatPage(props?: IBeatPageProps) {
                 currentTarget.onerror = null; // prevents looping
                 currentTarget.src = artworkLoading;
               }}
+              preview={{ visible: false, mask: <></> }}
               placeholder={<Spin style={{ marginTop: '50%' }} />}
               style={{
                 width: isMobile ? 250 : '37vh',

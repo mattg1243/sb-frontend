@@ -8,9 +8,13 @@
   margin-top: clamp(70px, 9vh, 150px);
 }
 
+.container {
+  width: 100vw;
+}
+
 .beats-container {
   width: 100vw;
-  padding-left: 9vw;
+  margin-left: 6vw;
   padding-top: 15vh;
   text-align: center;
   flex-direction: column;
@@ -21,16 +25,6 @@
 
 .beats-container > * {
   margin: 4vh 0;
-  padding: 0 1vh;
-}
-
-.scroll-div {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  overflow: auto;
-  overflow-x: hidden;
 }
 
 /* tablet css */
@@ -49,6 +43,13 @@
 /* mobile css */
 
 @media (max-width: 480px) {
+  .container {
+    width: 100%;
+    margin-right: 5vw;
+    position: relative;
+    overflow-x: hidden;
+  }
+
   .search-results-text {
     margin-top: 2vh;
     position: relative;
@@ -56,13 +57,15 @@
 
   .beats-container {
     padding-top: 2vh;
-    padding-left: 2vw;
     padding-bottom: 10vh;
-    width: 100vw;
+    height: 80vh;
     overflow-x: hidden;
+    position: relative;
+    width: 100%;
   }
 
   .beats-container > * {
-    margin: 15px 0;
+    margin: 0;
+    padding: 0;
   }
 }
