@@ -1,4 +1,5 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import ReactGA from 'react-ga';
 // import { ConfigProvider } from 'antd';
 // import useWebSocket from 'react-use-websocket';
 // import { socketUrl } from './config/routing';
@@ -25,6 +26,7 @@ import FAQ from './components/pages/FAQ';
 import LicensedBeatsPage from './components/pages/LicensedBeats';
 import BeatPage from './components/pages/Beat';
 import SearchPage from './components/pages/Search';
+import { useEffect } from 'react';
 
 function App() {
   // const userId = getUserIdFromLocalStorage();
@@ -44,6 +46,11 @@ function App() {
   //     // processMessages(event);
   //   },
   // });
+  ReactGA.initialize('G-RM60DYCZDZ');
+
+  useEffect(() => {
+    ReactGA.pageview(window.location.pathname);
+  });
 
   return (
     <div className="App">
