@@ -6,6 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
 import { store } from './store';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
+import ReactGA from 'react-ga4';
 
 // extend window object to include Cypress / Redux store for testing
 declare global {
@@ -14,6 +15,8 @@ declare global {
     store: object;
   }
 }
+
+ReactGA.initialize('G-RM60DYCZDZ');
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
