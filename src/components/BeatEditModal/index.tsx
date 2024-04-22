@@ -9,6 +9,7 @@ import { AlertObj } from '../../types/alerts';
 import CustomAlert from '../CustomAlert';
 import UploadButton from '../UploadButton';
 import { ensureLoggedIn } from '../../utils/auth';
+import ReactGA from 'react-ga4';
 
 interface IEditBeatModalProps {
   beat: Beat;
@@ -40,6 +41,7 @@ export default function BeatEditModal(props: IEditBeatModalProps) {
     try {
       const response = await deleteBeatReq(beatId, audioKey);
       if (response.status === 200) {
+        ReactGA.event({ category: 'Beat', action: 'Delete', label: beatId });
         setIsOpen(false);
         window.location.reload();
       }
@@ -66,6 +68,7 @@ export default function BeatEditModal(props: IEditBeatModalProps) {
     try {
       const response = await updateBeatReq(formData, beat._id);
       if (response.status === 200) {
+        ReactGA.event({ category: 'Beat', action: 'Update', label: beat._id });
         setIsOpen(false);
         window.location.reload();
       }

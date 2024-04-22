@@ -9,6 +9,7 @@ import CustomAlert from '../CustomAlert/index';
 import { AlertObj } from '../../types';
 import { getUserIdFromLocalStorage, getUserSubTierFromLocalStorage } from '../../utils/localStorageParser';
 import { useNavigate } from 'react-router-dom';
+import ReactGA from 'react-ga4';
 
 interface IBeatDownloadModal {
   beatId: string;
@@ -66,7 +67,6 @@ export default function BeatDownloadModal(props: IBeatDownloadModal) {
       const res = await axios.get(`${gatewayUrl}/beats/download?beatId=${beatId}&licenseType=${licenseType}`, {
         withCredentials: true,
       });
-      console.log(res.data);
       // start downloading beat
       const downloadBeatRes = await axios.get(res.data.beat, {
         responseType: 'blob',
@@ -118,6 +118,7 @@ export default function BeatDownloadModal(props: IBeatDownloadModal) {
       document.body.removeChild(link);
       URL.revokeObjectURL(href);
       setOpen(false);
+      ReactGA.event({ category: 'Beat', action: 'Download', label: beatId });
     } catch (err) {
       console.error(err);
       setErrMsg({ message: 'Insufficient credits', type: 'error' });

@@ -1,4 +1,4 @@
-import React from 'react';
+import ReactGA from 'react-ga4';
 import { Tooltip, Row, Col } from 'antd';
 import { CaretRightOutlined, PauseOutlined, LoadingOutlined } from '@ant-design/icons';
 import { useState, useRef, useEffect } from 'react';
@@ -134,6 +134,9 @@ export default function PlaybackButtons(props: IPlyabackButtonsProps) {
                 .then((res) => {
                   console.log(res);
                   countedStream = true;
+                })
+                .then(() => {
+                  ReactGA.event({ category: 'Beat', action: 'Stream', label: beatPlaying?._id });
                 })
                 .catch((err) => console.error(err));
             }, 1);

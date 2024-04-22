@@ -1,3 +1,4 @@
+import ReactGA from 'react-ga4';
 import { Row, Statistic } from 'antd';
 import BeatEditModal from '../BeatEditModal';
 import { Beat, BeatPlayPauseStatus } from '../../types/beat';
@@ -75,6 +76,9 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
         addStreamReq(beat._id)
           .then((res) => console.log(res))
           .then(() => setStreamsCount(streamsCount + 1))
+          .then(() => {
+            ReactGA.event({ category: 'Beat', action: 'Stream', label: beat._id });
+          })
           .catch((err) => console.error(err));
       }, 20000);
     }
@@ -134,6 +138,7 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
         await ensureLoggedIn();
         setLiked(true);
         const res = await likeBeatReq(beat._id);
+        ReactGA.event({ category: 'Beat', action: 'Like', label: beat._id });
         setLikesCount(likesCount + 1);
         console.log(res);
       } catch (err) {
@@ -149,6 +154,7 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
       await ensureLoggedIn();
       setLiked(false);
       const res = await unlikeBeatReq(beat._id);
+      ReactGA.event({ category: 'Beat', action: 'Unlike', label: beat._id });
       setLikesCount(likesCount - 1);
       console.log(res);
     } catch (err) {
@@ -244,7 +250,7 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
           </div>
         ) : null}
       </Row>
-      <audio ref={audioRef} preload="auto" style={{ display: 'none' }} id={`audio-player-${beat.audioKey}`}>
+      <audio ref={audioRef} preload="none" style={{ display: 'none' }} id={`audio-player-${beat.audioKey}`}>
         <source src={`${cdnHostname}/${beat.audioKey}`} type="audio/mpeg" />
       </audio>
     </>

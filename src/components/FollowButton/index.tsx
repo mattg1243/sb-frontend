@@ -5,6 +5,7 @@ import gatewayUrl from '../../config/routing';
 import { followUserReq, unfollowUserReq } from '../../lib/axios';
 import styles from './FollowButton.module.css';
 import { ensureLoggedIn } from '../../utils/auth';
+import ReactGA from 'react-ga4';
 
 interface IFollowButtonProps {
   currentUser: string;
@@ -57,6 +58,7 @@ export default function FollowButton(props: IFollowButtonProps) {
       const res = await reqFn(viewedUser);
       console.log(res);
       if (res.status === 200) {
+        ReactGA.event({ category: 'User', action: isFollowing ? 'Unfollow' : 'Follow', label: viewedUser });
         setIsFollowing(!isFollowing);
       }
     } catch (err) {

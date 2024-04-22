@@ -3,7 +3,7 @@ import { Modal, Input, Button } from 'antd';
 import { AlertObj } from '../../types';
 import { setSubReferrerReq } from '../../lib/axios';
 import CustomAlert from '../CustomAlert';
-import { Axios, AxiosError } from 'axios';
+import { AxiosError } from 'axios';
 
 export default function SubRefModal() {
   const [isOpen, setIsOpen] = useState<boolean>(false);

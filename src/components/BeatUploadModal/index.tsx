@@ -27,6 +27,7 @@ import { useDispatch } from 'react-redux';
 import { notification } from '../../reducers/notificationReducer';
 import { AlertObj, Keys } from '../../types';
 import { ensureLoggedIn } from '../../utils/auth';
+import ReactGA from 'react-ga4';
 
 export const possibleKeyOptions = Keys.map((key) => ({ value: key, label: key }));
 interface Stem {
@@ -158,11 +159,11 @@ export default function UploadBeatModal(props: IBeatUploadModalProps) {
           await Promise.all(stemUploadPromises);
           // save all the stems in the database
           await axios.post(`${gatewayUrl}/beats/save-stems`, { stems: stemFields }, { withCredentials: true });
+          ReactGA.event({ category: 'Beat', action: 'Upload', label: beatId });
         }
         dispatch(notification({ message: 'Your beat was uploaded successfully!', type: 'success' }));
-        console.log(res);
       } catch (err) {
-        dispatch(notification({ message: 'There was an error uploading your beat.', type: 'error' }));
+        dispatch(notification({ message: 'There was an error uploding your beat.', type: 'error' }));
         setIsUploading(false);
         console.error(err);
       } finally {

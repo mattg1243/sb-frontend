@@ -8,6 +8,7 @@ import CustomAlert from '../CustomAlert';
 import styles from './UserEditModal.module.css';
 import { AxiosError } from 'axios';
 import { ensureLoggedIn } from '../../utils/auth';
+import ReactGA from 'react-ga4';
 
 interface IUserEditModal {
   user: User;
@@ -39,6 +40,7 @@ export default function UserEditModal(props: IUserEditModal) {
       setUserInfo(data);
       if (response.status === 200) {
         setIsOpen(false);
+        ReactGA.event({ category: 'User', action: 'Update', label: user._id });
         window.location.reload();
       }
     } catch (err) {

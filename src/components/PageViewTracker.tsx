@@ -10,7 +10,8 @@ const PageViewTracker: React.FC<PageViewTrackerProps> = ({ children }) => {
   const location = useLocation();
 
   useEffect(() => {
-    ReactGA.event({ category: 'page_view', action: 'page_view', label: location.pathname });
+    // ReactGA.event({ category: 'page_view', action: 'page_view', label: location.pathname });
+    ReactGA.send({ hitType: 'pageview', page: location.pathname });
   }, [location]);
 
   return <>{children}</>;

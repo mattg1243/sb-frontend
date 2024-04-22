@@ -21,6 +21,7 @@ import { playback } from '../../../reducers/playbackReducer';
 import type { Beat } from '../../../types';
 import { RootState } from '../../../store';
 import { selectBeats } from '../../../reducers/searchReducer';
+import PlaybackButtons from '../../PlaybackButtons';
 
 const isMobile = window.innerWidth < 480;
 
@@ -233,27 +234,17 @@ export default function Profile() {
         </Space>
       </Row>
       <Divider style={{ margin: '10px' }} />
-      <div style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        {isSearching && beatsFromSearch !== null ? (
-          <>
-            {beatsFromSearch.map((beat) => {
-              return (
-                <DashRow
-                  beat={beat}
-                  onClick={() => {
-                    dispatch(playback(beat));
-                  }}
-                  buttonType={isCurrentUser ? 'edit' : 'download'}
-                  key={beat._id}
-                />
-              );
-            })}
-          </>
-        ) : null}
-        {((isSearching && beatsFromSearch === null) || beatsFromSearch?.length === 0) &&
-        (beats?.length as number) > 0 ? (
-          <h3 style={{ marginTop: '10vh' }}>No beats match that search :(</h3>
-        ) : null}
+      <PlaybackButtons />
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          overflowY: 'visible',
+          alignItems: 'center',
+          overflowX: 'hidden',
+        }}
+      >
         {beats && !isSearching ? (
           beats.map((beat) => (
             <DashRow

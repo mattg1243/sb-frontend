@@ -17,6 +17,7 @@ import { useNavigate } from 'react-router-dom';
 import { BarChart, XAxis, YAxis, Bar, ResponsiveContainer } from 'recharts';
 import { getSubRefCodeReq } from '../../../lib/axios';
 import PayPalConnectBtn from './PayPalConnectBtn';
+import ReactGA from 'react-ga4';
 
 export default function AccountPage() {
   // TODO: create a hook so that the trackPlaying state and playbackButton
@@ -70,6 +71,7 @@ export default function AccountPage() {
     }
     try {
       const res = await axios.get(`${gatewayUrl}/user/customer-portal?customerId=${customerId}`);
+      ReactGA.event({ category: 'User', action: 'PayPal Connect', label: userId });
       window.location = res.data.url;
     } catch (err) {
       console.error(err);
@@ -82,6 +84,7 @@ export default function AccountPage() {
       if (res.data.url) {
         window.location = res.data.url;
       }
+      ReactGA.event({ category: 'User', action: 'Stripe Connect', label: userId });
       console.log(res);
     } catch (err) {
       console.error(err);

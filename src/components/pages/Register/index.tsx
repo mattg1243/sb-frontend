@@ -11,6 +11,7 @@ import gatewayUrl from '../../../config/routing';
 import TermsOfService from '../../TermsOfService';
 import styles from './Register.module.css';
 import { CheckCircleOutlined } from '@ant-design/icons';
+import ReactGA from 'react-ga4';
 
 const emailRe = /^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/;
 const isMobile = window.innerWidth < 480;
@@ -40,6 +41,7 @@ export default function Register(): JSX.Element {
         if (response.status === 200) {
           localStorage.setItem('sb-user', JSON.stringify(response.data.user));
           setIsLoading(false);
+          ReactGA.event({ category: 'User', action: 'Sign Up' });
           navigate('/verify-email');
         }
       } catch (err: any) {

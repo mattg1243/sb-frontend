@@ -10,6 +10,7 @@ import { notification as notificationReducer } from '../../../reducers/notificat
 import InfiniteScroll from 'react-infinite-scroll-component';
 import SubRefModal from '../../SubRefModal';
 import BeatScroll from '../../BeatScroll';
+import ReactGA from 'react-ga4';
 
 export default function Dashboard() {
   const [currentAlgo, setCurrentAlgo] = useState<RecAlgos>('Recommended');
@@ -21,6 +22,7 @@ export default function Dashboard() {
   useEffect(() => {
     const subSuccessRedirect = new URLSearchParams(window.location.search).get('sub-success');
     if (subSuccessRedirect) {
+      ReactGA.event({ category: 'User', action: 'Subscription Purchase' });
       dispatch(notificationReducer({ type: 'success', message: 'Your subscription is now live!' }));
     } else {
       return;
