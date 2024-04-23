@@ -40,7 +40,7 @@ export default function UserEditModal(props: IUserEditModal) {
       setUserInfo(data);
       if (response.status === 200) {
         setIsOpen(false);
-        ReactGA.event({ category: 'User', action: 'Update', label: user._id });
+        ReactGA.event('user_update', { user_id: user._id });
         window.location.reload();
       }
     } catch (err) {

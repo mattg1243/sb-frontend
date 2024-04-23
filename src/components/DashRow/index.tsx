@@ -77,7 +77,7 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
           .then((res) => console.log(res))
           .then(() => setStreamsCount(streamsCount + 1))
           .then(() => {
-            ReactGA.event({ category: 'Beat', action: 'Stream', label: beat._id });
+            ReactGA.event('beat_stream', { beat_id: beat._id });
           })
           .catch((err) => console.error(err));
       }, 20000);
@@ -138,7 +138,7 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
         await ensureLoggedIn();
         setLiked(true);
         const res = await likeBeatReq(beat._id);
-        ReactGA.event({ category: 'Beat', action: 'Like', label: beat._id });
+        ReactGA.event('beat_like', { beat_id: beat._id });
         setLikesCount(likesCount + 1);
         console.log(res);
       } catch (err) {
@@ -154,7 +154,7 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
       await ensureLoggedIn();
       setLiked(false);
       const res = await unlikeBeatReq(beat._id);
-      ReactGA.event({ category: 'Beat', action: 'Unlike', label: beat._id });
+      ReactGA.event('beat_unlike', { beat_id: beat._id });
       setLikesCount(likesCount - 1);
       console.log(res);
     } catch (err) {

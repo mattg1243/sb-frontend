@@ -118,7 +118,7 @@ export default function BeatDownloadModal(props: IBeatDownloadModal) {
       document.body.removeChild(link);
       URL.revokeObjectURL(href);
       setOpen(false);
-      ReactGA.event({ category: 'Beat', action: 'Download', label: beatId });
+      ReactGA.event('beat_download', { beat_id: beatId });
     } catch (err) {
       console.error(err);
       setErrMsg({ message: 'Insufficient credits', type: 'error' });

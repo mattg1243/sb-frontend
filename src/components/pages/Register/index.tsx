@@ -41,7 +41,7 @@ export default function Register(): JSX.Element {
         if (response.status === 200) {
           localStorage.setItem('sb-user', JSON.stringify(response.data.user));
           setIsLoading(false);
-          ReactGA.event({ category: 'User', action: 'Sign Up' });
+          ReactGA.event('user_signup', { user_id: response.data.user._id });
           navigate('/verify-email');
         }
       } catch (err: any) {

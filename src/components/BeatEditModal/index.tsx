@@ -41,7 +41,7 @@ export default function BeatEditModal(props: IEditBeatModalProps) {
     try {
       const response = await deleteBeatReq(beatId, audioKey);
       if (response.status === 200) {
-        ReactGA.event({ category: 'Beat', action: 'Delete', label: beatId });
+        ReactGA.event('beat_delete', { beat_id: beatId });
         setIsOpen(false);
         window.location.reload();
       }
@@ -68,7 +68,7 @@ export default function BeatEditModal(props: IEditBeatModalProps) {
     try {
       const response = await updateBeatReq(formData, beat._id);
       if (response.status === 200) {
-        ReactGA.event({ category: 'Beat', action: 'Update', label: beat._id });
+        ReactGA.event('beat_update', { beat_id: beat._id });
         setIsOpen(false);
         window.location.reload();
       }

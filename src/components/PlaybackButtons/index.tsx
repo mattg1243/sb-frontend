@@ -136,7 +136,7 @@ export default function PlaybackButtons(props: IPlyabackButtonsProps) {
                   countedStream = true;
                 })
                 .then(() => {
-                  ReactGA.event({ category: 'Beat', action: 'Stream', label: beatPlaying?._id });
+                  ReactGA.event('beat_stream', { beat_id: beatPlaying?._id });
                 })
                 .catch((err) => console.error(err));
             }, 1);

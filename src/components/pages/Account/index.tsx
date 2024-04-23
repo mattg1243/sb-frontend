@@ -71,7 +71,7 @@ export default function AccountPage() {
     }
     try {
       const res = await axios.get(`${gatewayUrl}/user/customer-portal?customerId=${customerId}`);
-      ReactGA.event({ category: 'User', action: 'PayPal Connect', label: userId });
+      ReactGA.event('user_paypal_connect', { user_id: userId });
       window.location = res.data.url;
     } catch (err) {
       console.error(err);
@@ -84,7 +84,7 @@ export default function AccountPage() {
       if (res.data.url) {
         window.location = res.data.url;
       }
-      ReactGA.event({ category: 'User', action: 'Stripe Connect', label: userId });
+      ReactGA.event('user_stripe_connect', { user_id: userId });
       console.log(res);
     } catch (err) {
       console.error(err);

@@ -159,7 +159,7 @@ export default function UploadBeatModal(props: IBeatUploadModalProps) {
           await Promise.all(stemUploadPromises);
           // save all the stems in the database
           await axios.post(`${gatewayUrl}/beats/save-stems`, { stems: stemFields }, { withCredentials: true });
-          ReactGA.event({ category: 'Beat', action: 'Upload', label: beatId });
+          ReactGA.event('beat_upload', { beat_id: beatId });
         }
         dispatch(notification({ message: 'Your beat was uploaded successfully!', type: 'success' }));
       } catch (err) {

@@ -58,7 +58,7 @@ export default function FollowButton(props: IFollowButtonProps) {
       const res = await reqFn(viewedUser);
       console.log(res);
       if (res.status === 200) {
-        ReactGA.event({ category: 'User', action: isFollowing ? 'Unfollow' : 'Follow', label: viewedUser });
+        ReactGA.event('user_follow', { user_id: viewedUser });
         setIsFollowing(!isFollowing);
       }
     } catch (err) {
