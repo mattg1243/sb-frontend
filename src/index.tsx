@@ -16,7 +16,7 @@ declare global {
   }
 }
 
-ReactGA.initialize('G-RM60DYCZDZ');
+ReactGA.initialize('G-ENBBTLTVNT', { gaOptions: { debug: process.env.NODE_ENV !== 'production' } });
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
