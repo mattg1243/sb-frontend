@@ -10,6 +10,7 @@ import { loginUserReq, resetPasswordReq } from '../../../lib/axios';
 import styles from './Login.module.css';
 import gatewayUrl from '../../../config/routing';
 import { getUserIdFromLocalStorage } from '../../../utils/localStorageParser';
+import ReactGA from 'react-ga4';
 
 export default function Login(): JSX.Element {
   const [email, setEmail] = useState<string>('');
@@ -33,6 +34,7 @@ export default function Login(): JSX.Element {
       console.log(loginResponse);
       if (loginResponse.status === 200 && loginResponse.data.user) {
         localStorage.setItem('sb-user', JSON.stringify(loginResponse.data.user));
+        ReactGA.set({ userId: loginResponse.data.user?.id });
         if (goBack === 'true') {
           navigate(-1);
         } else {

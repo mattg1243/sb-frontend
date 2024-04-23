@@ -25,6 +25,9 @@ import FAQ from './components/pages/FAQ';
 import LicensedBeatsPage from './components/pages/LicensedBeats';
 import BeatPage from './components/pages/Beat';
 import SearchPage from './components/pages/Search';
+import { getUserIdFromLocalStorage } from './utils/localStorageParser';
+import { useEffect } from 'react';
+import ReactGA from 'react-ga4';
 
 function App() {
   // const userId = getUserIdFromLocalStorage();
@@ -44,6 +47,15 @@ function App() {
   //     // processMessages(event);
   //   },
   // });
+
+  // track userIds with GA
+  const userId = getUserIdFromLocalStorage();
+
+  useEffect(() => {
+    if (userId) {
+      ReactGA.set({ userId });
+    }
+  }, [userId]);
 
   return (
     <div className="App">
