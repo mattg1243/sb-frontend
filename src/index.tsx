@@ -5,7 +5,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
 import { store } from './store';
-import { Helmet, HelmetProvider } from 'react-helmet-async';
+import { HelmetProvider } from 'react-helmet-async';
 import ReactGA from 'react-ga4';
 
 // extend window object to include Cypress / Redux store for testing
@@ -22,7 +22,9 @@ const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <App />
+      <HelmetProvider>
+        <App />
+      </HelmetProvider>
     </Provider>
   </React.StrictMode>
 );

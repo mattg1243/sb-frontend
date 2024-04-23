@@ -22,6 +22,7 @@ import type { Beat } from '../../../types';
 import { RootState } from '../../../store';
 import { selectBeats } from '../../../reducers/searchReducer';
 import PlaybackButtons from '../../PlaybackButtons';
+import { UserMetadata } from '../../../lib/helmet';
 
 const isMobile = window.innerWidth < 480;
 
@@ -110,6 +111,11 @@ export default function Profile() {
     <LoadingPage />
   ) : (
     <>
+      <UserMetadata
+        artistName={userInfo.artistName}
+        imgSrc={`${imgCdnHostName}/fit-in/400x400/${userInfo.avatar}`}
+        url={window.location.href}
+      />
       <Row className={styles['profile-info-row']}>
         <Space direction="horizontal" className={styles['profile-info-space']}>
           <Space direction="vertical" style={{ textAlign: 'center' }}>

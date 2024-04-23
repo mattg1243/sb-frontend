@@ -16,8 +16,9 @@ import { playback } from '../../../reducers/playbackReducer';
 import { playPause } from '../../../reducers/playbackReducer';
 import BeatDownloadModal from '../../BeatDownloadModal';
 import { ensureLoggedIn } from '../../../utils/auth';
-import loadingGif from '../../../assets/loading.gif';
 import PlaybackButtons from '../../PlaybackButtons';
+import { BeatMetadata } from '../../../lib/helmet';
+import { useLocation } from 'react-router-dom';
 
 interface IBeatPageProps {
   testBeat?: Beat;
@@ -107,6 +108,7 @@ export default function BeatPage(props?: IBeatPageProps) {
   };
 
   const imgSize = isMobile ? 250 : 600;
+  const imgSrc = `${imgCdnHostName}/fit-in/${imgSize}x${imgSize}/${beat?.artworkKey}`;
 
   return (
     <>
@@ -122,8 +124,9 @@ export default function BeatPage(props?: IBeatPageProps) {
       >
         {beat ? (
           <>
+            <BeatMetadata title={beat.title} artistName={beat.artistName} imgSrc={imgSrc} url={window.location.href} />
             <Image
-              src={`${imgCdnHostName}/fit-in/${imgSize}x${imgSize}/${beat.artworkKey}`}
+              src={imgSrc}
               alt="album artwork"
               // onClick={() => {
               //   isPlaying ? pauseBeat() : playBeat();
