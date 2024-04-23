@@ -4,7 +4,7 @@ import { UpOutlined, DownOutlined, DownloadOutlined } from '@ant-design/icons';
 import { playback } from '../../reducers/playbackReducer';
 import useGetBeats, { IUseGetBeatsOptions } from '../../hooks/useGetBeats';
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import gatewayUrl from '../../config/routing';
 import { RecAlgos } from '../RecAlgoMenu';
@@ -101,13 +101,14 @@ export default function BeatScroll(props: IBeatScrollProps) {
   return (
     <div
       style={{
+        height: '90vh',
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'center',
         alignItems: 'center',
+        justifyContent: 'flex-start',
         overflow: 'auto',
-        overflowX: 'hidden',
       }}
+      id="scrollableDiv"
     >
       {/* {beatPlayingFromState && isMobile ? (
         <button className={styles['scroll-btn']} onClick={() => scrollToPlayingBeat()}>
@@ -118,14 +119,11 @@ export default function BeatScroll(props: IBeatScrollProps) {
         dataLength={beats?.length || 8}
         next={fetchMoreBeats}
         hasMore={moreBeatsToLoad}
-        height="100vh"
         style={{
-          paddingBottom: '5vh',
-          justifyContent: 'center',
-          alignItems: 'center',
-          marginRight: isMobile ? '0' : '-20vw',
-          overflowX: 'hidden',
+          flexDirection: 'column',
+          textAlign: 'start',
         }}
+        scrollableTarget="scrollableDiv"
         scrollThreshold={0.8}
         loader={<h4 style={{ marginLeft: isMobile ? '0' : '-26vw' }}>Loading beats...</h4>}
         endMessage={<p style={{ marginLeft: isMobile ? '0' : '-26vw' }}>You've seen all the beats!</p>}

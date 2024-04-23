@@ -240,10 +240,9 @@ export default function Profile() {
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'center',
-          overflowY: 'visible',
           alignItems: 'center',
-          overflowX: 'hidden',
         }}
+        className={styles.beats}
       >
         {beats && !isSearching ? (
           beats.map((beat) => (

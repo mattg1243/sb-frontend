@@ -42,14 +42,13 @@
 
 @media (min-width: 1920px) and (max-width: 1999px) {
   .row-container {
-    width: 70vw;
-    max-width: 1400px;
-    text-align: center;
+    width: 55vw;
+    max-width: 1200px;
+    text-align: start;
     align-items: center;
     align-self: center;
-    padding: 0 2rem 0 min(350px, 14vw);
     justify-content: center;
-    margin: 1.25vw;
+    margin: 1vw;
   }
 
   .download-button {
@@ -69,7 +68,7 @@
     margin-left: 3vw;
     align-self: flex-start;
     font-size: clamp(15px, 1vw, 20px);
-    max-width: 90%;
+    width: clamp(200px, 70%, 500px);
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -91,14 +90,14 @@
 
 @media (min-width: 1024px) and (max-width: 1919px) {
   .row-container {
-    width: 75%;
-    max-width: 1400px;
-    text-align: center;
+    width: 60vw;
+    max-width: 1200px;
+    text-align: start;
     align-items: center;
     align-self: center;
     padding: 0 2rem 0 4rem;
     justify-content: center;
-    margin: 1.25vw;
+    margin: 1vw;
     margin-left: 10%;
   }
 
@@ -112,7 +111,7 @@
     flex-direction: column;
     justify-content: flex-start;
     margin-left: 2vw;
-    max-width: 500px;
+    max-width: 400px;
   }
 
   .title {
@@ -120,7 +119,7 @@
     margin-left: 3vw;
     align-self: flex-start;
     font-size: clamp(15px, 1vw, 20px);
-    max-width: 70%;
+    width: clamp(200px, 70%, 500px);
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;

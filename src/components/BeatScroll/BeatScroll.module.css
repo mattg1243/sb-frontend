@@ -1,16 +1,14 @@
 .beats-container {
-  width: 100vw;
-  padding-left: 9vw;
-  padding-top: 15vh;
-  text-align: center;
+  display: flex;
   flex-direction: column;
+  text-align: start;
+  margin: 15vh;
   justify-content: center;
   align-items: center;
-  overflow: visible;
 }
 
 .beats-container > * {
-  margin: 4vh 0;
+  margin: 3vh 0;
   padding: 0 1vh;
 }
 
@@ -26,11 +24,11 @@
 
 @media (max-width: 480px) {
   .beats-container {
-    padding-top: 2vh;
     padding-left: 2vw;
     padding-bottom: 10vh;
     width: 100vw;
     height: 100vh;
+    margin: 0;
     overflow-x: hidden;
   }
 
