@@ -159,7 +159,9 @@
   .title {
     cursor: pointer;
     margin-left: 3vw;
-    align-self: flex-start;
+    text-align: start;
+    padding: 1vh 0;
+    max-width: 30vw;
     font-size: clamp(15px, 1vw, 20px);
   }
 

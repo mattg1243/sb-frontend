@@ -59,24 +59,18 @@ export default function SearchPage() {
         <h2 className={styles['search-results-text']}>Search Results</h2>
       </div>
       <PlaybackButtons />
-      <InfiniteScroll
-        dataLength={results.length || 8}
-        hasMore={moreResults}
-        next={fetchMoreBeats}
-        height="100vh"
-        style={{
-          paddingBottom: '5vh',
-          justifyContent: 'center',
-          alignItems: 'center',
-          overflowX: 'hidden',
-        }}
-        scrollThreshold={0.8}
-        loader={<h4 style={{ marginLeft: isMobile ? '0' : '-26vw' }}>Loading beats...</h4>}
-        endMessage={<p style={{ marginLeft: isMobile ? '0' : '-26vw' }}>You've seen all the search results</p>}
-        className={`${styles['beats-container']}`}
-        data-cy="beats-container"
-      >
-        <Spin spinning={loading}>
+      <div id="scroll-div" className={styles['scroll-div']}>
+        <InfiniteScroll
+          dataLength={results.length || 8}
+          hasMore={moreResults}
+          next={fetchMoreBeats}
+          scrollThreshold={0.8}
+          loader={<h4>Loading beats...</h4>}
+          endMessage={<p>You've seen all the search results</p>}
+          className={`${styles['beats-container']}`}
+          data-cy="beats-container"
+          scrollableTarget="scroll-div"
+        >
           {results
             ? results.map((beat) => {
                 return (
@@ -91,8 +85,8 @@ export default function SearchPage() {
                 );
               })
             : null}
-        </Spin>
-      </InfiniteScroll>
+        </InfiniteScroll>
+      </div>
     </div>
   );
 }

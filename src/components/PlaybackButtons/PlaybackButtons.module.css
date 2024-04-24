@@ -64,10 +64,10 @@ input[type='range']::-webkit-slider-thumb {
 
 @media (min-width: 1024px) {
   .playbackbutton {
-    position: absolute;
+    position: fixed;
     background: transparent;
     border: none !important;
-    top: 90vh;
+    top: 85vh;
     left: 5vw;
     margin-left: 2rem;
     font-size: 2rem;

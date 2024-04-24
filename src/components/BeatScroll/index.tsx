@@ -125,8 +125,8 @@ export default function BeatScroll(props: IBeatScrollProps) {
         }}
         scrollableTarget="scrollableDiv"
         scrollThreshold={0.8}
-        loader={<h4 style={{ marginLeft: isMobile ? '0' : '-26vw' }}>Loading beats...</h4>}
-        endMessage={<p style={{ marginLeft: isMobile ? '0' : '-26vw' }}>You've seen all the beats!</p>}
+        loader={<h4>Loading beats...</h4>}
+        endMessage={<p>You've seen all the beats!</p>}
         className={`${styles['beats-container']} scroll-div`}
         data-cy="beats-container"
       >
