@@ -123,6 +123,10 @@ export const getBeatReq = async (beatId: string) => {
   return await axios.get(`${gatewayUrl}/beats?id=${beatId}`);
 };
 
+export const getSimilarBeats = async (beatId: string) => {
+  return await axios.get(`${gatewayUrl}/beats/similar?beat=${beatId}`);
+};
+
 export const getAllBeatsReq = async (page?: { skip: number; take: number }) => {
   let requestUrl = `${gatewayUrl}/beats/beats`;
   if (page) {

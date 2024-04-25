@@ -19,7 +19,8 @@ import Artwork from './Artwork';
 interface IBeatRowProps {
   beat: Beat;
   onClick: React.MouseEventHandler<HTMLHeadingElement>;
-  buttonType: 'edit' | 'license' | 'download';
+  buttonType: 'edit' | 'license' | 'download' | null;
+  onBeatPage?: boolean;
 }
 
 // < 480px for mobile and < 1024px for tablet, combining the two for now
@@ -31,7 +32,7 @@ function randomNumber(min: number, max: number) {
 }
 
 export default function DashRow(props: IBeatRowProps): JSX.Element {
-  const { beat, onClick, buttonType } = props;
+  const { beat, onClick, buttonType, onBeatPage } = props;
 
   const userId = getUserIdFromLocalStorage();
 
@@ -166,7 +167,7 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
   return (
     <>
       <Row className={styles['row-container']} id={`dashrow-${beat._id}`}>
-        {isMobile ? null : buttonType === 'edit' ? (
+        {isMobile || buttonType == null ? null : buttonType === 'edit' ? (
           <BeatEditModal beat={beat} />
         ) : buttonType === 'download' ? (
           <BeatDownloadModal beatId={beat._id} title={beat.title} artistName={beat.artistName} license={false} />
@@ -178,9 +179,9 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
             beatId={beat._id}
             artworkKey={beat.artworkKey as string}
             playPauseStatus={playPauseStatus}
-            onClick={playBeat}
+            onClick={onBeatPage ? () => navigate(`/app/beat?id=${beat._id}`) : playBeat}
           />
-          <div className={styles['text-container']}>
+          <div className={styles['text-container']} style={{ marginLeft: buttonType == null ? '0' : undefined }}>
             <h3
               onClick={() => {
                 navigate(`/app/beat?id=${beat._id}`);

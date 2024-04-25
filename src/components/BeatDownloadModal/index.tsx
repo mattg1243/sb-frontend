@@ -18,10 +18,11 @@ interface IBeatDownloadModal {
   license: boolean;
   tooltip?: boolean;
   btnStyle?: React.CSSProperties;
+  onBeatPage?: boolean;
 }
 
 export default function BeatDownloadModal(props: IBeatDownloadModal) {
-  const { beatId, title, artistName, license, tooltip, btnStyle } = props;
+  const { beatId, title, artistName, license, tooltip, btnStyle, onBeatPage } = props;
 
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -130,27 +131,30 @@ export default function BeatDownloadModal(props: IBeatDownloadModal) {
     }
   };
 
+  const handleClick = async () => {
+    try {
+      await axios.get(`${gatewayUrl}/auth?user=${userId}`, { withCredentials: true });
+      if (userSubTier) {
+        setOpen(true);
+      } else {
+        navigate('/subscriptions');
+      }
+    } catch (err) {
+      if (err instanceof axios.AxiosError) {
+        console.error(err);
+        if (err.response?.status === 401) {
+          window.location.href = '/login?goBack=true';
+        }
+      }
+      console.error(err);
+    }
+  };
   // check for tooltip wrapper
   const btn = (
     <Button
       type="ghost"
       onClick={async () => {
-        try {
-          await axios.get(`${gatewayUrl}/auth?user=${userId}`, { withCredentials: true });
-          if (userSubTier) {
-            setOpen(true);
-          } else {
-            navigate('/subscriptions');
-          }
-        } catch (err) {
-          if (err instanceof axios.AxiosError) {
-            console.error(err);
-            if (err.response?.status === 401) {
-              window.location.href = '/login?goBack=true';
-            }
-          }
-          console.error(err);
-        }
+        handleClick;
       }}
       icon={icon}
       data-cy="download-modal-btn"
@@ -166,9 +170,15 @@ export default function BeatDownloadModal(props: IBeatDownloadModal) {
       <>{btn}</>
     );
 
+  const bigBtn = (
+    <Button onClick={handleClick} className={styles['big-btn']} data-cy="download-modal-btn">
+      Download
+    </Button>
+  );
+
   return (
     <>
-      {wrappedBtn}
+      {onBeatPage ? bigBtn : wrappedBtn}
       <Modal
         title={modalTitle}
         open={open}

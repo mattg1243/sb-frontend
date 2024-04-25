@@ -1,7 +1,18 @@
+.container {
+  width: 100vw;
+  display: flex;
+  position: absolute;
+  padding-left: 5vw;
+  flex-direction: row;
+  margin-top: 8vh;
+  text-align: start;
+  justify-content: space-between;
+  overflow-x: hidden;
+}
+
 .beat-cont {
   height: 100%;
   width: 50%;
-  margin-top: 11vh;
   text-align: center;
   justify-content: center;
 }
@@ -26,10 +37,20 @@
 
 .beat-artist {
   font-size: 1.25vw;
+  font-weight: lighter;
   color: black;
 }
 
+.stats-row {
+  justify-content: space-between;
+  text-align: center;
+  align-items: flex-start;
+  width: 35vw;
+  margin-bottom: 3vh;
+}
+
 .artwork {
+  margin-top: 7vh;
   box-shadow: 12px 12px black;
   background: var(--primary) !important;
 }
@@ -38,7 +59,78 @@
   animation: none !important;
 }
 
+.suggested-container {
+  width: 37vw;
+  right: 0vw;
+  height: 80vh;
+  position: relative;
+  text-align: start;
+  align-items: start;
+  justify-content: start;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+.suggested-container > * {
+  padding: 1vh 0 !important;
+  margin: 1vh 0 !important;
+}
+
+.purchase-btn {
+  border: solid 1px black;
+  border-radius: 8px;
+  height: clamp(20px, 5vh, 36px);
+  box-shadow: 4px 2px black;
+  font-size: clamp(8px, 2vh, 18px);
+  width: clamp(250px, 20vw, 350px);
+}
+
+@media (min-width: 1920px) and (max-width: 1999px) {
+  .suggested-container {
+    width: 33vw;
+    right: 5vw;
+    text-align: center;
+    font-size: 1vw;
+  }
+}
+
+@media (min-width: 1024px) and (max-width: 1919px) {
+  .suggested-container {
+    width: 33vw;
+    right: 12vw;
+    text-align: center;
+    font-size: 1vw;
+  }
+}
+
 @media (max-width: 1024px) {
+  .container {
+    flex-direction: column;
+    left: 0;
+    margin-top: 0;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .stats-row {
+    width: 80vw;
+    margin: 20px 0;
+  }
+
+  .suggested-container {
+    width: 80vw;
+    right: 0vw;
+    height: 100%;
+    position: relative;
+    font-size: 16px;
+    text-align: start;
+    align-items: start;
+    justify-content: start;
+    overflow-y: scroll;
+    overflow-x: hidden;
+  }
+
   .beat-cont {
     width: 50%;
     margin-top: 10vh;
@@ -47,10 +139,13 @@
   .beat-title {
     padding: 0 5vw;
     text-align: center;
-    font-size: clamp(16px, 5vw, 32px);
+    width: 80vw;
+    white-space: wrap;
+    word-break: break-word;
+    font-size: clamp(16px, 4vw, 28px);
   }
 
   .beat-artist {
-    font-size: clamp(16px, 4vw, 24px);
+    font-size: clamp(16px, 3vw, 22px);
   }
 }
