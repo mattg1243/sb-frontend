@@ -19,6 +19,7 @@ import PlaybackButtons from '../../PlaybackButtons';
 import { BeatMetadata } from '../../../lib/helmet';
 import DashRow from '../../DashRow';
 import { useLocation, useNavigate } from 'react-router-dom';
+import LoadingPage from '../Loading';
 
 interface IBeatPageProps {
   testBeat?: Beat;
@@ -121,7 +122,12 @@ export default function BeatPage(props?: IBeatPageProps) {
 
   return (
     <>
-      <div cy-data="beat-page-cont" className={styles.container}>
+      {isLoading || imgLoading ? <LoadingPage /> : null}
+      <div
+        cy-data="beat-page-cont"
+        className={styles.container}
+        style={{ display: isLoading || imgLoading ? 'none' : 'flex' }}
+      >
         {beat ? (
           <>
             <div>
@@ -130,12 +136,6 @@ export default function BeatPage(props?: IBeatPageProps) {
                 artistName={beat.artistName}
                 imgSrc={imgSrc}
                 url={window.location.href}
-              />
-              <Spin
-                tip="Loading artwork..."
-                size="large"
-                spinning={imgLoading}
-                style={{ width: '45vh', height: '45vh' }}
               />
               <img
                 src={imgSrc}
@@ -171,7 +171,12 @@ export default function BeatPage(props?: IBeatPageProps) {
               <Row className={styles['stats-row']}>
                 <div>
                   <PlayCircleOutlined style={{ fontSize: '1.5vh' }} />
-                  <Statistic title="Streams" value={streamsCount} valueStyle={{ fontSize: '1.5vh' }} />
+                  <Statistic
+                    title="Streams"
+                    value={streamsCount}
+                    style={{ fontSize: '1.5vh' }}
+                    valueStyle={{ fontSize: '1.5vh' }}
+                  />
                 </div>
                 <div>
                   {liked ? (
@@ -204,19 +209,6 @@ export default function BeatPage(props?: IBeatPageProps) {
                     valueStyle={{ fontSize: '1.5vh' }}
                   />
                 </div>
-                <div>
-                  <Tooltip title="Copy share link">
-                    <FiShare
-                      onClick={() => {
-                        const url = window.location.href;
-                        navigator.clipboard.writeText(url);
-                        dispatch(notification({ type: 'success', message: 'Beat URL has been copied!' }));
-                      }}
-                      style={{ fontSize: '2vh' }}
-                    />
-                    <Statistic title="Share" valueStyle={{ display: 'none' }} />
-                  </Tooltip>
-                </div>
               </Row>
               <BeatDownloadModal
                 artistName={beat.artistName}
@@ -224,6 +216,7 @@ export default function BeatPage(props?: IBeatPageProps) {
                 title={beat.title}
                 onBeatPage={true}
                 license={true}
+                btnStyle={{ position: 'fixed' }}
               />
               <Row style={{ justifyContent: 'space-evenly', marginTop: '4vh' }}></Row>
               {isMobile ? (
@@ -243,7 +236,12 @@ export default function BeatPage(props?: IBeatPageProps) {
               <h3>Similar Beats</h3>
               {similarBeats
                 ? similarBeats.map((beat) => (
-                    <DashRow beat={beat} onClick={() => console.log('beat clicked')} buttonType={null} />
+                    <DashRow
+                      beat={beat}
+                      onClick={() => console.log('beat clicked')}
+                      buttonType={null}
+                      onBeatPage={true}
+                    />
                   ))
                 : null}
             </div>

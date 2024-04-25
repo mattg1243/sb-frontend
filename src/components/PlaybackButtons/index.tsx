@@ -26,8 +26,6 @@ const strPadLeft = (string: string, pad: string, length: number) => {
 const isMobile = window.innerWidth < 480;
 
 export default function PlaybackButtons(props: IPlyabackButtonsProps) {
-  const [isPlaying, setIsPlaying] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [currentTime, setCurrentTime] = useState<number>(0);
   const [duration, setDuration] = useState<string>();
   const [secondsPlayed, setSecondsPlayed] = useState<number>(0);
@@ -41,6 +39,11 @@ export default function PlaybackButtons(props: IPlyabackButtonsProps) {
   const beatPlayingFromState = useSelector<{ playback: { trackPlaying: Beat | null } }, Beat | null>(
     (state) => state.playback.trackPlaying
   );
+
+  const beatPlayPauseStatus = useSelector<
+    { playPause: { status: 'playing' | 'loading' | 'paused' | null } },
+    'playing' | 'loading' | 'paused' | null
+  >((state) => state.playPause.status);
 
   const dispatch = useDispatch();
 
@@ -63,7 +66,7 @@ export default function PlaybackButtons(props: IPlyabackButtonsProps) {
     if (!audio.current) {
       console.log('no audio ref detected');
       return;
-    } else if (audio.current.paused && !isPlaying) {
+    } else if (audio.current.paused && !(beatPlayPauseStatus === 'playing')) {
       return audio.current.play();
     }
   };
@@ -72,7 +75,7 @@ export default function PlaybackButtons(props: IPlyabackButtonsProps) {
     if (!audio.current) {
       console.log('no audio ref detected');
       return;
-    } else if (!audio.current.paused && isPlaying) {
+    } else if (!audio.current.paused && beatPlayPauseStatus == 'playing') {
       audio.current.pause();
     }
   };
@@ -106,7 +109,6 @@ export default function PlaybackButtons(props: IPlyabackButtonsProps) {
 
   useEffect(() => {
     if (beatPlaying && currentBeatId !== beatPlaying._id) {
-      setIsLoading(true);
       dispatch(playPause('loading'));
       stopAllAudio();
       audio.current = document.getElementById(`audio-player-${beatPlaying.audioKey}`) as HTMLAudioElement;
@@ -118,15 +120,16 @@ export default function PlaybackButtons(props: IPlyabackButtonsProps) {
           const minutes = Math.floor((audio.current?.duration as number) / 60);
           const seconds = Math.floor((audio.current?.duration as number) - minutes * 60);
           setDuration(`${minutes}:${strPadLeft(seconds.toString(), '0', 2)}`);
-          setIsLoading(false);
         };
-        audio.current.onloadeddata = () => {
-          dispatch(playPause('playing'));
-          setIsLoading(false);
+        audio.current.oncanplaythrough = () => {
+          if (onBeatPage) {
+            dispatch(playPause('paused'));
+          } else {
+            dispatch(playPause('playing'));
+          }
         };
         audio.current.ontimeupdate = handleTimeUpdate;
         audio.current.onplaying = () => {
-          setIsPlaying(true);
           dispatch(playPause('playing'));
           if (!countedStream) {
             streamTimeout = setTimeout(() => {
@@ -143,14 +146,11 @@ export default function PlaybackButtons(props: IPlyabackButtonsProps) {
           }
         };
         audio.current.onpause = () => {
-          setIsPlaying(false);
           dispatch(playPause('paused'));
           clearTimeout(streamTimeout);
         };
         audio.current.onplay = () => {
-          setIsPlaying(true);
           dispatch(playPause('playing'));
-          setIsLoading(false);
         };
         audio.current.onerror = () => {
           console.log('error loading audio file');
@@ -158,7 +158,6 @@ export default function PlaybackButtons(props: IPlyabackButtonsProps) {
           stopAllAudio();
         };
         audio.current.onended = () => {
-          setIsPlaying(false);
           dispatch(playPause(null));
           setCurrentTime(0);
           dispatch(playback(null));
@@ -179,13 +178,14 @@ export default function PlaybackButtons(props: IPlyabackButtonsProps) {
         console.log('no audio ref detected on cleanup');
         return;
       } else {
+        dispatch(playPause('loading'));
         dispatch(playback(null));
         clearTimeout(streamTimeout);
         setCurrentTime(0);
         stopAllAudio();
       }
     };
-  }, []);
+  }, [window.location]);
 
   // playback button for all pages except beat page
   const playbackBtn = !isMobile ? (
@@ -199,15 +199,15 @@ export default function PlaybackButtons(props: IPlyabackButtonsProps) {
         style={{ position: 'relative' }}
       >
         <button
-          onClick={isPlaying ? pause : play}
+          onClick={beatPlayPauseStatus === 'playing' ? pause : play}
           className={styles.playbackbutton}
           style={{ animationDuration: '0s !important' }}
           data-cy="playback-btn"
-          disabled={isLoading}
+          disabled={beatPlayPauseStatus == 'loading'}
         >
-          {isLoading ? (
+          {beatPlayPauseStatus == 'loading' ? (
             <LoadingOutlined />
-          ) : isPlaying ? (
+          ) : beatPlayPauseStatus == 'playing' ? (
             <PauseOutlined data-cy="pause-icon" />
           ) : (
             <CaretRightOutlined data-cy="play-icon" />
@@ -233,14 +233,14 @@ export default function PlaybackButtons(props: IPlyabackButtonsProps) {
     >
       <Col span={4} offset={isMobile ? 0 : 4}>
         <button
-          onClick={isPlaying ? pause : play}
+          onClick={beatPlayPauseStatus == 'playing' ? pause : play}
           style={{ animationDuration: '0s !important' }}
           className={styles['playbackbtn-bar']}
           data-cy="playback-btn"
         >
-          {isLoading ? (
+          {beatPlayPauseStatus == 'loading' ? (
             <LoadingOutlined />
-          ) : isPlaying ? (
+          ) : beatPlayPauseStatus == 'playing' ? (
             <PauseOutlined data-cy="pause-icon" />
           ) : (
             <CaretRightOutlined data-cy="play-icon" />

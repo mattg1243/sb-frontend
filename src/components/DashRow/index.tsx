@@ -225,7 +225,7 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
             </div>
           </div>
         </Row>
-        {isMobile ? null : (
+        {isMobile || onBeatPage ? null : (
           <div style={{ alignItems: 'flex-end' }} data-cy="beat-like-btn">
             {liked ? (
               <HeartFilled onClick={() => unlikeBeat()} id="like-beat-btn" />
@@ -240,7 +240,7 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
             />
           </div>
         )}
-        {isMobile ? (
+        {isMobile && !onBeatPage ? (
           <div
             className={styles.mobileLikes}
             style={{ alignItems: 'flex-end', paddingRight: '10vw' }}

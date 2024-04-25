@@ -30,6 +30,7 @@
   margin-top: 3vh;
   max-height: 5vh;
   font-size: 1.75vw;
+  max-width: 33vw;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -45,8 +46,9 @@
   justify-content: space-between;
   text-align: center;
   align-items: flex-start;
-  width: 35vw;
+  width: 20vw;
   margin-bottom: 3vh;
+  height: 7vh;
 }
 
 .artwork {
@@ -97,7 +99,7 @@
 @media (min-width: 1024px) and (max-width: 1919px) {
   .suggested-container {
     width: 33vw;
-    right: 12vw;
+    right: 5vw;
     text-align: center;
     font-size: 1vw;
   }
@@ -119,7 +121,7 @@
   }
 
   .suggested-container {
-    width: 80vw;
+    width: 90vw;
     right: 0vw;
     height: 100%;
     position: relative;
@@ -132,7 +134,7 @@
   }
 
   .beat-cont {
-    width: 50%;
+    width: 100vw;
     margin-top: 10vh;
   }
 
@@ -140,6 +142,7 @@
     padding: 0 5vw;
     text-align: center;
     width: 80vw;
+    max-width: 100%;
     white-space: wrap;
     word-break: break-word;
     font-size: clamp(16px, 4vw, 28px);
