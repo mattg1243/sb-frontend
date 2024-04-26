@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
-import { Row, Image, Divider, Statistic, Spin, Tooltip, Button } from 'antd';
+import { Row, Statistic, Tooltip } from 'antd';
 import { HeartFilled, HeartOutlined } from '@ant-design/icons';
 import { GiTreeBranch } from 'react-icons/gi';
-import { FiShare } from 'react-icons/fi';
 import type { Beat } from '../../../types';
 import styles from './BeatPage.module.css';
 import { beatCdnHostName, imgCdnHostName } from '../../../config/routing';
@@ -11,15 +10,15 @@ import { PlayCircleOutlined } from '@ant-design/icons';
 import { getBeatReq, getSimilarBeats, getUserLikesBeatReq, likeBeatReq, unlikeBeatReq } from '../../../lib/axios';
 import { getUserIdFromLocalStorage } from '../../../utils/localStorageParser';
 import { useDispatch } from 'react-redux';
-import { notification } from '../../../reducers/notificationReducer';
 import { playback } from '../../../reducers/playbackReducer';
 import BeatDownloadModal from '../../BeatDownloadModal';
 import { ensureLoggedIn } from '../../../utils/auth';
 import PlaybackButtons from '../../PlaybackButtons';
 import { BeatMetadata } from '../../../lib/helmet';
 import DashRow from '../../DashRow';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import LoadingPage from '../Loading';
+import { BackButton, RefreshButton } from './BackButton';
 
 interface IBeatPageProps {
   testBeat?: Beat;
@@ -137,6 +136,7 @@ export default function BeatPage(props?: IBeatPageProps) {
                 imgSrc={imgSrc}
                 url={window.location.href}
               />
+              <BackButton />
               <img
                 src={imgSrc}
                 alt="album artwork"
@@ -153,8 +153,8 @@ export default function BeatPage(props?: IBeatPageProps) {
                 onLoadStart={() => setImgLoading(true)}
                 onLoad={() => setImgLoading(false)}
                 style={{
-                  width: isMobile ? 250 : '45vh',
-                  height: isMobile ? 250 : '45vh',
+                  width: isMobile ? 300 : '45vh',
+                  height: isMobile ? 300 : '45vh',
                   pointerEvents: 'none',
                 }}
                 className={styles.artwork}
@@ -163,11 +163,22 @@ export default function BeatPage(props?: IBeatPageProps) {
               <h1 className={styles['beat-title']} data-cy="beat-page-title">
                 {beat.title}
               </h1>
-              <h3 data-cy="beat-page-artist">
-                <a className={styles['beat-artist']} href={`/app/user/?id=${beat.artistId}`}>
-                  {beat.artistName}
-                </a>
-              </h3>
+
+              <Row className={styles['stats-row']}>
+                <h3 data-cy="beat-page-artist">
+                  <a className={styles['beat-artist']} href={`/app/user/?id=${beat.artistId}`}>
+                    {beat.artistName}
+                  </a>
+                </h3>
+                <BeatDownloadModal
+                  artistName={beat.artistName}
+                  beatId={beat._id}
+                  title={beat.title}
+                  onBeatPage={true}
+                  license={true}
+                  btnStyle={{ position: 'fixed' }}
+                />
+              </Row>
               <Row className={styles['stats-row']}>
                 <div>
                   <PlayCircleOutlined style={{ fontSize: '1.5vh' }} />
@@ -210,14 +221,7 @@ export default function BeatPage(props?: IBeatPageProps) {
                   />
                 </div>
               </Row>
-              <BeatDownloadModal
-                artistName={beat.artistName}
-                beatId={beat._id}
-                title={beat.title}
-                onBeatPage={true}
-                license={true}
-                btnStyle={{ position: 'fixed' }}
-              />
+
               <Row style={{ justifyContent: 'space-evenly', marginTop: '4vh' }}></Row>
               {isMobile ? (
                 <audio preload="metadata" style={{ display: 'none' }} id={`audio-player-${beat.audioKey}`}>
@@ -233,7 +237,20 @@ export default function BeatPage(props?: IBeatPageProps) {
               )}
             </div>
             <div className={styles['suggested-container']}>
-              <h3>Similar Beats</h3>
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  width: '100%',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                }}
+              >
+                <h3>Similar Beats</h3>
+                <Tooltip title="Get more similar beats">
+                  <RefreshButton beatId={beat._id} setSimilarBeats={setSimilarBeats} />
+                </Tooltip>
+              </div>
               {similarBeats
                 ? similarBeats.map((beat) => (
                     <DashRow

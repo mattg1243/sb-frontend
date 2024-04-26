@@ -2,9 +2,9 @@
   width: 100vw;
   display: flex;
   position: absolute;
-  padding-left: 5vw;
   flex-direction: row;
-  margin-top: 8vh;
+  padding-left: 5vw;
+  padding-top: min(800px, 8vh);
   text-align: start;
   justify-content: space-between;
   overflow-x: hidden;
@@ -28,8 +28,9 @@
 
 .beat-title {
   margin-top: 3vh;
+  height: 5vh;
   max-height: 5vh;
-  font-size: 1.75vw;
+  font-size: 3vh;
   max-width: 33vw;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -45,8 +46,8 @@
 .stats-row {
   justify-content: space-between;
   text-align: center;
-  align-items: flex-start;
-  width: 20vw;
+  align-items: center;
+  width: 25vw;
   margin-bottom: 3vh;
   height: 7vh;
 }
@@ -87,6 +88,11 @@
   width: clamp(250px, 20vw, 350px);
 }
 
+.refresh-button-div {
+  position: relative;
+  text-align: center;
+}
+
 @media (min-width: 1920px) and (max-width: 1999px) {
   .suggested-container {
     width: 33vw;
@@ -110,6 +116,7 @@
     flex-direction: column;
     left: 0;
     margin-top: 0;
+    padding: 0;
     text-align: center;
     align-items: center;
     justify-content: center;
@@ -142,6 +149,7 @@
     padding: 0 5vw;
     text-align: center;
     width: 80vw;
+    height: 2vh;
     max-width: 100%;
     white-space: wrap;
     word-break: break-word;
@@ -150,5 +158,11 @@
 
   .beat-artist {
     font-size: clamp(16px, 3vw, 22px);
+  }
+
+  .refresh-button-div {
+    position: relative;
+    top: auto;
+    right: auto;
   }
 }
