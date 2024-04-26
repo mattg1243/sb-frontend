@@ -45,7 +45,7 @@
 
 .stats-row {
   justify-content: space-between;
-  text-align: center;
+  text-align: flex-start;
   align-items: center;
   width: 25vw;
   margin-bottom: 3vh;
@@ -124,7 +124,10 @@
 
   .stats-row {
     width: 80vw;
-    margin: 20px 0;
+    margin: 0;
+    margin-bottom: 2vh;
+    text-align: center;
+    justify-content: space-around;
   }
 
   .suggested-container {

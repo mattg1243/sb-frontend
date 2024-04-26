@@ -170,14 +170,16 @@ export default function BeatPage(props?: IBeatPageProps) {
                     {beat.artistName}
                   </a>
                 </h3>
-                <BeatDownloadModal
-                  artistName={beat.artistName}
-                  beatId={beat._id}
-                  title={beat.title}
-                  onBeatPage={true}
-                  license={true}
-                  btnStyle={{ position: 'fixed' }}
-                />
+                {!isMobile ? (
+                  <BeatDownloadModal
+                    artistName={beat.artistName}
+                    beatId={beat._id}
+                    title={beat.title}
+                    onBeatPage={true}
+                    license={true}
+                    btnStyle={{ position: 'fixed' }}
+                  />
+                ) : null}
               </Row>
               <Row className={styles['stats-row']}>
                 <div>
@@ -221,7 +223,16 @@ export default function BeatPage(props?: IBeatPageProps) {
                   />
                 </div>
               </Row>
-
+              {isMobile ? (
+                <BeatDownloadModal
+                  artistName={beat.artistName}
+                  beatId={beat._id}
+                  title={beat.title}
+                  onBeatPage={true}
+                  license={true}
+                  btnStyle={{ position: 'fixed' }}
+                />
+              ) : null}
               <Row style={{ justifyContent: 'space-evenly', marginTop: '4vh' }}></Row>
               {isMobile ? (
                 <audio preload="metadata" style={{ display: 'none' }} id={`audio-player-${beat.audioKey}`}>
