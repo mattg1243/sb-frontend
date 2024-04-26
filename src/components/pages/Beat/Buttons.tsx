@@ -1,6 +1,6 @@
 import React, { SetStateAction, useEffect } from 'react';
 import { Button } from 'antd';
-import { ArrowLeftOutlined, ReloadOutlined, CaretRightOutlined } from '@ant-design/icons';
+import { ArrowLeftOutlined, ReloadOutlined, CaretRightOutlined, HomeOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import { Beat } from '../../../types';
 import { AxiosResponse } from 'axios';
@@ -48,6 +48,38 @@ const BackButton: React.FC = () => {
   );
 };
 
+const HomeButton = () => {
+  const navigate = useNavigate();
+
+  const handleBackButtonClick = () => {
+    navigate('/app/dash');
+  };
+
+  return (
+    <div
+      style={{
+        position: 'fixed',
+        top: isMobile ? '2vh' : '10vh',
+        left: '15vw',
+        zIndex: 1,
+      }}
+    >
+      <Button
+        type="text"
+        shape="circle"
+        icon={<ReloadOutlined style={{ fontSize: '28px' }} />}
+        onClick={handleBackButtonClick}
+        style={{
+          backgroundColor: 'transparent',
+          color: 'black',
+          width: '50px',
+          height: '50px',
+        }}
+      />
+    </div>
+  );
+};
+
 interface RefreshButtonProps {
   beatId: string;
   setSimilarBeats: React.Dispatch<SetStateAction<Beat[] | undefined>>;
@@ -81,4 +113,4 @@ const RefreshButton = (props: RefreshButtonProps) => {
   );
 };
 
-export { BackButton, RefreshButton };
+export { BackButton, HomeButton, RefreshButton };
