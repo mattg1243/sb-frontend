@@ -18,7 +18,7 @@ import { BeatMetadata } from '../../../lib/helmet';
 import DashRow from '../../DashRow';
 import { useLocation } from 'react-router-dom';
 import LoadingPage from '../Loading';
-import { BackButton, RefreshButton } from './BackButton';
+import { BackButton, RefreshButton } from './Buttons';
 
 interface IBeatPageProps {
   testBeat?: Beat;
@@ -234,18 +234,12 @@ export default function BeatPage(props?: IBeatPageProps) {
                 />
               ) : null}
               <Row style={{ justifyContent: 'space-evenly', marginTop: '4vh' }}></Row>
-              {isMobile ? (
-                <audio preload="metadata" style={{ display: 'none' }} id={`audio-player-${beat.audioKey}`}>
-                  <source src={`${beatCdnHostName}/${beat.audioStreamKey}`} type="audio/mpeg" />
-                </audio>
-              ) : (
-                <audio
-                  preload="metadata"
-                  style={{ display: 'none' }}
-                  id={`audio-player-${beat.audioKey}`}
-                  src={`${beatCdnHostName}/${beat.audioStreamKey}`}
-                />
-              )}
+              <audio
+                preload="metadata"
+                style={{ display: 'none' }}
+                id={`audio-player-${beat.audioKey}`}
+                src={`${beatCdnHostName}/${beat.audioStreamKey}`}
+              />
             </div>
             <div className={styles['suggested-container']}>
               <div
