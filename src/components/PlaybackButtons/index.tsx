@@ -6,10 +6,12 @@ import styles from './PlaybackButtons.module.css';
 import { useDispatch, useSelector } from 'react-redux';
 import type { Beat } from '../../types';
 import { addStreamReq } from '../../lib/axios';
+import { beatCdnHostName } from '../../config/routing';
 import { playback, playPause } from '../../reducers/playbackReducer';
 
 interface IPlyabackButtonsProps {
   testBeatPlaying?: Beat;
+  beatSrc: string;
 }
 
 /**
@@ -33,7 +35,6 @@ export default function PlaybackButtons(props: IPlyabackButtonsProps) {
 
   let countedStream = false;
 
-  let beatPlaying: Beat | null;
   const currentBeatId = new URLSearchParams().get('id');
   // get beatPlaying from redux store
   const beatPlayingFromState = useSelector<{ playback: { trackPlaying: Beat | null } }, Beat | null>(
@@ -47,17 +48,11 @@ export default function PlaybackButtons(props: IPlyabackButtonsProps) {
 
   const dispatch = useDispatch();
 
-  // check if being test
-  if (props.testBeatPlaying) {
-    beatPlaying = props.testBeatPlaying;
-  } else {
-    beatPlaying = beatPlayingFromState;
-  }
   // save the data needed to stream the beat and display infor
-  const trackTitle = beatPlaying ? beatPlaying.title : '';
-  const trackArtist = beatPlaying ? beatPlaying.artistName : '';
+  const trackTitle = beatPlayingFromState ? beatPlayingFromState.title : '';
+  const trackArtist = beatPlayingFromState ? beatPlayingFromState.artistName : '';
 
-  const audio = useRef<HTMLAudioElement>();
+  const audio = useRef<HTMLAudioElement>(null);
   let streamTimeout: NodeJS.Timeout;
 
   const onBeatPage = window.location.pathname === '/app/beat' ? true : false;
@@ -67,7 +62,8 @@ export default function PlaybackButtons(props: IPlyabackButtonsProps) {
       console.log('no audio ref detected');
       return;
     } else if (audio.current.paused && !(beatPlayPauseStatus === 'playing')) {
-      return audio.current.play();
+      dispatch(playPause('loading'));
+      await audio.current.play();
     }
   };
 
@@ -108,10 +104,8 @@ export default function PlaybackButtons(props: IPlyabackButtonsProps) {
   };
 
   useEffect(() => {
-    if (beatPlaying && currentBeatId !== beatPlaying._id) {
-      dispatch(playPause('loading'));
+    if (beatPlayingFromState && currentBeatId !== beatPlayingFromState._id) {
       stopAllAudio();
-      audio.current = document.getElementById(`audio-player-${beatPlaying.audioKey}`) as HTMLAudioElement;
       setCurrentTime(0);
       if (!audio.current) {
         console.log('there was an error getting the audio element');
@@ -120,17 +114,10 @@ export default function PlaybackButtons(props: IPlyabackButtonsProps) {
           const minutes = Math.floor((audio.current?.duration as number) / 60);
           const seconds = Math.floor((audio.current?.duration as number) - minutes * 60);
           setDuration(`${minutes}:${strPadLeft(seconds.toString(), '0', 2)}`);
-        };
-        audio.current.oncanplaythrough = () => {
-          if (onBeatPage) {
-            dispatch(playPause('paused'));
-          } else {
-            dispatch(playPause('playing'));
-          }
+          dispatch(playPause('paused'));
         };
         audio.current.ontimeupdate = handleTimeUpdate;
         audio.current.onplaying = () => {
-          dispatch(playPause('playing'));
           if (!countedStream) {
             streamTimeout = setTimeout(() => {
               addStreamReq(beatPlaying?._id as string)
@@ -139,7 +126,7 @@ export default function PlaybackButtons(props: IPlyabackButtonsProps) {
                   countedStream = true;
                 })
                 .then(() => {
-                  ReactGA.event('beat_stream', { beat_id: beatPlaying?._id });
+                  ReactGA.event('beat_stream', { beat_id: beatPlayingFromState?._id });
                 })
                 .catch((err) => console.error(err));
             }, 1);
@@ -170,7 +157,7 @@ export default function PlaybackButtons(props: IPlyabackButtonsProps) {
       }
       // wait 20seconds before registering as stream
     }
-  }, [beatPlaying]);
+  }, [beatPlayingFromState]);
 
   useEffect(() => {
     return () => {
@@ -178,7 +165,7 @@ export default function PlaybackButtons(props: IPlyabackButtonsProps) {
         console.log('no audio ref detected on cleanup');
         return;
       } else {
-        dispatch(playPause('loading'));
+        dispatch(playPause(null));
         dispatch(playback(null));
         clearTimeout(streamTimeout);
         setCurrentTime(0);
@@ -192,12 +179,30 @@ export default function PlaybackButtons(props: IPlyabackButtonsProps) {
     <>
       <Tooltip
         title={
-          <a href={`/app/beat?id=${beatPlaying?._id}`} style={{ color: 'white' }}>{`${trackTitle} - ${trackArtist}`}</a>
+          <a
+            href={`/app/beat?id=${beatPlayingFromState?._id}`}
+            style={{ color: 'white' }}
+          >{`${trackTitle} - ${trackArtist}`}</a>
         }
         placement="topLeft"
         id="playback-info"
         style={{ position: 'relative' }}
       >
+        <audio
+          ref={audio}
+          preload="auto"
+          src={props.beatSrc}
+          style={{ display: 'none' }}
+          onCanPlay={() => {
+            if (onBeatPage) {
+              dispatch(playPause('paused'));
+            } else {
+              dispatch(playPause('playing'));
+            }
+          }}
+          id={`audio-player-${beatPlayingFromState?.audioKey}`}
+        />
+
         <button
           onClick={beatPlayPauseStatus === 'playing' ? pause : play}
           className={styles.playbackbutton}
@@ -265,6 +270,38 @@ export default function PlaybackButtons(props: IPlyabackButtonsProps) {
             }}
           />
         </Tooltip>
+        {isMobile ? (
+          <audio
+            ref={audio}
+            preload="auto"
+            style={{ display: 'none' }}
+            id={`audio-player-${beatPlayingFromState?.audioKey}`}
+            onCanPlay={() => {
+              if (onBeatPage) {
+                dispatch(playPause('paused'));
+              } else {
+                dispatch(playPause('playing'));
+              }
+            }}
+          >
+            <source src={props.beatSrc} type="audio/mpeg" />
+          </audio>
+        ) : (
+          <audio
+            ref={audio}
+            preload="auto"
+            src={props.beatSrc}
+            style={{ display: 'none' }}
+            id={`audio-player-${beatPlayingFromState?.audioKey}`}
+            onCanPlay={() => {
+              if (onBeatPage) {
+                dispatch(playPause('paused'));
+              } else {
+                dispatch(playPause('playing'));
+              }
+            }}
+          />
+        )}
       </Col>
       {/* <BsVolumeUpFill className={styles['vol-icon']} /> */}
     </Row>
@@ -273,7 +310,7 @@ export default function PlaybackButtons(props: IPlyabackButtonsProps) {
   // determine which type to render
   const toRender = onBeatPage ? playbackBar : playbackBtn;
 
-  return beatPlaying || onBeatPage ? toRender : null;
+  return beatPlayingFromState || onBeatPage ? toRender : null;
 }
 
 // export default React.memo(PlaybackButtons);

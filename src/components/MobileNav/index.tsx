@@ -1,26 +1,12 @@
-import axios from 'axios';
 import { Button, Row, Col, Input, InputRef, MenuProps, Dropdown } from 'antd';
 import { CloseOutlined, HomeOutlined, SearchOutlined, UserOutlined, UploadOutlined } from '@ant-design/icons';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import styles from './MobileNav.module.css';
 import { getUserIdFromLocalStorage } from '../../utils/localStorageParser';
 import { useEffect, useRef, useState } from 'react';
 import { logoutUserReq } from '../../lib/axios';
-import { useDispatch, useSelector } from 'react-redux';
-import {
-  searchQuery,
-  selectSearchQuery,
-  searchIsLoading,
-  searching,
-  selectIsSearching,
-} from '../../reducers/searchReducer';
-import { beats } from '../../reducers/searchReducer';
-import { RootState } from '../../store';
-import gatewayUrl from '../../config/routing';
 import UploadBeatModal from '../BeatUploadModal';
 import { useOutsideClick } from '../../hooks/useOutsideClick';
-
-const onBeatPage = window.location.pathname == '/app/beat';
 
 interface IMobileNavProps {
   testUserId?: string;
@@ -34,9 +20,11 @@ export default function MobileNav(props: IMobileNavProps) {
   const [uploadModalOpen, setUploadModalOpen] = useState<boolean>(false);
 
   const navigate = useNavigate();
+  const location = useLocation();
   const userId = getUserIdFromLocalStorage();
   const inputRef = useRef<InputRef>(null);
   const currentUserId = props.testUserId || getUserIdFromLocalStorage();
+  let onBeatPage = false;
 
   const logoutUser = async () => {
     try {
@@ -116,6 +104,10 @@ export default function MobileNav(props: IMobileNavProps) {
       inputRef.current.focus();
     }
   }, [searchOpen]);
+
+  useEffect(() => {
+    onBeatPage = window.location.pathname == '/app/beat';
+  }, [location]);
 
   if (!onBeatPage) {
     return (

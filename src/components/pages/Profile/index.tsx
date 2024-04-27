@@ -22,12 +22,17 @@ import type { Beat } from '../../../types';
 import { RootState } from '../../../store';
 import { selectBeats } from '../../../reducers/searchReducer';
 import PlaybackButtons from '../../PlaybackButtons';
+import { beatCdnHostName } from '../../../config/routing';
 import { UserMetadata } from '../../../lib/helmet';
 
 const isMobile = window.innerWidth < 480;
 
 export default function Profile() {
   const searchParams = useSearchParams()[0];
+
+  const beatPlayingFromState = useSelector<{ playback: { trackPlaying: Beat | null } }, Beat | null>(
+    (state) => state.playback.trackPlaying
+  );
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [updateIsLoading, setUpdateIsLoading] = useState<boolean>(false);
@@ -240,7 +245,7 @@ export default function Profile() {
         </Space>
       </Row>
       <Divider style={{ margin: '10px' }} />
-      <PlaybackButtons />
+      <PlaybackButtons beatSrc={`${beatCdnHostName}/${beatPlayingFromState?.audioStreamKey}`} />
       <div
         style={{
           display: 'flex',

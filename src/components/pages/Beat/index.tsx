@@ -10,7 +10,7 @@ import { PlayCircleOutlined } from '@ant-design/icons';
 import { getBeatReq, getSimilarBeats, getUserLikesBeatReq, likeBeatReq, unlikeBeatReq } from '../../../lib/axios';
 import { getUserIdFromLocalStorage } from '../../../utils/localStorageParser';
 import { useDispatch } from 'react-redux';
-import { playback } from '../../../reducers/playbackReducer';
+import { playback, playPause } from '../../../reducers/playbackReducer';
 import BeatDownloadModal from '../../BeatDownloadModal';
 import { ensureLoggedIn } from '../../../utils/auth';
 import PlaybackButtons from '../../PlaybackButtons';
@@ -41,6 +41,7 @@ export default function BeatPage(props?: IBeatPageProps) {
   const [streamsCount, setStreamsCount] = useState<number>();
 
   useEffect(() => {
+    console.log('beat: big useEffect called');
     setIsLoading(true);
     setImgLoading(true);
     getBeatReq(beatId as string)
@@ -48,8 +49,13 @@ export default function BeatPage(props?: IBeatPageProps) {
         setBeat(res.data.beat);
         setLikesCount(res.data.beat.likesCount);
         setStreamsCount(res.data.beat.streamsCount);
+        return res.data.beat;
       })
-      .then(() => setIsLoading(false))
+      .then((beat) => {
+        dispatch(playback(beat || null));
+        dispatch(playPause('loading'));
+        setIsLoading(false);
+      })
       .catch((err) => {
         console.error(err);
         setIsLoading(false);
@@ -69,12 +75,12 @@ export default function BeatPage(props?: IBeatPageProps) {
       })
       .catch((err) => console.error(err))
       .finally(() => setIsLoading(false));
-  }, [beatId, location]);
+  }, [location]);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(playback(beat || null));
+    console.log('beat: small useEffect called');
   });
 
   // check if testing
@@ -235,12 +241,6 @@ export default function BeatPage(props?: IBeatPageProps) {
                 />
               ) : null}
               <Row style={{ justifyContent: 'space-evenly', marginTop: '4vh' }}></Row>
-              <audio
-                preload="metadata"
-                style={{ display: 'none' }}
-                id={`audio-player-${beat.audioKey}`}
-                src={`${beatCdnHostName}/${beat.audioStreamKey}`}
-              />
             </div>
             <div className={styles['suggested-container']}>
               <div
@@ -272,7 +272,7 @@ export default function BeatPage(props?: IBeatPageProps) {
         ) : null}
         {!beat && !isLoading ? <h1 style={{ marginTop: '25vh' }}>No beat found :(</h1> : null}
       </div>
-      <PlaybackButtons />
+      <PlaybackButtons beatSrc={`${beatCdnHostName}/${beat?.audioStreamKey}`} />
       {/* <Row className={styles['beat-info-row']}>
         <Space direction="horizontal" className={styles['beat-info-space']}>
           <Space direction="vertical">

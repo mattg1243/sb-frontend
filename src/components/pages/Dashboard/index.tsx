@@ -4,16 +4,20 @@ import styles from './Dashboard.module.css';
 import RecAlgoMenu from '../../RecAlgoMenu';
 import type { RecAlgos } from '../../RecAlgoMenu';
 import PlaybackButtons from '../../PlaybackButtons';
-import { useDispatch } from 'react-redux';
-import { playback } from '../../../reducers/playbackReducer';
+import { useDispatch, useSelector } from 'react-redux';
+import { beatCdnHostName } from '../../../config/routing';
 import { notification as notificationReducer } from '../../../reducers/notificationReducer';
-import InfiniteScroll from 'react-infinite-scroll-component';
+import type { Beat } from '../../../types';
 import SubRefModal from '../../SubRefModal';
 import BeatScroll from '../../BeatScroll';
 import ReactGA from 'react-ga4';
 
 export default function Dashboard() {
   const [currentAlgo, setCurrentAlgo] = useState<RecAlgos>('Recommended');
+
+  const beatPlayingFromState = useSelector<{ playback: { trackPlaying: Beat | null } }, Beat | null>(
+    (state) => state.playback.trackPlaying
+  );
   // const [isSearching, setIsSearching] = useState<boolean>();
 
   const dispatch = useDispatch();
@@ -36,7 +40,7 @@ export default function Dashboard() {
         <h2 className={styles['for-you-text']}>For You</h2>
         <RecAlgoMenu currentAlgo={currentAlgo} setCurrentAlgo={setCurrentAlgo} />
       </div>
-      <PlaybackButtons />
+      <PlaybackButtons beatSrc={`${beatCdnHostName}/${beatPlayingFromState?.audioStreamKey}`} />
       <BeatScroll currentAlgo={currentAlgo} />
     </div>
   );
