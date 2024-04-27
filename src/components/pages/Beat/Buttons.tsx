@@ -27,7 +27,7 @@ const BackButton: React.FC = () => {
     <div
       style={{
         position: 'fixed',
-        top: isMobile ? '2vh' : '10vh',
+        top: isMobile ? '1vh' : '10vh',
         left: '15px',
         zIndex: 1,
       }}
@@ -59,15 +59,15 @@ const HomeButton = () => {
     <div
       style={{
         position: 'fixed',
-        top: isMobile ? '2vh' : '10vh',
-        left: '15vw',
+        top: isMobile ? '1vh' : '10vh',
+        right: '15px',
         zIndex: 1,
       }}
     >
       <Button
         type="text"
         shape="circle"
-        icon={<ReloadOutlined style={{ fontSize: '28px' }} />}
+        icon={<HomeOutlined style={{ fontSize: '28px' }} />}
         onClick={handleBackButtonClick}
         style={{
           backgroundColor: 'transparent',

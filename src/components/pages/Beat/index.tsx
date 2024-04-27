@@ -18,7 +18,7 @@ import { BeatMetadata } from '../../../lib/helmet';
 import DashRow from '../../DashRow';
 import { useLocation } from 'react-router-dom';
 import LoadingPage from '../Loading';
-import { BackButton, RefreshButton } from './Buttons';
+import { BackButton, HomeButton, RefreshButton } from './Buttons';
 
 interface IBeatPageProps {
   testBeat?: Beat;
@@ -137,6 +137,7 @@ export default function BeatPage(props?: IBeatPageProps) {
                 url={window.location.href}
               />
               <BackButton />
+              {isMobile ? <HomeButton /> : null}
               <img
                 src={imgSrc}
                 alt="album artwork"
