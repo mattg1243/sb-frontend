@@ -28,8 +28,8 @@ const isMobile: boolean = window.innerWidth < 1024;
 
 export default function BeatPage(props?: IBeatPageProps) {
   const location = useLocation();
+  const dispatch = useDispatch();
 
-  const beatId = new URLSearchParams(window.location.search).get('id');
   const userId = getUserIdFromLocalStorage();
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -41,29 +41,16 @@ export default function BeatPage(props?: IBeatPageProps) {
   const [streamsCount, setStreamsCount] = useState<number>();
 
   useEffect(() => {
-    console.log('beat: big useEffect called');
-    setIsLoading(true);
-    setImgLoading(true);
+    console.log('useEffect triggered');
+    const beatId = new URLSearchParams(window.location.search).get('id');
     getBeatReq(beatId as string)
       .then((res) => {
         setBeat(res.data.beat);
+        dispatch(playback(res.data.beat));
         setLikesCount(res.data.beat.likesCount);
         setStreamsCount(res.data.beat.streamsCount);
-        return res.data.beat;
       })
-      .then((beat) => {
-        dispatch(playback(beat || null));
-        dispatch(playPause('loading'));
-        setIsLoading(false);
-      })
-      .catch((err) => {
-        console.error(err);
-        setIsLoading(false);
-      });
-    getUserLikesBeatReq(beatId as string)
-      .then((res) => {
-        setLiked(res.data);
-      })
+      .then(() => setIsLoading(false))
       .catch((err) => {
         console.error(err);
         setIsLoading(false);
@@ -75,13 +62,12 @@ export default function BeatPage(props?: IBeatPageProps) {
       })
       .catch((err) => console.error(err))
       .finally(() => setIsLoading(false));
-  }, [location]);
-
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    console.log('beat: small useEffect called');
-  });
+    getUserLikesBeatReq(beatId as string)
+      .then((res) => {
+        setLiked(res.data);
+      })
+      .catch((err) => console.error(err));
+  }, [location, location.search]);
 
   // check if testing
   useEffect(() => {
@@ -268,6 +254,18 @@ export default function BeatPage(props?: IBeatPageProps) {
                   ))
                 : null}
             </div>
+            {isMobile ? (
+              <audio preload="auto" style={{ display: 'none' }} id={`audio-player-${beat.audioKey}`}>
+                <source src={`${beatCdnHostName}/${beat.audioStreamKey}`} type="audio/mpeg" />
+              </audio>
+            ) : (
+              <audio
+                preload="metadata"
+                style={{ display: 'none' }}
+                id={`audio-player-${beat.audioKey}`}
+                src={`${beatCdnHostName}/${beat.audioStreamKey}`}
+              />
+            )}
           </>
         ) : null}
         {!beat && !isLoading ? <h1 style={{ marginTop: '25vh' }}>No beat found :(</h1> : null}

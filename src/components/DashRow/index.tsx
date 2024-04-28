@@ -37,7 +37,6 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
   const userId = getUserIdFromLocalStorage();
 
   const [artistNameColor, setArtistNameColor] = useState<'black' | 'blue'>('black');
-  const [playPauseStatus, setPlayPauseStatus] = useState<BeatPlayPauseStatus | null>();
   const [liked, setLiked] = useState<boolean>();
   const [likesCount, setLikesCount] = useState<number>(beat.likesCount);
   const [streamsCount, setStreamsCount] = useState<string>(beat.streamsCount.toLocaleString());
@@ -55,14 +54,6 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
   const audioRef = useRef<HTMLAudioElement>(null);
 
   useEffect(() => {
-    if (beatPlayingFromState?._id !== beat._id) {
-      setPlayPauseStatus(undefined);
-    } else {
-      setPlayPauseStatus(beatPlayPauseStatus);
-    }
-  }, [beatPlayingFromState, beatPlayPauseStatus]);
-
-  useEffect(() => {
     getUserLikesBeatReq(beat._id)
       .then((res) => {
         setLiked(res.data);
@@ -72,7 +63,7 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
   }, []);
   // useEffect to track beat streaming on mobile
   useEffect(() => {
-    if (isMobile && playPauseStatus === 'playing') {
+    if (isMobile && beatPlayPauseStatus === 'playing' && beatPlayingFromState === beat) {
       setTimeout(() => {
         addStreamReq(beat._id)
           .then((res) => console.log(res))
@@ -83,23 +74,19 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
           .catch((err) => console.error(err));
       }, 20000);
     }
-  }, [beatPlayPauseStatus]);
+  }, [beatPlayPauseStatus, beatPlayingFromState]);
 
   useEffect(() => {
     return () => {
-      const isMounted = audioRef.current !== null;
-      if (!isMounted) {
-        setPlayPauseStatus(null);
-        const audio = document.getElementById(`audio-player-${beat.audioKey}`) as HTMLAudioElement;
-        if (audio) {
-          audio.pause();
-          audio.currentTime = 0;
-        }
-        dispatch(playback(null));
-        dispatch(playPause(null));
+      const audio = document.getElementById(`audio-player-${beat.audioKey}`) as HTMLAudioElement;
+      if (audio) {
+        audio.pause();
+        audio.currentTime = 0;
       }
+      dispatch(playback(null));
+      dispatch(playPause(null));
     };
-  }, []);
+  }, [window.location]);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -114,21 +101,14 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
     // if playing a new beat
     if (beatPlayingFromState?._id !== beat._id) {
       dispatch(playback(beat));
-      setPlayPauseStatus('loading');
-      await audio.play();
-      setPlayPauseStatus('playing');
     } else {
       // if clicked is already playing
-      if (playPauseStatus === 'playing') {
-        dispatch(playPause('paused'));
-        setPlayPauseStatus('paused');
+      if (beatPlayPauseStatus === 'playing') {
         audio.pause();
       }
       // if beat click is currently paused
       else if (beatPlayPauseStatus === 'paused') {
         await audio.play();
-        dispatch(playPause('playing'));
-        setPlayPauseStatus('playing');
       }
     }
   };
@@ -178,7 +158,7 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
           <Artwork
             beatId={beat._id}
             artworkKey={beat.artworkKey as string}
-            playPauseStatus={playPauseStatus}
+            playPauseStatus={beatPlayPauseStatus}
             onClick={onBeatPage ? () => navigate(`/app/beat?id=${beat._id}`) : playBeat}
           />
           <div className={styles['text-container']} style={{ marginLeft: buttonType == null ? '0' : undefined }}>
