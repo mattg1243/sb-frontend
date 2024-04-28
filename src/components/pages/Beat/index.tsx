@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Row, Statistic, Tooltip } from 'antd';
 import { HeartFilled, HeartOutlined } from '@ant-design/icons';
 import { GiTreeBranch } from 'react-icons/gi';
@@ -40,6 +40,8 @@ export default function BeatPage(props?: IBeatPageProps) {
   const [likesCount, setLikesCount] = useState<number>();
   const [streamsCount, setStreamsCount] = useState<number>();
 
+  const audioRef = useRef<HTMLAudioElement>(null);
+
   useEffect(() => {
     console.log('useEffect triggered');
     const beatId = new URLSearchParams(window.location.search).get('id');
@@ -47,6 +49,9 @@ export default function BeatPage(props?: IBeatPageProps) {
       .then((res) => {
         setBeat(res.data.beat);
         dispatch(playback(res.data.beat));
+        if (audioRef.current) {
+          audioRef.current.src = `${beatCdnHostName}/${res.data.beat.audioStreamKey}`;
+        }
         setLikesCount(res.data.beat.likesCount);
         setStreamsCount(res.data.beat.streamsCount);
       })
@@ -255,11 +260,12 @@ export default function BeatPage(props?: IBeatPageProps) {
                 : null}
             </div>
             {isMobile ? (
-              <audio preload="auto" style={{ display: 'none' }} id={`audio-player-${beat.audioKey}`}>
+              <audio ref={audioRef} preload="metadata" style={{ display: 'none' }} id={`audio-player-${beat.audioKey}`}>
                 <source src={`${beatCdnHostName}/${beat.audioStreamKey}`} type="audio/mpeg" />
               </audio>
             ) : (
               <audio
+                ref={audioRef}
                 preload="metadata"
                 style={{ display: 'none' }}
                 id={`audio-player-${beat.audioKey}`}
@@ -270,7 +276,7 @@ export default function BeatPage(props?: IBeatPageProps) {
         ) : null}
         {!beat && !isLoading ? <h1 style={{ marginTop: '25vh' }}>No beat found :(</h1> : null}
       </div>
-      <PlaybackButtons beatSrc={`${beatCdnHostName}/${beat?.audioStreamKey}`} />
+      <PlaybackButtons audio={audioRef} />
       {/* <Row className={styles['beat-info-row']}>
         <Space direction="horizontal" className={styles['beat-info-space']}>
           <Space direction="vertical">

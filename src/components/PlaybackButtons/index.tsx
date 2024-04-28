@@ -1,18 +1,13 @@
 import ReactGA from 'react-ga4';
 import { Tooltip, Row, Col } from 'antd';
 import { CaretRightOutlined, PauseOutlined, LoadingOutlined } from '@ant-design/icons';
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, ForwardedRef, useImperativeHandle } from 'react';
 import styles from './PlaybackButtons.module.css';
 import { useDispatch, useSelector } from 'react-redux';
 import type { Beat } from '../../types';
 import { addStreamReq } from '../../lib/axios';
 import { playback, playPause } from '../../reducers/playbackReducer';
 import { useLocation } from 'react-router-dom';
-
-interface IPlyabackButtonsProps {
-  testBeatPlaying?: Beat;
-  beatSrc: string;
-}
 
 /**
  * Util function for pretty printing minutes / seconds timestamp for playback.
@@ -27,7 +22,13 @@ const strPadLeft = (string: string, pad: string, length: number) => {
 
 const isMobile = window.innerWidth < 480;
 
-export default function PlaybackButtons(props: IPlyabackButtonsProps) {
+interface PlaybackButtonRef {
+  audio: React.RefObject<HTMLAudioElement>;
+}
+
+const PlaybackButtons = (props: PlaybackButtonRef) => {
+  const { audio } = props;
+
   const [currentTime, setCurrentTime] = useState<number>(0);
   const [duration, setDuration] = useState<string>();
   const [secondsPlayed, setSecondsPlayed] = useState<number>(0);
@@ -35,7 +36,6 @@ export default function PlaybackButtons(props: IPlyabackButtonsProps) {
 
   let countedStream = false;
 
-  const currentBeatId = new URLSearchParams().get('id');
   // get beatPlaying from redux store
   const beatPlayingFromState = useSelector<{ playback: { trackPlaying: Beat | null } }, Beat | null>(
     (state) => state.playback.trackPlaying
@@ -53,10 +53,16 @@ export default function PlaybackButtons(props: IPlyabackButtonsProps) {
   const trackTitle = beatPlayingFromState ? beatPlayingFromState.title : '';
   const trackArtist = beatPlayingFromState ? beatPlayingFromState.artistName : '';
 
-  const audio = useRef<HTMLAudioElement>();
   let streamTimeout: NodeJS.Timeout;
 
   const onBeatPage = window.location.pathname === '/app/beat' ? true : false;
+
+  const stopAllAudio = () => {
+    document.querySelectorAll('audio').forEach((el) => {
+      el.pause();
+      el.currentTime = 0;
+    });
+  };
 
   const play = async () => {
     if (!audio.current) {
@@ -100,18 +106,9 @@ export default function PlaybackButtons(props: IPlyabackButtonsProps) {
       setSecondsPlayed(seconds);
     }
   };
-
-  const stopAllAudio = () => {
-    document.querySelectorAll('audio').forEach((el) => {
-      el.pause();
-      el.currentTime = 0;
-    });
-  };
-
   useEffect(() => {
     if (beatPlayingFromState) {
       stopAllAudio();
-      audio.current = document.getElementById(`audio-player-${beatPlayingFromState.audioKey}`) as HTMLAudioElement;
       setCurrentTime(0);
       if (!audio.current) {
         console.log('there was an error getting the audio element');
@@ -127,6 +124,8 @@ export default function PlaybackButtons(props: IPlyabackButtonsProps) {
         audio.current.oncanplay = () => {
           if (onBeatPage) {
             dispatch(playPause('paused'));
+          } else {
+            audio.current?.play();
           }
         };
         audio.current.ontimeupdate = handleTimeUpdate;
@@ -161,11 +160,6 @@ export default function PlaybackButtons(props: IPlyabackButtonsProps) {
           dispatch(playback(null));
           audio.current?.pause();
         };
-
-        if (!onBeatPage) {
-          dispatch(playPause('loading'));
-          audio.current.play();
-        }
       }
       // wait 20seconds before registering as stream
     }
@@ -173,7 +167,7 @@ export default function PlaybackButtons(props: IPlyabackButtonsProps) {
 
   useEffect(() => {
     return () => {
-      if (!audio.current) {
+      if (!audio) {
         console.log('no audio ref detected on cleanup');
         return;
       } else {
@@ -275,6 +269,6 @@ export default function PlaybackButtons(props: IPlyabackButtonsProps) {
   const toRender = onBeatPage ? playbackBar : playbackBtn;
 
   return beatPlayingFromState || onBeatPage ? toRender : null;
-}
+};
 
-// export default React.memo(PlaybackButtons);
+export default PlaybackButtons;
