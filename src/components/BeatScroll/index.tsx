@@ -110,11 +110,11 @@ export default function BeatScroll(props: IBeatScrollProps) {
       }}
       id="scrollableDiv"
     >
-      {/* {beatPlayingFromState && isMobile ? (
+      {beatPlayingFromState && isMobile ? (
         <button className={styles['scroll-btn']} onClick={() => scrollToPlayingBeat()}>
           {scrollBtnUp ? <UpOutlined /> : <DownOutlined />}
         </button>
-      ) : null} */}
+      ) : null}
       <InfiniteScroll
         dataLength={beats?.length || 8}
         next={fetchMoreBeats}

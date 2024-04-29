@@ -39,7 +39,7 @@
   .scroll-btn {
     position: fixed;
     margin-right: 2rem;
-    top: 80vh;
+    bottom: 12vh;
     right: 1vw;
     width: 60px;
     height: 60px;

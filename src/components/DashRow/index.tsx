@@ -4,7 +4,7 @@ import BeatEditModal from '../BeatEditModal';
 import { Beat, BeatPlayPauseStatus } from '../../types/beat';
 import { beatCdnHostName as cdnHostname } from '../../config/routing';
 import { useState, useEffect, useRef } from 'react';
-import { CheckOutlined, HeartFilled, HeartOutlined, PlayCircleOutlined } from '@ant-design/icons';
+import { CheckOutlined, HeartFilled, HeartOutlined, LoadingOutlined, PlayCircleOutlined } from '@ant-design/icons';
 import styles from './DashRow.module.css';
 import BeatDownloadModal from '../BeatDownloadModal';
 import { useDispatch, useSelector } from 'react-redux';
@@ -51,8 +51,6 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
     'playing' | 'loading' | 'paused' | null
   >((state) => state.playPause.status);
 
-  const audioRef = useRef<HTMLAudioElement>(null);
-
   useEffect(() => {
     getUserLikesBeatReq(beat._id)
       .then((res) => {
@@ -76,42 +74,8 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
     }
   }, [beatPlayPauseStatus, beatPlayingFromState]);
 
-  useEffect(() => {
-    return () => {
-      const audio = document.getElementById(`audio-player-${beat.audioKey}`) as HTMLAudioElement;
-      if (audio) {
-        audio.pause();
-        audio.currentTime = 0;
-      }
-      dispatch(playback(null));
-      dispatch(playPause(null));
-    };
-  }, [window.location]);
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  /**
-   * This function handles beat playback for mobile and passes through the provided
-   * function from the props if on desktop.
-   */
-  const playBeat = async () => {
-    // select the corresponding hidden audio tag form the DOM
-    const audio = document.getElementById(`audio-player-${beat.audioKey}`) as HTMLAudioElement;
-    // if playing a new beat
-    if (beatPlayingFromState?._id !== beat._id) {
-      dispatch(playback(beat));
-    } else {
-      // if clicked is already playing
-      if (beatPlayPauseStatus === 'playing') {
-        audio.pause();
-      }
-      // if beat click is currently paused
-      else if (beatPlayPauseStatus === 'paused') {
-        await audio.play();
-      }
-    }
-  };
 
   const likeBeat = async () => {
     if (beat.artistId !== userId) {
@@ -159,7 +123,7 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
             beatId={beat._id}
             artworkKey={beat.artworkKey as string}
             playPauseStatus={beatPlayPauseStatus}
-            onClick={onBeatPage ? () => navigate(`/app/beat?id=${beat._id}`) : playBeat}
+            onClick={onBeatPage ? () => navigate(`/app/beat?id=${beat._id}`) : () => dispatch(playback(beat))}
           />
           <div className={styles['text-container']} style={{ marginLeft: buttonType == null ? '0' : undefined }}>
             <h3
@@ -231,9 +195,6 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
           </div>
         ) : null}
       </Row>
-      <audio ref={audioRef} preload="none" style={{ display: 'none' }} id={`audio-player-${beat.audioKey}`}>
-        <source src={`${cdnHostname}/${beat.audioKey}`} type="audio/mpeg" />
-      </audio>
     </>
   );
 }
