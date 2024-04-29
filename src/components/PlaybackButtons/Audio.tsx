@@ -75,11 +75,5 @@ export default function Audio(props: IAudioProps) {
     }
   }, [playPauseStatus, handleTimeUpdate, handleLoadStart, handleCanPlay, handlePlay, handlePause]);
 
-  return isMobile ? (
-    <audio ref={audioRef} src={src} preload="metadata" style={{ display: 'none' }} />
-  ) : (
-    <audio ref={audioRef} src={src} preload="metadata" style={{ display: 'none' }}>
-      <source src={src} type="audio/mpeg" />
-    </audio>
-  );
+  return <audio ref={audioRef} src={src} preload="metadata" style={{ display: 'none' }} />;
 }
