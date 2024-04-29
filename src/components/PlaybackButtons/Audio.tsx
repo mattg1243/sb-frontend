@@ -44,14 +44,12 @@ export default function Audio(props: IAudioProps) {
   }, [onPlayPauseStatusChange]);
 
   const handleCanPlay = useCallback(() => {
-    if (playPauseStatus === 'loading') {
-      if (onBeatPage) {
-        onPlayPauseStatusChange('paused');
-        dispatch(playPause('paused'));
-      } else {
-        onPlayPauseStatusChange('playing');
-        dispatch(playPause('playing'));
-      }
+    if (onBeatPage) {
+      onPlayPauseStatusChange('paused');
+      dispatch(playPause('paused'));
+    } else {
+      onPlayPauseStatusChange('playing');
+      dispatch(playPause('playing'));
     }
   }, [playPauseStatus, onPlayPauseStatusChange]);
 
@@ -59,7 +57,7 @@ export default function Audio(props: IAudioProps) {
     if (audioRef.current) {
       audioRef.current.addEventListener('timeupdate', handleTimeUpdate);
       audioRef.current.addEventListener('loadstart', handleLoadStart);
-      audioRef.current.addEventListener('canplaythrough', handleCanPlay);
+      audioRef.current.addEventListener('loadedmetadata', handleCanPlay);
 
       if (playPauseStatus === 'playing') {
         handlePlay();
