@@ -83,13 +83,23 @@ export default function Audio(props: IAudioProps) {
 
   useEffect(() => {
     if (audioRef.current) {
-      audioRef.current.src = src;
+      if (isMobile) {
+        const sourceEl = document.getElementById('audio-source') as HTMLSourceElement;
+        if (!sourceEl) {
+          console.log('no source el found');
+          return;
+        }
+        sourceEl.src = src;
+        sourceEl.type = 'audio/mpeg';
+      } else {
+        audioRef.current.src = src;
+      }
     }
   }, [src]);
 
   return isMobile ? (
     <audio preload="none" style={{ display: 'none' }} ref={audioRef}>
-      <source src={src} type="audio/mpeg" />
+      <source src={src} type="audio/mpeg" id="audio-source" />
     </audio>
   ) : (
     <audio preload="metadata" style={{ display: 'none' }} src={src} />
