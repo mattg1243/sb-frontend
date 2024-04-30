@@ -56,8 +56,8 @@ export default function Audio(props: IAudioProps) {
   useEffect(() => {
     if (audioRef.current) {
       audioRef.current.addEventListener('timeupdate', handleTimeUpdate);
-      audioRef.current.addEventListener('loadstart', handleLoadStart);
-      audioRef.current.addEventListener('loadedmetadata', handleCanPlay);
+      // audioRef.current.addEventListener('loadstart', handleLoadStart);
+      // audioRef.current.addEventListener('loadedmetadata', handleCanPlay);
 
       if (playPauseStatus === 'playing') {
         handlePlay();
@@ -67,8 +67,8 @@ export default function Audio(props: IAudioProps) {
 
       return () => {
         audioRef.current?.removeEventListener('timeupdate', handleTimeUpdate);
-        audioRef.current?.removeEventListener('loadstart', handleLoadStart);
-        audioRef.current?.removeEventListener('loadedmetadata', handleCanPlay);
+        // audioRef.current?.removeEventListener('loadstart', handleLoadStart);
+        // audioRef.current?.removeEventListener('loadedmetadata', handleCanPlay);
       };
     }
   }, [src, handleTimeUpdate, handleLoadStart, handleCanPlay, handlePlay, handlePause]);
@@ -88,7 +88,7 @@ export default function Audio(props: IAudioProps) {
   }, [src]);
 
   return isMobile ? (
-    <audio preload="metadata" style={{ display: 'none' }} ref={audioRef}>
+    <audio preload="none" style={{ display: 'none' }} ref={audioRef}>
       <source src={src} type="audio/mpeg" />
     </audio>
   ) : (
