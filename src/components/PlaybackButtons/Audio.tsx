@@ -88,7 +88,7 @@ export default function Audio(props: IAudioProps) {
   }, [src]);
 
   return isMobile ? (
-    <audio style={{ display: 'none' }} ref={audioRef}>
+    <audio preload="metadata" style={{ display: 'none' }} ref={audioRef}>
       <source src={src} type="audio/mpeg" />
     </audio>
   ) : (
