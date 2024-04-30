@@ -95,17 +95,6 @@ const PlaybackButtons = () => {
     };
   }, [location]);
 
-  useEffect(() => {
-    console.log(audioRef.current?.paused);
-    console.log('new beat dispatched');
-    if (audioRef.current) {
-      audioRef.current.src = `${beatCdnHostName}/${beatPlayingFromState?.audioStreamKey}`;
-      if (!onBeatPage) {
-        play();
-      }
-    }
-    console.log(audioRef.current?.src);
-  }, [beatPlayingFromState]);
   // playback button for all pages except beat page
   const playbackBtn = (
     <>
@@ -184,7 +173,7 @@ const PlaybackButtons = () => {
           <input
             type="range"
             min={0}
-            max={audioRef.current?.duration}
+            max={1000}
             step={0.01}
             value={currentTime}
             className={styles['seek-bar']}
