@@ -29,7 +29,8 @@ const PlaybackButtons = () => {
   const [duration, setDuration] = useState<string>();
   const [secondsPlayed, setSecondsPlayed] = useState<number>(0);
   const [minutesPlayed, setMinutesPlayed] = useState<number>(0);
-  const [playPauseStatus, setPlayPauseStatus] = useState<'playing' | 'loading' | 'paused'>('paused');
+  const [loading, setLoading] = useState<boolean>(false);
+  const [playPauseStatus, setPlayPauseStatus] = useState<'playing' | 'paused'>('paused');
 
   // get beatPlaying from redux store
   const beatPlayingFromState = useSelector<{ playback: { trackPlaying: Beat | null } }, Beat | null>(
@@ -76,6 +77,12 @@ const PlaybackButtons = () => {
     setSecondsPlayed(Math.floor(seconds));
   }, []);
 
+  const handleDurationUpdate = useCallback((time: number) => {
+    const minutes = Math.floor(time / 60);
+    const seconds = Math.floor(time - minutes * 60);
+    setDuration(`${minutes}:${strPadLeft(seconds.toString(), '0', 2)}`);
+  }, []);
+
   const handleSeek = useCallback((e: any) => {
     if (audioRef.current) {
       audioRef.current.currentTime = e.target.value;
@@ -113,9 +120,9 @@ const PlaybackButtons = () => {
           className={styles.playbackbutton}
           style={{ animationDuration: '0s !important' }}
           data-cy="playback-btn"
-          disabled={playPauseStatus == 'loading'}
+          disabled={loading}
         >
-          {playPauseStatus == 'loading' ? (
+          {loading ? (
             <LoadingOutlined />
           ) : playPauseStatus == 'playing' ? (
             <PauseOutlined data-cy="pause-icon" />
@@ -128,7 +135,9 @@ const PlaybackButtons = () => {
         src={`${beatCdnHostName}/${beatPlayingFromState?.audioStreamKey}`}
         playPauseStatus={playPauseStatus}
         onPlayPauseStatusChange={setPlayPauseStatus}
+        onLoadingChange={setLoading}
         onTimeUpdate={handleTimeUpdate}
+        onDurationUpdate={handleDurationUpdate}
       />
     </>
   );
@@ -151,11 +160,11 @@ const PlaybackButtons = () => {
         <button
           onClick={playPauseStatus == 'playing' ? pause : play}
           style={{ animationDuration: '0s !important' }}
-          disabled={playPauseStatus === 'loading'}
+          disabled={loading}
           className={styles['playbackbtn-bar']}
           data-cy="playback-btn"
         >
-          {playPauseStatus == 'loading' ? (
+          {loading ? (
             <LoadingOutlined />
           ) : playPauseStatus == 'playing' ? (
             <PauseOutlined data-cy="pause-icon" />
@@ -188,7 +197,9 @@ const PlaybackButtons = () => {
         src={`${beatCdnHostName}/${beatPlayingFromState?.audioStreamKey}`}
         playPauseStatus={playPauseStatus}
         onPlayPauseStatusChange={setPlayPauseStatus}
+        onLoadingChange={setLoading}
         onTimeUpdate={handleTimeUpdate}
+        onDurationUpdate={handleDurationUpdate}
       />
     </Row>
   );

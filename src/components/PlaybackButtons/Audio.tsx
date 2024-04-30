@@ -6,14 +6,15 @@ interface IAudioProps {
   src: string;
   playPauseStatus: 'playing' | 'loading' | 'paused';
   onTimeUpdate: (currentTime: number) => void;
-  onPlayPauseStatusChange: (status: 'playing' | 'loading' | 'paused') => void;
+  onDurationUpdate: (time: number) => void;
+  onPlayPauseStatusChange: (status: 'playing' | 'paused') => void;
+  onLoadingChange: (loading: boolean) => void;
 }
 
 const isMobile = window.innerWidth < 480;
 
 export default function Audio(props: IAudioProps) {
-  const { src, playPauseStatus, onTimeUpdate, onPlayPauseStatusChange } = props;
-  const [loading, setLoading] = useState(false);
+  const { src, playPauseStatus, onTimeUpdate, onDurationUpdate, onPlayPauseStatusChange, onLoadingChange } = props;
 
   const dispatch = useDispatch();
 
@@ -42,25 +43,37 @@ export default function Audio(props: IAudioProps) {
   }, [onTimeUpdate]);
 
   const handleLoadStart = useCallback(() => {
-    onPlayPauseStatusChange('loading');
+    onLoadingChange(true);
     dispatch(playPause('loading'));
   }, [onPlayPauseStatusChange]);
 
   const handleCanPlay = useCallback(() => {
+    onLoadingChange(false);
     if (onBeatPage) {
-      onPlayPauseStatusChange('paused');
       dispatch(playPause('paused'));
     } else {
-      onPlayPauseStatusChange('playing');
       dispatch(playPause('playing'));
     }
-  }, [playPauseStatus, onPlayPauseStatusChange]);
+  }, [onPlayPauseStatusChange]);
+
+  const handlePlaying = useCallback(() => {
+    if (audioRef.current) {
+      onPlayPauseStatusChange('playing');
+    }
+  }, []);
+
+  const handleDurationUpdate = useCallback(() => {
+    if (audioRef.current) {
+      onDurationUpdate(audioRef.current.duration);
+    }
+  }, [onDurationUpdate]);
 
   useEffect(() => {
     if (audioRef.current) {
       audioRef.current.addEventListener('timeupdate', handleTimeUpdate);
-      // audioRef.current.addEventListener('loadstart', handleLoadStart);
-      // audioRef.current.addEventListener('loadedmetadata', handleCanPlay);
+      audioRef.current.addEventListener('loadstart', handleLoadStart);
+      audioRef.current.addEventListener('canplay', handleCanPlay);
+      audioRef.current.addEventListener('loadedmetadata', handleDurationUpdate);
 
       if (playPauseStatus === 'playing') {
         handlePlay();
@@ -70,8 +83,9 @@ export default function Audio(props: IAudioProps) {
 
       return () => {
         audioRef.current?.removeEventListener('timeupdate', handleTimeUpdate);
-        // audioRef.current?.removeEventListener('loadstart', handleLoadStart);
-        // audioRef.current?.removeEventListener('loadedmetadata', handleCanPlay);
+        audioRef.current?.removeEventListener('loadstart', handleLoadStart);
+        audioRef.current?.removeEventListener('canplay', handleCanPlay);
+        audioRef.current?.removeEventListener('loadedmetadata', handleDurationUpdate);
       };
     }
   }, [src, handleTimeUpdate, handleLoadStart, handleCanPlay, handlePlay, handlePause]);
@@ -80,7 +94,7 @@ export default function Audio(props: IAudioProps) {
     if (playPauseStatus === 'paused') {
       handlePause();
     } else if (playPauseStatus === 'playing') {
-      handlePlay;
+      handlePlay();
     }
   }, [playPauseStatus]);
 

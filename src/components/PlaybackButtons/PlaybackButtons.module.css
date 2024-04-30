@@ -78,6 +78,7 @@ input[type='range']::-webkit-slider-thumb {
 @media (max-width: 480px) {
   .playbackbutton {
     position: fixed;
+    text-align: center;
     font-size: 2rem;
     margin-left: 2rem;
     bottom: 12vh;
