@@ -245,7 +245,7 @@ export default function Profile() {
         </Space>
       </Row>
       <Divider style={{ margin: '10px' }} />
-      {/* <PlaybackButtons beatSrc={`${beatCdnHostName}/${beatPlayingFromState?.audioStreamKey}`} /> */}
+      <PlaybackButtons />
       <div
         style={{
           display: 'flex',

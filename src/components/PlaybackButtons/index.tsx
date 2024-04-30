@@ -138,6 +138,7 @@ const PlaybackButtons = () => {
         onLoadingChange={setLoading}
         onTimeUpdate={handleTimeUpdate}
         onDurationUpdate={handleDurationUpdate}
+        beatId={beatPlayingFromState?._id as string}
       />
     </>
   );
@@ -200,6 +201,7 @@ const PlaybackButtons = () => {
         onLoadingChange={setLoading}
         onTimeUpdate={handleTimeUpdate}
         onDurationUpdate={handleDurationUpdate}
+        beatId={beatPlayingFromState?._id as string}
       />
     </Row>
   );

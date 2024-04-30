@@ -62,7 +62,7 @@ export default function SearchPage() {
       <div>
         <h2 className={styles['search-results-text']}>Search Results</h2>
       </div>
-      {/* <PlaybackButtons beatSrc={`${beatCdnHostName}/${beatPlayingFromState?.audioStreamKey}`} /> */}
+      <PlaybackButtons />
       <div id="scroll-div" className={styles['scroll-div']}>
         <InfiniteScroll
           dataLength={results.length || 8}

@@ -59,20 +59,6 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
       .catch((err) => console.log(err));
     setDownloadCount(randomNumber(100, 1000).toLocaleString());
   }, []);
-  // useEffect to track beat streaming on mobile
-  useEffect(() => {
-    if (isMobile && beatPlayPauseStatus === 'playing' && beatPlayingFromState === beat) {
-      setTimeout(() => {
-        addStreamReq(beat._id)
-          .then((res) => console.log(res))
-          .then(() => setStreamsCount(streamsCount + 1))
-          .then(() => {
-            ReactGA.event('beat_stream', { beat_id: beat._id });
-          })
-          .catch((err) => console.error(err));
-      }, 20000);
-    }
-  }, [beatPlayPauseStatus, beatPlayingFromState]);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
