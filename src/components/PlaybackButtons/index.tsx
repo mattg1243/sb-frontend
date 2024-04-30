@@ -1,5 +1,5 @@
 import ReactGA from 'react-ga4';
-import { Tooltip, Row, Col } from 'antd';
+import { Tooltip, Row, Col, FloatButton } from 'antd';
 import { CaretRightOutlined, PauseOutlined, LoadingOutlined } from '@ant-design/icons';
 import { useState, useRef, useEffect, useCallback } from 'react';
 import styles from './PlaybackButtons.module.css';
@@ -123,11 +123,11 @@ const PlaybackButtons = () => {
           disabled={loading}
         >
           {loading ? (
-            <LoadingOutlined />
+            <LoadingOutlined height={32} width={32} />
           ) : playPauseStatus == 'playing' ? (
-            <PauseOutlined data-cy="pause-icon" />
+            <PauseOutlined height={32} width={32} data-cy="pause-icon" />
           ) : (
-            <CaretRightOutlined data-cy="play-icon" />
+            <CaretRightOutlined height={32} width={32} data-cy="play-icon" />
           )}
         </button>
       </Tooltip>
@@ -183,7 +183,7 @@ const PlaybackButtons = () => {
           <input
             type="range"
             min={0}
-            max={1000}
+            max={duration}
             step={0.01}
             value={currentTime}
             className={styles['seek-bar']}

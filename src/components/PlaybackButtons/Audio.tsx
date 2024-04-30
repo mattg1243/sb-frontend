@@ -29,9 +29,6 @@ export default function Audio(props: IAudioProps) {
 
   const handlePlay = useCallback(() => {
     if (audioRef.current) {
-      if (isMobile) {
-        audioRef.current.load();
-      }
       audioRef.current.play();
     }
   }, []);
@@ -80,7 +77,7 @@ export default function Audio(props: IAudioProps) {
         }, 1);
       }
     }
-  }, []);
+  }, [beatId]);
 
   const handleDurationUpdate = useCallback(() => {
     if (audioRef.current) {

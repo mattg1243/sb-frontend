@@ -112,7 +112,7 @@ export default function BeatScroll(props: IBeatScrollProps) {
     >
       {beatPlayingFromState && isMobile ? (
         <button className={styles['scroll-btn']} onClick={() => scrollToPlayingBeat()}>
-          {scrollBtnUp ? <UpOutlined /> : <DownOutlined />}
+          {scrollBtnUp ? <UpOutlined height={32} width={32} /> : <DownOutlined height={32} width={32} />}
         </button>
       ) : null}
       <InfiniteScroll
