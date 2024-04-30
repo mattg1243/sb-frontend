@@ -22,6 +22,9 @@ export default function Audio(props: IAudioProps) {
 
   const handlePlay = useCallback(() => {
     if (audioRef.current) {
+      if (isMobile) {
+        audioRef.current.load();
+      }
       audioRef.current.play();
     }
   }, []);
@@ -80,16 +83,29 @@ export default function Audio(props: IAudioProps) {
       handlePlay;
     }
   }, [playPauseStatus]);
+
   useEffect(() => {
     if (audioRef.current) {
-      audioRef.current.src = src;
+      if (isMobile) {
+        const sourceEl = document.getElementById('audio-source') as HTMLSourceElement;
+        if (!sourceEl) {
+          console.log('no source el found');
+          return;
+        }
+        sourceEl.src = src;
+        sourceEl.type = 'audio/mpeg';
+      } else {
+        audioRef.current.src = src;
+      }
     }
   }, [src]);
 
-  return (
-    <audio preload="metadata" style={{ display: 'none' }} ref={audioRef}>
-      <source src={src} type="audio/mpeg" />
-      <p>Your browser does not support the audio element.</p>
+  return isMobile ? (
+    <audio preload="metadata" ref={audioRef}>
+      <source src={src} type="audio/mpeg" id="audio-source" />
+      <p>no supported source found</p>
     </audio>
+  ) : (
+    <audio preload="metadata" style={{ display: 'none' }} src={src} ref={audioRef} />
   );
 }
