@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Row, Statistic, Tooltip } from 'antd';
+import { Row, Spin, Statistic, Tooltip } from 'antd';
 import { HeartFilled, HeartOutlined } from '@ant-design/icons';
 import { GiTreeBranch } from 'react-icons/gi';
 import type { Beat } from '../../../types';
@@ -34,6 +34,7 @@ export default function BeatPage(props?: IBeatPageProps) {
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [imgLoading, setImgLoading] = useState<boolean>(true);
+  const [similarLoading, setSimilarLoading] = useState<boolean>(true);
   const [liked, setLiked] = useState<boolean>();
   const [beat, setBeat] = useState<Beat>();
   const [similarBeats, setSimilarBeats] = useState<Beat[]>();
@@ -41,7 +42,9 @@ export default function BeatPage(props?: IBeatPageProps) {
   const [streamsCount, setStreamsCount] = useState<number>();
 
   useEffect(() => {
-    console.log('useEffect triggered');
+    setIsLoading(true);
+    setImgLoading(true);
+    setSimilarLoading(true);
     const beatId = new URLSearchParams(window.location.search).get('id');
     getBeatReq(beatId as string)
       .then((res) => {
@@ -58,6 +61,7 @@ export default function BeatPage(props?: IBeatPageProps) {
     getSimilarBeats(beatId as string)
       .then((res) => {
         setSimilarBeats(res.data.beats);
+        setSimilarLoading(false);
         setIsLoading(false);
       })
       .catch((err) => console.error(err))
@@ -240,9 +244,10 @@ export default function BeatPage(props?: IBeatPageProps) {
               >
                 <h3>Similar Beats</h3>
                 <Tooltip title="Get more similar beats">
-                  <RefreshButton beatId={beat._id} setSimilarBeats={setSimilarBeats} />
+                  <RefreshButton beatId={beat._id} setSimilarBeats={setSimilarBeats} setLoading={setSimilarLoading} />
                 </Tooltip>
               </div>
+              {similarLoading ? <Spin style={{ height: '80vh', width: '100%' }} /> : null}
               {similarBeats
                 ? similarBeats.map((beat) => (
                     <DashRow

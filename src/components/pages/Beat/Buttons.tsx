@@ -83,15 +83,19 @@ const HomeButton = () => {
 interface RefreshButtonProps {
   beatId: string;
   setSimilarBeats: React.Dispatch<SetStateAction<Beat[] | undefined>>;
+  setLoading: (isLoading: boolean) => void;
 }
 
 const RefreshButton = (props: RefreshButtonProps) => {
   const handleRefreshButtonClick = async () => {
     try {
+      props.setLoading(true);
       const res = await getSimilarBeats(props.beatId);
+      props.setLoading(false);
       props.setSimilarBeats(res.data.beats as Beat[]);
     } catch (error) {
       console.error('Error fetching similar beats:', error);
+      props.setLoading(false);
     }
   };
 
