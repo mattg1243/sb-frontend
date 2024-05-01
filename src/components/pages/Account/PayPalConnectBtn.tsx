@@ -1,6 +1,6 @@
 import axios from 'axios';
 import gatewayUrl from '../../../config/routing';
-import { Button } from 'antd';
+import { Button, Modal } from 'antd';
 import { FaPaypal } from 'react-icons/fa';
 import { useEffect, useState } from 'react';
 import styles from './Account.module.css';
@@ -9,6 +9,8 @@ export default function PayPalConnectBtn() {
   const [actionUrl, setActionUrl] = useState<string>();
   const [merchantId, setMerchantId] = useState<string>();
   const [loading, setLoading] = useState<boolean>(false);
+
+  const [open, setOpen] = useState<boolean>(false);
 
   useEffect(() => {
     setLoading(true);
@@ -57,6 +59,26 @@ export default function PayPalConnectBtn() {
     <>
       <Button
         className={styles.btn}
+        onClick={() => {
+          setOpen(true);
+        }}
+        loading={loading}
+        icon={<FaPaypal />}
+        disabled={merchantId !== undefined}
+      >
+        {merchantId ? `PayPal Connected ✔️` : 'Connect PayPal'}
+      </Button>
+      <Modal open={open} onCancel={() => setOpen(false)} footer={null} centered>
+        <p>
+          To connect your PayPal account please email info@orangemusicent.com the following:
+          <ul>
+            <li>Your PayPal email address</li>
+            <li>Your Sweatshop Beats email address And we will add you to our automatic payout system.</li>
+          </ul>
+        </p>
+      </Modal>
+      {/* <Button
+        className={styles.btn}
         onClick={async () => {
           await openPaypalConnectPage();
         }}
@@ -65,7 +87,7 @@ export default function PayPalConnectBtn() {
         disabled={merchantId !== undefined}
       >
         {merchantId ? `PayPal Connected ✔️` : 'Connect PayPal'}
-      </Button>
+      </Button> */}
     </>
   );
 }
