@@ -9,15 +9,19 @@ import { useLocation } from 'react-router-dom';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useDispatch } from 'react-redux';
 import DashRow from '../../DashRow';
-import { Spin } from 'antd';
+import { beatCdnHostName } from '../../../config/routing';
 import PlaybackButtons from '../../PlaybackButtons';
+import { useSelector } from 'react-redux';
 
 export default function SearchPage() {
   const [loading, setLoading] = useState<boolean>();
   const [results, setResults] = useState<Beat[]>([]);
   const [moreResults, setMoreResults] = useState<boolean>(true);
-  const [entity, setEntity] = useState<'beats' | 'users'>();
   const [msg, setMsg] = useState<INotificationProps>();
+
+  const beatPlayingFromState = useSelector<{ playback: { trackPlaying: Beat | null } }, Beat | null>(
+    (state) => state.playback.trackPlaying
+  );
 
   const isMobile = window.innerWidth < 480;
 

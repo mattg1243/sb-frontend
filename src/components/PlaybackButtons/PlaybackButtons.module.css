@@ -75,12 +75,13 @@ input[type='range']::-webkit-slider-thumb {
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 1024px) {
   .playbackbutton {
     position: fixed;
+    text-align: center;
     font-size: 2rem;
     margin-left: 2rem;
-    top: 80vh;
+    bottom: 12vh;
     left: 1vw;
     width: 60px;
     height: 60px;
@@ -94,10 +95,23 @@ input[type='range']::-webkit-slider-thumb {
     overflow: hidden !important;
     box-shadow: none !important;
     z-index: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
   .playbackbutton:hover {
     background-color: #333;
+  }
+
+  .playbackbutton:disabled {
+    background-color: black !important;
+  }
+
+  button:disabled {
+    background-color: black !important;
+    border: none;
+    margin: auto;
   }
 
   .playbackbutton:active {

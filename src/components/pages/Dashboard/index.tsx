@@ -1,21 +1,16 @@
-import DashRow from '../../DashRow';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import styles from './Dashboard.module.css';
 import RecAlgoMenu from '../../RecAlgoMenu';
 import type { RecAlgos } from '../../RecAlgoMenu';
 import PlaybackButtons from '../../PlaybackButtons';
 import { useDispatch } from 'react-redux';
-import { playback } from '../../../reducers/playbackReducer';
 import { notification as notificationReducer } from '../../../reducers/notificationReducer';
-import InfiniteScroll from 'react-infinite-scroll-component';
 import SubRefModal from '../../SubRefModal';
 import BeatScroll from '../../BeatScroll';
 import ReactGA from 'react-ga4';
 
 export default function Dashboard() {
   const [currentAlgo, setCurrentAlgo] = useState<RecAlgos>('Recommended');
-  // const [isSearching, setIsSearching] = useState<boolean>();
-
   const dispatch = useDispatch();
 
   // check if being redirect after successful subscription purchase

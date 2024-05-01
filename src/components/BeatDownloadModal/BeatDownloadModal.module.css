@@ -2,3 +2,12 @@
   font-size: 1.5vw;
   margin-right: 2vw;
 }
+
+.big-btn {
+  border: solid 1px black;
+  border-radius: 8px;
+  height: clamp(20px, 5vh, 36px);
+  box-shadow: 4px 2px black;
+  font-size: clamp(8px, 2vh, 18px);
+  width: clamp(150px, 5vw, 250px);
+}

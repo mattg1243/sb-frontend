@@ -1,24 +1,24 @@
-import { useState, useEffect } from 'react';
-import { Row, Image, Divider, Statistic, Spin, Tooltip } from 'antd';
+import { useState, useEffect, useRef } from 'react';
+import { Row, Statistic, Tooltip } from 'antd';
 import { HeartFilled, HeartOutlined } from '@ant-design/icons';
 import { GiTreeBranch } from 'react-icons/gi';
-import { FiShare } from 'react-icons/fi';
 import type { Beat } from '../../../types';
 import styles from './BeatPage.module.css';
-import { beatCdnHostName, imgCdnHostName } from '../../../config/routing';
+import { imgCdnHostName } from '../../../config/routing';
 import artworkLoading from '../../../assets/artwork_loading.jpg';
 import { PlayCircleOutlined } from '@ant-design/icons';
-import { getBeatReq, getUserLikesBeatReq, likeBeatReq, unlikeBeatReq } from '../../../lib/axios';
+import { getBeatReq, getSimilarBeats, getUserLikesBeatReq, likeBeatReq, unlikeBeatReq } from '../../../lib/axios';
 import { getUserIdFromLocalStorage } from '../../../utils/localStorageParser';
 import { useDispatch } from 'react-redux';
-import { notification } from '../../../reducers/notificationReducer';
 import { playback } from '../../../reducers/playbackReducer';
-import { playPause } from '../../../reducers/playbackReducer';
 import BeatDownloadModal from '../../BeatDownloadModal';
 import { ensureLoggedIn } from '../../../utils/auth';
 import PlaybackButtons from '../../PlaybackButtons';
 import { BeatMetadata } from '../../../lib/helmet';
+import DashRow from '../../DashRow';
 import { useLocation } from 'react-router-dom';
+import LoadingPage from '../Loading';
+import { BackButton, HomeButton, RefreshButton } from './Buttons';
 
 interface IBeatPageProps {
   testBeat?: Beat;
@@ -27,19 +27,26 @@ interface IBeatPageProps {
 const isMobile: boolean = window.innerWidth < 1024;
 
 export default function BeatPage(props?: IBeatPageProps) {
-  const beatId = new URLSearchParams(window.location.search).get('id');
+  const location = useLocation();
+  const dispatch = useDispatch();
+
   const userId = getUserIdFromLocalStorage();
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [imgLoading, setImgLoading] = useState<boolean>(true);
   const [liked, setLiked] = useState<boolean>();
   const [beat, setBeat] = useState<Beat>();
+  const [similarBeats, setSimilarBeats] = useState<Beat[]>();
   const [likesCount, setLikesCount] = useState<number>();
   const [streamsCount, setStreamsCount] = useState<number>();
 
   useEffect(() => {
+    console.log('useEffect triggered');
+    const beatId = new URLSearchParams(window.location.search).get('id');
     getBeatReq(beatId as string)
       .then((res) => {
         setBeat(res.data.beat);
+        dispatch(playback(res.data.beat));
         setLikesCount(res.data.beat.likesCount);
         setStreamsCount(res.data.beat.streamsCount);
       })
@@ -48,18 +55,19 @@ export default function BeatPage(props?: IBeatPageProps) {
         console.error(err);
         setIsLoading(false);
       });
+    getSimilarBeats(beatId as string)
+      .then((res) => {
+        setSimilarBeats(res.data.beats);
+        setIsLoading(false);
+      })
+      .catch((err) => console.error(err))
+      .finally(() => setIsLoading(false));
     getUserLikesBeatReq(beatId as string)
       .then((res) => {
         setLiked(res.data);
       })
       .catch((err) => console.error(err));
-  }, [beatId]);
-
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(playback(beat || null));
-  });
+  }, [location, location.search]);
 
   // check if testing
   useEffect(() => {
@@ -85,13 +93,6 @@ export default function BeatPage(props?: IBeatPageProps) {
     }
   };
 
-  useEffect(() => {
-    return () => {
-      dispatch(playPause(null));
-      dispatch(playback(null));
-    };
-  }, []);
-
   const unlikeBeat = async () => {
     setLiked(false);
     if (beat && likesCount) {
@@ -112,125 +113,149 @@ export default function BeatPage(props?: IBeatPageProps) {
 
   return (
     <>
+      {isLoading || imgLoading ? <LoadingPage /> : null}
       <div
-        style={{
-          height: '100%',
-          width: isMobile ? '100%' : '50%',
-          marginTop: '11vh',
-          textAlign: 'center',
-          justifyContent: 'center',
-        }}
         cy-data="beat-page-cont"
+        className={styles.container}
+        style={{ display: isLoading || imgLoading ? 'none' : 'flex' }}
       >
         {beat ? (
           <>
-            <BeatMetadata title={beat.title} artistName={beat.artistName} imgSrc={imgSrc} url={window.location.href} />
-            <Image
-              src={imgSrc}
-              alt="album artwork"
-              // onClick={() => {
-              //   isPlaying ? pauseBeat() : playBeat();
-              //   dispatch(playback(beat));
-              // }}
-              onError={({ currentTarget }) => {
-                console.error('error loading img on beat page: \n', currentTarget);
-                currentTarget.onerror = null; // prevents looping
-                currentTarget.src = artworkLoading;
-              }}
-              preview={{ visible: false, mask: <></> }}
-              placeholder={<Spin style={{ marginTop: '50%' }} />}
-              style={{
-                width: isMobile ? 250 : '37vh',
-                height: isMobile ? 250 : '37vh',
-              }}
-              className={styles.artwork}
-            />
-            <h1 className={styles['beat-title']} data-cy="beat-page-title">
-              {beat.title}
-            </h1>
-            <h3 data-cy="beat-page-artist">
-              <a className={styles['beat-artist']} href={`/app/user/?id=${beat.artistId}`}>
-                {beat.artistName}
-              </a>
-            </h3>
-            <Divider />
-            <Row style={{ justifyContent: 'space-evenly' }}>
-              <div>
-                <PlayCircleOutlined style={{ fontSize: '2.5vh', marginBottom: '10px' }} />
-                <Statistic title="Streams" value={streamsCount} valueStyle={{ fontSize: '1.5vh' }} />
-              </div>
-              <div>
-                {liked ? (
-                  <HeartFilled
-                    onClick={() => unlikeBeat()}
-                    id="like-beat-btn"
-                    style={{ fontSize: '2.5vh', marginBottom: '10px' }}
-                    data-cy="beat-page-like-btn"
+            <div>
+              <BeatMetadata
+                title={beat.title}
+                artistName={beat.artistName}
+                imgSrc={imgSrc}
+                url={window.location.href}
+              />
+              <BackButton />
+              {isMobile ? <HomeButton /> : null}
+              <img
+                src={imgSrc}
+                alt="album artwork"
+                id="beat-artwork"
+                // onClick={() => {
+                //   isPlaying ? pauseBeat() : playBeat();
+                //   dispatch(playback(beat));
+                // }}
+                onError={({ currentTarget }) => {
+                  console.error('error loading img on beat page: \n', currentTarget);
+                  currentTarget.onerror = null; // prevents looping
+                  currentTarget.src = artworkLoading;
+                }}
+                onLoadStart={() => setImgLoading(true)}
+                onLoad={() => setImgLoading(false)}
+                style={{
+                  width: isMobile ? 300 : '45vh',
+                  height: isMobile ? 300 : '45vh',
+                  pointerEvents: 'none',
+                }}
+                className={styles.artwork}
+              />
+
+              <h1 className={styles['beat-title']} data-cy="beat-page-title">
+                {beat.title}
+              </h1>
+
+              <Row className={styles['stats-row']}>
+                <h3 data-cy="beat-page-artist">
+                  <a className={styles['beat-artist']} href={`/app/user/?id=${beat.artistId}`}>
+                    {beat.artistName}
+                  </a>
+                </h3>
+                {!isMobile ? (
+                  <BeatDownloadModal
+                    artistName={beat.artistName}
+                    beatId={beat._id}
+                    title={beat.title}
+                    onBeatPage={true}
+                    license={true}
+                    btnStyle={{ position: 'fixed' }}
                   />
-                ) : (
-                  <HeartOutlined
-                    onClick={() => likeBeat()}
-                    id="unlike-beat-btn"
-                    style={{ fontSize: '2.5vh', marginBottom: '10px' }}
-                    data-cy="beat-page-unlike-btn"
+                ) : null}
+              </Row>
+              <Row className={styles['stats-row']}>
+                <div>
+                  <PlayCircleOutlined style={{ fontSize: '1.5vh' }} />
+                  <Statistic
+                    title="Streams"
+                    value={streamsCount}
+                    style={{ fontSize: '1.5vh' }}
+                    valueStyle={{ fontSize: '1.5vh' }}
                   />
-                )}
-                <Statistic
-                  title="Likes"
-                  value={likesCount}
-                  valueStyle={{ fontSize: '1.5vh' }}
-                  className="beat-like-count"
-                />
-              </div>
-              <div>
-                <GiTreeBranch style={{ fontSize: '3vh', marginBottom: '10px' }} />
-                <Statistic
-                  title="Stems"
-                  value={beat.hasStems ? 'Available' : 'None :('}
-                  valueStyle={{ fontSize: '1.5vh' }}
-                />
-              </div>
-            </Row>
-            <Divider />
-            <Row style={{ justifyContent: 'space-evenly', marginTop: '4vh' }}>
-              <div>
-                <Tooltip title="Copy share link">
-                  <FiShare
-                    onClick={() => {
-                      const url = location.href;
-                      navigator.clipboard.writeText(url);
-                      dispatch(notification({ type: 'success', message: 'Beat URL has been copied!' }));
-                    }}
-                    style={{ fontSize: '3vh' }}
+                </div>
+                <div>
+                  {liked ? (
+                    <HeartFilled
+                      onClick={() => unlikeBeat()}
+                      id="like-beat-btn"
+                      style={{ fontSize: '2vh' }}
+                      data-cy="beat-page-like-btn"
+                    />
+                  ) : (
+                    <HeartOutlined
+                      onClick={() => likeBeat()}
+                      id="unlike-beat-btn"
+                      style={{ fontSize: '2vh' }}
+                      data-cy="beat-page-unlike-btn"
+                    />
+                  )}
+                  <Statistic
+                    title="Likes"
+                    value={likesCount}
+                    valueStyle={{ fontSize: '1.5vh' }}
+                    className="beat-like-count"
                   />
-                </Tooltip>
-              </div>
-              <div>
+                </div>
+                <div>
+                  <GiTreeBranch style={{ fontSize: '2vh' }} />
+                  <Statistic
+                    title="Stems"
+                    value={beat.hasStems ? 'Available' : 'None :('}
+                    valueStyle={{ fontSize: '1.5vh' }}
+                  />
+                </div>
+              </Row>
+              {isMobile ? (
                 <BeatDownloadModal
+                  artistName={beat.artistName}
                   beatId={beat._id}
                   title={beat.title}
-                  artistName={beat.artistName}
-                  license={false}
-                  tooltip={true}
-                  btnStyle={{ fontSize: '3vh' }}
+                  onBeatPage={true}
+                  license={true}
+                  btnStyle={{ position: 'fixed' }}
                 />
+              ) : null}
+              <Row style={{ justifyContent: 'space-evenly', marginTop: '4vh' }}></Row>
+            </div>
+            <div className={styles['suggested-container']}>
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  width: '100%',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                }}
+              >
+                <h3>Similar Beats</h3>
+                <Tooltip title="Get more similar beats">
+                  <RefreshButton beatId={beat._id} setSimilarBeats={setSimilarBeats} />
+                </Tooltip>
               </div>
-            </Row>
-            {isMobile ? (
-              <audio preload="metadata" style={{ display: 'none' }} id={`audio-player-${beat.audioKey}`}>
-                <source src={`${beatCdnHostName}/${beat.audioStreamKey}`} type="audio/mpeg" />
-              </audio>
-            ) : (
-              <audio
-                preload="metadata"
-                style={{ display: 'none' }}
-                id={`audio-player-${beat.audioKey}`}
-                src={`${beatCdnHostName}/${beat.audioStreamKey}`}
-              />
-            )}
+              {similarBeats
+                ? similarBeats.map((beat) => (
+                    <DashRow
+                      beat={beat}
+                      onClick={() => console.log('beat clicked')}
+                      buttonType={null}
+                      onBeatPage={true}
+                    />
+                  ))
+                : null}
+            </div>
           </>
         ) : null}
-        {isLoading ? <Spin style={{ marginTop: '25vh' }} /> : null}
         {!beat && !isLoading ? <h1 style={{ marginTop: '25vh' }}>No beat found :(</h1> : null}
       </div>
       <PlaybackButtons />
