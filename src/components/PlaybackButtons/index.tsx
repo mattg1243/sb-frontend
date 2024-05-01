@@ -29,7 +29,7 @@ const PlaybackButtons = () => {
   const [duration, setDuration] = useState<string>();
   const [secondsPlayed, setSecondsPlayed] = useState<number>(0);
   const [minutesPlayed, setMinutesPlayed] = useState<number>(0);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
   const [playPauseStatus, setPlayPauseStatus] = useState<'playing' | 'paused'>('paused');
 
   // get beatPlaying from redux store
@@ -123,7 +123,17 @@ const PlaybackButtons = () => {
           disabled={loading}
         >
           {loading ? (
-            <LoadingOutlined height={32} width={32} />
+            <LoadingOutlined
+              height={32}
+              width={32}
+              style={{
+                color: 'white',
+                border: 'none !important',
+                background: 'transparent',
+                fontSize: '24px',
+                marginTop: '14px',
+              }}
+            />
           ) : playPauseStatus == 'playing' ? (
             <PauseOutlined height={32} width={32} data-cy="pause-icon" />
           ) : (
