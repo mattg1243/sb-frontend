@@ -108,7 +108,7 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
           <Artwork
             beatId={beat._id}
             artworkKey={beat.artworkKey as string}
-            playPauseStatus={beatPlayPauseStatus}
+            playPauseStatus={beatPlayingFromState?._id == beat._id ? beatPlayPauseStatus : 'paused'}
             onClick={onBeatPage ? () => navigate(`/app/beat?id=${beat._id}`) : () => dispatch(playback(beat))}
           />
           <div className={styles['text-container']} style={{ marginLeft: buttonType == null ? '0' : undefined }}>

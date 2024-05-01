@@ -55,6 +55,9 @@
     box-shadow: none !important;
     z-index: 1;
     font-size: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
   .scroll-btn:hover {
