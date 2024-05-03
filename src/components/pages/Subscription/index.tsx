@@ -6,6 +6,11 @@ import axios from 'axios';
 import gatewayUrl from '../../../config/routing';
 import { useNavigate } from 'react-router-dom';
 import { getStripeCustIdFromLocalStorage } from '../../../utils/localStorageParser';
+import BasicCard from './BasicCard';
+import StdCard from './StdCard';
+import PremCard from './PremCard';
+import Bottom from './Bottom';
+import Navbar from '../../Navbar/v2';
 
 // TDOD make a seperate SubscriptionCard component that takes price, name, and product description as props
 export default function Subscription() {
@@ -31,47 +36,13 @@ export default function Subscription() {
 
   return (
     <Layout>
+      <Navbar />
       <Content className={styles.content}>
-        <img src={orangelogo} alt="logo" className={styles.logo} />
         <h1 className={styles.headie}>Choose the subsciption that's right for you.</h1>
         <Row className={styles.subTiers}>
-          <div className={styles.subRows}>
-            <h2 className={styles.Text}>Basic</h2>
-            <h4 className={styles.subText3}>3 credits per month</h4>
-            <Button
-              className={styles.buttons}
-              onClick={() => {
-                checkoutSubscription('basic');
-              }}
-            >
-              $34.99/month
-            </Button>
-          </div>
-          <div className={styles.subRows}>
-            <h2 className={styles.Text}>Standard</h2>
-            <h4 className={styles.subText}>5 credits per month</h4>
-            <h4 className={styles.subText2}>1 credit = 1 beat of your choice</h4>
-            <Button
-              className={styles.buttons}
-              onClick={() => {
-                checkoutSubscription('std');
-              }}
-            >
-              $54.99/month
-            </Button>
-          </div>
-          <div className={styles.subRows}>
-            <h2 className={styles.Text}>Premium</h2>
-            <h4 className={styles.subText3}>9 credits per month</h4>
-            <Button
-              className={styles.buttons}
-              onClick={() => {
-                checkoutSubscription('prem');
-              }}
-            >
-              $89.99/month
-            </Button>
-          </div>
+          <BasicCard checkoutFn={checkoutSubscription} />
+          <StdCard checkoutFn={checkoutSubscription} />
+          <PremCard checkoutFn={checkoutSubscription} />
         </Row>
         {window.innerWidth < 480 ? null : (
           <p style={{ fontSize: 'max(12px, 1vw)', padding: '1.25vh' }}>
@@ -81,6 +52,7 @@ export default function Subscription() {
         <a className={styles.skip} href="javascript:history.back()">
           Skip for now
         </a>
+        <Bottom />
       </Content>
     </Layout>
   );
