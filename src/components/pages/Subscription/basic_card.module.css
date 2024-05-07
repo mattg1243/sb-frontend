@@ -8,7 +8,7 @@
 }
 @media (max-width: 991px) {
   .div {
-    margin-top: 30px;
+    margin: 30px 15px;
   }
 }
 .div-2 {
