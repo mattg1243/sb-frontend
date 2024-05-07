@@ -55,6 +55,7 @@ export default function Subscription() {
         >
           <Image
             height="75px"
+            width="65px"
             src={logo}
             preview={false}
             onClick={() => {
