@@ -24,7 +24,7 @@ export default function BasicCard(props: { checkoutFn: (subTier: 'basic' | 'std'
                 src="https://cdn.builder.io/api/v1/image/assets/TEMP/8346144e57796398048904af1fb47a71103715b2af53a4b44eb8d2b5086e1965?"
                 className={styles['img']}
               />
-              <div className={styles['div-12']}>3-5 day turnaround</div>
+              <div className={styles['div-12']}>3 beat downloads/month under an unlimited license</div>
             </div>
             <div className={styles['div-13']}>
               <img
@@ -32,9 +32,10 @@ export default function BasicCard(props: { checkoutFn: (subTier: 'basic' | 'std'
                 src="https://cdn.builder.io/api/v1/image/assets/TEMP/f2e4adf545b52634375912aae336fbb39ef8a3fa177e46703f729d8e2432312e?"
                 className={styles['img']}
               />
-              <div className={styles['div-14']}>Native Development</div>
+              <div className={styles['div-14']}>Access to our entire catalog of beats from thousands of producers</div>
             </div>
-            <div className={styles['div-15']}>
+            <div style={{ height: '200px' }}></div>
+            {/* <div className={styles['div-15']}>
               <img
                 loading="lazy"
                 src="https://cdn.builder.io/api/v1/image/assets/TEMP/998117089ea8cc0a66c2892cc475e66326f7bfae8849ed7ccb03a52462b3e7d2?"
@@ -65,7 +66,7 @@ export default function BasicCard(props: { checkoutFn: (subTier: 'basic' | 'std'
                 className={styles['img']}
               />
               <div className={styles['div-22']}>Tasks delivered one-by-one</div>
-            </div>
+            </div> */}
             <div className={styles['div-23']} onClick={() => checkoutFn('basic')}>
               <div className={styles['div-24']}>
                 <div className={styles['div-25']}>Get Started</div>

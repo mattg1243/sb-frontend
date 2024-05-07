@@ -45,7 +45,7 @@ export default function Subscription() {
           <PremCard checkoutFn={checkoutSubscription} />
         </Row>
         {window.innerWidth < 480 ? null : (
-          <p style={{ fontSize: 'max(12px, 1vw)', padding: '1.25vh' }}>
+          <p style={{ fontSize: 'max(12px, 1vw)', padding: '1.25vh', marginTop: '8vh' }}>
             If you have a referral code, you may enter it after your purchase is successful
           </p>
         )}

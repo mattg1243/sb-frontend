@@ -24,7 +24,7 @@ export default function PremCard(props: { checkoutFn: (subTier: 'basic' | 'std' 
                 src="https://cdn.builder.io/api/v1/image/assets/TEMP/8346144e57796398048904af1fb47a71103715b2af53a4b44eb8d2b5086e1965?"
                 className={styles['img']}
               />
-              <div className={styles['div-12']}>3-5 day turnaround</div>
+              <div className={styles['div-12']}>9 beat downloads/month under an unlimited license</div>
             </div>
             <div className={styles['div-13']}>
               <img
@@ -32,7 +32,7 @@ export default function PremCard(props: { checkoutFn: (subTier: 'basic' | 'std' 
                 src="https://cdn.builder.io/api/v1/image/assets/TEMP/f2e4adf545b52634375912aae336fbb39ef8a3fa177e46703f729d8e2432312e?"
                 className={styles['img']}
               />
-              <div className={styles['div-14']}>Native Development</div>
+              <div className={styles['div-14']}>Access to our entire catalog of beats from thousands of producers</div>
             </div>
             <div className={styles['div-15']}>
               <img
@@ -40,32 +40,9 @@ export default function PremCard(props: { checkoutFn: (subTier: 'basic' | 'std' 
                 src="https://cdn.builder.io/api/v1/image/assets/TEMP/998117089ea8cc0a66c2892cc475e66326f7bfae8849ed7ccb03a52462b3e7d2?"
                 className={styles['img']}
               />
-              <div className={styles['div-16']}>Task delivered one-by-one</div>
+              <div className={styles['div-16']}>Stem downloads</div>
             </div>
-            <div className={styles['div-17']}>
-              <img
-                loading="lazy"
-                src="https://cdn.builder.io/api/v1/image/assets/TEMP/1ef4f7d9179a17ccef128f2788cee3636b4d23c09a90eadf5a6b17436d261d0d?"
-                className={styles['img']}
-              />
-              <div className={styles['div-18']}>Monthly strategy call</div>
-            </div>
-            <div className={styles['div-19']}>
-              <img
-                loading="lazy"
-                src="https://cdn.builder.io/api/v1/image/assets/TEMP/40f24f6bbecd083af3e67d43c5a73e8df0b40f830c2550d92f2afa277a9f099d?"
-                className={styles['img']}
-              />
-              <div className={styles['div-20']}>Commercial license</div>
-            </div>
-            <div className={styles['div-21']}>
-              <img
-                loading="lazy"
-                src="https://cdn.builder.io/api/v1/image/assets/TEMP/9b7f1a37decccd90f2fdbd47b25772c3e20db9771c8db06b2b9627876f27d6f9?"
-                className={styles['img']}
-              />
-              <div className={styles['div-22']}>Tasks delivered one-by-one</div>
-            </div>
+            <div style={{ height: '165px' }}></div>
             <div className={styles['div-23']} onClick={() => checkoutFn('basic')}>
               <div className={styles['div-24']}>
                 <div className={styles['div-25']}>Get Started</div>
