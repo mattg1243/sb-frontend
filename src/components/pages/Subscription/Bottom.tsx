@@ -32,13 +32,21 @@ export default function Bottom() {
           </div>
           {width > 480 ? (
             <div className={styles['div-3']}>
-              <div className={styles['div-4']}>Home</div>
-              <div className={styles['div-5']}>About Us</div>
-              <div className={styles['div-6']}>Subscribe</div>
-              <div className={styles['div-7']}>FAQ</div>
-              <div className={styles['div-8']}>Privacy Policy</div>
-              <div className={styles['div-9']}>Terms of Service</div>
-              <div className={styles['div-10']}>Cookie Policy</div>
+              <a className={styles['div-4']} href="/app/dash">
+                Home
+              </a>
+              <a className={styles['div-5']} href="/app/about">
+                About Us
+              </a>
+              <a className={styles['div-7']} href="/faq">
+                FAQ
+              </a>
+              <a className={styles['div-8']} href="/PRIVACYPOLICY.html" target="_blank">
+                Privacy Policy
+              </a>
+              <a className={styles['div-9']} href="/TERMSOFSERVICE.html" target="_blank">
+                Terms of Service
+              </a>
             </div>
           ) : null}
         </div>

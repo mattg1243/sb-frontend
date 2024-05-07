@@ -68,6 +68,12 @@
   font-size: clamp(16px, 2vw, 22px);
   justify-content: space-around;
 }
+
+.div-3 > a {
+  color: white;
+  text-decoration: underline;
+}
+
 @media (max-width: 991px) {
   .div-3 {
     flex-wrap: wrap;
