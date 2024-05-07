@@ -53,8 +53,9 @@
 .div-6 {
   color: #191919;
   text-align: center;
-  align-self: stretch;
+  align-self: center;
   margin-top: 16px;
+  max-width: 400px;
   font: 500 16px/26px Poppins, -apple-system, Roboto, Helvetica, sans-serif;
 }
 .div-7 {

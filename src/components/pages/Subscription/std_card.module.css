@@ -51,7 +51,8 @@
 }
 .div-5 {
   text-align: center;
-  align-self: stretch;
+  align-self: center;
+  max-width: 400px;
   margin-top: 16px;
   font: 500 16px/26px Poppins, -apple-system, Roboto, Helvetica, sans-serif;
 }

@@ -11,8 +11,10 @@ export default function BasicCard(props: { checkoutFn: (subTier: 'basic' | 'std'
           <div className={styles['div-3']}>
             <div className={styles['div-4']}>Basic Tier</div>
             <div className={styles['div-5']}>Basic</div>
-            <div className={styles['div-6']}>The more credits artists spend on your beats, the more you get paid.</div>
-            <div className={styles['div-7']}>
+            <div className={styles['div-6']}>
+              Each credit allows you to download one beat. Once you download a beat, its yours forever.
+            </div>
+            <div className={styles['div-7']} style={{ marginBottom: '35px' }}>
               <div className={styles['div-8']}>$34.99</div>
               <div className={styles['div-9']}>/monthly</div>
             </div>

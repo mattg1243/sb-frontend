@@ -44,11 +44,9 @@ export default function Subscription() {
           <StdCard checkoutFn={checkoutSubscription} />
           <PremCard checkoutFn={checkoutSubscription} />
         </Row>
-        {window.innerWidth < 480 ? null : (
-          <p style={{ fontSize: 'max(12px, 1vw)', padding: '1.25vh', marginTop: '8vh' }}>
-            If you have a referral code, you may enter it after your purchase is successful
-          </p>
-        )}
+        <p style={{ fontSize: 'max(16px, 1vw)', padding: '1.25vh', marginTop: '8vh', textAlign: 'center' }}>
+          If you have a referral code, you may enter it after your purchase is successful
+        </p>
         <a className={styles.skip} href="javascript:history.back()">
           Skip for now
         </a>

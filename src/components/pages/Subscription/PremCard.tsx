@@ -11,11 +11,14 @@ export default function PremCard(props: { checkoutFn: (subTier: 'basic' | 'std' 
           <div className={styles['div-3']}>
             <div className={styles['div-4']}>Premium Tier</div>
             <div className={styles['div-5']}>Premium</div>
-            <div className={styles['div-6']}>The more credits artists spend on your beats, the more you get paid.</div>
+            <div className={styles['div-6']}>
+              Each credit allows you to download one beat. Once you download a beat, its yours forever.
+            </div>
             <div className={styles['div-7']}>
               <div className={styles['div-8']}>$89.99</div>
               <div className={styles['div-9']}>/monthly</div>
             </div>
+            <div style={{ height: '25px', marginTop: '10px' }}>Save 14.3% per beat</div>
           </div>
           <div className={styles['div-10']}>
             <div className={styles['div-11']}>
