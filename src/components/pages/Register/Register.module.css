@@ -16,7 +16,7 @@
 
 .form {
   justify-items: center;
-  width: 100%;
+  width: 80vw;
   margin-top: 1vh;
 }
 
@@ -124,9 +124,6 @@
   .small-text {
     font-size: clamp(15px, 0.9vw, 20px);
     padding-left: 25vw;
-  }
-
-  .paidSwitch {
   }
 
   .alreadyAccount {

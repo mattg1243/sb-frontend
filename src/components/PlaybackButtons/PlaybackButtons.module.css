@@ -108,7 +108,7 @@ input[type='range']::-webkit-slider-thumb {
     background-color: black !important;
   }
 
-  button:disabled {
+  .playbackbtn-bar:disabled {
     background-color: black !important;
     border: none;
     margin: auto;
