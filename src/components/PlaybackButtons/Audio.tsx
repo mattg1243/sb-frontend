@@ -8,6 +8,7 @@ interface IAudioProps {
   src: string;
   playPauseStatus: 'playing' | 'paused';
   onTimeUpdate: (currentTime: number) => void;
+  seekTime: number;
   onDurationUpdate: (time: number) => void;
   onPlayPauseStatusChange: (status: 'playing' | 'paused') => void;
   onLoadingChange: (loading: boolean) => void;
@@ -17,8 +18,16 @@ interface IAudioProps {
 const isMobile = window.innerWidth < 480;
 
 export default function Audio(props: IAudioProps) {
-  const { src, playPauseStatus, onTimeUpdate, onDurationUpdate, onPlayPauseStatusChange, onLoadingChange, beatId } =
-    props;
+  const {
+    src,
+    playPauseStatus,
+    onTimeUpdate,
+    seekTime,
+    onDurationUpdate,
+    onPlayPauseStatusChange,
+    onLoadingChange,
+    beatId,
+  } = props;
 
   const dispatch = useDispatch();
 
@@ -138,6 +147,13 @@ export default function Audio(props: IAudioProps) {
       }
     }
   }, [src]);
+
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.currentTime = seekTime;
+      console.log('time set from prop');
+    }
+  }, [seekTime]);
 
   return isMobile ? (
     <audio preload="metadata" ref={audioRef}>
