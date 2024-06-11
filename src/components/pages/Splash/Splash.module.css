@@ -249,12 +249,12 @@
     font-family: 'Norwester', sans-serif;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     width: 100vw;
     max-width: 480px;
-    height: 100vh;
-    margin: 50vh 0 5vh 0;
+    height: 50vh;
+    margin: 0 0 5vh 0;
   }
 
   .container {
