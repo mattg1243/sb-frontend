@@ -26,6 +26,7 @@ const isMobile = window.innerWidth < 480;
 
 const PlaybackButtons = () => {
   const [currentTime, setCurrentTime] = useState<number>(0);
+  const [seekTime, setSeekTime] = useState<number>(0);
   const [duration, setDuration] = useState<string>();
   const [secondsPlayed, setSecondsPlayed] = useState<number>(0);
   const [minutesPlayed, setMinutesPlayed] = useState<number>(0);
@@ -84,13 +85,7 @@ const PlaybackButtons = () => {
   }, []);
 
   const handleSeek = useCallback((e: any) => {
-    if (audioRef.current) {
-      audioRef.current.currentTime = e.target.value;
-      const minutes = Math.floor(audioRef.current.duration / 60);
-      const seconds = Math.floor(audioRef.current.duration - minutes * 60);
-      setMinutesPlayed(minutes);
-      setSecondsPlayed(seconds);
-    }
+    setSeekTime(Number(e.target.value));
   }, []);
 
   useEffect(() => {
@@ -147,6 +142,7 @@ const PlaybackButtons = () => {
         onPlayPauseStatusChange={setPlayPauseStatus}
         onLoadingChange={setLoading}
         onTimeUpdate={handleTimeUpdate}
+        seekTime={seekTime}
         onDurationUpdate={handleDurationUpdate}
         beatId={beatPlayingFromState?._id as string}
       />
@@ -211,6 +207,7 @@ const PlaybackButtons = () => {
         onLoadingChange={setLoading}
         onTimeUpdate={handleTimeUpdate}
         onDurationUpdate={handleDurationUpdate}
+        seekTime={seekTime}
         beatId={beatPlayingFromState?._id as string}
       />
     </Row>
