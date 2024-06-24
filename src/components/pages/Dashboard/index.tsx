@@ -17,7 +17,7 @@ export default function Dashboard() {
   useEffect(() => {
     const subSuccessRedirect = new URLSearchParams(window.location.search).get('sub-success');
     if (subSuccessRedirect) {
-      ReactGA.event('user_sub_purchase');
+      ReactGA.event('purchase');
       dispatch(notificationReducer({ type: 'success', message: 'Your subscription is now live!' }));
     } else {
       return;

@@ -1,0 +1,118 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  align-self: stretch;
+  position: relative;
+  min-height: 789px;
+  margin-top: 40px;
+  width: 100vw;
+  align-items: center;
+  font-size: 18px;
+  color: #fff;
+  font-weight: 500;
+  line-height: 1.44;
+  padding: 150px 20px 30px;
+  box-sizing: border-box;
+}
+
+@media (max-width: 991px) {
+  .container {
+    max-width: 100%;
+  }
+}
+
+.backgroundImage {
+  position: absolute;
+  inset: 0;
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.logo {
+  aspect-ratio: 0.85;
+  object-fit: cover;
+  object-position: center;
+  width: 185px;
+  margin-top: 120px;
+  max-width: 100%;
+  z-index: 1;
+}
+
+@media (max-width: 991px) {
+  .logo {
+    margin-top: 40px;
+  }
+}
+
+.description {
+  position: relative;
+  text-align: center;
+  font-family: Poppins, sans-serif;
+  font-weight: 400;
+  line-height: 28px;
+  margin-top: 40px;
+  width: 578px;
+  max-width: 100%;
+}
+
+.nav {
+  position: relative;
+  display: flex;
+  margin-top: 40px;
+  width: 75vw;
+  gap: 20px;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+
+.navItem {
+  font-feature-settings: 'clig' off, 'liga' off;
+  font-family: Poppins, sans-serif;
+  color: white;
+  text-decoration: none;
+}
+
+.footer {
+  position: relative;
+  font-feature-settings: 'clig' off, 'liga' off;
+  font-family: Poppins, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #262626;
+  align-self: stretch;
+  margin-top: 80px;
+  width: 100%;
+  text-align: center;
+  padding: 31px 60px;
+  box-sizing: border-box;
+}
+
+@media (max-width: 991px) {
+  .footer {
+    max-width: 100%;
+    margin-top: 40px;
+    padding: 0 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .footer {
+    width: 100vw;
+  }
+
+  .logo {
+    width: 80px;
+  }
+
+  .nav {
+    width: 100%;
+  }
+
+  .navItem {
+    font-size: 16px;
+  }
+}

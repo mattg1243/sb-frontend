@@ -135,6 +135,10 @@ export const getAllBeatsReq = async (page?: { skip: number; take: number }) => {
   return await axios.get(requestUrl, { withCredentials: true });
 };
 
+export const getFeaturedBeatsReq = async () => {
+  return await axios.get(`${gatewayUrl}/beats/featured`);
+};
+
 export const searchBeatsReq = async (query: string, skip?: number, take?: number, genre?: string, key?: string) => {
   let beatSearchUrl = `${gatewayUrl}/beats/search?search=${query}`;
   if (genre) {

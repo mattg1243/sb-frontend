@@ -1,0 +1,81 @@
+.header {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.41);
+  background-color: #000;
+  display: flex;
+  position: fixed;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 0px;
+  z-index: 1000;
+  height: 5vh;
+  width: 100vw;
+}
+
+.logo {
+  width: 60px;
+  height: 5vh;
+  width: auto;
+  padding-left: 32px;
+  aspect-ratio: 0.85;
+}
+
+.navbar {
+  display: flex;
+  position: relative;
+  gap: 40px;
+  font-size: 18px;
+  color: #fff;
+  font-weight: 500;
+  line-height: 144%;
+  align-items: center;
+}
+
+.navLink {
+  font-family: 'Poppins', sans-serif;
+  color: white;
+  text-decoration: none;
+}
+
+.userControls {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+}
+
+.userIcon {
+  width: 20px;
+  aspect-ratio: 1;
+}
+
+.separator {
+  width: 1px;
+  height: 24px;
+  background-color: #474747;
+}
+
+.authLinks {
+  display: flex;
+  gap: 25px;
+  font-size: 18px;
+  padding-right: 32px;
+  color: #fff;
+  font-weight: 500;
+  line-height: 144%;
+  align-items: center;
+}
+
+.loginLink {
+  font-family: 'Poppins', sans-serif;
+  color: white;
+  text-decoration: none;
+}
+
+.signupLink {
+  font-family: 'Poppins', sans-serif;
+  border-radius: 10000px;
+  background-color: #6cbd46;
+  padding: 11px 28px;
+  text-align: center;
+  color: white;
+  text-decoration: none;
+}

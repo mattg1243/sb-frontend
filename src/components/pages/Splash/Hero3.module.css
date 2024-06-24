@@ -1,0 +1,166 @@
+.mainSection {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  width: 100vw;
+  background-color: #f7a21e;
+  position: relative;
+}
+
+.contentWrapper {
+  display: flex;
+  gap: 20px;
+}
+
+.textColumn {
+  display: flex;
+  flex-direction: column;
+  margin: 0 150px;
+}
+
+.highlightedText {
+  font-family: Poppins, sans-serif;
+  color: var(--Primary, #191919);
+  font-weight: 500;
+  width: 500px;
+  margin-top: 150px;
+}
+.mainText {
+  font-size: 60px;
+  line-height: 70px;
+  font-style: normal;
+}
+
+.highlightedTextPercentage {
+  font-size: 54px;
+  line-height: 62px;
+  font-weight: 900;
+  font-style: bold;
+  color: rgba(25, 25, 25, 1);
+}
+
+.highlightedItalicText {
+  font-size: 54px;
+  line-height: 62px;
+  font-weight: bold;
+  font-style: italic;
+  color: rgba(25, 25, 25, 1);
+}
+
+.description {
+  width: 400px;
+  margin-top: 38px;
+  font: 400 24px/40px Poppins, sans-serif;
+}
+
+.ctaButton {
+  border-radius: 1000px;
+  border: 1px solid rgba(108, 189, 70, 1);
+  background-color: #6cbd46;
+  color: #fff;
+  padding: 17px 32px;
+  font: 500 18px/1.44 'Poppins', sans-serif;
+  margin-top: 36px;
+  align-self: flex-start;
+}
+
+.imageColumn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 20px;
+}
+
+.image {
+  width: 700px;
+  padding-left: 7vw;
+}
+
+@media (min-width: 481px) and (max-width: 1919px) {
+  .mainSection {
+    height: 50vw;
+  }
+
+  .textColumn {
+    margin: 0 50px;
+  }
+
+  .image {
+    width: 450px;
+    height: 450px;
+    padding-left: 2vw;
+  }
+
+  .description {
+    margin-top: 12px;
+  }
+
+  .ctaButton {
+    margin-top: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .mainSection {
+    flex-direction: column;
+    width: 100vw;
+    padding: 0;
+  }
+
+  .contentWrapper {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+  }
+
+  .image {
+    width: 350px;
+    padding: 0;
+    padding-left: 10vw;
+    margin: 0;
+  }
+
+  .imageColumn {
+    margin: 0;
+    padding: 0;
+  }
+
+  .textColumn {
+    width: 90vw;
+    margin: 0;
+    text-align: center;
+  }
+
+  .description {
+    width: 90vw;
+    margin-top: 12px;
+    font-size: 20px;
+    line-height: 26px;
+    text-align: center;
+  }
+
+  .mainText {
+    font-size: 36px;
+    line-height: 44px;
+    margin: 0;
+  }
+
+  .highlightedTextPercentage,
+  .highlightedItalicText {
+    margin-top: 0;
+    width: 90vw;
+    font-size: 36px;
+  }
+
+  .highlightedText {
+    margin-top: 0;
+    width: 90vw;
+    line-height: 38px;
+  }
+
+  .ctaButton {
+    margin: 24px;
+    align-self: center;
+  }
+}
