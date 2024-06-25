@@ -117,51 +117,6 @@ export default function AccountPage() {
           Add 10 Credits
         </Button> */}
         <Divider className={`${styles.divider} divider`}>
-          <h2>Credits</h2>
-        </Divider>
-        <ResponsiveContainer width={isMobile ? '90%' : '100%'} height="20%">
-          <BarChart data={creditData.slice(-6)} margin={{ top: 20, bottom: 20 }}>
-            <XAxis dataKey="name" />
-            <YAxis />
-            <Tooltip />
-            <Bar dataKey="amount" fill="black" barSize={isMobile ? 20 : 40} />
-          </BarChart>
-        </ResponsiveContainer>
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'space-evenly',
-            alignItems: 'center',
-          }}
-        >
-          <h3>Acquired</h3>
-        </div>
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'space-evenly',
-            alignItems: 'center',
-          }}
-        >
-          {/* <div>
-            <p style={{ fontSize: '2vh' }}>{creditsBalance}</p>
-            <h3>Balance</h3>
-          </div> */}
-        </div>
-        <div className="chartcont">
-          {/* <Bar
-            data={data}
-            height={400}
-            width={600}
-            indexBy={'month'}
-            valueScale={{ type: 'linear' }}
-            indexScale={{ type: 'band', round: true }}
-            colors={{ scheme: 'dark2' }}
-          /> */}
-        </div>
-        <Divider className={`${styles.divider} divider`}>
           <h2>Licensed Beats</h2>
         </Divider>
         <div className={styles['beats-container']}>
