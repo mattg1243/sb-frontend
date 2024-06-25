@@ -17,7 +17,7 @@ export default function SearchInput() {
       type="text"
       style={{
         borderRadius: '40px',
-        width: window.location.pathname == '/' ? '20vw' : '14vw',
+        width: window.location.pathname == '/' ? '50vw' : '14vw',
       }}
       placeholder="Search"
       suffix={<SearchOutlined onClick={handleSearch} />}

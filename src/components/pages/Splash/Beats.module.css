@@ -1,0 +1,101 @@
+.container {
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  font-family: Arial, sans-serif;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 25px;
+  padding: 0 5vw;
+}
+
+.header h1 {
+  font-size: 36px;
+}
+
+.viewAllButton {
+  padding: 17px 32px;
+  background-color: #56c271;
+  color: white;
+  border: none;
+  border-radius: 1000px;
+  margin: 0 10px;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.nav {
+  display: flex;
+  gap: 20px;
+  border-bottom: 2px solid #56c271;
+  margin-bottom: 20px;
+}
+
+.nav a {
+  text-decoration: none;
+  color: black;
+  padding: 10px 0;
+  border-bottom: 2px solid transparent;
+}
+
+.nav a.active {
+  border-bottom: 2px solid #56c271;
+}
+
+.searchContainer {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 20px;
+}
+
+.searchInput {
+  padding: 10px;
+  margin: 0 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 200px;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th,
+.table td {
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+
+.playButton {
+  width: 24px;
+  height: 24px;
+  background: url('https://www.iconsdb.com/icons/preview/black/play-xxl.png') no-repeat center center;
+  background-size: cover;
+  border: none;
+  cursor: pointer;
+}
+
+.beatTitle {
+  font-weight: bold;
+}
+
+.beatSubtitle {
+  color: #888;
+}
+
+@media (max-width: 480px) {
+  .header {
+    flex-direction: column;
+    margin: 24px 12px 0 0;
+  }
+
+  .searchContainer {
+    flex-direction: column;
+  }
+}

@@ -16,7 +16,7 @@ const SplashPage: FC = () => {
         <Hero1 />
         <Hero2 />
         <Hero3 />
-        {/* <BeatsSection /> */}
+        <BeatsSection />
         <Footer />
       </main>
     </>
