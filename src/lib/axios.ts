@@ -94,6 +94,10 @@ export const getFollowingReq = async (userId: string) => {
   return await axios.get(`${gatewayUrl}/user/following?user=${userId}`);
 };
 
+export const getCreditBalanceReq = async () => {
+  return await axios.get(`${gatewayUrl}/user/credits-balance`, { withCredentials: true });
+};
+
 export const getSubRefCodeReq = async () => {
   return await axios.get(`${gatewayUrl}/user/sub-ref-code`, { withCredentials: true });
 };

@@ -1,33 +1,20 @@
 import { useEffect, useState } from 'react';
 import { Header } from 'antd/es/layout/layout';
-import { Button, Menu, Image, Avatar, Dropdown, MenuProps, Input, Space } from 'antd';
-import { SearchOutlined, UserOutlined } from '@ant-design/icons';
+import { Button, Menu, Image, Avatar, Dropdown, MenuProps, Space } from 'antd';
+import { UserOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import UploadBeatModal from '../BeatUploadModal';
 import logo from '../../assets/orangelogo.png';
 import { getUserIdFromLocalStorage } from '../../utils/localStorageParser';
-import { logoutUserReq, getUserAvatarReq } from '../../lib/axios';
-import axios from 'axios';
+import { logoutUserReq, getUserAvatarReq, getCreditBalanceReq } from '../../lib/axios';
 import gatewayUrl, { imgCdnHostName } from '../../config/routing';
 import styles from './Navbar.module.css';
-import { useDispatch, useSelector } from 'react-redux';
-import {
-  beats,
-  searching,
-  users,
-  searchQuery,
-  selectSearchBeatFilters,
-  ISearchBeatFilters,
-  selectSearchQuery,
-  searchFilters,
-  searchIsLoading,
-} from '../../reducers/searchReducer';
-import { RootState } from '../../store';
 import { ensureLoggedIn } from '../../utils/auth';
 import SearchInput from './SearchInput';
 
 export default function Navbar() {
   const [avatarUrl, setAvatarUrl] = useState();
+  const [creditBalance, setCreditBalance] = useState<number>(0);
   const currentUserId = getUserIdFromLocalStorage();
 
   const onProfilePage = window.location.pathname.includes('/app/user');
@@ -99,18 +86,17 @@ export default function Navbar() {
   ];
 
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-
-  const searchBeatFiltersState = useSelector<RootState, ISearchBeatFilters | null>((state) =>
-    selectSearchBeatFilters(state)
-  );
-  const searchQueryState = useSelector<RootState, string | null>((state) => selectSearchQuery(state));
 
   useEffect(() => {
     if (currentUserId) {
       getUserAvatarReq(currentUserId)
         .then((res) => {
           setAvatarUrl(res.data);
+        })
+        .catch((err) => console.error(err));
+      getCreditBalanceReq()
+        .then((res) => {
+          setCreditBalance(res.data.creditBalance);
         })
         .catch((err) => console.error(err));
     }
@@ -170,42 +156,58 @@ export default function Navbar() {
           <Space size={62}>
             <SearchInput />
             {window.location.pathname !== '/' ? (
-              <Dropdown
-                menu={{
-                  items: currentUserId
-                    ? userMenuItems
-                    : [
-                        {
-                          key: 'login',
-                          label: (
-                            <Button
-                              type="ghost"
-                              style={{ color: 'white' }}
-                              onClick={() => {
-                                navigate('/login');
-                              }}
-                            >
-                              Login
-                            </Button>
-                          ),
-                        },
-                      ],
-                }}
-                placement="bottom"
-                overlayStyle={{ color: 'blue', fontSize: '2rem' }}
-                arrow={true}
-              >
-                <Avatar
-                  size={48}
-                  src={avatarUrl ? `${imgCdnHostName}/fit-in/125x125/${avatarUrl}` : undefined}
-                  style={{ border: 'solid 3px', borderColor: 'var(--primary)', backgroundColor: 'black' }}
-                  icon={avatarUrl ? undefined : <UserOutlined style={{ color: 'white', fontSize: '2vh' }} />}
-                  className="avatar"
-                  onClick={() => {
-                    currentUserId ? navigate(`/app/user/?id=${currentUserId}`) : navigate('/login');
+              <>
+                <div
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'space-around',
+                    alignItems: 'center',
+                    height: '64px',
+                    color: 'white',
+                    lineHeight: '0px',
                   }}
-                />
-              </Dropdown>
+                >
+                  <p style={{ fontSize: '22px', fontWeight: 'bold', margin: '0' }}>{creditBalance}</p>
+                  <p style={{ margin: '0' }}>credits</p>
+                </div>
+                <Dropdown
+                  menu={{
+                    items: currentUserId
+                      ? userMenuItems
+                      : [
+                          {
+                            key: 'login',
+                            label: (
+                              <Button
+                                type="ghost"
+                                style={{ color: 'white' }}
+                                onClick={() => {
+                                  navigate('/login');
+                                }}
+                              >
+                                Login
+                              </Button>
+                            ),
+                          },
+                        ],
+                  }}
+                  placement="bottom"
+                  overlayStyle={{ color: 'blue', fontSize: '2rem' }}
+                  arrow={true}
+                >
+                  <Avatar
+                    size={48}
+                    src={avatarUrl ? `${imgCdnHostName}/fit-in/125x125/${avatarUrl}` : undefined}
+                    style={{ border: 'solid 3px', borderColor: 'var(--primary)', backgroundColor: 'black' }}
+                    icon={avatarUrl ? undefined : <UserOutlined style={{ color: 'white', fontSize: '2vh' }} />}
+                    className="avatar"
+                    onClick={() => {
+                      currentUserId ? navigate(`/app/user/?id=${currentUserId}`) : navigate('/login');
+                    }}
+                  />
+                </Dropdown>
+              </>
             ) : null}
           </Space>
         </Menu.Item>
