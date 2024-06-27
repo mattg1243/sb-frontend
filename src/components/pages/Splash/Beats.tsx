@@ -29,7 +29,9 @@ const BeatsSection: React.FC = () => {
       <header className={styles.header}>
         <h1>Beats For You</h1>
         <div className={styles.searchContainer}>
-          <SearchInput />
+          <div style={{ width: 'clamp(256px, 30vw, 500px)', display: 'flex', justifyContent: 'center' }}>
+            <SearchInput />
+          </div>
           {window.innerWidth > 480 ? (
             <button className={styles.viewAllButton} onClick={() => navigate('/app/dash')}>
               View All
