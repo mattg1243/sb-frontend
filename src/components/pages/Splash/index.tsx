@@ -7,16 +7,18 @@ import Hero1 from './Hero1';
 import Hero2 from './Hero2';
 import Hero3 from './Hero3';
 import Footer from './Footer';
+import Hero4 from './Hero4.index';
 
 const SplashPage: FC = () => {
   return (
     <>
-      {window.innerWidth < 480 ? null : <Header />}
+      <Header />
       <main className={styles.body}>
         <Hero1 />
         <Hero2 />
-        <Hero3 />
         <BeatsSection />
+        <Hero3 />
+        <Hero4 />
         <Footer />
       </main>
     </>

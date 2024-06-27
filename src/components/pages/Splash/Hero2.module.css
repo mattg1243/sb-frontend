@@ -3,7 +3,7 @@
   height: 70vh;
   background-color: white;
   max-width: 1310px;
-  margin-top: 150px;
+  margin: 150px 0;
 }
 
 .content {
@@ -71,7 +71,7 @@
 
 @media (max-width: 480px) {
   .container {
-    margin-top: 0;
+    margin: 0;
     height: 100vh;
     width: 100vw;
   }
