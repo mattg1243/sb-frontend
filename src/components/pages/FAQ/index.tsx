@@ -1,4 +1,4 @@
-import { Typography } from 'antd';
+import { Layout, Typography } from 'antd';
 import styles from './FAQ.module.css';
 import balloonLogo from '../../../assets/orangelogo.png';
 import Navbar from '../../Navbar';
@@ -89,7 +89,7 @@ export default function FAQ() {
   const { Title } = Typography;
 
   return (
-    <>
+    <Layout>
       <Navbar />
       <Viewport>
         <Title className={styles.faq} data-cy="title">
@@ -100,6 +100,6 @@ export default function FAQ() {
           <img src={balloonLogo} alt="Balloon Logo" className={styles.logo} />
         </Typography>
       </Viewport>
-    </>
+    </Layout>
   );
 }

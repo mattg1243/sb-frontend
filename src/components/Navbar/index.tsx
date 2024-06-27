@@ -7,7 +7,7 @@ import UploadBeatModal from '../BeatUploadModal';
 import logo from '../../assets/orangelogo.png';
 import { getUserIdFromLocalStorage } from '../../utils/localStorageParser';
 import { logoutUserReq, getUserAvatarReq, getCreditBalanceReq } from '../../lib/axios';
-import gatewayUrl, { imgCdnHostName } from '../../config/routing';
+import { imgCdnHostName } from '../../config/routing';
 import styles from './Navbar.module.css';
 import { ensureLoggedIn } from '../../utils/auth';
 import SearchInput from './SearchInput';
@@ -16,8 +16,6 @@ export default function Navbar() {
   const [avatarUrl, setAvatarUrl] = useState();
   const [creditBalance, setCreditBalance] = useState<number>(0);
   const currentUserId = getUserIdFromLocalStorage();
-
-  const onProfilePage = window.location.pathname.includes('/app/user');
 
   const logoutUser = async () => {
     try {
@@ -103,16 +101,7 @@ export default function Navbar() {
   }, [currentUserId]);
 
   return (
-    <Header
-      style={{
-        width: '100%',
-        top: 0,
-        background: 'black',
-        position: 'fixed',
-        zIndex: 1,
-        boxShadow: '0px 5px rgb(232, 162, 21)',
-      }}
-    >
+    <Header className={styles['header']}>
       <Menu theme="dark" mode="horizontal" style={{ background: 'black', marginBottom: '3rem', width: '100%' }}>
         <Menu.Item className={styles['menu-item']}>
           <Image
@@ -157,19 +146,9 @@ export default function Navbar() {
             <SearchInput />
             {window.location.pathname !== '/' ? (
               <>
-                <div
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'space-around',
-                    alignItems: 'center',
-                    height: '64px',
-                    color: 'white',
-                    lineHeight: '0px',
-                  }}
-                >
-                  <p style={{ fontSize: '22px', fontWeight: 'bold', margin: '0' }}>{creditBalance}</p>
-                  <p style={{ margin: '0' }}>credits</p>
+                <div className={styles['end-div']}>
+                  <p className={styles['credit-balance']}>{creditBalance}</p>
+                  <p>credits</p>
                 </div>
                 <Dropdown
                   menu={{

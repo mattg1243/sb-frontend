@@ -1,3 +1,29 @@
+.header {
+  width: 100%;
+  top: 0;
+  background: black;
+  position: fixed;
+  z-index: 1;
+  box-shadow: 0px 5px rgb(232, 162, 21);
+}
+
+.end-div {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  height: 60px;
+  padding-top: 12px;
+  color: white;
+  line-height: 0px;
+}
+
+.credit-balance {
+  font-size: 20px;
+  font-weight: bold;
+  margin: 6px;
+}
+
 .searchbar {
   border-radius: 40px;
 }
