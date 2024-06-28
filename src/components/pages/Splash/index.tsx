@@ -15,8 +15,8 @@ const SplashPage: FC = () => {
       <Header />
       <main className={styles.body}>
         <Hero1 />
-        <Hero2 />
         <BeatsSection />
+        <Hero2 />
         <Hero3 />
         <Hero4 />
         <Footer />
