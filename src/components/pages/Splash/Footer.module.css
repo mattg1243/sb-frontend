@@ -12,14 +12,8 @@
   color: #fff;
   font-weight: 500;
   line-height: 1.44;
-  padding: 150px 20px 30px;
+  padding: 120px 20px;
   box-sizing: border-box;
-}
-
-@media (max-width: 991px) {
-  .container {
-    max-width: 100%;
-  }
 }
 
 .backgroundImage {
@@ -39,12 +33,6 @@
   margin-top: 120px;
   max-width: 100%;
   z-index: 1;
-}
-
-@media (max-width: 991px) {
-  .logo {
-    margin-top: 40px;
-  }
 }
 
 .description {
@@ -77,15 +65,13 @@
 
 .footer {
   position: relative;
-  font-feature-settings: 'clig' off, 'liga' off;
   font-family: Poppins, sans-serif;
   display: flex;
   justify-content: center;
   align-items: center;
   background-color: #262626;
   align-self: stretch;
-  margin-top: 80px;
-  width: 100%;
+  margin-top: 170px;
   text-align: center;
   padding: 31px 60px;
   box-sizing: border-box;

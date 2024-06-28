@@ -14,7 +14,7 @@ export default function Hero1() {
         alt="Hero"
         className={styles.heroImage}
       />
-      <img src={Orange} style={{ zIndex: 0, width: '100vw', position: 'absolute', height: '60vh' }} />
+      <img src={Orange} style={{ zIndex: 0, width: '100vw', position: 'absolute', height: '59vh' }} />
       <img src={Frame} style={{ zIndex: 2, width: '100vw', position: 'absolute', height: '80vh' }} />
       <div className={styles.heroContent}>
         <div className={styles.heroText}>

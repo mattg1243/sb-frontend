@@ -36,7 +36,7 @@
 .heroImage {
   position: absolute;
   width: 100vw;
-  top: clamp(-375px, -19vw, -150px);
+  top: clamp(-425px, -20vw, -150px);
   object-fit: cover;
   object-position: center;
   z-index: 2;
@@ -137,6 +137,10 @@
     font-size: 52px;
     width: 500px;
     line-height: 62px;
+  }
+
+  .heroImage {
+    top: clamp(-425px, -20vw, -150px);
   }
 
   .heroContent {

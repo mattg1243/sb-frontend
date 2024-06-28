@@ -48,6 +48,7 @@
 }
 
 .searchContainer {
+  z-index: 5;
   display: flex;
   justify-content: flex-end;
   margin-bottom: 20px;
