@@ -52,7 +52,7 @@ export default function StdCard(props: { checkoutFn: (subTier: 'basic' | 'std' |
               <div className={styles['div-15']}>Stem downloads</div>
             </div>
             <div style={{ height: '170px' }}></div>
-            <div className={styles['div-22']} onClick={() => checkoutFn('basic')}>
+            <div className={styles['div-22']} onClick={() => checkoutFn('std')}>
               <div className={styles['div-23']}>
                 <div className={styles['div-24']}>Get Started</div>
                 <img

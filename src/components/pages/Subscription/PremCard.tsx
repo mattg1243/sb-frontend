@@ -20,7 +20,7 @@ export default function PremCard(props: { checkoutFn: (subTier: 'basic' | 'std' 
               <div className={styles['div-9']}>first month</div>
             </div>
             <Divider />
-            <div className={styles['div-7']} style={{ marginTop: '35px' }}>
+            <div className={styles['div-7']}>
               <div className={styles['div-8']}>$89.99</div>
               <div className={styles['div-9']}>/monthly</div>
             </div>
@@ -51,8 +51,8 @@ export default function PremCard(props: { checkoutFn: (subTier: 'basic' | 'std' 
               />
               <div className={styles['div-16']}>Stem downloads</div>
             </div>
-            <div style={{ height: '165px' }}></div>
-            <div className={styles['div-23']} onClick={() => checkoutFn('basic')}>
+            <div style={{ height: '150px' }}></div>
+            <div className={styles['div-23']} onClick={() => checkoutFn('prem')}>
               <div className={styles['div-24']}>
                 <div className={styles['div-25']}>Get Started</div>
                 <img
