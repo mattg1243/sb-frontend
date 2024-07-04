@@ -1,5 +1,6 @@
 import * as React from 'react';
 import styles from './basic_card.module.css';
+import { Divider } from 'antd';
 
 export default function BasicCard(props: { checkoutFn: (subTier: 'basic' | 'std' | 'prem') => void }) {
   const { checkoutFn } = props;
@@ -14,6 +15,11 @@ export default function BasicCard(props: { checkoutFn: (subTier: 'basic' | 'std'
             <div className={styles['div-6']}>
               Each credit allows you to download one beat. Once you download a beat, its yours forever.
             </div>
+            <div className={styles['div-7']} style={{ marginTop: '35px' }}>
+              <div className={styles['div-8']}>$19.99</div>
+              <div className={styles['div-9']}>first month</div>
+            </div>
+            <Divider />
             <div className={styles['div-7']} style={{ marginBottom: '35px' }}>
               <div className={styles['div-8']}>$34.99</div>
               <div className={styles['div-9']}>/monthly</div>
