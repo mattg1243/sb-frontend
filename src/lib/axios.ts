@@ -23,6 +23,10 @@ export const getUserReq = async (userId: string) => {
   return await axios.get(`${gatewayUrl}/user/?id=${userId}`, { withCredentials: true });
 };
 
+export const getUserSubTierReq = async () => {
+  return await axios.get(`${gatewayUrl}/user/sub-tier`, { withCredentials: true });
+};
+
 export const searchUserReq = async (query: string) => {
   return await axios.get(`${gatewayUrl}/user/search?search=${query}`);
 };

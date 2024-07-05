@@ -10,6 +10,7 @@ import { AlertObj } from '../../types';
 import { getUserIdFromLocalStorage, getUserSubTierFromLocalStorage } from '../../utils/localStorageParser';
 import { useNavigate } from 'react-router-dom';
 import ReactGA from 'react-ga4';
+import { getUserSubTierReq } from '../../lib/axios';
 
 interface IBeatDownloadModal {
   beatId: string;
@@ -79,9 +80,12 @@ export default function BeatDownloadModal(props: IBeatDownloadModal) {
       });
       // add beat to zip file
       downloadZip.file(`${title}.mp3`, downloadBeatRes.data);
-      // check for stems
+      // if user has std or above sub, check for stems
+      const subTierRes = await getUserSubTierReq();
+      console.log(subTierRes);
+      const subTier = subTierRes.data.subTier;
       const stems = res.data.stems;
-      if (stems) {
+      if (stems && subTier !== 'basic') {
         setStemDownloading(true);
         const numOfStems: number = stems.length;
         let sizeOfStems = 0;
@@ -100,14 +104,14 @@ export default function BeatDownloadModal(props: IBeatDownloadModal) {
           sizeOfStems += parseInt((await stemResPromise).headers['Content-Length'] as string);
           promiseArr.push(stemResPromise);
         }
+        const stemDownloadResArr = await Promise.all(promiseArr);
+        // add the stems
+        for (let j = 0; j < stems.length; j++) {
+          downloadZip.file(stems[j].name, stemDownloadResArr[j].data);
+        }
       }
-      const stemDownloadResArr = await Promise.all(promiseArr);
       setBeatDownloading(false);
       setStemDownloading(false);
-      // add the stems
-      for (let j = 0; j < stems.length; j++) {
-        downloadZip.file(stems[j].name, stemDownloadResArr[j].data);
-      }
       // download zip
       const download = await downloadZip.generateAsync({ type: 'blob' });
       const href = URL.createObjectURL(download);
