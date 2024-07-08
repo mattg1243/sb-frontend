@@ -19,6 +19,7 @@ import DashRow from '../../DashRow';
 import { useLocation } from 'react-router-dom';
 import LoadingPage from '../Loading';
 import { BackButton, HomeButton, RefreshButton } from './Buttons';
+import RandomButton from './RandomButton';
 
 interface IBeatPageProps {
   testBeat?: Beat;
@@ -112,7 +113,7 @@ export default function BeatPage(props?: IBeatPageProps) {
     }
   };
 
-  const imgSize = isMobile ? 250 : 600;
+  const imgSize = isMobile ? 220 : 600;
   const imgSrc = `${imgCdnHostName}/fit-in/${imgSize}x${imgSize}/${beat?.artworkKey}`;
 
   return (
@@ -133,7 +134,13 @@ export default function BeatPage(props?: IBeatPageProps) {
                 url={window.location.href}
               />
               <BackButton />
-              {isMobile ? <HomeButton /> : null}
+              {isMobile ? (
+                <HomeButton />
+              ) : (
+                <div style={{ position: 'fixed', top: '10vh' }}>
+                  <RandomButton />
+                </div>
+              )}
               <img
                 src={imgSrc}
                 alt="album artwork"
@@ -221,16 +228,20 @@ export default function BeatPage(props?: IBeatPageProps) {
                 </div>
               </Row>
               {isMobile ? (
-                <BeatDownloadModal
-                  artistName={beat.artistName}
-                  beatId={beat._id}
-                  title={beat.title}
-                  onBeatPage={true}
-                  license={true}
-                  btnStyle={{ position: 'fixed' }}
-                />
+                <>
+                  <BeatDownloadModal
+                    artistName={beat.artistName}
+                    beatId={beat._id}
+                    title={beat.title}
+                    onBeatPage={true}
+                    license={true}
+                    btnStyle={{ position: 'fixed' }}
+                  />
+                </>
               ) : null}
-              <Row style={{ justifyContent: 'space-evenly', marginTop: '4vh' }}></Row>
+              <Row style={{ justifyContent: 'space-evenly', marginTop: '20px', height: '50px' }}>
+                {isMobile ? <RandomButton /> : null}
+              </Row>
             </div>
             <div className={styles['suggested-container']}>
               <div

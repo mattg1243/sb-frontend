@@ -131,6 +131,10 @@ export const getBeatReq = async (beatId: string) => {
   return await axios.get(`${gatewayUrl}/beats?id=${beatId}`);
 };
 
+export const getRandomBeatReq = async () => {
+  return await axios.get(`${gatewayUrl}/beats/random`);
+};
+
 export const getSimilarBeats = async (beatId: string) => {
   return await axios.get(`${gatewayUrl}/beats/similar?beat=${beatId}`);
 };
