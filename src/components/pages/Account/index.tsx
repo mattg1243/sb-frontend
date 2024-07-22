@@ -18,6 +18,7 @@ import { BarChart, XAxis, YAxis, Bar, ResponsiveContainer } from 'recharts';
 import { getSubRefCodeReq } from '../../../lib/axios';
 import PayPalConnectBtn from './PayPalConnectBtn';
 import ReactGA from 'react-ga4';
+import { Beat } from '../../../types';
 
 export default function AccountPage() {
   // TODO: create a hook so that the trackPlaying state and playbackButton
@@ -57,12 +58,22 @@ export default function AccountPage() {
   const getBeatOptions: IUseGetBeatsOptions = {
     userId: userId as string,
     following: false,
-    licensed: true,
     take: 3,
     skip: 0,
   };
 
-  const { beats, isLoading: beatsLoading } = useGetBeats(getBeatOptions);
+  const getLicensedBeatOptions: IUseGetBeatsOptions = {
+    ...getBeatOptions,
+    licensed: true,
+  };
+
+  const getSavedBeatOptions: IUseGetBeatsOptions = {
+    ...getBeatOptions,
+    saved: true,
+  };
+
+  const { beats: licensedBeats, isLoading: licensedBeatsLoading } = useGetBeats(getLicensedBeatOptions);
+  const { beats: savedBeats, isLoading: savedBeatsLoading } = useGetBeats(getSavedBeatOptions);
 
   const openStripePortal = async () => {
     if (!customerId) {
@@ -91,18 +102,6 @@ export default function AccountPage() {
     }
   };
 
-  // credit chart config
-  const currentMonth = new Date().getMonth();
-  const months = Array.from({ length: 12 }, (item, i) => {
-    return new Date(0, i).toLocaleString('en-US', { month: 'long' });
-  });
-
-  const last6Months = months.slice(currentMonth - 6).concat(months.slice(0, currentMonth + 1));
-
-  const creditData = last6Months.map((month) => {
-    return { name: month, amount: 0 /*Math.floor(Math.random() * 10)*/ };
-  });
-
   return (
     <>
       {contextHolder}
@@ -117,19 +116,19 @@ export default function AccountPage() {
           Add 10 Credits
         </Button> */}
         <Divider className={`${styles.divider} divider`}>
-          <h2>Licensed Beats</h2>
+          <h2>Saved Beats</h2>
         </Divider>
         <div className={styles['beats-container']}>
           {/* beats have loaded and len > 0 */}
-          {beats && !beatsLoading
-            ? beats.map((beat) => {
+          {savedBeats && !savedBeatsLoading
+            ? savedBeats.map((beat) => {
                 return <DashRow beat={beat} buttonType="download" onClick={() => console.log('row clicked')} />;
               })
             : null}
           {/* user has no licensed beats */}
-          {!beats && !beatsLoading ? <p>You haven't licensed any beats yet :(</p> : null}
+          {!savedBeats && !licensedBeatsLoading ? <p>No saved beats found</p> : null}
           {/* licensed beats are loading */}
-          {beatsLoading ? <Spin /> : null}
+          {licensedBeatsLoading ? <Spin /> : null}
           {/* <DashRow beat={testBeat} buttonType="download" onClick={() => console.log('row clicked')} />
           <DashRow beat={testBeat} buttonType="download" onClick={() => console.log('row clicked')} />
           <DashRow beat={testBeat} buttonType="download" onClick={() => console.log('row clicked')} /> */}
@@ -142,6 +141,33 @@ export default function AccountPage() {
             View All
           </Button>
         </div>
+        <Divider className={`${styles.divider} divider`}>
+          <h2>Licensed Beats</h2>
+        </Divider>
+        <div className={styles['beats-container']}>
+          {/* beats have loaded and len > 0 */}
+          {licensedBeats && !licensedBeatsLoading
+            ? licensedBeats.map((beat) => {
+                return <DashRow beat={beat} buttonType="download" onClick={() => console.log('row clicked')} />;
+              })
+            : null}
+          {/* user has no licensed beats */}
+          {!licensedBeats && !licensedBeatsLoading ? <p>You haven't licensed any beats yet :(</p> : null}
+          {/* licensed beats are loading */}
+          {licensedBeatsLoading ? <Spin /> : null}
+          {/* <DashRow beat={testBeat} buttonType="download" onClick={() => console.log('row clicked')} />
+          <DashRow beat={testBeat} buttonType="download" onClick={() => console.log('row clicked')} />
+          <DashRow beat={testBeat} buttonType="download" onClick={() => console.log('row clicked')} /> */}
+          <Button
+            className={styles.btn}
+            onClick={() => {
+              navigate('/app/licensed-beats');
+            }}
+          >
+            View All
+          </Button>
+        </div>
+
         <Divider>
           <h2>Following</h2>
         </Divider>

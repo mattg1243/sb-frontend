@@ -176,6 +176,26 @@ export const getLicensedBeatsByUser = async (userId: string, limit?: number) => 
   return await axios.get(reqUrl, { withCredentials: true });
 };
 
+export const getSavedBeatsByUserReq = async (limit?: number) => {
+  let reqUrl = `${gatewayUrl}/beats/saved`;
+  if (limit) {
+    reqUrl += `&limit=${limit}`;
+  }
+  return await axios.get(reqUrl, { withCredentials: true });
+};
+
+export const saveBeatReq = async (beatId: string) => {
+  return await axios.get(`${gatewayUrl}/beats/save?beatId=${beatId}`, { withCredentials: true });
+};
+
+export const unsaveBeatReq = async (beatId: string) => {
+  return await axios.get(`${gatewayUrl}/beats/unsave?beatId=${beatId}`, { withCredentials: true });
+};
+
+export const isBeatSavedReq = async (beatId: string) => {
+  return await axios.get(`${gatewayUrl}/beats/is-saved?beatId=${beatId}`, { withCredentials: true });
+};
+
 export const getAllBeatsFromFollowingReq = async (userId: string) => {
   return await axios.get(`${gatewayUrl}/beats/beats?userId=${userId}&following=true`, { withCredentials: true });
 };

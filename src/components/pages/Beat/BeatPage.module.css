@@ -28,7 +28,9 @@
 
 .beat-title {
   margin-top: 3vh;
+  margin-bottom: 0;
   height: 5vh;
+  z-index: 1;
   max-height: 5vh;
   font-size: 3vh;
   max-width: 33vw;
@@ -48,8 +50,8 @@
   text-align: flex-start;
   align-items: center;
   width: 25vw;
-  margin-bottom: 3vh;
-  height: 7vh;
+  margin-bottom: 2vh;
+  height: 5vh;
 }
 
 .artwork {
@@ -114,6 +116,7 @@
 @media (max-width: 1024px) {
   .container {
     flex-direction: column;
+    width: 100vw;
     left: 0;
     margin-top: 0;
     padding: 0;
@@ -123,8 +126,8 @@
   }
 
   .stats-row {
-    width: 80vw;
-    margin: 0;
+    width: 90vw;
+    margin-top: 1vh;
     margin-bottom: 2vh;
     text-align: center;
     justify-content: space-around;
@@ -151,11 +154,11 @@
   .beat-title {
     padding: 0 5vw;
     text-align: center;
-    width: 80vw;
-    height: 2vh;
+    width: 90vw;
+    height: 3vh;
     max-width: 100%;
     white-space: wrap;
-    word-break: break-word;
+    text-overflow: ellipsis;
     font-size: clamp(16px, 4vw, 28px);
   }
 

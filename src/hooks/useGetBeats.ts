@@ -2,9 +2,10 @@ import { useState, useEffect } from 'react';
 import type { Beat } from '../types';
 import {
   getAllBeatsReq,
-  getAllBeatsByUserReq,
+  getSavedBeatsByUserReq,
   getAllBeatsFromFollowingReq,
   getLicensedBeatsByUser,
+  getAllBeatsByUserReq,
 } from '../lib/axios';
 // TODO refactor to take a config object instead having 4 params
 export interface IUseGetBeatsOptions {
@@ -13,6 +14,7 @@ export interface IUseGetBeatsOptions {
   take?: number;
   skip?: number;
   licensed?: boolean;
+  saved?: boolean;
 }
 /**
  * A hook that gets Beats from the server, if supplied with a user ID, returns all beats created
@@ -46,6 +48,12 @@ export default function useGetBeats(options?: IUseGetBeatsOptions): {
           .then(() => setIsLoading(false));
       } else if (options.userId && options.licensed) {
         getLicensedBeatsByUser(options.userId, options.take)
+          .then((res) => {
+            setBeats(res.data);
+          })
+          .then(() => setIsLoading(false));
+      } else if (options.userId && options.saved) {
+        getSavedBeatsByUserReq()
           .then((res) => {
             setBeats(res.data);
           })

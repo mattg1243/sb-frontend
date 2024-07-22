@@ -20,6 +20,7 @@ import { useLocation } from 'react-router-dom';
 import LoadingPage from '../Loading';
 import { BackButton, HomeButton, RefreshButton } from './Buttons';
 import RandomButton from './RandomButton';
+import SaveBeatButton from '../../SaveBeatButton';
 
 interface IBeatPageProps {
   testBeat?: Beat;
@@ -174,7 +175,9 @@ export default function BeatPage(props?: IBeatPageProps) {
                     {beat.artistName}
                   </a>
                 </h3>
-                {!isMobile ? (
+              </Row>
+              {!isMobile ? (
+                <Row className={styles['stats-row']}>
                   <BeatDownloadModal
                     artistName={beat.artistName}
                     beatId={beat._id}
@@ -183,8 +186,9 @@ export default function BeatPage(props?: IBeatPageProps) {
                     license={true}
                     btnStyle={{ position: 'fixed' }}
                   />
-                ) : null}
-              </Row>
+                  <SaveBeatButton beatId={beat._id} display="button" />
+                </Row>
+              ) : null}
               <Row className={styles['stats-row']}>
                 <div>
                   <PlayCircleOutlined style={{ fontSize: '1.5vh' }} />
@@ -228,7 +232,7 @@ export default function BeatPage(props?: IBeatPageProps) {
                 </div>
               </Row>
               {isMobile ? (
-                <>
+                <Row style={{ width: '90vw', margin: '5vh 0' }} justify="space-around">
                   <BeatDownloadModal
                     artistName={beat.artistName}
                     beatId={beat._id}
@@ -237,7 +241,8 @@ export default function BeatPage(props?: IBeatPageProps) {
                     license={true}
                     btnStyle={{ position: 'fixed' }}
                   />
-                </>
+                  <SaveBeatButton beatId={beat._id} display="button" />
+                </Row>
               ) : null}
               <Row style={{ justifyContent: 'space-evenly', marginTop: '20px', height: '50px' }}>
                 {isMobile ? <RandomButton /> : null}
