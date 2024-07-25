@@ -171,7 +171,7 @@ export const getAllBeatsByUserReq = async (userId: string) => {
 export const getLicensedBeatsByUser = async (userId: string, limit?: number) => {
   let reqUrl = `${gatewayUrl}/beats/beats?userId=${userId}&licensed=true`;
   if (limit) {
-    reqUrl += `&limit=${limit}`;
+    reqUrl += `&take=${limit}`;
   }
   return await axios.get(reqUrl, { withCredentials: true });
 };
@@ -179,7 +179,7 @@ export const getLicensedBeatsByUser = async (userId: string, limit?: number) => 
 export const getSavedBeatsByUserReq = async (limit?: number) => {
   let reqUrl = `${gatewayUrl}/beats/saved`;
   if (limit) {
-    reqUrl += `&limit=${limit}`;
+    reqUrl += `&take=${limit}`;
   }
   return await axios.get(reqUrl, { withCredentials: true });
 };

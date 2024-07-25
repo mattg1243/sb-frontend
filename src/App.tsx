@@ -28,6 +28,7 @@ import SearchPage from './components/pages/Search';
 import { getUserIdFromLocalStorage } from './utils/localStorageParser';
 import { useEffect } from 'react';
 import ReactGA from 'react-ga4';
+import SavedBeatsPage from './components/pages/SavedBeats';
 
 function App() {
   // const userId = getUserIdFromLocalStorage();
@@ -85,6 +86,7 @@ function App() {
             <Route path="loading" element={<LoadingPage />} />
             <Route path="account" element={<AccountPage />} />
             <Route path="licensed-beats" element={<LicensedBeatsPage />} />
+            <Route path="saved-beats" element={<SavedBeatsPage />} />
           </Route>
           {/* 404 route */}
           <Route path="*" element={<NotFound />} />

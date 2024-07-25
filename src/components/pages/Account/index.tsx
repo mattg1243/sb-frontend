@@ -121,21 +121,21 @@ export default function AccountPage() {
         <div className={styles['beats-container']}>
           {/* beats have loaded and len > 0 */}
           {savedBeats && !savedBeatsLoading
-            ? savedBeats.map((beat) => {
-                return <DashRow beat={beat} buttonType="download" onClick={() => console.log('row clicked')} />;
+            ? savedBeats.slice(0, 3).map((beat) => {
+                return <DashRow beat={beat} buttonType="none" onClick={() => console.log('row clicked')} />;
               })
             : null}
           {/* user has no licensed beats */}
-          {!savedBeats && !licensedBeatsLoading ? <p>No saved beats found</p> : null}
+          {!savedBeats && !savedBeatsLoading ? <p>No saved beats found</p> : null}
           {/* licensed beats are loading */}
-          {licensedBeatsLoading ? <Spin /> : null}
+          {savedBeatsLoading ? <Spin /> : null}
           {/* <DashRow beat={testBeat} buttonType="download" onClick={() => console.log('row clicked')} />
           <DashRow beat={testBeat} buttonType="download" onClick={() => console.log('row clicked')} />
           <DashRow beat={testBeat} buttonType="download" onClick={() => console.log('row clicked')} /> */}
           <Button
             className={styles.btn}
             onClick={() => {
-              navigate('/app/licensed-beats');
+              navigate('/app/saved-beats');
             }}
           >
             View All
@@ -147,8 +147,8 @@ export default function AccountPage() {
         <div className={styles['beats-container']}>
           {/* beats have loaded and len > 0 */}
           {licensedBeats && !licensedBeatsLoading
-            ? licensedBeats.map((beat) => {
-                return <DashRow beat={beat} buttonType="download" onClick={() => console.log('row clicked')} />;
+            ? licensedBeats.slice(0, 3).map((beat) => {
+                return <DashRow beat={beat} buttonType="none" onClick={() => console.log('row clicked')} />;
               })
             : null}
           {/* user has no licensed beats */}

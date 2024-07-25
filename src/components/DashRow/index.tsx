@@ -17,7 +17,7 @@ import Artwork from './Artwork';
 interface IBeatRowProps {
   beat: Beat;
   onClick: React.MouseEventHandler<HTMLHeadingElement>;
-  buttonType: 'edit' | 'license' | 'download' | null;
+  buttonType: 'edit' | 'license' | 'download' | 'none';
   onBeatPage?: boolean;
 }
 
@@ -95,7 +95,7 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
   return (
     <>
       <Row className={styles['row-container']} id={`dashrow-${beat._id}`}>
-        {isMobile || buttonType == null ? null : buttonType === 'edit' ? (
+        {isMobile || buttonType == 'none' ? null : buttonType === 'edit' ? (
           <BeatEditModal beat={beat} />
         ) : buttonType === 'download' ? (
           <BeatDownloadModal beatId={beat._id} title={beat.title} artistName={beat.artistName} license={false} />
@@ -109,7 +109,7 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
             playPauseStatus={beatPlayingFromState?._id == beat._id ? beatPlayPauseStatus : 'paused'}
             onClick={onBeatPage ? () => navigate(`/app/beat?id=${beat._id}`) : () => dispatch(playback(beat))}
           />
-          <div className={styles['text-container']} style={{ marginLeft: buttonType == null ? '0' : undefined }}>
+          <div className={styles['text-container']} style={{ marginLeft: buttonType == 'none' ? '0vw' : undefined }}>
             <h3
               onClick={() => {
                 navigate(`/app/beat?id=${beat._id}`);

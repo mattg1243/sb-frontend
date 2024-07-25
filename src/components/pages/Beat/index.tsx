@@ -269,7 +269,7 @@ export default function BeatPage(props?: IBeatPageProps) {
                     <DashRow
                       beat={beat}
                       onClick={() => console.log('beat clicked')}
-                      buttonType={null}
+                      buttonType="none"
                       onBeatPage={true}
                     />
                   ))
