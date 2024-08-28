@@ -75,17 +75,32 @@ export default function Login(): JSX.Element {
     }
   };
 
+  const checkForVerifyRedirect = () => {
+    const verifyRedirect = new URLSearchParams(window.location.search).get('verified');
+    if (verifyRedirect === 'true') {
+      setAlert({ type: 'success', message: 'Your account has been verified! Please login to use the site.' });
+    }
+  };
+
+  const checkIsLoggedIn = async (userId: string) => {
+    setCheckingAuth(true);
+
+    try {
+      await axios.get(`${gatewayUrl}/auth?user=${userId}`, { withCredentials: true });
+      navigate('/app/dash');
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setCheckingAuth(false);
+    }
+  };
+
   useEffect(() => {
     const userId = getUserIdFromLocalStorage();
     if (userId) {
-      setCheckingAuth(true);
-      axios
-        .get(`${gatewayUrl}/auth?user=${userId}`, { withCredentials: true })
-        .then(() => navigate('/app/dash'))
-        .catch(() => {
-          console.log('no logged in');
-          setCheckingAuth(false);
-        });
+      checkIsLoggedIn(userId);
+    } else {
+      checkForVerifyRedirect();
     }
   }, []);
 

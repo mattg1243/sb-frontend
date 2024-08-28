@@ -25,7 +25,7 @@ export default function VerifyEmail() {
         .get(`${gatewayUrl}/user/verify-email?code=${code}&user=${userId}&email=${email}`)
         .then(() => {
           {
-            window.location.href = '/login';
+            window.location.href = '/login?verified=true';
           }
         })
         .catch((err) => {

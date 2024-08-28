@@ -14,6 +14,7 @@ import { CheckCircleOutlined } from '@ant-design/icons';
 import ReactGA from 'react-ga4';
 
 const emailRe = /^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/;
+
 const isMobile = window.innerWidth < 480;
 
 export default function Register(): JSX.Element {
@@ -73,6 +74,20 @@ export default function Register(): JSX.Element {
       setButtonColor('#D3D3D3');
     }
   }, [password, passwordConfirm, agreedToTerms, email, artistName, dateOfBirth]);
+
+  useEffect(() => {
+    const subSuccessRedirect = new URLSearchParams(window.location.search).get('sub-success');
+    if (subSuccessRedirect) {
+      ReactGA.event('user_sub_purchase');
+      setAlert({
+        type: 'success',
+        message:
+          'Your subscription is now live! Please create an account with the same email you used to purchase your subscription.',
+      });
+    } else {
+      return;
+    }
+  }, []);
 
   return (
     <ChakraProvider>
