@@ -46,7 +46,10 @@ export default function Login(): JSX.Element {
     } catch (err: any) {
       console.error(err);
       if (err.response.status === 401) {
-        setAlert({ type: 'error', message: 'Invalid login credentials' });
+        setAlert({
+          type: 'error',
+          message: 'Invalid login credentials. Please try again (note usernames are case sensitive).',
+        });
       } else if (err.response.status === 403) {
         localStorage.setItem('sb-user', JSON.stringify(err.response.data.user));
         navigate('/verify-email');
@@ -122,14 +125,14 @@ export default function Login(): JSX.Element {
             <Form.Item
               style={{ justifySelf: 'center' }}
               name="email"
-              rules={[{ required: true, message: 'Please input your email!' }]}
+              rules={[{ required: true, message: 'Please input your email or username!' }]}
             >
               {/* this needs to be able to accept an email OR username */}
               <Input
                 className={`${styles.input} emailinput`}
                 style={{ fontSize: 'min(16px)' }}
                 id="email-input"
-                placeholder="Email"
+                placeholder="Email or username"
                 autoComplete="email"
                 autoCapitalize="off"
                 onChange={(e) => setEmail(e.target.value)}
