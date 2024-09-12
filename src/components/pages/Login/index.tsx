@@ -117,16 +117,10 @@ export default function Login(): JSX.Element {
             name="basic"
             layout="vertical"
             initialValues={{ remember: true }}
-            wrapperCol={{ span: 16, offset: 4 }}
-            labelCol={{ span: 16, offset: 4 }}
             autoComplete="off"
             className={styles.form}
           >
-            <Form.Item
-              style={{ justifySelf: 'center' }}
-              name="email"
-              rules={[{ required: true, message: 'Please input your email or username!' }]}
-            >
+            <Form.Item name="email" rules={[{ required: true, message: 'Please input your email or username!' }]}>
               {/* this needs to be able to accept an email OR username */}
               <Input
                 className={`${styles.input} emailinput`}

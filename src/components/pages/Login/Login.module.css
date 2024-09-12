@@ -8,7 +8,6 @@
     margin-top: 6vh;
     text-align: center;
     height: 100vh;
-    padding-right: 4vw;
   }
 
   .form {
@@ -19,10 +18,8 @@
   }
 
   .input {
-    width: 27vw;
-    max-width: 600px;
-    height: 5vh;
-    max-height: 50px;
+    width: 450px;
+    height: 50px;
     border-radius: 40px;
   }
 
