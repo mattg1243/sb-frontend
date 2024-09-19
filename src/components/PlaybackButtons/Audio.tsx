@@ -1,6 +1,6 @@
 import { useEffect, useCallback, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { playPause } from '../../reducers/playbackReducer';
+import { playback, playPause } from '../../reducers/playbackReducer';
 import { addStreamReq } from '../../lib/axios';
 import ReactGA from 'react-ga4';
 
@@ -55,13 +55,14 @@ export default function Audio(props: IAudioProps) {
   }, [onTimeUpdate]);
 
   const handleLoadStart = useCallback(() => {
-    onLoadingChange(true);
-    dispatch(playPause('loading'));
+    if (audioRef.current) {
+      onLoadingChange(true);
+      dispatch(playPause('loading'));
+    }
   }, [onPlayPauseStatusChange]);
 
   const handleCanPlay = useCallback(() => {
     onLoadingChange(false);
-    console.log('loadedmetadata');
     if (onBeatPage) {
       dispatch(playPause('paused'));
     } else {
@@ -143,7 +144,10 @@ export default function Audio(props: IAudioProps) {
       }
       audioRef.current.load();
       if (!onBeatPage) {
-        audioRef.current.play();
+        audioRef.current
+          .play()
+          .then(() => console.log('playing new audio...'))
+          .catch((err) => console.error(err));
       }
     }
   }, [src]);

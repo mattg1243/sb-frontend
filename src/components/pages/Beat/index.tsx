@@ -10,7 +10,7 @@ import { PlayCircleOutlined } from '@ant-design/icons';
 import { getBeatReq, getSimilarBeats, getUserLikesBeatReq, likeBeatReq, unlikeBeatReq } from '../../../lib/axios';
 import { getUserIdFromLocalStorage } from '../../../utils/localStorageParser';
 import { useDispatch } from 'react-redux';
-import { playback } from '../../../reducers/playbackReducer';
+import { playback, playPause } from '../../../reducers/playbackReducer';
 import BeatDownloadModal from '../../BeatDownloadModal';
 import { ensureLoggedIn } from '../../../utils/auth';
 import PlaybackButtons from '../../PlaybackButtons';
@@ -81,6 +81,14 @@ export default function BeatPage(props?: IBeatPageProps) {
       setBeat(props.testBeat);
     }
   });
+
+  // Clean up redux state
+  useEffect(() => {
+    return () => {
+      dispatch(playback(null));
+      dispatch(playPause(null));
+    };
+  }, [dispatch]);
 
   const likeBeat = async () => {
     if (beat && typeof likesCount == 'number') {
