@@ -4,7 +4,7 @@
   background-color: black;
   color: white;
   width: 100%;
-  height: 110vh;
+  height: 100vh;
   justify-content: center;
   padding-left: 5.5vw;
 }
@@ -59,22 +59,10 @@
     justify-content: center;
   }
 
-  .header1 {
-    color: #ffbd59;
-    font-size: 6.5vw;
-    max-width: 50vw;
-    padding-top: 7.5vh;
-  }
-
   .moneyhands {
-    width: 28vw;
+    width: 30vw;
     height: auto;
-    padding-top: 22vh;
-  }
-
-  .paragraph1 {
-    font-size: 4vw;
-    max-width: 90%;
+    margin: 64px 0 0 42px;
   }
 }
 /* Mobile CSS */

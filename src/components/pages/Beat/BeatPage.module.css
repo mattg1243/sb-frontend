@@ -1,5 +1,5 @@
 .container {
-  width: 100vw;
+  width: min(100vw, 2500px);
   display: flex;
   position: absolute;
   flex-direction: row;
@@ -29,33 +29,36 @@
 .beat-title {
   margin-top: 3vh;
   margin-bottom: 0;
-  height: 5vh;
   z-index: 1;
   max-height: 5vh;
-  font-size: 3vh;
-  max-width: 33vw;
+  font-size: 2.5vh;
+  width: min(33vw, 750px);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .beat-artist {
-  font-size: 1.25vw;
+  font-size: clamp(16px, 1.25vw, 34px);
   font-weight: lighter;
+  text-align: center;
   color: black;
 }
 
 .stats-row {
   justify-content: space-between;
-  text-align: flex-start;
+  text-align: center;
   align-items: center;
-  width: 25vw;
-  margin-bottom: 2vh;
+  align-self: center;
+  width: clamp(325px, 25vw, 375px);
+  margin: 2vh 0;
   height: 5vh;
 }
 
 .artwork {
   margin-top: 7vh;
+  width: 100%;
+  align-items: center;
   box-shadow: 12px 12px black;
   background: var(--primary) !important;
 }
@@ -65,7 +68,7 @@
 }
 
 .suggested-container {
-  width: 37vw;
+  width: min(37vw, 1000px);
   right: 0vw;
   height: 80vh;
   position: relative;
@@ -95,24 +98,6 @@
   text-align: center;
 }
 
-@media (min-width: 1920px) and (max-width: 1999px) {
-  .suggested-container {
-    width: 33vw;
-    right: 5vw;
-    text-align: center;
-    font-size: 1vw;
-  }
-}
-
-@media (min-width: 1024px) and (max-width: 1919px) {
-  .suggested-container {
-    width: 33vw;
-    right: 5vw;
-    text-align: center;
-    font-size: 1vw;
-  }
-}
-
 @media (max-width: 1024px) {
   .container {
     flex-direction: column;
@@ -126,7 +111,7 @@
   }
 
   .stats-row {
-    width: 90vw;
+    width: clamp(300px, 40vw, 400px);
     margin-top: 1vh;
     margin-bottom: 2vh;
     text-align: center;
@@ -134,11 +119,11 @@
   }
 
   .suggested-container {
-    width: 90vw;
+    width: 80vw;
     right: 0vw;
     height: 100%;
     position: relative;
-    font-size: 16px;
+    font-size: clamp(16px, 3vw, 36px);
     text-align: start;
     align-items: start;
     justify-content: start;
@@ -148,22 +133,21 @@
 
   .beat-cont {
     width: 100vw;
-    margin-top: 10vh;
+    margin-top: 150px;
   }
 
   .beat-title {
-    padding: 0 5vw;
     text-align: center;
-    width: 90vw;
+    width: 50vw;
     height: 3vh;
     max-width: 100%;
-    white-space: wrap;
+    white-space: pre;
     text-overflow: ellipsis;
-    font-size: clamp(16px, 4vw, 28px);
+    font-size: clamp(16px, 3vw, 36px);
   }
 
   .beat-artist {
-    font-size: clamp(16px, 3vw, 22px);
+    font-size: clamp(16px, 2vw, 32px);
   }
 
   .refresh-button-div {

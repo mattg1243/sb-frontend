@@ -127,7 +127,15 @@ export default function BeatPage(props?: IBeatPageProps) {
       >
         {beat ? (
           <>
-            <div>
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                textAlign: 'center',
+                alignItems: 'center',
+                marginTop: '40px',
+              }}
+            >
               <BeatMetadata
                 title={beat.title}
                 artistName={beat.artistName}
@@ -138,7 +146,7 @@ export default function BeatPage(props?: IBeatPageProps) {
               {isMobile ? (
                 <HomeButton />
               ) : (
-                <div style={{ position: 'fixed', top: '10vh' }}>
+                <div style={{ position: 'fixed', top: '10vh', left: '120px' }}>
                   <RandomButton />
                 </div>
               )}
@@ -158,9 +166,10 @@ export default function BeatPage(props?: IBeatPageProps) {
                 onLoadStart={() => setImgLoading(true)}
                 onLoad={() => setImgLoading(false)}
                 style={{
-                  width: isMobile ? 300 : '45vh',
-                  height: isMobile ? 300 : '45vh',
+                  width: isMobile ? 300 : '33vh',
+                  height: isMobile ? 300 : '33vh',
                   pointerEvents: 'none',
+                  alignSelf: 'center',
                 }}
                 className={styles.artwork}
               />
@@ -169,7 +178,7 @@ export default function BeatPage(props?: IBeatPageProps) {
                 {beat.title}
               </h1>
 
-              <Row className={styles['stats-row']}>
+              <Row className={styles['stats-row']} style={{ justifyContent: 'center' }}>
                 <h3 data-cy="beat-page-artist">
                   <a className={styles['beat-artist']} href={`/app/user/?id=${beat.artistId}`}>
                     {beat.artistName}
@@ -232,7 +241,7 @@ export default function BeatPage(props?: IBeatPageProps) {
                 </div>
               </Row>
               {isMobile ? (
-                <Row style={{ width: '90vw', margin: '5vh 0' }} justify="space-around">
+                <Row style={{ width: 'clamp(350px, 50vw, 400px)', margin: '5vh 0' }} justify="space-around">
                   <BeatDownloadModal
                     artistName={beat.artistName}
                     beatId={beat._id}
