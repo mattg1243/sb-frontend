@@ -119,7 +119,7 @@
   }
 
   .suggested-container {
-    width: 80vw;
+    width: 90vw;
     right: 0vw;
     height: 100%;
     position: relative;
@@ -138,16 +138,16 @@
 
   .beat-title {
     text-align: center;
-    width: 50vw;
-    height: 3vh;
+    width: 80vw;
+    height: 5vh;
     max-width: 100%;
     white-space: pre;
     text-overflow: ellipsis;
-    font-size: clamp(16px, 3vw, 36px);
+    font-size: clamp(16px, 3vh, 42px);
   }
 
   .beat-artist {
-    font-size: clamp(16px, 2vw, 32px);
+    font-size: clamp(16px, 2vh, 36px);
   }
 
   .refresh-button-div {

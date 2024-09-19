@@ -25,7 +25,7 @@ export default function Dashboard() {
   }, []);
 
   return (
-    <div data-testid="dashboard" style={{ width: '100vw' }}>
+    <div data-testid="dashboard" className={styles['beats-container']}>
       <SubRefModal />
       <div>
         <h2 className={styles['for-you-text']}>For You</h2>

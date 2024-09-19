@@ -12,7 +12,19 @@
 }
 
 .logButton {
-  box-shadow: clamp(3px, 5vw, 6px) clamp(3px, 5vw, 6px);
+  box-shadow: clamp(3px, 3vw, 6px) clamp(3px, 5vw, 6px);
+  width: clamp(100px, 16vw, 200px);
+  height: clamp(36px, 5vh, 80px);
+  font-size: clamp(16px, 2vh, 32px);
+}
+
+.buttonspace {
+  padding-top: clamp(20px, 10vh, 30px);
+}
+
+p {
+  font-family: 'Norwester', sans-serif !important;
+  font-weight: normal !important;
 }
 
 /* Desktop CSS */
@@ -35,7 +47,7 @@
 
   .row {
     /*holds only the logo, title, and login buttons*/
-    font-family: 'Norwester', sans-serif;
+    font-family: 'Norwester', sans-serif !important;
     height: 100vh;
     width: 100vw;
     max-width: 3456px;
@@ -61,18 +73,7 @@
 
   .buttonspace {
     /*position buttons simultaneously*/
-    padding-top: 10vh;
     padding-left: 32vw;
-  }
-
-  /* New button class */
-
-  .logButton {
-    width: 16vw;
-    height: 3.75vw;
-    font-weight: bold;
-    font-size: 1.2vw;
-    size: large;
   }
 }
 
@@ -120,18 +121,7 @@
 
   .buttonspace {
     /*position buttons simultaneously*/
-    padding-top: 10vh;
     padding-left: 32vw;
-  }
-
-  /* New button class */
-
-  .logButton {
-    width: 16vw;
-    height: 3.75vw;
-    font-weight: bold;
-    font-size: 1.2vw;
-    size: large;
   }
 }
 
@@ -187,10 +177,6 @@
     width: 100px;
     height: 32px;
     font-size: 16px;
-  }
-
-  .buttonspace {
-    padding-top: 12px;
   }
 
   footer {
@@ -265,9 +251,8 @@
   }
 
   .logButton {
-    width: 30vw;
-    height: 5vh;
-    font-size: min(16px);
+    font-size: 16px;
+    height: 48px;
   }
 
   header {

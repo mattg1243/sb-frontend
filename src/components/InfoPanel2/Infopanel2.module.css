@@ -1,7 +1,7 @@
 .row {
-  width: 100%;
+  width: 100vw;
   height: 110vh;
-  justify-content: center;
+  align-items: center;
   padding-left: 5.5vw;
 }
 
@@ -29,14 +29,14 @@
 
   .paragraph1 {
     margin: 1rem 0rem 1rem 0rem;
-    font-size: 2.5vw;
+    font-size: clamp(24px, 2.5vw, 48px);
     max-width: 40vw;
   }
 
   .moneygraph {
-    width: 28vw;
+    width: min(30vw, 600px);
     height: auto;
-    padding-top: 25vh;
+    padding-top: min(16vh, 300px);
   }
 }
 

@@ -154,7 +154,7 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
           </div>
         </Row>
         {isMobile || onBeatPage ? null : (
-          <div style={{ alignItems: 'flex-end' }} data-cy="beat-like-btn">
+          <div className={styles['like-cont']} data-cy="beat-like-btn">
             {liked ? (
               <HeartFilled onClick={() => unlikeBeat()} id="like-beat-btn" />
             ) : (
@@ -163,8 +163,7 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
             <Statistic
               title="Likes"
               value={likesCount}
-              valueStyle={{ fontSize: '1.5vh' }}
-              className="beat-like-count"
+              valueStyle={{ fontSize: 'clamp(10px, 1vw, 14px)', textAlign: 'center' }}
             />
           </div>
         )}

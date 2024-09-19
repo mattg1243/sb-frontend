@@ -1,17 +1,5 @@
 .beats-container {
-  width: 100vw;
-  padding-left: 9vw;
-  padding-top: 15vh;
-  text-align: center;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  overflow: visible;
-}
-
-.beats-container > * {
-  margin: 4vh 0;
-  padding: 0 1vh;
+  width: min(100vw, 2100px);
 }
 
 .for-you-text {
@@ -41,15 +29,6 @@
     margin-top: 5rem;
     font-size: 2rem;
   }
-
-  .beats-container {
-    padding-top: 2vh;
-    padding-bottom: 10vh;
-    height: 80vh;
-    overflow-x: hidden;
-    position: relative;
-    width: 100%;
-  }
 }
 
 /* mobile css */
@@ -58,17 +37,5 @@
   .for-you-text {
     margin-top: 2vh;
     position: relative;
-  }
-
-  .beats-container {
-    padding-top: 2vh;
-    padding-left: 2vw;
-    padding-bottom: 10vh;
-    width: 100vw;
-    overflow-x: hidden;
-  }
-
-  .beats-container > * {
-    margin: 15px 0;
   }
 }
