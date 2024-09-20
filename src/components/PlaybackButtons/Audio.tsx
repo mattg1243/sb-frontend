@@ -73,6 +73,7 @@ export default function Audio(props: IAudioProps) {
 
   const handlePlaying = useCallback(() => {
     if (audioRef.current) {
+      onLoadingChange(false);
       if (!countedStream) {
         streamTimeout = setTimeout(() => {
           addStreamReq(beatId)
@@ -102,6 +103,12 @@ export default function Audio(props: IAudioProps) {
     }
   }, [onLoadingChange]);
 
+  const handleSeeked = useCallback(() => {
+    if (audioRef.current) {
+      onLoadingChange(false);
+    }
+  }, [onLoadingChange]);
+
   const handleEnded = useCallback(() => {
     if (audioRef.current) {
       onTimeUpdate(0);
@@ -118,6 +125,7 @@ export default function Audio(props: IAudioProps) {
       audioRef.current.addEventListener('loadedmetadata', handleDurationUpdate);
       audioRef.current.addEventListener('playing', handlePlaying);
       audioRef.current.addEventListener('seeking', handleSeeking);
+      audioRef.current.addEventListener('seeked', handleSeeked);
       audioRef.current.addEventListener('ended', handleEnded);
 
       if (playPauseStatus === 'playing') {
@@ -133,6 +141,7 @@ export default function Audio(props: IAudioProps) {
         audioRef.current?.removeEventListener('loadedmetadata', handleDurationUpdate);
         audioRef.current?.removeEventListener('playing', handlePlaying);
         audioRef.current?.removeEventListener('seeking', handleSeeking);
+        audioRef.current?.removeEventListener('seeked', handleSeeked);
         audioRef.current?.removeEventListener('ended', handleEnded);
       };
     }
