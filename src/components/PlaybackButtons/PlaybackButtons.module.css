@@ -36,11 +36,9 @@ input[type='range']::-webkit-slider-thumb {
   background: transparent;
   border: none !important;
   color: white;
-  margin-top: 2vh;
   margin-right: 2rem;
   margin-left: 30%;
   margin-right: 2vh;
-  padding-bottom: 2vh;
   font-size: 2.5rem;
 }
 

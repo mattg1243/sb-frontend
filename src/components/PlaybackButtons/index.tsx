@@ -163,7 +163,7 @@ const PlaybackButtons = () => {
       }}
       align="middle"
     >
-      <Col span={1} offset={isMobile ? 0 : 3}>
+      <Col span={1} offset={isMobile ? 1 : 3}>
         <button
           onClick={playPauseStatus == 'playing' ? pause : play}
           style={{ animationDuration: '0s !important' }}
@@ -180,7 +180,7 @@ const PlaybackButtons = () => {
           )}
         </button>
       </Col>
-      <Col span={isMobile ? 14 : 12} offset={isMobile ? 4 : 4}>
+      <Col span={isMobile ? 13 : 12} offset={isMobile ? 4 : 4}>
         <input
           type="range"
           min={0}

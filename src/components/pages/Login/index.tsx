@@ -111,6 +111,9 @@ export default function Login(): JSX.Element {
     <Layout>
       <Content className={styles.content}>
         <img src={orangelogo} className={styles.logo} alt="logo" width="150vw" />
+        <div className={styles['title-cont']}>
+          <p className={styles.title}>Sweatshop Beats</p>
+        </div>
         <h1 className={styles.loginText}>Log in to your account</h1>
         {!checkingAuth ? (
           <Form
@@ -147,7 +150,7 @@ export default function Login(): JSX.Element {
               />
             </Form.Item>
 
-            <Form.Item name="forgotPassword" className={styles.forgotPassword} wrapperCol={{ offset: 4, span: 16 }}>
+            <Form.Item name="forgotPassword" className={styles.forgotPassword}>
               <a href="#" onClick={() => setResetPasswordModalOpen(true)}>
                 Forgot password?
               </a>
@@ -158,7 +161,7 @@ export default function Login(): JSX.Element {
             <Checkbox>Remember me</Checkbox>
           </Form.Item> */}
 
-            <Form.Item className={styles.buttonUnOffset} wrapperCol={{ offset: 4, span: 16 }}>
+            <Form.Item className={styles.buttonUnOffset}>
               {isLoading ? (
                 <Spin size="large" className="spin" />
               ) : (
