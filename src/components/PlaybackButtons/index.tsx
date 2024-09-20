@@ -1,13 +1,11 @@
-import ReactGA from 'react-ga4';
-import { Tooltip, Row, Col, FloatButton } from 'antd';
+import { Tooltip, Row, Col } from 'antd';
 import { CaretRightOutlined, PauseOutlined, LoadingOutlined } from '@ant-design/icons';
 import { useState, useRef, useEffect, useCallback } from 'react';
 import styles from './PlaybackButtons.module.css';
 import { useDispatch, useSelector } from 'react-redux';
 import type { Beat } from '../../types';
 import { beatCdnHostName } from '../../config/routing';
-import { addStreamReq } from '../../lib/axios';
-import { playback, playPause } from '../../reducers/playbackReducer';
+import { playPause } from '../../reducers/playbackReducer';
 import { useLocation } from 'react-router-dom';
 import Audio from './Audio';
 
@@ -28,6 +26,7 @@ const PlaybackButtons = () => {
   const [currentTime, setCurrentTime] = useState<number>(0);
   const [seekTime, setSeekTime] = useState<number>(0);
   const [duration, setDuration] = useState<string>();
+  const [durationNum, setDurationNum] = useState<number>();
   const [secondsPlayed, setSecondsPlayed] = useState<number>(0);
   const [minutesPlayed, setMinutesPlayed] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(true);
@@ -41,8 +40,6 @@ const PlaybackButtons = () => {
   const dispatch = useDispatch();
   const location = useLocation();
 
-  let countedStream = false;
-
   // save the data needed to stream the beat and display infor
   const trackTitle = beatPlayingFromState ? beatPlayingFromState.title : '';
   const trackArtist = beatPlayingFromState ? beatPlayingFromState.artistName : '';
@@ -50,8 +47,6 @@ const PlaybackButtons = () => {
   let streamTimeout: NodeJS.Timeout;
 
   const onBeatPage = window.location.pathname === '/app/beat' ? true : false;
-
-  const audioRef = useRef<HTMLAudioElement>(null);
 
   const stopAllAudio = () => {
     document.querySelectorAll('audio').forEach((el) => {
@@ -79,6 +74,7 @@ const PlaybackButtons = () => {
   }, []);
 
   const handleDurationUpdate = useCallback((time: number) => {
+    setDurationNum(time);
     const minutes = Math.floor(time / 60);
     const seconds = Math.floor(time - minutes * 60);
     setDuration(`${minutes}:${strPadLeft(seconds.toString(), '0', 2)}`);
@@ -96,6 +92,10 @@ const PlaybackButtons = () => {
       stopAllAudio();
     };
   }, [location]);
+
+  useEffect(() => {
+    console.log('duration updated: ', durationNum);
+  }, [durationNum]);
 
   // playback button for all pages except beat page
   const playbackBtn = (
@@ -163,7 +163,7 @@ const PlaybackButtons = () => {
       }}
       align="middle"
     >
-      <Col span={4} offset={isMobile ? 0 : 4}>
+      <Col span={1} offset={isMobile ? 0 : 3}>
         <button
           onClick={playPauseStatus == 'playing' ? pause : play}
           style={{ animationDuration: '0s !important' }}
@@ -180,25 +180,22 @@ const PlaybackButtons = () => {
           )}
         </button>
       </Col>
-      <Col span={isMobile ? 18 : 12} offset={isMobile ? 2 : 0}>
-        <Tooltip
-          title={`${minutesPlayed.toString()}:${strPadLeft(secondsPlayed.toString(), '0', 2)} / ${duration}`}
-          placement="top"
-          overlayStyle={{ top: '87vh' }}
-        >
-          <input
-            type="range"
-            min={0}
-            max={duration}
-            step={0.01}
-            value={currentTime}
-            className={styles['seek-bar']}
-            onChange={(e) => {
-              handleSeek(e);
-            }}
-          />
-        </Tooltip>
+      <Col span={isMobile ? 14 : 12} offset={isMobile ? 4 : 4}>
+        <input
+          type="range"
+          min={0}
+          max={durationNum}
+          step={0.01}
+          value={currentTime}
+          className={styles['seek-bar']}
+          onChange={(e) => {
+            handleSeek(e);
+          }}
+        />
       </Col>
+      <p>
+        {minutesPlayed.toString()}:{strPadLeft(secondsPlayed.toString(), '0', 2)} / {duration}
+      </p>
       {/* <BsVolumeUpFill className={styles['vol-icon']} /> */}
       <Audio
         src={`${beatCdnHostName}/${beatPlayingFromState?.audioStreamKey}`}

@@ -50,6 +50,10 @@
     font-size: clamp(13px, 0.8vw, 16px);
   }
 
+  a {
+    font-size: clamp(13px, 0.8vw, 16px);
+  }
+
   .artwork {
     box-shadow: 6px 3px black;
   }
@@ -93,6 +97,10 @@
     margin-left: 3vw;
     margin-top: -1vh;
     align-self: flex-start;
+    font-size: clamp(13px, 0.8vw, 18px);
+  }
+
+  a {
     font-size: clamp(13px, 0.8vw, 18px);
   }
 
@@ -144,6 +152,11 @@
     align-self: flex-start;
     font-size: clamp(13px, 0.8vw, 18px);
   }
+
+  a {
+    font-size: clamp(13px, 0.8vw, 18px);
+  }
+
   .artwork {
     box-shadow: 6px 3px black;
   }
@@ -184,6 +197,11 @@
     align-self: flex-start;
     font-size: clamp(13px, 0.8vw, 18px);
   }
+
+  a {
+    font-size: clamp(13px, 0.8vw, 18px);
+  }
+
   .artwork {
     box-shadow: 6px 3px black;
   }
@@ -232,6 +250,11 @@
     align-self: flex-start;
     font-size: clamp(13px, 0.8vw, 18px);
   }
+
+  a {
+    font-size: clamp(13px, 0.8vw, 18px);
+  }
+
   .artwork {
     box-shadow: 6px 3px black;
   }

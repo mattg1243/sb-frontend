@@ -23,7 +23,7 @@ export default function InfoPanel2() {
         <img className={styles.moneygraph} src={moneygraph} alt="visual.png" />
       </Col>
       {isMobile ? (
-        <Row style={{ marginTop: '-10vh' }}>
+        <Row>
           <p className={styles.paragraph1}>The more credits artists spend on your beats, the more you get paid.</p>
           <h5>
             *See <a href="/faq">FAQ</a> for more details

@@ -139,7 +139,7 @@ export default function DashRow(props: IBeatRowProps): JSX.Element {
               style={{ display: 'flex', alignSelf: 'flex-start', flexDirection: 'row' }}
             >
               <div>
-                <PlayCircleOutlined style={{ paddingRight: '.5vw' }} />
+                <PlayCircleOutlined style={{ marginRight: '.5vw' }} />
                 {streamsCount}
               </div>
               {beat.hasStems ? (

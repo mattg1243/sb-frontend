@@ -1,11 +1,11 @@
 /* global defaults */
 .title {
-  font-size: 8vw;
+  font-size: clamp(64px, 8vw, 250px);
 }
 
 .subtitle {
-  font-size: 2.1vw;
-  padding-left: 18vw;
+  font-size: clamp(18px, 2.1vw, 60px);
+  padding-left: clamp(50px, 18vw, 650px);
   letter-spacing: 0.25vw;
   margin: 0vw;
   z-index: 1;
@@ -37,18 +37,18 @@ p {
   .content {
     /*holds everything on the page including the infopanels*/
     justify-content: center;
-    height: 100vh;
+    height: 90vh;
   }
 
   .logo {
-    width: 40vw;
+    width: min(40vw, 1300px);
     height: auto;
   }
 
   .row {
     /*holds only the logo, title, and login buttons*/
     font-family: 'Norwester', sans-serif !important;
-    height: 100vh;
+    height: 90vh;
     width: 100vw;
     max-width: 3456px;
     justify-content: left;
@@ -85,20 +85,19 @@ p {
   .content {
     /*holds everything on the page including the infopanels*/
     justify-content: center;
-    height: 100vh;
   }
 
   .logo {
     width: 40vw;
+    margin-top: 100px;
     height: auto;
   }
 
   .row {
     /*holds only the logo, title, and login buttons*/
     font-family: 'Norwester', sans-serif;
-    height: 100vh;
+    height: 95vh;
     width: 100vw;
-    max-width: 3000px;
     justify-content: left;
     padding-left: 6vw; /*to make the logo+title centered relative to the infopanels*/
   }

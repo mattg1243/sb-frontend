@@ -8,15 +8,19 @@
 .header1 {
   font-size: 3.5vw;
   max-width: 40vw;
-  padding-top: 10vw;
+  padding-top: 5vw;
 }
 
+h5,
+a {
+  font-size: clamp(12px, 2vw, 24px);
+}
 /* Desktop CSS */
 
 @media (min-width: 1024px) {
   .row {
     width: 100vw;
-    height: 110vh;
+    height: 80vh;
     justify-content: center;
     padding-left: 5.5vw;
   }
@@ -24,7 +28,6 @@
   .header1 {
     font-size: 3.5vw;
     max-width: 40vw;
-    padding-top: 10vw;
   }
 
   .paragraph1 {

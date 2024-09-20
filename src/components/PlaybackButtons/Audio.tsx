@@ -92,8 +92,23 @@ export default function Audio(props: IAudioProps) {
   const handleDurationUpdate = useCallback(() => {
     if (audioRef.current) {
       onDurationUpdate(audioRef.current.duration);
+      console.log(audioRef.current.duration);
     }
   }, [onDurationUpdate]);
+
+  const handleSeeking = useCallback(() => {
+    if (audioRef.current) {
+      onLoadingChange(true);
+    }
+  }, [onLoadingChange]);
+
+  const handleEnded = useCallback(() => {
+    if (audioRef.current) {
+      onTimeUpdate(0);
+      onDurationUpdate(audioRef.current.duration);
+      onPlayPauseStatusChange('paused');
+    }
+  }, [onTimeUpdate]);
 
   useEffect(() => {
     if (audioRef.current) {
@@ -102,6 +117,8 @@ export default function Audio(props: IAudioProps) {
       audioRef.current.addEventListener('canplay', handleCanPlay);
       audioRef.current.addEventListener('loadedmetadata', handleDurationUpdate);
       audioRef.current.addEventListener('playing', handlePlaying);
+      audioRef.current.addEventListener('seeking', handleSeeking);
+      audioRef.current.addEventListener('ended', handleEnded);
 
       if (playPauseStatus === 'playing') {
         handlePlay();
@@ -115,6 +132,8 @@ export default function Audio(props: IAudioProps) {
         audioRef.current?.removeEventListener('canplay', handleCanPlay);
         audioRef.current?.removeEventListener('loadedmetadata', handleDurationUpdate);
         audioRef.current?.removeEventListener('playing', handlePlaying);
+        audioRef.current?.removeEventListener('seeking', handleSeeking);
+        audioRef.current?.removeEventListener('ended', handleEnded);
       };
     }
   }, [src, handleTimeUpdate, handleLoadStart, handleCanPlay, handlePlay, handlePause]);
