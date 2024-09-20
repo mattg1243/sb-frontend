@@ -1,4 +1,22 @@
 /* this should probably be global */
+.title-cont {
+  position: absolute;
+  top: 350px;
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+}
+
+.title {
+  font-family: 'Norwester', sans-serif;
+  z-index: 1;
+  font-size: clamp(36px, 10vw, 64px);
+  position: absolute;
+  top: 10;
+}
+
 @media (min-width: 1921px) {
   .content {
     display: flex;
@@ -47,7 +65,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    margin-top: 15vh;
+    margin-top: 100px;
     text-align: center;
     height: 100vh;
   }
@@ -55,7 +73,6 @@
   .form {
     justify-items: center;
     width: 50vw;
-    margin-top: 1vh;
     height: 50vh;
   }
 
@@ -65,6 +82,11 @@
     height: 5vh;
     max-height: 50px;
     border-radius: 40px;
+  }
+
+  .logo {
+    width: clamp(200px, 15vw, 400px);
+    height: auto;
   }
 
   .logButton {
@@ -106,7 +128,7 @@
   }
 
   .logo {
-    width: 25vw;
+    width: clamp(200px, 60vw, 400px);
     height: auto;
   }
 
@@ -125,11 +147,10 @@
     width: 75%;
     margin-top: 4vh;
     height: 50vh;
-    padding-right: 25vw;
   }
 
   .loginText {
-    font-size: 4vw;
+    font-size: 28px;
   }
 
   .input {
@@ -141,29 +162,18 @@
   }
 
   .forgotPassword {
-    padding-left: 25vw;
     width: 100%;
   }
 
-  .buttonUnOffset {
-    padding-left: 18vw;
-  }
-
   .logButton {
-    font-size: 4vw;
+    font-size: 20px;
     background: black;
     border-color: black;
-    width: 75vw;
+    width: 150px;
     max-width: 200px;
-    height: 8vh;
+    height: 48px;
     max-height: 75px;
     margin-bottom: 1vh;
-    margin-left: 1.5vw;
-  }
-
-  .noAccount {
-    padding-right: 15vw;
-    width: 200%;
   }
 
   h1 {
@@ -187,8 +197,9 @@
   }
 
   .logo {
-    width: 25vw;
+    width: clamp(200px, 75vw, 350px);
     height: auto;
+    margin-left: 20px;
   }
 
   .row {
@@ -206,11 +217,10 @@
     width: 75%;
     margin-top: 4vh;
     height: 50vh;
-    padding-right: 25vw;
   }
 
   .loginText {
-    font-size: 4vw;
+    font-size: 22px;
   }
 
   .input {
@@ -221,27 +231,14 @@
     border-radius: 40px;
   }
 
-  .forgotPassword {
-    padding-left: 15vw;
-  }
-
-  .buttonUnOffset {
-    padding-left: 7.5vw;
-  }
-
   .logButton {
     font-size: 4vw;
     background: black;
     border-color: black;
-    width: 75vw;
+    width: 150px;
     max-width: 200px;
-    height: 8vh;
+    height: 48px;
     max-height: 75px;
     margin-bottom: 1vh;
-  }
-
-  h1 {
-    margin-top: 1vh;
-    font-size: 4vw;
   }
 }

@@ -180,7 +180,7 @@ const PlaybackButtons = () => {
           )}
         </button>
       </Col>
-      <Col span={isMobile ? 14 : 12} offset={isMobile ? 4 : 4}>
+      <Col span={isMobile ? 13 : 12} offset={isMobile ? 5 : 4}>
         <input
           type="range"
           min={0}
